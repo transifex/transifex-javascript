@@ -1,11 +1,40 @@
-# `@transifex/core`
+# Transifex Javascript Core
 
-> TODO: description
+Generic Javascript library for localizing web apps using Transifex Native.
 
-## Usage
+Requires a Transifex Native Project Token.
 
-```
-const core = require('@transifex/core');
+## Webpack usage
 
-// TODO: DEMONSTRATE API
+Install the library using:
+
+```npm install @transifex/core --save```
+
+In the code use as:
+
+```js
+import Transifex from '@transifex/core';
+
+const { t, getAllLanguages, setLanguage } = Transifex;
+const { PROJECT_TOKEN } = Transifex;
+
+// initialize SDK
+Transifex.config({
+  [PROJECT_TOKEN]: '<PUBLIC PROJECT TOKEN>',
+});
+
+async function main() {
+  // get all languages
+  const languages = await getAllLanguages();
+  console.log(languages);
+
+  // set target language, this will fetch translation Over The Air
+  await setLanguage('fr');
+
+  // translate something
+  const message = t('Welcome {user}', {user: 'Joe'});
+  console.log(message);
+}
+
+main();
 ```
