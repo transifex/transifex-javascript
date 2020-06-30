@@ -1,0 +1,22 @@
+{
+  "name": "@transifex/cli",
+  "version": "0.0.1",
+  "description": "Transifex Native CLI",
+  "keywords": [
+    "transifex",
+    "l10n",
+    "i18n",
+    "localization"
+  ],
+  "author": "Transifex",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/cli",
+  "license": "Apache-2.0",
+  "main": "lib/cli.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
