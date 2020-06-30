@@ -28,7 +28,7 @@ async function main() {
   const languages = await getAllLanguages();
   console.log(languages);
 
-  // set target language, this will fetch translation Over The Air
+  // set target language, this will fetch translations Over The Air
   await setLanguage('fr');
 
   // translate something

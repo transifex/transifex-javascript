@@ -12,4 +12,4 @@ Vanilla Javascript library to localize web apps using Transifex Native.
 
 Licensed under Apache License 2.0, see [LICENSE](LICENSE) file.
 
-Community contributions as bound to the [Contributor License Agreement](CLA.md).
+Community contributions are bound to the [Contributor License Agreement](CLA.md).
