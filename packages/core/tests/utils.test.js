@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import { escapeHtml, generateKey } from '../src/index';
 
 describe('Util functions', () => {
