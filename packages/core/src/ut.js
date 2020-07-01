@@ -13,7 +13,7 @@ const MF = new MessageFormat();
  * @param {Object} options
  * @returns {String} translation
  */
-export default function ut(string, options) {
+export function ut(string, options) {
   const key = generateKey(string, options);
 
   let translation =

@@ -1,7 +1,5 @@
 import {expect} from 'chai';
-import Transifex from '../src/index';
-
-const { escapeHtml, generateKey } = Transifex;
+import { escapeHtml, generateKey } from '../src/index';
 
 describe('Util functions', () => {
   it('escapeHtml', () => {

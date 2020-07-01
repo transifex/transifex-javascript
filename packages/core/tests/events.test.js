@@ -1,7 +1,5 @@
-import {expect} from 'chai';
-import Transifex from '../src/index';
-
-const { onEvent, offEvent, sendEvent } = Transifex;
+import { expect } from 'chai';
+import { onEvent, offEvent, sendEvent } from '../src/index';
 
 describe('Event functions', () => {
   it('works', () => {

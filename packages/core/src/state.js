@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import {
   getConfig,
   PROJECT_TOKEN,
@@ -60,14 +62,14 @@ export async function setLanguage(langcode) {
   try {
     sendEvent(FETCHING_CONTENT, processedLangcode);
     const cdsUrl = getConfig(CDS_URL);
-    const response = await fetch(`${cdsUrl}/content/${processedLangcode}`, {
+    const response = await axios.get(`${cdsUrl}/content/${processedLangcode}`, {
       headers: {
         'Authorization': `Bearer ${projectToken}`,
       },
     });
 
-    const data = await response.json();
-    if (data.data) {
+    const { data } = response;
+    if (data && data.data) {
       const hashmap = {};
       Object.keys(data.data).forEach(key => {
         hashmap[key] = data.data[key].string || '';
@@ -112,14 +114,14 @@ export async function getAllLanguages() {
   try {
     sendEvent(FETCHING_LANGUAGES);
     const cdsUrl = getConfig(CDS_URL);
-    const response = await fetch(`${cdsUrl}/languages`, {
+    const response = await axios.get(`${cdsUrl}/languages`, {
       headers: {
         'Authorization': `Bearer ${projectToken}`,
       },
     });
 
-    const data = await response.json();
-    if (data.data) {
+    const { data } = response;
+    if (data && data.data) {
       ALL_LANGUAGES = data.data;
       sendEvent(LANGUAGES_FETCHED);
     } else {

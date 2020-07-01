@@ -1,14 +1,12 @@
-import {expect} from 'chai';
-import Transifex from '../src/index';
-
-const {
+import { expect } from 'chai';
+import {
   configure,
   setConfig,
   getConfig,
   CDS_URL,
   PROJECT_TOKEN,
   SOURCE_LANG_CODE
-} = Transifex;
+} from '../src/index';
 
 describe('Config functions', () => {
   it('work', () => {

@@ -26,6 +26,7 @@
     "xtest": false
   },
   "rules": {
+    "import/prefer-default-export": "off",
     "no-console": "off",
     "comma-dangle": "off",
     "react/jsx-filename-extension": "off",
