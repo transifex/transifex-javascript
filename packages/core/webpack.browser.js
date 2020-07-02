@@ -6,7 +6,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'browser.core.js',
-    library: 'transifex',
+    library: 'Transifex',
     libraryTarget: 'umd',
   },
   target: 'web',
@@ -36,6 +36,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
+            plugins: [['@babel/transform-runtime']],
           },
         },
       },

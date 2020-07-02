@@ -10,7 +10,7 @@ export const MISSING_POLICY_PSEUDO = 1;
 const CONFIG = {
   [CDS_URL]: 'https://cds.svc.transifex.net',
   [PROJECT_TOKEN]: '',
-  [SOURCE_LANG_CODE]: 'en',
+  [SOURCE_LANG_CODE]: '',
   [MISSING_POLICY]: MISSING_POLICY_SOURCE,
 }
 
