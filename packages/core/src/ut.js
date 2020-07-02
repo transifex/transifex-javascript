@@ -2,6 +2,7 @@ import MessageFormat from 'messageformat';
 import { generateKey, escapeHtml } from './utils';
 import { getTranslation } from './storage';
 import { getLanguage } from './state';
+import { fallbackTranslation } from './fallback';
 
 const MF = new MessageFormat();
 
@@ -19,9 +20,9 @@ export function ut(string, options) {
   let translation =
     getTranslation(getLanguage(), key);
 
+  let isMissing = false;
   if (!translation) {
-    // we can add missing policy here.
-    // for now it's just source string replacement
+    isMissing = true;
     translation = string;
   }
 
@@ -31,7 +32,14 @@ export function ut(string, options) {
     Object.keys(options).forEach(property => {
       params[property] = escapeHtml(options[property]);
     });
-    return msg(params);
+    translation = msg(params);
+  } else {
+    translation = msg(options);
   }
-  return msg(options);
+
+  if (isMissing) {
+    translation = fallbackTranslation(translation);
+  }
+
+  return translation;
 }

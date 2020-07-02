@@ -42,7 +42,7 @@ export async function setLanguage(langcode) {
   const projectToken = getConfig(PROJECT_TOKEN);
   const sourceLangCode = getConfig(SOURCE_LANG_CODE);
 
-  if (!projectToken || SELECTED_LANG_CODE === processedLangcode) return;
+  if (SELECTED_LANG_CODE === processedLangcode) return;
 
   // check for source language
   if (processedLangcode === sourceLangCode) {
@@ -84,6 +84,7 @@ export async function setLanguage(langcode) {
     }
   } catch (err) {
     sendEvent(CONTENT_FETCH_FAILED, processedLangcode);
+    throw err;
   }
 }
 

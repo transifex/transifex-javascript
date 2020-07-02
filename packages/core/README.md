@@ -15,16 +15,16 @@ Install the library using:
 In the code use as:
 
 ```js
-import { t, configure, getAllLanguages, setLanguage } from '@transifex/core';
+import { t, init, getAllLanguages, setLanguage } from '@transifex/core';
 import { PROJECT_TOKEN } from '@transifex/core';
 
 // All imports are also available under a Transifex object
 // For example:
 // import { Transifex } from '@transifex/core';
-// Transifex.t(..) Transifex.configure(..) etc
+// Transifex.t(..) Transifex.init(..) etc
 
 // initialize SDK
-configure({
+init({
   [PROJECT_TOKEN]: '<PUBLIC PROJECT TOKEN>',
 });
 
@@ -56,7 +56,7 @@ In the code use as:
 const { Transifex, PROJECT_TOKEN, t } = require('@transifex/core');
 
 // initialize SDK
-Transifex.configure({
+Transifex.init({
   [PROJECT_TOKEN]: '<PUBLIC PROJECT TOKEN>',
 });
 
