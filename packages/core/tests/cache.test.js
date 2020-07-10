@@ -4,16 +4,16 @@ import {
   getTranslations,
   hasTranslations,
   getTranslation
-} from '../src/storage';
+} from '../src/cache';
 
-describe('Storage functions', () => {
-  it('work on empty storage', () => {
+describe('Cache functions', () => {
+  it('work on empty cache', () => {
     expect(getTranslation('foo', 'bar')).to.equal('');
     expect(hasTranslations('foo')).to.equal(false);
     expect(getTranslations('foo')).to.deep.equal({});
   });
 
-  it('work on valid storage', () => {
+  it('work on valid cache', () => {
     setTranslations('fr', { 'key': 'value' })
     expect(getTranslation('fr', 'bar')).to.equal('');
     expect(getTranslation('fr', 'key')).to.equal('value');

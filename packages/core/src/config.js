@@ -4,8 +4,8 @@ export const SOURCE_LANG_CODE = 'SOURCE_LANG_CODE';
 export const MISSING_POLICY = 'MISSING_POLICY';
 
 // Missing policy
-export const MISSING_POLICY_SOURCE = 0;
-export const MISSING_POLICY_PSEUDO = 1;
+export const MISSING_POLICY_SOURCE = 'MISSING_POLICY_SOURCE';
+export const MISSING_POLICY_PSEUDO = 'MISSING_POLICY_PSEUDO';
 
 const CONFIG = {
   [CDS_URL]: 'https://cds.svc.transifex.net',

@@ -4,16 +4,16 @@ import {
   CDS_URL,
   setConfig,
   getConfig,
-  getAllLanguages,
+  getAvailableLanguages,
   generateKey,
-  setLanguage,
-  getLanguage,
+  setSelectedLanguage,
+  getSelectedLanguage,
   t,
   SOURCE_LANG_CODE,
 } from '../src/index';
 
 describe('State functions', () => {
-  it('getAllLanguages', async () => {
+  it('getAvailableLanguages', async () => {
     setConfig(CDS_URL, 'http://cds');
     nock(getConfig(CDS_URL)).
       get('/languages').
@@ -27,13 +27,13 @@ describe('State functions', () => {
           }
         ],
       });
-    const languages = await getAllLanguages();
+    const languages = await getAvailableLanguages();
     expect(languages).to.deep.equal([
       { name: 'Greek', code: 'el', localized_name: 'Ελληνικά', rtl: false }
     ]);
   });
 
-  it('setLanguage', async () => {
+  it('setSelectedLanguage', async () => {
     setConfig(CDS_URL, 'http://cds');
     nock(getConfig(CDS_URL)).
       get('/content/el').
@@ -45,12 +45,12 @@ describe('State functions', () => {
         },
       });
 
-    await setLanguage('el');
-    expect(getLanguage()).to.equal('el');
+    await setSelectedLanguage('el');
+    expect(getSelectedLanguage()).to.equal('el');
     expect(t('Hello')).to.deep.equal('Γειά');
 
     // restore to source
-    await setLanguage(getConfig(SOURCE_LANG_CODE));
+    await setSelectedLanguage(getConfig(SOURCE_LANG_CODE));
     expect(t('Hello')).to.deep.equal('Hello');
   });
 });

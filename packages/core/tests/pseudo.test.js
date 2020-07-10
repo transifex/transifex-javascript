@@ -6,11 +6,11 @@ import {
   MISSING_POLICY_SOURCE,
   MISSING_POLICY,
   t,
-  setLanguage,
+  setSelectedLanguage,
   getConfig,
   SOURCE_LANG_CODE
 } from '../src';
-import { setTranslations } from '../src/storage';
+import { setTranslations } from '../src/cache';
 
 describe('Pseudo function', () => {
   it('works', () => {
@@ -23,11 +23,11 @@ describe('Pseudo localization', () => {
     setConfig(MISSING_POLICY, MISSING_POLICY_PSEUDO);
 
     setTranslations('pseudo', {});
-    await setLanguage('pseudo');
+    await setSelectedLanguage('pseudo');
     expect(t('Hello {user}', { user: 'Joe' })).to.equal('Ħḗḗŀŀǿǿ Ĵǿǿḗḗ');
 
     // revert
     setConfig(MISSING_POLICY, MISSING_POLICY_SOURCE);
-    await setLanguage(getConfig(SOURCE_LANG_CODE));
+    await setSelectedLanguage(getConfig(SOURCE_LANG_CODE));
   });
 });

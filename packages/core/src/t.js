@@ -1,7 +1,7 @@
 import MessageFormat from 'messageformat';
 import { generateKey, escapeHtml } from './utils';
-import { getTranslation } from './storage';
-import { getLanguage } from './state';
+import { getTranslation } from './cache';
+import { getSelectedLanguage } from './state';
 import { fallbackTranslation } from './fallback';
 
 const MF = new MessageFormat();
@@ -18,7 +18,7 @@ export function t(string, options) {
   const key = generateKey(string, options);
 
   let translation =
-    getTranslation(getLanguage(), key);
+    getTranslation(getSelectedLanguage(), key);
 
   let isMissing = false;
   if (!translation) {

@@ -5,7 +5,7 @@ import {
   SOURCE_LANG_CODE
 } from './config';
 import pseudo from './pseudo';
-import { getLanguage } from './state';
+import { getSelectedLanguage } from './state';
 
 /**
  * Get a fallback string based on missing policy
@@ -16,7 +16,7 @@ import { getLanguage } from './state';
  */
 export function fallbackTranslation(string) {
   // check if we are on source language
-  if (getConfig(SOURCE_LANG_CODE) === getLanguage()) {
+  if (getConfig(SOURCE_LANG_CODE) === getSelectedLanguage()) {
     return string;
   }
 

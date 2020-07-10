@@ -18,7 +18,7 @@ import {
   LANGUAGES_FETCH_FAILED
 } from './events';
 
-import { hasTranslations, setTranslations } from './storage';
+import { hasTranslations, setTranslations } from './cache';
 
 let SELECTED_LANG_CODE = '';
 let ALL_LANGUAGES;
@@ -30,7 +30,7 @@ let ALL_LANGUAGES;
  * @param {String} langcode
  * @returns {Promise}
  */
-export async function setLanguage(langcode) {
+export async function setSelectedLanguage(langcode) {
   const parts = langcode.split('-');
   let processedLangcode;
   if (parts.length === 1) {
@@ -94,7 +94,7 @@ export async function setLanguage(langcode) {
  * @export
  * @returns {String} langcode
  */
-export function getLanguage() {
+export function getSelectedLanguage() {
   return SELECTED_LANG_CODE || getConfig(SOURCE_LANG_CODE);
 }
 
@@ -105,7 +105,7 @@ export function getLanguage() {
  * @returns {Array} languages
  * @throws
  */
-export async function getAllLanguages() {
+export async function getAvailableLanguages() {
   if (ALL_LANGUAGES) return ALL_LANGUAGES;
 
   const projectToken = getConfig(PROJECT_TOKEN);
