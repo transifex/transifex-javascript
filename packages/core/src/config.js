@@ -2,16 +2,22 @@ export const CDS_URL = 'CDS_URL';
 export const PROJECT_TOKEN = 'PROJECT_TOKEN';
 export const SOURCE_LANG_CODE = 'SOURCE_LANG_CODE';
 export const MISSING_POLICY = 'MISSING_POLICY';
+export const ERROR_POLICY = 'ERROR_POLICY';
 
 // Missing policy
 export const MISSING_POLICY_SOURCE = 'MISSING_POLICY_SOURCE';
 export const MISSING_POLICY_PSEUDO = 'MISSING_POLICY_PSEUDO';
+
+// Error policy
+export const ERROR_POLICY_SOURCE = 'ERROR_POLICY_SOURCE';
+export const ERROR_POLICY_THROW = 'ERROR_POLICY_THROW';
 
 const CONFIG = {
   [CDS_URL]: 'https://cds.svc.transifex.net',
   [PROJECT_TOKEN]: '',
   [SOURCE_LANG_CODE]: '',
   [MISSING_POLICY]: MISSING_POLICY_SOURCE,
+  [ERROR_POLICY]: ERROR_POLICY_SOURCE,
 }
 
 /**

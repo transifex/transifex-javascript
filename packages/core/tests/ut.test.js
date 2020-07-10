@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {
-  ut,
+  ut, getConfig, ERROR_POLICY, ERROR_POLICY_THROW, setConfig, ERROR_POLICY_SOURCE,
 } from '../src/index';
 
 describe('UT function', () => {
@@ -23,5 +23,19 @@ describe('UT function', () => {
   it('with _safe works', () => {
     expect(ut('Hello {username}', { _safe: true, username: '<b>Joe</b>' })).
       to.equal('Hello <b>Joe</b>');
+  });
+
+  it('handles error policy', () => {
+    const policy = getConfig(ERROR_POLICY);
+
+    setConfig(ERROR_POLICY, ERROR_POLICY_THROW);
+    expect(() => ut('Hello {username}')).
+      to.throw();
+
+    setConfig(ERROR_POLICY, ERROR_POLICY_SOURCE);
+    expect(ut('Hello {username}')).
+      to.equal('Hello {username}');
+
+    setConfig(ERROR_POLICY, policy);
   });
 });
