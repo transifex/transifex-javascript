@@ -19,8 +19,8 @@
   },
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
-    "test": "NODE_ENV=test webpack --config webpack.test.js && nyc --reporter=text mocha --exit dist/test.core.js --require source-map-support/register"
+    "build": "NODE_ENV=production webpack --config ./webpack.config.js",
+    "test": "NODE_ENV=test webpack --config webpack.test.js && nyc --reporter=text mocha --exit dist/test.core.js --require source-map-support/register && rm -f ./dist/test.*"
   },
   "bugs": {
     "url": "https://github.com/transifex/transifex-javascript/issues"
