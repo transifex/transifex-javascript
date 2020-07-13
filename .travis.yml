@@ -28,5 +28,4 @@ jobs:
           - npm run build
           - npm run publish
         on:
-          tags: true
           branch: master
