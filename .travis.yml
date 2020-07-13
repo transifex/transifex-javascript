@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+
+matrix:
+  include:
+  - name: Core
+    env: PACKAGE_LOCATION=packages/core PACKAGE_NAME=@transifex/core
+
+script:
+  - cd $PACKAGE_LOCATION
+  - npm run build
+  - npm test
