@@ -6,12 +6,13 @@ node_js:
   - 13
   - 14
 
-matrix:
-  include:
-  - name: Core
-    env: PACKAGE_LOCATION=packages/core PACKAGE_NAME=@transifex/core
+cache:
+  directories:
+  - node_modules
+
+before_script:
+  - npm install -g lerna
+  - lerna bootstrap
 
 script:
-  - cd $PACKAGE_LOCATION
-  - npm run build
-  - npm test
+  - lerna run test
