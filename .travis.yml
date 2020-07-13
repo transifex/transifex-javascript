@@ -11,8 +11,22 @@ cache:
   - node_modules
 
 before_script:
-  - npm install -g lerna
-  - lerna bootstrap
+  - npm run bootstrap
 
 script:
-  - lerna run test
+  - npm run test
+
+jobs:
+  include:
+    - stage: Deploy to npm
+      node_js: 14
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npm run build
+          - npm run publish
+        on:
+          tags: true
+          branch: master
