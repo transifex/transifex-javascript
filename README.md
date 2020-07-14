@@ -5,6 +5,8 @@
 
 Transifex Javascript Toolkit is a collection of tools that allow you to easily localize your Javascript applications using Transifex. The toolkit features fetching translations over the air (OTA) to your apps.
 
+This project adheres to the Contributor Covenant [code of conduct](/CODE_OF_CONDUCT.md). To contribute to Transifex Javascript Toolkit, please check out the [contribution guidelines](/CONTRIBUTING.md).
+
 ## Javascript Core Library
 
 Vanilla Javascript library to localize web apps using Transifex Native.
