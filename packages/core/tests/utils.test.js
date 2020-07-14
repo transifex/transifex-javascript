@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { escapeHtml, generateKey } from '../src/index';
+import { escapeHtml, generateKey, isString } from '../src/index';
 
 describe('Util functions', () => {
   it('escapeHtml', () => {
@@ -18,5 +18,13 @@ describe('Util functions', () => {
 
     // overrides key
     expect(generateKey('foo', {_key: 'bar'})).to.equal('bar');
+  });
+
+  it('isString', () => {
+    expect(isString('')).to.equal(true);
+    expect(isString('foo')).to.equal(true);
+    expect(isString()).to.equal(false);
+    expect(isString(4)).to.equal(false);
+    expect(isString({})).to.equal(false);
   });
 });

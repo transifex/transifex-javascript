@@ -1,5 +1,5 @@
 import MessageFormat from 'messageformat';
-import { generateKey, escapeHtml } from './utils';
+import { generateKey, escapeHtml, isString } from './utils';
 import { getTranslation } from './cache';
 import { getSelectedLanguage } from './state';
 import { fallbackTranslation, handleError } from './fallback';
@@ -31,7 +31,8 @@ export function ut(string, options) {
     if (options && !options._safe) {
       const params = {};
       Object.keys(options).forEach(property => {
-        params[property] = escapeHtml(options[property]);
+        const value = options[property];
+        params[property] = isString(value) ? escapeHtml(value) : value;
       });
       translation = msg(params);
     } else {

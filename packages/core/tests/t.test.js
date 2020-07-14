@@ -20,6 +20,13 @@ describe('T function', () => {
       to.equal('&lt;b&gt;Hello&lt;/b&gt; &lt;b&gt;Joe&lt;/b&gt;');
   });
 
+  it('handles object variables', () => {
+    expect(t('Hello {username}', {
+      username: '<b>Joe</b>',
+      obj: { foo: 'bar' },
+    })).to.equal('Hello &lt;b&gt;Joe&lt;/b&gt;');
+  });
+
   it('handles error policy', () => {
     const policy = getConfig(ERROR_POLICY);
 

@@ -33,3 +33,14 @@ export function escapeHtml(unsafe) {
     replace(/"/g, '&quot;').
     replace(/'/g, '&#039;');
 }
+
+/**
+ * Check if passed parameter is String
+ *
+ * @export
+ * @param {*} obj
+ * @returns {Boolean}
+ */
+export function isString(obj) {
+  return Object.prototype.toString.call(obj) === '[object String]';
+}

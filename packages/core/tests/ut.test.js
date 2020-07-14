@@ -20,9 +20,24 @@ describe('UT function', () => {
       to.equal('<b>Hello</b> &lt;b&gt;Joe&lt;/b&gt;');
   });
 
+  it('handles object variables', () => {
+    expect(ut('Hello {username}', {
+      username: '<b>Joe</b>',
+      obj: { foo: 'bar' },
+    })).to.equal('Hello &lt;b&gt;Joe&lt;/b&gt;');
+  });
+
   it('with _safe works', () => {
     expect(ut('Hello {username}', { _safe: true, username: '<b>Joe</b>' })).
       to.equal('Hello <b>Joe</b>');
+  });
+
+  it('handles object variables with _safe', () => {
+    expect(ut('Hello {username}', {
+      _safe: true,
+      username: '<b>Joe</b>',
+      obj: { foo: 'bar' },
+    })).to.equal('Hello <b>Joe</b>');
   });
 
   it('handles error policy', () => {
