@@ -12,18 +12,7 @@ cache:
 
 before_script:
   - npm run bootstrap
+  - npm run build
 
 script:
   - npm run test
-
-jobs:
-  include:
-    - stage: Deploy to npm
-      node_js: 14
-      script: skip
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script: npm run build && npm run publish
-        on:
-          branch: master
