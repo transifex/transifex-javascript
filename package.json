@@ -6,6 +6,7 @@
     "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
     "build": "lerna run build",
+    "release": "lerna version",
     "publish": "lerna exec -- npm publish"
   },
   "devDependencies": {
