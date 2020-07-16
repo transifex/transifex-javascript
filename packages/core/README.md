@@ -77,7 +77,7 @@ main();
 ### Browser
 
 ```html
-<script type="text/javascript" src="transifex/browser.core.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@transifex/core/dist/browser.core.min.js"></script>
 <script type="text/javascript">
   // initialize SDK
   Transifex.init({
