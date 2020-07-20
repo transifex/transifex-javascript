@@ -14,6 +14,7 @@ export function generateKey(string, options={}) {
   let context = '';
   if (options._context) {
     context = options._context;
+    context = context.replace(/,/g, ':');
   }
   return md5(`5:${string}:${context}`);
 }

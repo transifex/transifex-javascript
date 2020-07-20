@@ -1,0 +1,72 @@
+{
+  "name": "@transifex/cli",
+  "description": "Transifex Native CLI",
+  "version": "0.0.4",
+  "author": "Transifex",
+  "keywords": [
+    "transifex",
+    "i18n",
+    "l10n",
+    "localization"
+  ],
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/cli",
+  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "bugs": "https://github.com/transifex/transifex-javascript/issues",
+  "license": "Apache-2.0",
+  "bin": {
+    "transifexjs-cli": "./bin/run"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@oclif/command": "^1.7.0",
+    "@oclif/config": "^1.16.0",
+    "@oclif/plugin-help": "^3.1.0",
+    "@transifex/core": "0.0.4",
+    "acorn": "^7.3.1",
+    "acorn-jsx": "^5.2.0",
+    "acorn-jsx-walk": "^2.0.0",
+    "acorn-walk": "^7.2.0",
+    "axios": "^0.19.2",
+    "cli-ux": "^5.4.9",
+    "colors": "^1.4.0",
+    "glob": "^7.1.6",
+    "lodash": "^4.17.19",
+    "shelljs": "^0.8.4"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.22.2",
+    "@oclif/test": "^1.2.6",
+    "chai": "^4.2.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "globby": "^11.0.1",
+    "mocha": "^8.0.1",
+    "nock": "^13.0.2",
+    "nyc": "^15.1.0"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "files": [
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
+    "/src"
+  ],
+  "main": "src/index.js",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "transifexjs-cli",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "oclif-dev manifest",
+    "test": "nyc mocha \"test/**/*.test.js\""
+  }
+}
