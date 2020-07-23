@@ -16,6 +16,14 @@ describe('Util functions', () => {
     expect(generateKey('I have {n, plural, one {# apple} other {# apples}}')).
       to.equal('21a07a689ffa510ed943839d7f4c7a52');
 
+    // with context
+    expect(generateKey('This is a nice phrase', {
+      _context: 'some context',
+    })).to.equal('1cef92f8501667684496766587608795');
+    expect(generateKey('This is a nice phrase', {
+      _context: 'context1,context2,context2',
+    })).to.equal('ba7e05eb67b7854841bef07de562e618');
+
     // overrides key
     expect(generateKey('foo', {_key: 'bar'})).to.equal('bar');
   });
