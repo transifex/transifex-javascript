@@ -115,7 +115,7 @@ class PushCommand extends Command {
         process.exit();
       }
 
-      cli.action.start('Uploading content on Transifex', '', { stdout: true });
+      cli.action.start('Uploading content to Transifex', '', { stdout: true });
       try {
         const res = await uploadPhrases(payload, {
           url: cdsHost,

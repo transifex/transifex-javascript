@@ -12,6 +12,11 @@ This project adheres to the Contributor Covenant [code of conduct](/CODE_OF_COND
 Vanilla Javascript library to localize web apps using Transifex Native.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/core)
 
+## Javascript CLI tools
+
+CLI tools for extracting phrases from source files and pushing content to Transifex.
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/cli)
+
 # License
 
 Licensed under Apache License 2.0, see [LICENSE](LICENSE) file.

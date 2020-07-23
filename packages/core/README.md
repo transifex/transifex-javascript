@@ -174,10 +174,13 @@ Fetches list of project languages from CDS, useful for creating a language picke
 
 ```js
 getAvailableLanguages(): Promise([
-  name: String,
-  code: String,
-  localized_name: String,
-  rtl: Boolean
+  {
+    name: String,
+    code: String,
+    localized_name: String,
+    rtl: Boolean
+  },
+  ...
 ])
 
 // Example
@@ -263,9 +266,9 @@ By default all ICU variables are escaped, unless the `_safe: true` is passed in 
 ut(sourceString, options): String(localizedString)
 sourceString: String(ICU HTML syntax string)
 options: Object({
-    _safe: Boolean,
-    ...
-    ...icu variables...
+  _safe: Boolean,
+  ...
+  ...icu variables...
 })
 
 // Example
@@ -296,3 +299,7 @@ offEvent(type, function)
 // trigger an event
 sendEvent(type, payload)
 ```
+
+# License
+
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.

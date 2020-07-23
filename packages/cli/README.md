@@ -80,3 +80,7 @@ DESCRIPTION
   transifexjs-cli push --token=mytoken --secret=mysecret
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret transifexjs-cli push
 ```
+
+# License
+
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
