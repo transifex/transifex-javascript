@@ -9,6 +9,9 @@ Related packages:
 [@transifex/core](https://www.npmjs.com/package/@transifex/core)
 
 # Usage
+
+## Global installation
+
 ```sh-session
 $ npm install -g @transifex/cli
 
@@ -19,6 +22,33 @@ $ transifexjs-cli --help [COMMAND]
 USAGE
   $ transifexjs-cli COMMAND
 ...
+```
+
+## Local installation in existing codebase
+
+Install to local repo using `npm`.
+
+```sh-session
+$ npm install @transifex/cli --save
+
+$ ./node_modules/.bin/transifexjs-cli COMMAND
+running command...
+```
+
+Add it as a script command in `package.json`.
+
+```json
+  ...
+  "scripts": {
+    "push": "transifexjs-cli push src/",
+    ...
+  },
+```
+
+Push content using `npm`.
+
+```sh-session
+$ npm run push
 ```
 
 # Commands
@@ -75,7 +105,9 @@ DESCRIPTION
 
   Examples:
   transifexjs-cli push -v
-  transifexjs-cli push *.js
+  transifexjs-cli push src/
+  transifexjs-cli push /home/repo/src
+  transifexjs-cli push "*.js"
   transifexjs-cli push --dry-run
   transifexjs-cli push --token=mytoken --secret=mysecret
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret transifexjs-cli push
