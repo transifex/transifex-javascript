@@ -22,6 +22,27 @@ describe('push command', () => {
     });
 
   test
+    .stdout()
+    .command(['push', 'test/fixtures/', '--dry-run', '-v'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.contain('f2138b2131e064313c369b20006549df: Text 1');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/*.js', '--dry-run', '-v'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.contain('f2138b2131e064313c369b20006549df: Text 1');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/*.foo', '--dry-run', '-v'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.not.contain('f2138b2131e064313c369b20006549df: Text 1');
+    });
+
+  test
     .nock('https://cds.svc.transifex.net', (api) => api
       .post('/content')
       .reply(200, {

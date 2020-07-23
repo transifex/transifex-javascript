@@ -1,6 +1,7 @@
 /* eslint no-shadow: 0 */
 
 require('colors');
+const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 const { Command, flags } = require('@oclif/command');
@@ -11,11 +12,32 @@ const extractPhrases = require('../api/extract');
 const uploadPhrases = require('../api/upload');
 const mergePayload = require('../api/merge');
 
+/**
+ * Test if path is folder
+ *
+ * @param {String} path
+ * @returns {Boolean}
+ */
+function isFolder(path) {
+  try {
+    const stat = fs.lstatSync(path);
+    return stat.isDirectory();
+  } catch (error) {
+    return false;
+  }
+}
+
 class PushCommand extends Command {
   async run() {
     const { args, flags } = this.parse(PushCommand);
     const pwd = `${shelljs.pwd()}`;
-    const filePattern = path.join(pwd, args.pattern);
+    let filePattern = path.isAbsolute(args.pattern)
+      ? args.pattern
+      : path.join(pwd, args.pattern);
+
+    if (isFolder(filePattern)) {
+      filePattern = path.join(filePattern, '**/*.{js,jsx}');
+    }
 
     this.log('Parsing all files to detect translatable content...');
 
@@ -161,7 +183,9 @@ Default CDS Host is https://cds.svc.transifex.net
 
 Examples:
 transifexjs-cli push -v
-transifexjs-cli push *.js
+transifexjs-cli push src/
+transifexjs-cli push /home/repo/src
+transifexjs-cli push "*.js"
 transifexjs-cli push --dry-run
 transifexjs-cli push --token=mytoken --secret=mysecret
 TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret transifexjs-cli push
