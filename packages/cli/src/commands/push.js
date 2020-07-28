@@ -182,13 +182,13 @@ or passed as --token=<TOKEN> --secret=<SECRET> parameters
 Default CDS Host is https://cds.svc.transifex.net
 
 Examples:
-transifexjs-cli push -v
-transifexjs-cli push src/
-transifexjs-cli push /home/repo/src
-transifexjs-cli push "*.js"
-transifexjs-cli push --dry-run
-transifexjs-cli push --token=mytoken --secret=mysecret
-TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret transifexjs-cli push
+txjs-cli push -v
+txjs-cli push src/
+txjs-cli push /home/repo/src
+txjs-cli push "*.js"
+txjs-cli push --dry-run
+txjs-cli push --token=mytoken --secret=mysecret
+TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 `;
 
 PushCommand.args = [{

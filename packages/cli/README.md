@@ -6,7 +6,7 @@ Parse `.js` or `.jsx` files and scan for Transifex Native phrases.
 Push phrases to Transifex for localization.
 
 Related packages:
-[@transifex/core](https://www.npmjs.com/package/@transifex/core)
+[@transifex/native](https://www.npmjs.com/package/@transifex/native)
 
 # Usage
 
@@ -15,12 +15,12 @@ Related packages:
 ```sh-session
 $ npm install -g @transifex/cli
 
-$ transifexjs-cli COMMAND
+$ txjs-cli COMMAND
 running command...
 
-$ transifexjs-cli --help [COMMAND]
+$ txjs-cli --help [COMMAND]
 USAGE
-  $ transifexjs-cli COMMAND
+  $ txjs-cli COMMAND
 ...
 ```
 
@@ -31,7 +31,7 @@ Install to local repo using `npm`.
 ```sh-session
 $ npm install @transifex/cli --save
 
-$ ./node_modules/.bin/transifexjs-cli COMMAND
+$ ./node_modules/.bin/txjs-cli COMMAND
 running command...
 ```
 
@@ -40,7 +40,7 @@ Add it as a script command in `package.json`.
 ```json
   ...
   "scripts": {
-    "push": "transifexjs-cli push src/",
+    "push": "txjs-cli push src/",
     ...
   },
 ```
@@ -52,16 +52,16 @@ $ npm run push
 ```
 
 # Commands
-* [`transifexjs-cli help [COMMAND]`](#transifexjs-cli-help-command)
-* [`transifexjs-cli push [PATTERN]`](#transifexjs-cli-push-pattern)
+* [`txjs-cli help [COMMAND]`](#txjs-cli-help-command)
+* [`txjs-cli push [PATTERN]`](#txjs-cli-push-pattern)
 
-## `transifexjs-cli help [COMMAND]`
+## `txjs-cli help [COMMAND]`
 
-Display help for transifexjs-cli
+Display help for txjs-cli
 
 ```
 USAGE
-  $ transifexjs-cli help [COMMAND]
+  $ txjs-cli help [COMMAND]
 
 ARGUMENTS
   COMMAND  command to show help for
@@ -70,13 +70,13 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-## `transifexjs-cli push [PATTERN]`
+## `txjs-cli push [PATTERN]`
 
 Detect translatable strings and push content to Transifex
 
 ```
 USAGE
-  $ transifexjs-cli push [PATTERN]
+  $ txjs-cli push [PATTERN]
 
 ARGUMENTS
   PATTERN  [default: **/*.{js,jsx}] file pattern to scan for strings
@@ -104,13 +104,13 @@ DESCRIPTION
   Default CDS Host is https://cds.svc.transifex.net
 
   Examples:
-  transifexjs-cli push -v
-  transifexjs-cli push src/
-  transifexjs-cli push /home/repo/src
-  transifexjs-cli push "*.js"
-  transifexjs-cli push --dry-run
-  transifexjs-cli push --token=mytoken --secret=mysecret
-  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret transifexjs-cli push
+  txjs-cli push -v
+  txjs-cli push src/
+  txjs-cli push /home/repo/src
+  txjs-cli push "*.js"
+  txjs-cli push --dry-run
+  txjs-cli push --token=mytoken --secret=mysecret
+  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 ```
 
 # License

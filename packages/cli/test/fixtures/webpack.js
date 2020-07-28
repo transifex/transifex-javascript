@@ -1,4 +1,4 @@
-import { t, ut, Transifex } from '@transifex/core';
+import { tx, t } from '@transifex/native';
 
 function log() {}
 
@@ -9,7 +9,7 @@ export default function foo() {
     _charlimit: 10,
     _comment: 'comment',
   }));
-  log(ut('Text 2'));
-  log(Transifex.t('Text 3'));
-  log(Transifex.ut('Text 4'));
+  log(t('Text 2'));
+  log(tx.translate('Text 3'));
+  log(tx.translate('Text 4'));
 }

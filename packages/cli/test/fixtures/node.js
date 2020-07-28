@@ -1,4 +1,4 @@
-const { t, ut, Transifex } = require('@transifex/core');
+const { tx, t } = require('@transifex/native');
 
 function log() {}
 
@@ -9,9 +9,9 @@ function foo() {
     _charlimit: 10,
     _comment: 'comment',
   }));
-  log(ut('Text 2'));
-  log(Transifex.t('Text 3'));
-  log(Transifex.ut('Text 4'));
+  log(t('Text 2'));
+  log(tx.translate('Text 3'));
+  log(tx.translate('Text 4'));
 }
 
 module.exports = foo;
