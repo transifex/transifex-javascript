@@ -8,8 +8,8 @@ function foo() {
         _charlimit="10"
         _comment="comment" />
 
-      <T _str="Text 2" />
-      <T _str="Text 3" />
+      <T _str="Text 2" _html/>
+      <T _str="Text 3" _html _inline />
       <T _str="Text 4" />
     </div>
   );
