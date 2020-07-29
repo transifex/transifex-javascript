@@ -12,20 +12,9 @@ const parser = acorn.Parser.extend(jsx());
 const walk = require('acorn-walk');
 const { extend } = require('acorn-jsx-walk');
 const mergePayload = require('./merge');
+const { stringToArray, mergeArrays } = require('./utils');
 
 extend(walk.base);
-
-/**
- * Convert a comma separated string to array of strings
- *
- * @param {String} string
- * @returns {String[]}
- */
-function stringToArray(string) {
-  string = (string || '').toString().trim(); // eslint-disable-line
-  if (!string) return [];
-  return _.compact(_.map(string.split(','), (entry) => entry.trim()));
-}
 
 /**
  * Create an extraction payload
@@ -36,6 +25,8 @@ function stringToArray(string) {
  * @param {String} params._comment
  * @param {Number} params._charlimit
  * @param {Number} params._tags
+ * @param {String} occurence
+ * @param {String[]} globalTags
  * @returns {Object} Payload
  * @returns {String} Payload.string
  * @returns {String} Payload.key
@@ -45,7 +36,7 @@ function stringToArray(string) {
  * @returns {String[]} Payload.meta.tags
  * @returns {String[]} Payload.meta.occurrences
  */
-function createPayload(string, params, occurence) {
+function createPayload(string, params, occurence, globalTags) {
   return {
     string,
     key: generateKey(string, params),
@@ -53,7 +44,7 @@ function createPayload(string, params, occurence) {
       context: stringToArray(params._context),
       developer_comment: params._comment,
       character_limit: params._charlimit ? parseInt(params._charlimit, 10) : undefined,
-      tags: stringToArray(params._tags),
+      tags: mergeArrays(stringToArray(params._tags), globalTags),
       occurrences: [occurence],
     }, _.isNil),
   };
@@ -79,9 +70,10 @@ function isTransifexCall(node) {
  *
  * @param {String} file absolute file path
  * @param {String} relativeFile occurence
+ * @param {String[]} globalTags
  * @returns {Object}
  */
-function extractPhrases(file, relativeFile) {
+function extractPhrases(file, relativeFile, globalTags) {
   const HASHES = {};
   const source = fs.readFileSync(file, 'utf8');
   const ast = parser.parse(source, { sourceType: 'module' });
@@ -110,7 +102,7 @@ function extractPhrases(file, relativeFile) {
         });
       }
 
-      const partial = createPayload(string, params, relativeFile);
+      const partial = createPayload(string, params, relativeFile, globalTags);
       mergePayload(HASHES, {
         [partial.key]: {
           string: partial.string,
@@ -138,7 +130,7 @@ function extractPhrases(file, relativeFile) {
       });
 
       if (!string) return;
-      const partial = createPayload(string, params, relativeFile);
+      const partial = createPayload(string, params, relativeFile, globalTags);
       mergePayload(HASHES, {
         [partial.key]: {
           string: partial.string,

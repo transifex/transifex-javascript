@@ -11,6 +11,7 @@ const { cli } = require('cli-ux');
 const extractPhrases = require('../api/extract');
 const uploadPhrases = require('../api/upload');
 const mergePayload = require('../api/merge');
+const { stringToArray } = require('../api/utils');
 
 /**
  * Test if path is folder
@@ -39,6 +40,8 @@ class PushCommand extends Command {
       filePattern = path.join(filePattern, '**/*.{js,jsx}');
     }
 
+    const globalTags = stringToArray(flags.tags);
+
     this.log('Parsing all files to detect translatable content...');
 
     const allFiles = await new Promise((resolve, reject) => {
@@ -65,7 +68,7 @@ class PushCommand extends Command {
       const relativeFile = file.replace(pwd, '');
       bar.increment({ file: relativeFile.gray });
       try {
-        const data = extractPhrases(file, relativeFile);
+        const data = extractPhrases(file, relativeFile, globalTags);
         tree[relativeFile] = data;
         if (_.isEmpty(data)) {
           emptyFiles += 1;
@@ -187,6 +190,7 @@ txjs-cli push src/
 txjs-cli push /home/repo/src
 txjs-cli push "*.js"
 txjs-cli push --dry-run
+txjs-cli push --tags="master,release:2.5"
 txjs-cli push --token=mytoken --secret=mysecret
 TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 `;
@@ -218,6 +222,10 @@ PushCommand.flags = {
   }),
   secret: flags.string({
     description: 'Native project secret',
+    default: '',
+  }),
+  tags: flags.string({
+    description: 'Globally tag strings',
     default: '',
   }),
   'cds-host': flags.string({

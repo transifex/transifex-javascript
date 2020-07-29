@@ -88,6 +88,7 @@ OPTIONS
   --purge              Purge content on Transifex
   --secret=secret      Native project secret
   --token=token        Native project public token
+  --tags=tags          Globally add tags to strings
 
 DESCRIPTION
   Parse .js or .jsx files and detect phrases marked for
@@ -109,6 +110,7 @@ DESCRIPTION
   txjs-cli push /home/repo/src
   txjs-cli push "*.js"
   txjs-cli push --dry-run
+  txjs-cli push --tags="master,release:2.5"
   txjs-cli push --token=mytoken --secret=mysecret
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 ```

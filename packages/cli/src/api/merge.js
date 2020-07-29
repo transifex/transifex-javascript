@@ -1,6 +1,7 @@
 /* eslint no-param-reassign: 0 */
 
 const _ = require('lodash');
+const { mergeArrays } = require('./utils');
 
 /**
  * Merge child hash payload to parent.
@@ -44,7 +45,7 @@ function mergePayload(parent, child) {
 
     _.each(['tags', 'occurrences'], (field) => {
       if (_.isUndefined(childMeta[field])) return;
-      parentMeta[field] = _.uniq(_.concat(parentMeta[field] || [], childMeta[field]));
+      parentMeta[field] = mergeArrays(parentMeta[field], childMeta[field]);
     });
   });
   return parent;
