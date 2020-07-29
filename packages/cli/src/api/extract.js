@@ -4,7 +4,7 @@ const fs = require('fs');
 const acorn = require('acorn');
 const jsx = require('acorn-jsx');
 const _ = require('lodash');
-const { generateKey } = require('@transifex/core');
+const { generateKey } = require('@transifex/native');
 
 const parser = acorn.Parser.extend(jsx());
 
@@ -19,7 +19,7 @@ extend(walk.base);
  * Convert a comma separated string to array of strings
  *
  * @param {String} string
- * @returns {Array}
+ * @returns {String[]}
  */
 function stringToArray(string) {
   string = (string || '').toString().trim(); // eslint-disable-line
@@ -32,7 +32,18 @@ function stringToArray(string) {
  *
  * @param {String} string
  * @param {Object} params
- * @returns {Object}
+ * @param {String} params._context
+ * @param {String} params._comment
+ * @param {Number} params._charlimit
+ * @param {Number} params._tags
+ * @returns {Object} Payload
+ * @returns {String} Payload.string
+ * @returns {String} Payload.key
+ * @returns {String} Payload.meta.context
+ * @returns {String} Payload.meta.developer_comment
+ * @returns {Number} Payload.meta.character_limit
+ * @returns {String[]} Payload.meta.tags
+ * @returns {String[]} Payload.meta.occurrences
  */
 function createPayload(string, params, occurence) {
   return {
@@ -57,10 +68,9 @@ function createPayload(string, params, occurence) {
 function isTransifexCall(node) {
   const { callee } = node;
   if (!callee) return false;
-  if (callee.name === 't' || callee.name === 'ut') return true;
+  if (callee.name === 't') return true;
   if (!callee.object || !callee.property) return false;
-  if (!callee.object.name === 'Transifex') return false;
-  if (callee.property.name === 't' || callee.property.name === 'ut') return true;
+  if (callee.property.name === 'translate') return true;
   return false;
 }
 

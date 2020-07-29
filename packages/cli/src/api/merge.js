@@ -19,8 +19,8 @@ const _ = require('lodash');
  *    ...
  * }
  *
- * @param {*} parent
- * @param {*} child
+ * @param {Object} parent
+ * @param {Object} child
  */
 function mergePayload(parent, child) {
   _.each(child, (value, key) => {

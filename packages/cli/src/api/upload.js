@@ -5,13 +5,20 @@ const axios = require('axios');
  *
  * @param {Object} payload
  * @param {Object} params
- * {
- *   url: <String>,
- *   token: <String>,
- *   secret: <String>,
- *   purge: <Boolean>
- * }
- * @returns {Object}
+ * @param {String} params.url
+ * @param {String} params.token
+ * @param {String} params.secret
+ * @param {Boolean} params.purge
+ * @returns {Object} Data
+ * @returns {Boolean} Data.success
+ * @returns {String} Data.status
+ * @returns {Object} Data.data
+ * @returns {Number} Data.data.created
+ * @returns {Number} Data.data.updated
+ * @returns {Number} Data.data.skipped
+ * @returns {Number} Data.data.deleted
+ * @returns {Number} Data.data.failed
+ * @returns {String[]} Data.data.errors
  */
 async function uploadPhrases(payload, params) {
   try {

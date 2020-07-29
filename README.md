@@ -7,10 +7,10 @@ Transifex Javascript Toolkit is a collection of tools that allow you to easily l
 
 This project adheres to the Contributor Covenant [code of conduct](/CODE_OF_CONDUCT.md). To contribute to Transifex Javascript Toolkit, please check out the [contribution guidelines](/CONTRIBUTING.md).
 
-## Javascript Core Library
+## Javascript Native Library
 
 Vanilla Javascript library to localize web apps using Transifex Native.
-[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/core)
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/native)
 
 ## Javascript CLI tools
 
