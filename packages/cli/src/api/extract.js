@@ -120,12 +120,15 @@ function extractPhrases(file, relativeFile, globalTags) {
       let string;
       const params = {};
       _.each(elem.attributes, (attr) => {
-        if (attr.name.name === '_str') {
-          string = attr.value.value;
+        const property = attr.name && attr.name.name;
+        const value = attr.value && attr.value.value;
+        if (!property || !value) return;
+        if (property === '_str') {
+          string = value;
           return;
         }
-        if (_.isString(attr.value.value) || _.isNumber(attr.value.value)) {
-          params[attr.name.name] = attr.value.value;
+        if (_.isString(value) || _.isNumber(value)) {
+          params[property] = value;
         }
       });
 
