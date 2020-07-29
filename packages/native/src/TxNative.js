@@ -7,7 +7,6 @@ import {
   FETCHING_LOCALES, LOCALES_FETCHED, LOCALES_FETCH_FAILED,
   LOCALE_CHANGED,
 } from './events';
-import { normalizeLocale } from './utils';
 
 /**
  * Native instance, combines functionality from
@@ -86,13 +85,10 @@ export default class TxNative {
       return;
     }
 
-    // normalize locale
-    const processedLocaleCode = normalizeLocale(localeCode);
-
     // contact CDS
     try {
-      sendEvent(FETCHING_TRANSLATIONS, processedLocaleCode, this);
-      const response = await axios.get(`${this.core.cdsHost}/content/${processedLocaleCode}`, {
+      sendEvent(FETCHING_TRANSLATIONS, localeCode, this);
+      const response = await axios.get(`${this.core.cdsHost}/content/${localeCode}`, {
         headers: {
           Authorization: `Bearer ${this.core.token}`,
         },
@@ -106,14 +102,14 @@ export default class TxNative {
             hashmap[key] = data.data[key].string;
           }
         });
-        this.core.cache.update(processedLocaleCode, hashmap);
-        sendEvent(TRANSLATIONS_FETCHED, processedLocaleCode, this);
+        this.core.cache.update(localeCode, hashmap);
+        sendEvent(TRANSLATIONS_FETCHED, localeCode, this);
       } else {
-        sendEvent(TRANSLATIONS_FETCH_FAILED, processedLocaleCode, this);
+        sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
         throw new Error('Could not fetch translations');
       }
     } catch (err) {
-      sendEvent(TRANSLATIONS_FETCH_FAILED, processedLocaleCode, this);
+      sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
       throw err;
     }
   }
