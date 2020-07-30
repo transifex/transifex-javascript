@@ -1,6 +1,8 @@
 node_modules
 coverage
+dist
 test_dist
 .DS_store
 .nyc_output
 .idea
+npm-debug.log*
