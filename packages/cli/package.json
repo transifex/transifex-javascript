@@ -7,7 +7,8 @@
     "transifex",
     "i18n",
     "l10n",
-    "localization"
+    "localization",
+    "cli"
   ],
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/cli",
   "repository": "git://github.com/transifex/transifex-javascript.git",

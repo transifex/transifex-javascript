@@ -1,10 +1,14 @@
-# Transifex Javascript Native
+# Transifex Native for Javascript
 
-A general purpose Javascript library for localizing web apps using Transifex Native.
+A general purpose Javascript library for localizing web apps using [Transifex Native](https://www.transifex.com/native/).
 
 Requires a Transifex Native Project Token.
 
-Supported Node.js versions >= 10.x.x
+Supported Node.js versions >= `10.x.x`
+
+Related packages:
+* [@transifex/react](https://www.npmjs.com/package/@transifex/react)
+* [@transifex/cli](https://www.npmjs.com/package/@transifex/native)
 
 ## Quick starting guide
 

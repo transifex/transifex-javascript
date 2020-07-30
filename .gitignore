@@ -4,3 +4,4 @@ test_dist
 .DS_store
 .nyc_output
 .idea
+npm-debug.log*
