@@ -15,9 +15,9 @@ Install the library and its dependencies using:
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import T from '@transifex/react'
+import { T } from '@transifex/react';
 
 class Example extends Component {
   render() {
@@ -39,7 +39,7 @@ class Example extends Component {
           />
         </p>
       </div>
-    )
+    );
   }
 }
 ```
