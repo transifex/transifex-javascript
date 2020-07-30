@@ -15,12 +15,16 @@ select the next version (major, minor or patch).
 Upon finish, lerna will **create a version commit and push it directly to master and
 tag the release**, e.g. `v0.10.0`.
 
+> Note: Lerna does not update npm `peerDependencies`, so make sure that
+> your packages are updated before releasing, for example check
+> `packages/react/package.json` for a peer dependency at `@transifex/native`
+
 ## Step 2: Create a github release
 
 The next step involves creating a Github release. Go to Github releases and
 **Draft a new release** by using the tag lerna created:
 
-Tag version: `[v0.10.0]` @ `[Target: master]`
+Tag version: `[v0.10.0]`
 
 Release title: `[v0.10.0]`
 
