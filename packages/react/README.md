@@ -45,15 +45,16 @@ class Example extends Component {
 ```
 
 Available optional props:
-| Prop       | Type   | Description                                 |
-| ---------- | ------ | ------------------------------------------- |
-| _context   | String | String context, affects key generation      |
-| _comment   | String | Developer comment                           |
-| _charlimit | Number | Character limit instruction for translators |
-| _tags      | String | Comma separated list of tags                |
-| _key       | String | Custom string key                           |
-
-
+| Prop       | Type    | Description                                    |
+| ---------- | ------- | ---------------------------------------------- |
+| _str       | String  | Source string                                  |
+| _html      | Boolean | Render source string as HTML inside a `div` tag|
+| _inline    | Boolean | Wrap translation in `span` when `_html` is used|
+| _context   | String  | String context, affects key generation         |
+| _key       | String  | Custom string key                              |
+| _comment   | String  | Developer comment                              |
+| _charlimit | Number  | Character limit instruction for translators    |
+| _tags      | String  | Comma separated list of tags                   |
 
 # License
 
