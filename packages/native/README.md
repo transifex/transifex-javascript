@@ -8,7 +8,7 @@ Supported Node.js versions >= `10.x.x`
 
 Related packages:
 * [@transifex/react](https://www.npmjs.com/package/@transifex/react)
-* [@transifex/cli](https://www.npmjs.com/package/@transifex/native)
+* [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
 ## Quick starting guide
 

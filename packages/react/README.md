@@ -4,7 +4,7 @@ React component for localizing React application using [Transifex Native](https:
 
 Related packages:
 * [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-* [@transifex/cli](https://www.npmjs.com/package/@transifex/native)
+* [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
 ## Install
 
