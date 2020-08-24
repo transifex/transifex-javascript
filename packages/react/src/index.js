@@ -1,5 +1,5 @@
 /* eslint import/prefer-default-export: 0 */
 
-import _T from './T';
-
-export const T = _T;
+export { default as useLanguages } from './hooks/useLanguages';
+export { default as LanguagePicker } from './components/LanguagePicker';
+export { default as T } from './components/T';
