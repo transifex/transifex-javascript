@@ -30,28 +30,28 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/plugin-transform-runtime": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/runtime": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/runtime": "^7.11.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
-    "eslint": "^7.2.0",
+    "eslint": "^7.7.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.0",
     "glob": "^7.1.6",
-    "mocha": "^8.0.1",
-    "nock": "^13.0.3",
+    "mocha": "^8.1.1",
+    "nock": "^13.0.4",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
-    "webpack": "^4.44.0",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "md5": "^2.2.1",
+    "axios": "^0.20.0",
+    "md5": "^2.3.0",
     "messageformat": "^2.3.0"
   }
 }
