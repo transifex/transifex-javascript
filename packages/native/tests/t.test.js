@@ -38,7 +38,7 @@ describe('t function', () => {
   });
 
   it('uses error policy', () => {
-    const prevPolicy = tx.core.errorPolicy;
+    const prevPolicy = tx.errorPolicy;
 
     tx.init({
       errorPolicy: new ThrowErrorPolicy(),

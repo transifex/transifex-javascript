@@ -1,12 +1,18 @@
 import axios from 'axios';
-import NativeCore from './NativeCore';
-import LangState from './LangState';
+import MessageFormat from 'messageformat';
+
+import MemoryCache from './cache/MemoryCache';
+import SourceErrorPolicy from './policies/SourceErrorPolicy';
+import SourceStringPolicy from './policies/SourceStringPolicy';
+import { generateKey, isString, escape } from './utils';
 import {
   sendEvent,
   FETCHING_TRANSLATIONS, TRANSLATIONS_FETCHED, TRANSLATIONS_FETCH_FAILED,
   FETCHING_LOCALES, LOCALES_FETCHED, LOCALES_FETCH_FAILED,
   LOCALE_CHANGED,
 } from './events';
+
+const MF = new MessageFormat();
 
 /**
  * Native instance, combines functionality from
@@ -17,8 +23,17 @@ import {
  */
 export default class TxNative {
   constructor() {
-    this.core = new NativeCore();
-    this.state = new LangState();
+    this.cdsHost = 'https://cds.svc.transifex.net';
+    this.token = '';
+    this.secret = '';
+    this.cache = new MemoryCache();
+    this.missingPolicy = new SourceStringPolicy();
+    this.errorPolicy = new SourceErrorPolicy();
+    this.sourceLocale = '';
+    this.currentLocale = '';
+    this.appLocales = [];
+    this.remoteLocales = [];
+    this.remoteLanguages = [];
   }
 
   /**
@@ -37,20 +52,24 @@ export default class TxNative {
   init(params) {
     const that = this;
 
-    // initialize core
-    this.core.init(params);
-
-    // initialize lang state
     [
+      'cdsHost',
+      'token',
+      'secret',
+      'cache',
+      'missingPolicy',
+      'errorPolicy',
       'sourceLocale',
+      'currentLocale',
       'appLocales',
     ].forEach((value) => {
       if (params[value] !== undefined) {
-        that.state[value] = params[value];
+        that[value] = params[value];
       }
     });
-    if (!this.state.currentLocale) {
-      this.state.currentLocale = this.state.sourceLocale;
+
+    if (!this.currentLocale) {
+      this.currentLocale = this.sourceLocale;
     }
   }
 
@@ -68,7 +87,36 @@ export default class TxNative {
    * @returns {String}
    */
   translate(sourceString, params) {
-    return this.core.translate(sourceString, this.state.currentLocale, params);
+    try {
+      const key = generateKey(sourceString, params);
+      let translation = this.cache.get(key, this.currentLocale);
+
+      let isMissing = false;
+      if (!translation) {
+        isMissing = true;
+        translation = sourceString;
+      }
+
+      const msg = MF.compile(translation);
+      if (params && params._escapeVars) {
+        const safeParams = {};
+        Object.keys(params).forEach((property) => {
+          const value = params[property];
+          safeParams[property] = isString(value) ? escape(value) : value;
+        });
+        translation = msg(safeParams);
+      } else {
+        translation = msg(params);
+      }
+
+      if (isMissing) {
+        translation = this.missingPolicy.handle(translation, this.currentLocale);
+      }
+
+      return translation;
+    } catch (err) {
+      return this.errorPolicy.handle(err, sourceString, this.currentLocale, params);
+    }
   }
 
   /**
@@ -81,16 +129,16 @@ export default class TxNative {
    */
   async fetchTranslations(localeCode, params = {}) {
     const refresh = !!params.refresh;
-    if (!refresh && this.core.cache.hasTranslations(localeCode)) {
+    if (!refresh && this.cache.hasTranslations(localeCode)) {
       return;
     }
 
     // contact CDS
     try {
       sendEvent(FETCHING_TRANSLATIONS, localeCode, this);
-      const response = await axios.get(`${this.core.cdsHost}/content/${localeCode}`, {
+      const response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
         headers: {
-          Authorization: `Bearer ${this.core.token}`,
+          Authorization: `Bearer ${this.token}`,
         },
       });
 
@@ -102,7 +150,7 @@ export default class TxNative {
             hashmap[key] = data.data[key].string;
           }
         });
-        this.core.cache.update(localeCode, hashmap);
+        this.cache.update(localeCode, hashmap);
         sendEvent(TRANSLATIONS_FETCHED, localeCode, this);
       } else {
         sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
@@ -121,7 +169,7 @@ export default class TxNative {
    * @returns {String[]} - Array of locales
    */
   getAppLocales() {
-    return this.state.appLocales;
+    return this.appLocales;
   }
 
   /**
@@ -134,25 +182,25 @@ export default class TxNative {
   async getRemoteLocales(params = {}) {
     const refresh = !!params.refresh;
 
-    if (!refresh && this.state.remoteLocales.length > 0) {
-      return this.state.remoteLocales;
+    if (!refresh && this.remoteLocales.length > 0) {
+      return this.remoteLocales;
     }
 
-    if (!this.core.token) return [];
+    if (!this.token) return [];
 
     // contact CDS
     try {
       sendEvent(FETCHING_LOCALES, null, this);
-      const response = await axios.get(`${this.core.cdsHost}/languages`, {
+      const response = await axios.get(`${this.cdsHost}/languages`, {
         headers: {
-          Authorization: `Bearer ${this.core.token}`,
+          Authorization: `Bearer ${this.token}`,
         },
       });
 
       const { data } = response;
       if (data && data.data) {
-        this.state.remoteLanguages = data.data;
-        this.state.remoteLocales = this.state.remoteLanguages.map((entry) => entry.code);
+        this.remoteLanguages = data.data;
+        this.remoteLocales = this.remoteLanguages.map((entry) => entry.code);
         sendEvent(LOCALES_FETCHED, null, this);
       } else {
         sendEvent(LOCALES_FETCH_FAILED, null, this);
@@ -163,7 +211,7 @@ export default class TxNative {
       throw err;
     }
 
-    return this.state.remoteLocales;
+    return this.remoteLocales;
   }
 
   /**
@@ -191,7 +239,27 @@ export default class TxNative {
    * @returns {String}
    */
   getCurrentLocale() {
-    return this.state.currentLocale;
+    return this.currentLocale;
+  }
+
+  /**
+   * Check if a locale code is the source locale
+   *
+   * @param {String} localeCode
+   * @returns {Boolean}
+   */
+  isSource(localeCode) {
+    return localeCode === this.sourceLocale;
+  }
+
+  /**
+   * Check if a locale is the currently selected one
+   *
+   * @param {String} localeCode
+   * @returns {Boolean}
+   */
+  isCurrent(localeCode) {
+    return localeCode === this.currentLocale;
   }
 
   /**
@@ -201,14 +269,14 @@ export default class TxNative {
    * @returns {Promise}
    */
   async setCurrentLocale(localeCode) {
-    if (this.state.isCurrent(localeCode)) return;
-    if (this.state.isSource(localeCode)) {
-      this.state.currentLocale = localeCode;
+    if (this.isCurrent(localeCode)) return;
+    if (this.isSource(localeCode)) {
+      this.currentLocale = localeCode;
       sendEvent(LOCALE_CHANGED, localeCode, this);
       return;
     }
     await this.fetchTranslations(localeCode);
-    this.state.currentLocale = localeCode;
+    this.currentLocale = localeCode;
     sendEvent(LOCALE_CHANGED, localeCode, this);
   }
 
@@ -224,6 +292,6 @@ export default class TxNative {
    */
   async getLanguages() {
     const supported = await this.getSupportedLocales();
-    return this.state.remoteLanguages.filter((entry) => supported.includes(entry.code));
+    return this.remoteLanguages.filter((entry) => supported.includes(entry.code));
   }
 }

@@ -6,9 +6,9 @@ import { tx, t, generateKey } from '../src/index';
 
 describe('tx instance', () => {
   it('sets current locale to source locale on init', () => {
-    const prev = tx.state.sourceLocale;
+    const prev = tx.sourceLocale;
 
-    tx.state.currentLocale = '';
+    tx.currentLocale = '';
     tx.init({
       sourceLocale: 'en',
     });
@@ -25,7 +25,7 @@ describe('tx instance', () => {
       token: 'abcd',
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/languages')
       .reply(200, {
         data: [
@@ -57,7 +57,7 @@ describe('tx instance', () => {
       appLocales: ['de', 'fr'],
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/languages')
       .reply(200, {
         data: [
@@ -97,7 +97,7 @@ describe('tx instance', () => {
       appLocales: [],
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/languages')
       .reply(200, {
         data: [
@@ -142,7 +142,7 @@ describe('tx instance', () => {
       token: 'abcd',
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/content/el_GR')
       .reply(200, {
         data: {
@@ -159,7 +159,7 @@ describe('tx instance', () => {
     expect(t('World')).to.deep.equal('World');
 
     // restore to source
-    await tx.setCurrentLocale(tx.state.sourceLocale);
+    await tx.setCurrentLocale(tx.sourceLocale);
     expect(t('Hello')).to.deep.equal('Hello');
   });
 
@@ -168,7 +168,7 @@ describe('tx instance', () => {
       token: 'abcd',
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/content/el_GR2')
       .reply(500);
 
@@ -179,7 +179,7 @@ describe('tx instance', () => {
       threw = true;
     }
     expect(threw).to.equal(true);
-    expect(tx.getCurrentLocale()).to.equal(tx.state.sourceLocale);
+    expect(tx.getCurrentLocale()).to.equal(tx.sourceLocale);
   });
 
   it('setCurrentLocale throws when remote translations are invalid', async () => {
@@ -187,7 +187,7 @@ describe('tx instance', () => {
       token: 'abcd',
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/content/el_GR2')
       .reply(200, {});
 
@@ -198,7 +198,7 @@ describe('tx instance', () => {
       threw = true;
     }
     expect(threw).to.equal(true);
-    expect(tx.getCurrentLocale()).to.equal(tx.state.sourceLocale);
+    expect(tx.getCurrentLocale()).to.equal(tx.sourceLocale);
   });
 
   it('setCurrentLocale skips when locale is already set', async () => {
@@ -212,7 +212,7 @@ describe('tx instance', () => {
       token: 'abcd',
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/languages')
       .reply(500);
 
@@ -230,7 +230,7 @@ describe('tx instance', () => {
       token: 'abcd',
     });
 
-    nock(tx.core.cdsHost)
+    nock(tx.cdsHost)
       .get('/languages')
       .reply(200, {});
 
@@ -252,9 +252,9 @@ describe('tx instance', () => {
   });
 
   it('fetchTranslations does not refresh when cache has content', async () => {
-    tx.core.cache.update('el_CACHED', { foo: 'bar' });
+    tx.cache.update('el_CACHED', { foo: 'bar' });
     await tx.fetchTranslations('el_CACHED');
-    expect(tx.core.cache.getTranslations('el_CACHED')).to.deep.equal({
+    expect(tx.cache.getTranslations('el_CACHED')).to.deep.equal({
       foo: 'bar',
     });
   });
