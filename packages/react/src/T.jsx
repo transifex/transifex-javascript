@@ -1,36 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   t, onEvent, offEvent, LOCALE_CHANGED,
 } from '@transifex/native';
 
-function T(props) {
-  const { _str, _html, _inline } = props;
+function T({ _str, _html, _inline }) {
+  const [translation, setTranslation] = useState('');
 
   useEffect(() => {
-    onEvent(LOCALE_CHANGED, () => {});
-    return () => offEvent(LOCALE_CHANGED, () => {});
-  }, []);
+    function render() {
+      if (!_html) {
+        setTranslation(t(_str, { _html, _inline }));
+      } else {
+        const result = t(_str, {
+          _html,
+          _inline,
+          _escapeVars: true,
+        });
+        const parentProps = { dangerouslySetInnerHTML: { __html: result } };
+        const parent = _inline ? 'span' : 'div';
+        setTranslation(React.createElement(parent, parentProps));
+      }
+    }
+    render();
+    onEvent(LOCALE_CHANGED, render);
+    return () => { offEvent(LOCALE_CHANGED, render); };
+  }, [_str, _html, _inline]);
 
-  let translation = '';
-  let parent = null;
-  let parentProps = {};
-
-  if (!_html) {
-    translation = t(_str, {
-      ...props,
-    });
-  } else {
-    translation = t(_str, {
-      ...props,
-      _escapeVars: true,
-    });
-
-    parentProps = { dangerouslySetInnerHTML: { __html: translation } };
-    parent = _inline ? 'span' : 'div';
-  }
-
-  return parent ? React.createElement(parent, parentProps) : translation;
+  return translation;
 }
 
 T.defaultProps = {
