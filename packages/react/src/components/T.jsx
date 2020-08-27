@@ -4,18 +4,21 @@ import {
   t, onEvent, offEvent, LOCALE_CHANGED,
 } from '@transifex/native';
 
-function T({ _str, _html, _inline }) {
+function T({
+  _str, _html, _inline, ...props
+}) {
   const [translation, setTranslation] = useState('');
 
   useEffect(() => {
     function render() {
       if (!_html) {
-        setTranslation(t(_str, { _html, _inline }));
+        setTranslation(t(_str, { _html, _inline, ...props }));
       } else {
         const result = t(_str, {
           _html,
           _inline,
           _escapeVars: true,
+          ...props,
         });
         const parentProps = { dangerouslySetInnerHTML: { __html: result } };
         const parent = _inline ? 'span' : 'div';
