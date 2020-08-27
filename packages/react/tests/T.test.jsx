@@ -14,6 +14,12 @@ describe('T', () => {
     expect(screen.queryByText(message)).toBeInTheDocument();
   });
 
+  it('renders text with param', () => {
+    const message = 'Hello <b>{username}</b>';
+    render(<T _str={message} username="JohnDoe" />);
+    expect(screen.queryByText('Hello <b>JohnDoe</b>')).toBeInTheDocument();
+  });
+
   it('renders HTML', () => {
     const message = 'Hello <b>Unsafe HTML</b>';
     render(<T _str={message} _html />);
