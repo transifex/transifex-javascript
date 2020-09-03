@@ -136,11 +136,18 @@ export default class TxNative {
     // contact CDS
     try {
       sendEvent(FETCHING_TRANSLATIONS, localeCode, this);
-      const response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-      });
+      let response;
+      let lastResponseStatus = 202;
+      while (lastResponseStatus === 202) {
+        /* eslint-disable no-await-in-loop */
+        response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        /* eslint-enable no-await-in-loop */
+        lastResponseStatus = response.status;
+      }
 
       const { data } = response;
       if (data && data.data) {
@@ -191,11 +198,18 @@ export default class TxNative {
     // contact CDS
     try {
       sendEvent(FETCHING_LOCALES, null, this);
-      const response = await axios.get(`${this.cdsHost}/languages`, {
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-      });
+      let response;
+      let lastResponseStatus = 202;
+      while (lastResponseStatus === 202) {
+        /* eslint-disable no-await-in-loop */
+        response = await axios.get(`${this.cdsHost}/languages`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        /* eslint-enable no-await-in-loop */
+        lastResponseStatus = response.status;
+      }
 
       const { data } = response;
       if (data && data.data) {

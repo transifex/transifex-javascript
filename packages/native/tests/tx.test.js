@@ -258,4 +258,35 @@ describe('tx instance', () => {
       foo: 'bar',
     });
   });
+
+  it('retries fetching languages', async () => {
+    tx.init({ token: 'abcd' });
+    nock(tx.cdsHost)
+      .get('/languages')
+      .twice()
+      .reply(202)
+      .get('/languages')
+      .reply(200, {
+        data: [{
+          name: 'Greek',
+          code: 'el',
+          localized_name: 'Ελληνικά',
+          rtl: false,
+        }],
+      });
+    const locales = await tx.getRemoteLocales({ refresh: true });
+    expect(locales).to.deep.equal(['el']);
+  });
+
+  it('retries fetching translations', async () => {
+    tx.init({ token: 'abcd' });
+    nock(tx.cdsHost)
+      .get('/content/el')
+      .twice()
+      .reply(202)
+      .get('/content/el')
+      .reply(200, { data: { source: { string: 'translation' } } });
+    await tx.fetchTranslations('el');
+    expect(tx.cache.get('source', 'el')).to.equal('translation');
+  });
 });
