@@ -4,7 +4,13 @@ import MessageFormat from 'messageformat';
 import MemoryCache from './cache/MemoryCache';
 import SourceErrorPolicy from './policies/SourceErrorPolicy';
 import SourceStringPolicy from './policies/SourceStringPolicy';
-import { generateKey, isString, escape } from './utils';
+import {
+  generateKey,
+  isString,
+  escape,
+  readFromSessionStorage,
+  saveToSessionStorage,
+} from './utils';
 import {
   sendEvent,
   FETCHING_TRANSLATIONS, TRANSLATIONS_FETCHED, TRANSLATIONS_FETCH_FAILED,
@@ -136,14 +142,25 @@ export default class TxNative {
     // contact CDS
     try {
       sendEvent(FETCHING_TRANSLATIONS, localeCode, this);
+
+      // read from session storage
+      const sessionKey = `tx:content:${this.token}:${localeCode}`;
+      const sessionData = readFromSessionStorage(sessionKey);
+
+      const headers = {
+        Authorization: `Bearer ${this.token}`,
+      };
+      if (sessionData && sessionData.etag && sessionData.data) {
+        this.cache.update(localeCode, sessionData.data);
+        headers['If-None-Match'] = sessionData.etag;
+      }
+
       let response;
       let lastResponseStatus = 202;
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
         response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
+          headers,
         });
         /* eslint-enable no-await-in-loop */
         lastResponseStatus = response.status;
@@ -158,14 +175,23 @@ export default class TxNative {
           }
         });
         this.cache.update(localeCode, hashmap);
+        saveToSessionStorage(sessionKey, {
+          etag: response.headers.etag,
+          data: hashmap,
+        });
         sendEvent(TRANSLATIONS_FETCHED, localeCode, this);
       } else {
         sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
         throw new Error('Could not fetch translations');
       }
     } catch (err) {
-      sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
-      throw err;
+      // gracefully handle not modified reponse (etag)
+      if (err.response && err.response.status === 304) {
+        sendEvent(TRANSLATIONS_FETCHED, localeCode, this);
+      } else {
+        sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
+        throw err;
+      }
     }
   }
 
@@ -198,14 +224,26 @@ export default class TxNative {
     // contact CDS
     try {
       sendEvent(FETCHING_LOCALES, null, this);
+
+      // read from session storage
+      const sessionKey = `tx:languages:${this.token}`;
+      const sessionData = readFromSessionStorage(sessionKey);
+
+      const headers = {
+        Authorization: `Bearer ${this.token}`,
+      };
+      if (sessionData && sessionData.etag && sessionData.data) {
+        this.remoteLanguages = sessionData.data;
+        this.remoteLocales = this.remoteLanguages.map((entry) => entry.code);
+        headers['If-None-Match'] = sessionData.etag;
+      }
+
       let response;
       let lastResponseStatus = 202;
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
         response = await axios.get(`${this.cdsHost}/languages`, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
+          headers,
         });
         /* eslint-enable no-await-in-loop */
         lastResponseStatus = response.status;
@@ -215,14 +253,23 @@ export default class TxNative {
       if (data && data.data) {
         this.remoteLanguages = data.data;
         this.remoteLocales = this.remoteLanguages.map((entry) => entry.code);
+        saveToSessionStorage(sessionKey, {
+          etag: response.headers.etag,
+          data: this.remoteLanguages,
+        });
         sendEvent(LOCALES_FETCHED, null, this);
       } else {
         sendEvent(LOCALES_FETCH_FAILED, null, this);
         throw new Error('Could not fetch languages');
       }
     } catch (err) {
-      sendEvent(LOCALES_FETCH_FAILED, null, this);
-      throw err;
+      // gracefully handle not modified reponse (etag)
+      if (err.response && err.response.status === 304) {
+        sendEvent(LOCALES_FETCHED, null, this);
+      } else {
+        sendEvent(LOCALES_FETCH_FAILED, null, this);
+        throw err;
+      }
     }
 
     return this.remoteLocales;

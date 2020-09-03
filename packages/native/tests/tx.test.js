@@ -2,7 +2,12 @@
 
 import { expect } from 'chai';
 import nock from 'nock';
-import { tx, t, generateKey } from '../src/index';
+import {
+  tx,
+  t,
+  generateKey,
+  saveToSessionStorage,
+} from '../src/index';
 
 describe('tx instance', () => {
   it('sets current locale to source locale on init', () => {
@@ -286,7 +291,46 @@ describe('tx instance', () => {
       .reply(202)
       .get('/content/el')
       .reply(200, { data: { source: { string: 'translation' } } });
-    await tx.fetchTranslations('el');
+    await tx.fetchTranslations('el', { refresh: true });
     expect(tx.cache.get('source', 'el')).to.equal('translation');
+  });
+
+  it('uses etag when fetching languages', async () => {
+    tx.init({ token: 'abcdef' });
+
+    saveToSessionStorage('tx:languages:abcdef', {
+      etag: 'etag',
+      data: [{
+        name: 'German',
+        code: 'de',
+        localized_name: 'German',
+        rtl: false,
+      }],
+    });
+
+    nock(tx.cdsHost)
+      .get('/languages')
+      .reply(304);
+
+    const locales = await tx.getRemoteLocales({ refresh: true });
+    expect(locales).to.deep.equal(['de']);
+  });
+
+  it('uses etag when fetching translations', async () => {
+    tx.init({ token: 'abcdef' });
+
+    saveToSessionStorage('tx:content:abcdef:de', {
+      etag: 'etag',
+      data: {
+        source: 'translation',
+      },
+    });
+
+    nock(tx.cdsHost)
+      .get('/content/de')
+      .reply(304);
+
+    await tx.fetchTranslations('de', { refresh: true });
+    expect(tx.cache.get('source', 'de')).to.equal('translation');
   });
 });

@@ -2,7 +2,14 @@
 
 import { expect } from 'chai';
 import {
-  escape, generateKey, isString, normalizeLocale,
+  escape,
+  generateKey,
+  isString,
+  normalizeLocale,
+  isBrowser,
+  isNode,
+  saveToSessionStorage,
+  readFromSessionStorage,
 } from '../src/index';
 
 describe('Util functions', () => {
@@ -43,5 +50,59 @@ describe('Util functions', () => {
   it('normalizeLocale', () => {
     expect(normalizeLocale('en')).to.equal('en');
     expect(normalizeLocale('pt-br')).to.equal('pt_BR');
+  });
+
+  it('isBrowser', () => {
+    expect(isBrowser()).to.equal(false);
+  });
+
+  it('isNode', () => {
+    expect(isNode()).to.equal(true);
+  });
+
+  it('node session storage works', () => {
+    saveToSessionStorage('akey', { foo: 'bar' });
+    expect(readFromSessionStorage('akey')).to.deep.equal({ foo: 'bar' });
+  });
+
+  it('browser session storage works', () => {
+    const storage = {};
+    global.window = {
+      document: {},
+      sessionStorage: {
+        setItem: (key, value) => {
+          storage[key] = value;
+        },
+        getItem: (key) => storage[key],
+      },
+    };
+    saveToSessionStorage('akey', { foo: 'bar' });
+    expect(readFromSessionStorage('akey')).to.deep.equal({ foo: 'bar' });
+    expect(readFromSessionStorage('akey2')).to.deep.equal(null);
+    delete global.window;
+  });
+
+  it('browser session storage handles exceptions', () => {
+    global.window = {
+      document: {},
+      sessionStorage: {
+        setItem: () => {
+          throw new Error();
+        },
+        getItem: () => { throw new Error(); },
+      },
+    };
+    saveToSessionStorage('akey', { foo: 'bar' });
+    expect(readFromSessionStorage('akey')).to.deep.equal(null);
+    delete global.window;
+  });
+
+  it('browser session storage handles lack of support', () => {
+    global.window = {
+      document: {},
+    };
+    saveToSessionStorage('akey', { foo: 'bar' });
+    expect(readFromSessionStorage('akey')).to.deep.equal(null);
+    delete global.window;
   });
 });
