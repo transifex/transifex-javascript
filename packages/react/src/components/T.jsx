@@ -28,7 +28,7 @@ function T({
     render();
     onEvent(LOCALE_CHANGED, render);
     return () => { offEvent(LOCALE_CHANGED, render); };
-  }, [_str, _html, _inline, props]);
+  }, [_str, _html, _inline]);
 
   return translation;
 }
