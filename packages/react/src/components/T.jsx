@@ -1,47 +1,30 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  t, onEvent, offEvent, LOCALE_CHANGED,
-} from '@transifex/native';
 
-function T({
-  _str, _html, _inline, ...props
-}) {
-  const [translation, setTranslation] = useState('');
+import useT from '../hooks/useT';
 
-  useEffect(() => {
-    function render() {
-      if (!_html) {
-        setTranslation(t(_str, { _html, _inline, ...props }));
-      } else {
-        const result = t(_str, {
-          _html,
-          _inline,
-          _escapeVars: true,
-          ...props,
-        });
-        const parentProps = { dangerouslySetInnerHTML: { __html: result } };
-        const parent = _inline ? 'span' : 'div';
-        setTranslation(React.createElement(parent, parentProps));
-      }
-    }
-    render();
-    onEvent(LOCALE_CHANGED, render);
-    return () => { offEvent(LOCALE_CHANGED, render); };
-  }, [_str, _html, _inline]);
+/* Main transifex-native component for react. It delegates the translation to
+ * the `useT` hook, which will force the component to rerender in the event of
+ * a language change.
+ *
+ * Usage:
+ *
+ * function App() {
+ *   const [name, setName] = useState('Bill');
+ *   return (
+ *     <>
+ *       <p><T _str="hello world" /></p>
+ *       <p>
+ *         <input value={name} onChange={(e) => setName(e.target.value)} />
+ *         <T _str="hello {name}" name=name />
+ *       </p>
+ *     </>
+ *   );
+ * } */
 
-  return translation;
+export default function T({ _str, ...props }) {
+  return useT(_str, props);
 }
 
-T.defaultProps = {
-  _html: false,
-  _inline: false,
-};
+T.defaultProps = {};
 
-T.propTypes = {
-  _str: PropTypes.string.isRequired,
-  _html: PropTypes.bool,
-  _inline: PropTypes.bool,
-};
-
-export default T;
+T.propTypes = { _str: PropTypes.string.isRequired };

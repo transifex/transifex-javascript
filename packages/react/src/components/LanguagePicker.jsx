@@ -12,6 +12,7 @@ import useLanguages from '../hooks/useLanguages';
   *   `{code: 'en', name: 'English'}`
   *
   * - className: the CSS class to use on the <select> tag */
+
 export default function LanguagePicker({ sourceLanguage, className }) {
   const languages = useLanguages();
 
