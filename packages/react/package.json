@@ -1,6 +1,6 @@
 {
   "name": "@transifex/react",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Transifex Native for React",
   "keywords": [
     "transifex",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.9",
-    "@transifex/native": "^0.5.0",
+    "@transifex/native": "^0.6.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
