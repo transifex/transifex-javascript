@@ -1,62 +1,98 @@
 # Transifex Native for React
 
-React component for localizing React application using [Transifex Native](https://www.transifex.com/native/).
+React component for localizing React application using
+[Transifex Native](https://www.transifex.com/native/).
 
 Related packages:
-* [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-* [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+- [@transifex/native](https://www.npmjs.com/package/@transifex/native)
+- [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
 ## Install
 
 Install the library and its dependencies using:
 
-`npm install @transifex/native @transifex/react --save`
+```sh
+npm install @transifex/native @transifex/react --save
+```
 
 ## Usage
 
-### T component
+### `T` Component
 
-```jsx
-import React, { Component } from 'react';
+```javascript
+import React from 'react';
 
 import { T } from '@transifex/react';
 
-class Example extends Component {
-  render() {
-    const user = 'Joe';
-    return (
-      <div>
-        <T _str="Hello world" />
-        <T _str="Hello {username}" username={user} />
-        <T
-          _str="Hello <b>{username}</b>"
-          _html
-          username={user}
-        />
-        <p>
-          <T
-            _str="Hello <b>{username}</b>"
-            _html _inline
-            username={user}
-          />
-        </p>
-      </div>
-    );
-  }
+function Example() {
+  return (
+    <div>
+      <T _str="Hello world" />
+      <T _str="Hello {username}" username={user} />
+    </div>
+  );
 }
+
 ```
 
 Available optional props:
-| Prop       | Type    | Description                                    |
-| ---------- | ------- | ---------------------------------------------- |
-| _str       | String  | Source string                                  |
-| _html      | Boolean | Render source string as HTML inside a `div` tag|
-| _inline    | Boolean | Wrap translation in `span` when `_html` is used|
-| _context   | String  | String context, affects key generation         |
-| _key       | String  | Custom string key                              |
-| _comment   | String  | Developer comment                              |
-| _charlimit | Number  | Character limit instruction for translators    |
-| _tags      | String  | Comma separated list of tags                   |
+
+| Prop       | Type   | Description                                 |
+|------------|--------|---------------------------------------------|
+| _context   | String | String context, affects key generation      |
+| _key       | String | Custom string key                           |
+| _comment   | String | Developer comment                           |
+| _charlimit | Number | Character limit instruction for translators |
+| _tags      | String | Comma separated list of tags                |
+
+### `UT` Component
+
+```javascript
+import React from 'react';
+
+import { UT } from '@transifex/react';
+
+function Example () {
+  return (
+    <div>
+      <UT _str="Hello <b>{username}</b>" username={user} />
+      <p>
+        <UT _str="Hello <b>{username}</b>" _inline username={user} />
+      </p>
+    </div>
+  )
+}
+```
+
+`UT` has the same behaviour as `T`, but renders source string as HTML inside a
+`div` tag.
+
+Available optional props: All the options of `T` plus:
+
+| Prop    | Type    | Description                                     |
+|---------|---------|-------------------------------------------------|
+| _inline | Boolean | Wrap translation in `span` when `_html` is used |
+
+### `useT` hook
+
+Returns a state variable that will be automatically updated when the selected
+language changes. Used internally by the `T` and `UT` components. Accepts the
+same props as the `T` component.
+
+You will most likely prefer to use the `T` or `UT` components over this, unless
+for some reason you want to have the translation output in a variable for
+manipulation.
+
+```javascript
+import React from 'react';
+
+import { useT } from '@transifex/react';
+
+function Capitalized() {
+  const message = useT('Hello world');
+  return <span>{message.toUpperCase()}</span>;
+}
+```
 
 ### `useLanguages` hook
 

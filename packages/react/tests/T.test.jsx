@@ -1,7 +1,9 @@
 /* globals describe, it, expect, afterEach */
 
-import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import React, { useState } from 'react';
+import {
+  render, screen, cleanup, fireEvent,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { T } from '../src/index';
 
@@ -20,17 +22,21 @@ describe('T', () => {
     expect(screen.queryByText('Hello <b>JohnDoe</b>')).toBeInTheDocument();
   });
 
-  it('renders HTML', () => {
-    const message = 'Hello <b>Unsafe HTML</b>';
-    render(<T _str={message} _html />);
-    expect(screen.queryByText('Unsafe HTML')).toBeInTheDocument();
-    expect(screen.queryByText('Hello')).toBeInTheDocument();
-  });
-
-  it('renders inline HTML', () => {
-    const message = 'Hello <b>Inline HTML</b>';
-    render(<T _str={message} _html _inline />);
-    expect(screen.queryByText('Inline HTML')).toBeInTheDocument();
-    expect(screen.queryByText('Hello')).toBeInTheDocument();
+  it('rerenders on prop change', () => {
+    const MyComp = () => {
+      const [word, setWord] = useState('');
+      return (
+        <>
+          <input value={word} onChange={(e) => setWord(e.target.value)} />
+          <p><T _str="hello {word}" word={word} /></p>
+        </>
+      );
+    };
+    render(<MyComp />);
+    fireEvent.change(
+      screen.getByRole('textbox'),
+      { target: { value: 'world' } },
+    );
+    expect(screen.getByText('hello world')).toBeTruthy();
   });
 });
