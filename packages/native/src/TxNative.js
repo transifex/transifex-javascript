@@ -4,7 +4,9 @@ import MessageFormat from 'messageformat';
 import MemoryCache from './cache/MemoryCache';
 import SourceErrorPolicy from './policies/SourceErrorPolicy';
 import SourceStringPolicy from './policies/SourceStringPolicy';
-import { generateKey, isString, escape } from './utils';
+import {
+  generateKey, isString, isPluralized, escape,
+} from './utils';
 import {
   sendEvent,
   FETCHING_TRANSLATIONS, TRANSLATIONS_FETCHED, TRANSLATIONS_FETCH_FAILED,
@@ -88,8 +90,16 @@ export default class TxNative {
    */
   translate(sourceString, params) {
     try {
+      const pluralized = isPluralized(sourceString);
       const key = generateKey(sourceString, params);
       let translation = this.cache.get(key, this.currentLocale);
+
+      if (translation && pluralized && translation.startsWith('{???')) {
+        const variableName = sourceString
+          .substring(1, sourceString.indexOf(','))
+          .trim();
+        translation = `{${variableName}${translation.substring(4)}`;
+      }
 
       let isMissing = false;
       if (!translation) {

@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import {
   tx, t, ThrowErrorPolicy, SourceErrorPolicy,
 } from '../src/index';
+import { generateKey } from '../src/utils';
 
 describe('t function', () => {
   it('translates string', () => {
@@ -55,5 +56,27 @@ describe('t function', () => {
     tx.init({
       errorPolicy: prevPolicy,
     });
+  });
+
+  it('handles plurals', () => {
+    const prevLocale = tx.currentLocale;
+    // Using JSON to deepcopy the cache because we don't have lodash available
+    const prevTranslationsByLocale = JSON.parse(JSON.stringify(
+      tx.cache.translationsByLocale,
+    ));
+
+    const sourceString = '{cnt, plural, one {you have # message} other {you have # messages}}';
+    const key = generateKey(sourceString);
+    tx.cache.update(
+      'el',
+      { [key]: '{???, plural, one {έχετε # μήνυμα} other {έχετε # μηνύματα}}' },
+    );
+    tx.currentLocale = 'el';
+    expect(t(sourceString, { cnt: 1 })).to.equal('έχετε 1 μήνυμα');
+    expect(t(sourceString, { cnt: 2 })).to.equal('έχετε 2 μηνύματα');
+
+    // Restore the 'tx' object
+    tx.currentLocale = prevLocale;
+    tx.cache.translationsByLocale = prevTranslationsByLocale;
   });
 });
