@@ -6,3 +6,4 @@ test_dist
 .nyc_output
 .idea
 npm-debug.log*
+tags
