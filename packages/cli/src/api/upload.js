@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { version } = require('../../package.json');
 
 /**
  * Push content to CDS
@@ -31,6 +32,7 @@ async function uploadPhrases(payload, params) {
       headers: {
         Authorization: `Bearer ${params.token}:${params.secret}`,
         'Content-Type': 'application/json;charset=utf-8',
+        'X-NATIVE-SDK': `txjs/cli/${version}`,
       },
     });
     return {

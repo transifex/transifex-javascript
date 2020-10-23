@@ -1,5 +1,7 @@
 const path = require('path');
 const glob = require('glob');
+const { DefinePlugin } = require('webpack');
+const { version } = require('./package.json');
 
 module.exports = {
   mode: 'development',
@@ -10,4 +12,10 @@ module.exports = {
   },
   target: 'node',
   devtool: 'source-map',
+  plugins: [
+    new DefinePlugin({
+      __VERSION__: JSON.stringify(version),
+      __PLATFORM__: JSON.stringify('test'),
+    }),
+  ],
 };
