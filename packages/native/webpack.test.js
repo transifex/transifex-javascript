@@ -1,8 +1,9 @@
 const path = require('path');
 const glob = require('glob');
-const { mergeCommon } = require('./webpack.common');
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
 
-module.exports = mergeCommon({
+module.exports = merge(common, {
   mode: 'development',
   entry: glob.sync(path.join(__dirname, 'tests/*.test.js')),
   output: {

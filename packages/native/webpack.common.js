@@ -1,21 +1,10 @@
 const { DefinePlugin } = require('webpack');
-
 const { version } = require('./package.json');
 
-const commonConfig = {
+module.exports = {
   plugins: [
     new DefinePlugin({
-      VERSION: JSON.stringify(version),
+      __VERSION__: JSON.stringify(version),
     }),
   ],
-};
-
-module.exports = {
-  mergeCommon: (webpackConfig) => {
-    const mergeConfig = {
-      ...commonConfig,
-      ...webpackConfig,
-    };
-    return mergeConfig;
-  },
 };

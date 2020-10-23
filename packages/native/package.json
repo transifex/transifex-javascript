@@ -47,7 +47,8 @@
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
     "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-merge": "^5.2.0"
   },
   "dependencies": {
     "axios": "^0.20.0",
