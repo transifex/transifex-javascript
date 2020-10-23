@@ -1,6 +1,7 @@
 const path = require('path');
+const { mergeCommon } = require('./webpack.common');
 
-module.exports = {
+module.exports = mergeCommon({
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './src/index.js',
   output: {
@@ -31,4 +32,4 @@ module.exports = {
       },
     ],
   },
-}
+});

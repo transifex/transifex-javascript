@@ -1,7 +1,8 @@
 const path = require('path');
 const glob = require('glob');
+const { mergeCommon } = require('./webpack.common');
 
-module.exports = {
+module.exports = mergeCommon({
   mode: 'development',
   entry: glob.sync(path.join(__dirname, 'tests/*.test.js')),
   output: {
@@ -10,4 +11,4 @@ module.exports = {
   },
   target: 'node',
   devtool: 'source-map',
-};
+});
