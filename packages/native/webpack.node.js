@@ -1,8 +1,8 @@
 const path = require('path');
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
+const { DefinePlugin } = require('webpack');
+const { version } = require('./package.json');
 
-module.exports = merge(common, {
+module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './src/index.js',
   output: {
@@ -13,6 +13,12 @@ module.exports = merge(common, {
   },
   target: 'node',
   devtool: 'source-map',
+  plugins: [
+    new DefinePlugin({
+      __VERSION__: JSON.stringify(version),
+      __PLATFORM__: JSON.stringify('node'),
+    }),
+  ],
   module: {
     rules: [
       {
@@ -33,4 +39,4 @@ module.exports = merge(common, {
       },
     ],
   },
-});
+};

@@ -1,4 +1,4 @@
-/* globals __VERSION__ */
+/* globals __VERSION__, __PLATFORM__ */
 import axios from 'axios';
 import MessageFormat from 'messageformat';
 
@@ -154,7 +154,7 @@ export default class TxNative {
         response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
           headers: {
             Authorization: `Bearer ${this.token}`,
-            'X-NATIVE-SDK': `txjs/${__VERSION__}`,
+            'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
         });
         /* eslint-enable no-await-in-loop */
@@ -217,7 +217,7 @@ export default class TxNative {
         response = await axios.get(`${this.cdsHost}/languages`, {
           headers: {
             Authorization: `Bearer ${this.token}`,
-            'X-NATIVE-SDK': `txjs/${__VERSION__}`,
+            'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
         });
         /* eslint-enable no-await-in-loop */

@@ -1,9 +1,9 @@
 const path = require('path');
 const glob = require('glob');
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
+const { DefinePlugin } = require('webpack');
+const { version } = require('./package.json');
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'development',
   entry: glob.sync(path.join(__dirname, 'tests/*.test.js')),
   output: {
@@ -12,4 +12,10 @@ module.exports = merge(common, {
   },
   target: 'node',
   devtool: 'source-map',
-});
+  plugins: [
+    new DefinePlugin({
+      __VERSION__: JSON.stringify(version),
+      __PLATFORM__: JSON.stringify('test'),
+    }),
+  ],
+};
