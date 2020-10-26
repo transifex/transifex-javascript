@@ -20,7 +20,7 @@
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
     "eslint": "eslint src/",
-    "build": "NODE_ENV=production webpack --config ./webpack.config.js",
+    "build": "NODE_ENV=production webpack --config ./webpack.config.js && cp src/index.d.ts dist/node.native.d.tx",
     "test": "NODE_ENV=test webpack --config webpack.test.js && nyc --reporter=text mocha --exit dist/test.native.js --require source-map-support/register && rm -f ./dist/test.*"
   },
   "bugs": {
