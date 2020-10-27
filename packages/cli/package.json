@@ -1,7 +1,7 @@
 {
   "name": "@transifex/cli",
   "description": "Transifex Native CLI",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "author": "Transifex",
   "keywords": [
     "transifex",
@@ -24,7 +24,7 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.0",
-    "@transifex/native": "^0.6.4",
+    "@transifex/native": "^0.6.5",
     "acorn": "^7.4.1",
     "acorn-jsx": "^5.3.1",
     "acorn-jsx-walk": "^2.0.0",
