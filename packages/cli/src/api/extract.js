@@ -4,15 +4,13 @@ const fs = require('fs');
 const acorn = require('acorn');
 const jsx = require('acorn-jsx');
 const _ = require('lodash');
-const { generateKey } = require('@transifex/native');
 
 const parser = acorn.Parser.extend(jsx());
 
 // Extend Acorn walk with JSX
 const walk = require('acorn-walk');
 const { extend } = require('acorn-jsx-walk');
-const mergePayload = require('./merge');
-const { stringToArray, mergeArrays } = require('./utils');
+const { SourceString, SourceStringSet } = require('./strings');
 
 extend(walk.base);
 
@@ -36,18 +34,24 @@ extend(walk.base);
  * @returns {String[]} Payload.meta.tags
  * @returns {String[]} Payload.meta.occurrences
  */
-function createPayload(string, params, occurence, globalTags) {
-  return {
-    string,
-    key: generateKey(string, params),
-    meta: _.omitBy({
-      context: stringToArray(params._context),
-      developer_comment: params._comment,
-      character_limit: params._charlimit ? parseInt(params._charlimit, 10) : undefined,
-      tags: mergeArrays(stringToArray(params._tags), globalTags),
-      occurrences: [occurence],
-    }, _.isNil),
-  };
+function createPayload(sourceString, params, occurence, globalTags) {
+  const result = new SourceString({ sourceString });
+  _.forEach(Object.entries(params), ([key, value]) => {
+    if (key === '_context') {
+      result.context = value;
+    } else if (key === '_charlimit') {
+      result.characterLimit = value;
+    } else if (key === '_comment') {
+      result.developerComment = value;
+    } else if (key === '_occurrences') {
+      result.occurrences = value;
+    } else if (key === '_tags') {
+      result.tags = value;
+    }
+  });
+  if (occurence) { result.occurrences.push(occurence); }
+  if (globalTags) { result.tags = result.tags.concat(globalTags); }
+  return result;
 }
 
 /**
@@ -74,7 +78,7 @@ function isTransifexCall(node) {
  * @returns {Object}
  */
 function extractPhrases(file, relativeFile, globalTags) {
-  const HASHES = {};
+  const strings = new SourceStringSet();
   const source = fs.readFileSync(file, 'utf8');
   const ast = parser.parse(source, { sourceType: 'module' });
   walk.simple(ast, {
@@ -85,8 +89,8 @@ function extractPhrases(file, relativeFile, globalTags) {
       if (_.isEmpty(node.arguments)) return;
 
       // Verify that at least the string is passed to the function
-      const string = node.arguments[0].value;
-      if (!_.isString(string)) return;
+      const stringValue = node.arguments[0].value;
+      if (!_.isString(stringValue)) return;
 
       // Extract function parameters
       const params = {};
@@ -102,13 +106,10 @@ function extractPhrases(file, relativeFile, globalTags) {
         });
       }
 
-      const partial = createPayload(string, params, relativeFile, globalTags);
-      mergePayload(HASHES, {
-        [partial.key]: {
-          string: partial.string,
-          meta: partial.meta,
-        },
-      });
+      const string = createPayload(
+        stringValue, params, relativeFile, globalTags,
+      );
+      strings.add(string);
     },
 
     // React component
@@ -117,14 +118,14 @@ function extractPhrases(file, relativeFile, globalTags) {
 
       if (!elem || !elem.name || elem.name.name !== 'T') return;
 
-      let string;
+      let stringValue;
       const params = {};
       _.each(elem.attributes, (attr) => {
         const property = attr.name && attr.name.name;
         const value = attr.value && attr.value.value;
         if (!property || !value) return;
         if (property === '_str') {
-          string = value;
+          stringValue = value;
           return;
         }
         if (_.isString(value) || _.isNumber(value)) {
@@ -132,18 +133,13 @@ function extractPhrases(file, relativeFile, globalTags) {
         }
       });
 
-      if (!string) return;
-      const partial = createPayload(string, params, relativeFile, globalTags);
-      mergePayload(HASHES, {
-        [partial.key]: {
-          string: partial.string,
-          meta: partial.meta,
-        },
-      });
+      if (!stringValue) return;
+      const string = createPayload(stringValue, params, relativeFile, globalTags);
+      strings.add(string);
     },
   });
 
-  return HASHES;
+  return strings;
 }
 
 module.exports = extractPhrases;

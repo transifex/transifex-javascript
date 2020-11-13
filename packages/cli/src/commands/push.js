@@ -10,8 +10,8 @@ const { glob } = require('glob');
 const { cli } = require('cli-ux');
 const extractPhrases = require('../api/extract');
 const uploadPhrases = require('../api/upload');
-const mergePayload = require('../api/merge');
 const { stringToArray } = require('../api/utils');
+const { SourceStringSet } = require('../api/strings');
 
 /**
  * Test if path is folder
@@ -53,7 +53,7 @@ class PushCommand extends Command {
 
     let emptyFiles = 0;
     const errorFiles = [];
-    const payload = {};
+    const payload = new SourceStringSet();
     const tree = {};
 
     const bar = cli.progress({
@@ -73,7 +73,7 @@ class PushCommand extends Command {
         if (_.isEmpty(data)) {
           emptyFiles += 1;
         } else {
-          mergePayload(payload, data);
+          payload.update(data.values());
         }
       } catch (error) {
         errorFiles.push({
@@ -87,23 +87,27 @@ class PushCommand extends Command {
 
     this.log([
       `${'✓'.green} Processed ${allFiles.length.toString().green} file(s) and found`,
-      `${_.keys(payload).length.toString().green} translatable phrases.`,
+      `${payload.length.toString().green} translatable phrases.`,
     ].join(' '));
 
     this.log(`${'✓'.green} Content detected in ${(allFiles.length - emptyFiles).toString().green} file(s).`);
 
     if (flags.verbose) {
       _.each(tree, (data, file) => {
-        if (_.isEmpty(data)) return;
+        if (!data.length) return;
         this.log(file.green);
-        _.each(data, (value, key) => {
-          this.log(`  └─ ${key}: ${value.string.underline}`);
-          _.each(value.meta, (meta, metaKey) => {
-            if ((_.isObject(meta) || _.isArray(meta)) && _.isEmpty(meta)) {
-              return;
-            }
-            this.log(`    └─ ${metaKey}: ${JSON.stringify(meta)}`.gray);
-          });
+        _.forEach(data.entries(), ([key, value]) => {
+          this.log(`  └─ ${key}: ${value.sourceString.underline}`);
+          _.forEach(
+            ['context', 'characterLimit', 'developerComment', 'occurrences', 'tags'],
+            (metaKey) => {
+              const meta = value[metaKey];
+              if ((_.isObject(meta) || _.isArray(meta) || _.isUndefined(meta)) && _.isEmpty(meta)) {
+                return;
+              }
+              this.log(`    └─ ${metaKey}: ${JSON.stringify(meta)}`.gray);
+            },
+          );
         });
       });
     }
@@ -121,7 +125,7 @@ class PushCommand extends Command {
     }
 
     if (!flags['dry-run']) {
-      if (_.isEmpty(payload)) {
+      if (payload.length === 0) {
         this.log('⚠ Nothing to upload.'.yellow);
         process.exit();
       }

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const _ = require('lodash');
 const { version } = require('../../package.json');
 
 /**
@@ -21,7 +22,20 @@ const { version } = require('../../package.json');
  * @returns {Number} Data.data.failed
  * @returns {String[]} Data.data.errors
  */
-async function uploadPhrases(payload, params) {
+async function uploadPhrases(strings, params) {
+  const payload = {};
+  _.forEach(strings.entries(), ([key, string]) => {
+    payload[key] = {
+      string: string.sourceString,
+      meta: {
+        context: string.context,
+        developer_comment: string.developerComment,
+        character_limit: string.characterLimit,
+        occurrences: string.occurrences,
+        tags: string.tags,
+      },
+    };
+  });
   try {
     const res = await axios.post(`${params.url}/content`, {
       data: payload,
