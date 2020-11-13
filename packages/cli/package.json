@@ -21,14 +21,12 @@
     "access": "public"
   },
   "dependencies": {
+    "@babel/parser": "^7.12.5",
+    "@babel/traverse": "^7.12.5",
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.0",
     "@transifex/native": "^0.6.5",
-    "acorn": "^7.4.1",
-    "acorn-jsx": "^5.3.1",
-    "acorn-jsx-walk": "^2.0.0",
-    "acorn-walk": "^7.2.0",
     "axios": "^0.20.0",
     "cli-ux": "^5.5.0",
     "colors": "^1.4.0",
