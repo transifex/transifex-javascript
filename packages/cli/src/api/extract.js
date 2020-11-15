@@ -7,6 +7,7 @@ const babelParser = require('@babel/parser');
 const babelTraverse = require('@babel/traverse').default;
 
 const { SourceString, SourceStringSet } = require('./strings');
+const { getPath } = require('./ast');
 
 /**
  * Create an extraction payload
@@ -49,21 +50,6 @@ function createPayload(sourceString, params, occurence, globalTags) {
 }
 
 /**
- * Check if callee is a valid Transifex Native function
- *
- * @param {*} node
- * @returns {Boolean}
- */
-function isTransifexCall(node) {
-  const { callee } = node;
-  if (!callee) return false;
-  if (callee.name === 't') return true;
-  if (!callee.object || !callee.property) return false;
-  if (callee.property.name === 'translate') return true;
-  return false;
-}
-
-/**
  * Parse file and extract phrases using AST
  *
  * @param {String} file absolute file path
@@ -71,18 +57,20 @@ function isTransifexCall(node) {
  * @param {String[]} globalTags
  * @returns {Object}
  */
-function extractPhrases(file, relativeFile, globalTags) {
+function extractPhrases({ filename, globalTags, extraFunctions }) {
+  const source = fs.readFileSync(filename, 'utf8');
   const strings = new SourceStringSet();
-  const source = fs.readFileSync(file, 'utf8');
   const ast = babelParser.parse(
     source,
     { sourceType: 'unambiguous', plugins: ['jsx', 'typescript'] },
   );
   babelTraverse(ast, {
-    // T / UT functions
     CallExpression({ node }) {
+      const functions = ['t', 'tx.translate'].concat(extraFunctions || []);
+
       // Check if node is a Transifex function
-      if (!isTransifexCall(node)) return;
+      const path = getPath(node);
+      if (!_.includes(functions, path)) { return; }
       if (_.isEmpty(node.arguments)) return;
 
       // Verify that at least the string is passed to the function
@@ -104,7 +92,7 @@ function extractPhrases(file, relativeFile, globalTags) {
       }
 
       const string = createPayload(
-        stringValue, params, relativeFile, globalTags,
+        stringValue, params, filename, globalTags,
       );
       strings.add(string);
     },
@@ -131,7 +119,7 @@ function extractPhrases(file, relativeFile, globalTags) {
       });
 
       if (!stringValue) return;
-      const string = createPayload(stringValue, params, relativeFile, globalTags);
+      const string = createPayload(stringValue, params, filename, globalTags);
       strings.add(string);
     },
   });

@@ -6,7 +6,9 @@ const { SourceString } = require('../../src/api/strings');
 
 describe('extractPhrases', () => {
   it('works with webpack', async () => {
-    const strings = await extractPhrases('test/fixtures/webpack.js', 'webpack.js');
+    const strings = await extractPhrases({
+      filename: 'test/fixtures/webpack.js',
+    });
     expect(strings.length).to.equal(4);
     expect(strings.get('6f48100ca5a57d2db9b685a8373be8a6')).to.deep
       .equal(new SourceString({
@@ -15,27 +17,30 @@ describe('extractPhrases', () => {
         context: ['foo'],
         tags: ['tag1', 'tag2'],
         developerComment: 'comment',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
       }));
     expect(strings.get('5d47152bcd597dd6adbff4884374aaad')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 2',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
       }));
     expect(strings.get('3cd62915590816fdbf53852e44ee675a')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 3',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
       }));
     expect(strings.get('33f5afa925f1464280d72d6d9086057c')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 4',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
       }));
   });
 
   it('works with global tags', async () => {
-    const strings = await extractPhrases('test/fixtures/webpack.js', 'webpack.js', ['g1', 'g2']);
+    const strings = await extractPhrases({
+      filename: 'test/fixtures/webpack.js',
+      globalTags: ['g1', 'g2'],
+    });
     expect(strings.length).to.equal(4);
     expect(strings.get('6f48100ca5a57d2db9b685a8373be8a6')).to.deep
       .equal(new SourceString({
@@ -44,30 +49,32 @@ describe('extractPhrases', () => {
         context: ['foo'],
         tags: ['tag1', 'tag2', 'g1', 'g2'],
         developerComment: 'comment',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
       }));
     expect(strings.get('5d47152bcd597dd6adbff4884374aaad')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 2',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
         tags: ['g1', 'g2'],
       }));
     expect(strings.get('3cd62915590816fdbf53852e44ee675a')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 3',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
         tags: ['g1', 'g2'],
       }));
     expect(strings.get('33f5afa925f1464280d72d6d9086057c')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 4',
-        occurrences: ['webpack.js'],
+        occurrences: ['test/fixtures/webpack.js'],
         tags: ['g1', 'g2'],
       }));
   });
 
   it('works with node', async () => {
-    const strings = await extractPhrases('test/fixtures/node.js', 'node.js');
+    const strings = await extractPhrases({
+      filename: 'test/fixtures/node.js',
+    });
     expect(strings.length).to.equal(4);
     expect(strings.get('6f48100ca5a57d2db9b685a8373be8a6')).to.deep
       .equal(new SourceString({
@@ -76,27 +83,29 @@ describe('extractPhrases', () => {
         context: ['foo'],
         tags: ['tag1', 'tag2'],
         developerComment: 'comment',
-        occurrences: ['node.js'],
+        occurrences: ['test/fixtures/node.js'],
       }));
     expect(strings.get('5d47152bcd597dd6adbff4884374aaad')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 2',
-        occurrences: ['node.js'],
+        occurrences: ['test/fixtures/node.js'],
       }));
     expect(strings.get('3cd62915590816fdbf53852e44ee675a')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 3',
-        occurrences: ['node.js'],
+        occurrences: ['test/fixtures/node.js'],
       }));
     expect(strings.get('33f5afa925f1464280d72d6d9086057c')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 4',
-        occurrences: ['node.js'],
+        occurrences: ['test/fixtures/node.js'],
       }));
   });
 
   it('works with jsx', async () => {
-    const strings = await extractPhrases('test/fixtures/react.jsx', 'react.jsx');
+    const strings = await extractPhrases({
+      filename: 'test/fixtures/react.jsx',
+    });
     expect(strings.length).to.equal(4);
     expect(strings.get('6f48100ca5a57d2db9b685a8373be8a6')).to.deep
       .equal(new SourceString({
@@ -105,22 +114,22 @@ describe('extractPhrases', () => {
         context: ['foo'],
         tags: ['tag1', 'tag2'],
         developerComment: 'comment',
-        occurrences: ['react.jsx'],
+        occurrences: ['test/fixtures/react.jsx'],
       }));
     expect(strings.get('5d47152bcd597dd6adbff4884374aaad')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 2',
-        occurrences: ['react.jsx'],
+        occurrences: ['test/fixtures/react.jsx'],
       }));
     expect(strings.get('3cd62915590816fdbf53852e44ee675a')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 3',
-        occurrences: ['react.jsx'],
+        occurrences: ['test/fixtures/react.jsx'],
       }));
     expect(strings.get('33f5afa925f1464280d72d6d9086057c')).to.deep
       .equal(new SourceString({
         sourceString: 'Text 4',
-        occurrences: ['react.jsx'],
+        occurrences: ['test/fixtures/react.jsx'],
       }));
   });
 });

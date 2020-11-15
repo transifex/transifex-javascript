@@ -41,6 +41,7 @@ class PushCommand extends Command {
     }
 
     const globalTags = stringToArray(flags.tags);
+    const extraFunctions = stringToArray(flags['extra-functions']);
 
     this.log('Parsing all files to detect translatable content...');
 
@@ -65,10 +66,14 @@ class PushCommand extends Command {
     bar.start(allFiles.length, 0);
 
     _.each(allFiles, (file) => {
-      const relativeFile = file.replace(pwd, '');
+      const relativeFile = file.replace(pwd, '').slice(1);
       bar.increment({ file: relativeFile.gray });
       try {
-        const data = extractPhrases(file, relativeFile, globalTags);
+        const data = extractPhrases({
+          filename: relativeFile,
+          globalTags,
+          extraFunctions,
+        });
         tree[relativeFile] = data;
         if (_.isEmpty(data)) {
           emptyFiles += 1;
@@ -234,6 +239,10 @@ PushCommand.flags = {
   }),
   'cds-host': flags.string({
     description: 'CDS host URL',
+    default: '',
+  }),
+  'extra-functions': flags.string({
+    description: 'Extra functions to capture, comma-separated',
     default: '',
   }),
 };

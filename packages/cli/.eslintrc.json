@@ -1,7 +1,9 @@
 {
   "rules": {
     "no-underscore-dangle": "off",
-    "max-classes-per-file": "off"
+    "max-classes-per-file": "off",
+    "no-param-reassign": "off",
+    "no-constant-condition": "off"
   },
   "extends": ["airbnb-base"]
 }
