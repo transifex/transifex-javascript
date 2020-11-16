@@ -42,6 +42,7 @@ class PushCommand extends Command {
 
     const globalTags = stringToArray(flags.tags);
     const extraFunctions = stringToArray(flags['extra-functions']);
+    const extraComponents = stringToArray(flags['extra-components']);
 
     this.log('Parsing all files to detect translatable content...');
 
@@ -73,6 +74,7 @@ class PushCommand extends Command {
           filename: relativeFile,
           globalTags,
           extraFunctions,
+          extraComponents,
         });
         tree[relativeFile] = data;
         if (_.isEmpty(data)) {
@@ -243,6 +245,10 @@ PushCommand.flags = {
   }),
   'extra-functions': flags.string({
     description: 'Extra functions to capture, comma-separated',
+    default: '',
+  }),
+  'extra-components': flags.string({
+    description: 'Extra JSX components to capture, comma-separated',
     default: '',
   }),
 };

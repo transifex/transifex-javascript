@@ -37,4 +37,54 @@ function getPath(node) {
   return path;
 }
 
-module.exports = { getPath };
+function _getArrayElements(node) {
+  if (!node || node.type !== 'ArrayExpression') { return null; }
+  let allStrings = true;
+  const result = [];
+  _.forEach(node.elements, (element) => {
+    if (element.type === 'StringLiteral') {
+      result.push(element.value);
+    } else {
+      allStrings = false;
+      return false;
+    }
+    return true;
+  });
+  if (!allStrings) { return null; }
+  return result;
+}
+
+/* Extract function parameters */
+function getParams(node) {
+  const result = {};
+  if (node && node.type === 'ObjectExpression') {
+    _.forEach(node.properties, (prop) => {
+      // get only string on number params
+      if (_.isString(prop.value.value) || _.isNumber(prop.value.value)) {
+        result[prop.key.name] = prop.value.value;
+      }
+      const array = _getArrayElements(prop.value);
+      if (array) { result[prop.key.name] = array; }
+    });
+  }
+  return result;
+}
+
+function getJSXParams(node) {
+  const result = {};
+  _.forEach(node, (attr) => {
+    const property = _.get(attr, 'name.name');
+    if (!property) { return; }
+    const value = _.get(attr, 'value.value');
+    if (_.isString(value) || _.isNumber(value)) {
+      result[property] = value;
+    } else {
+      const elements = _.get(attr, 'value.expression');
+      const arrayValue = _getArrayElements(elements);
+      if (arrayValue) { result[property] = arrayValue; }
+    }
+  });
+  return result;
+}
+
+module.exports = { getPath, getParams, getJSXParams };

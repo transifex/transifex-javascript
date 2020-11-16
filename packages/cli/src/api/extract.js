@@ -7,7 +7,7 @@ const babelParser = require('@babel/parser');
 const babelTraverse = require('@babel/traverse').default;
 
 const { SourceString, SourceStringSet } = require('./strings');
-const { getPath } = require('./ast');
+const { getPath, getParams, getJSXParams } = require('./ast');
 
 /**
  * Create an extraction payload
@@ -57,7 +57,9 @@ function createPayload(sourceString, params, occurence, globalTags) {
  * @param {String[]} globalTags
  * @returns {Object}
  */
-function extractPhrases({ filename, globalTags, extraFunctions }) {
+function extractPhrases({
+  filename, globalTags, extraFunctions, extraComponents,
+}) {
   const source = fs.readFileSync(filename, 'utf8');
   const strings = new SourceStringSet();
   const ast = babelParser.parse(
@@ -66,7 +68,7 @@ function extractPhrases({ filename, globalTags, extraFunctions }) {
   );
   babelTraverse(ast, {
     CallExpression({ node }) {
-      const functions = ['t', 'tx.translate'].concat(extraFunctions || []);
+      const functions = ['t', 'tx.translate', 'useT'].concat(extraFunctions || []);
 
       // Check if node is a Transifex function
       const path = getPath(node);
@@ -77,19 +79,7 @@ function extractPhrases({ filename, globalTags, extraFunctions }) {
       const stringValue = node.arguments[0].value;
       if (!_.isString(stringValue)) return;
 
-      // Extract function parameters
-      const params = {};
-      if (
-        node.arguments[1]
-        && node.arguments[1].type === 'ObjectExpression'
-      ) {
-        _.each(node.arguments[1].properties, (prop) => {
-          // get only string on number params
-          if (_.isString(prop.value.value) || _.isNumber(prop.value.value)) {
-            params[prop.key.name] = prop.value.value;
-          }
-        });
-      }
+      const params = getParams(node.arguments[1]);
 
       const string = createPayload(
         stringValue, params, filename, globalTags,
@@ -99,26 +89,15 @@ function extractPhrases({ filename, globalTags, extraFunctions }) {
 
     // React component
     JSXElement({ node }) {
-      const elem = node.openingElement;
+      const components = ['T', 'UT'].concat(extraComponents || []);
+      const name = _.get(node, 'openingElement.name.name');
+      if (!_.includes(components, name)) { return; }
 
-      if (!elem || !elem.name || elem.name.name !== 'T') return;
-
-      let stringValue;
-      const params = {};
-      _.each(elem.attributes, (attr) => {
-        const property = attr.name && attr.name.name;
-        const value = attr.value && attr.value.value;
-        if (!property || !value) return;
-        if (property === '_str') {
-          stringValue = value;
-          return;
-        }
-        if (_.isString(value) || _.isNumber(value)) {
-          params[property] = value;
-        }
-      });
-
+      const params = getJSXParams(node.openingElement.attributes);
+      const stringValue = params._str;
+      delete params._str;
       if (!stringValue) return;
+
       const string = createPayload(stringValue, params, filename, globalTags);
       strings.add(string);
     },
