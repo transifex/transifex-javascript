@@ -49,6 +49,20 @@ function createPayload(sourceString, params, occurence, globalTags) {
   return result;
 }
 
+function _parse(source) {
+  try {
+    return babelParser.parse(
+      source,
+      { sourceType: 'unambiguous', plugins: ['jsx', 'typescript'] },
+    );
+  } catch (e) {
+    return babelParser.parse(
+      source,
+      { sourceType: 'unambiguous', plugins: ['jsx', 'flow'] },
+    );
+  }
+}
+
 /**
  * Parse file and extract phrases using AST
  *
@@ -62,10 +76,7 @@ function extractPhrases({
 }) {
   const source = fs.readFileSync(filename, 'utf8');
   const strings = new SourceStringSet();
-  const ast = babelParser.parse(
-    source,
-    { sourceType: 'unambiguous', plugins: ['jsx', 'typescript'] },
-  );
+  const ast = _parse(source);
   babelTraverse(ast, {
     CallExpression({ node }) {
       const functions = ['t', 'tx.translate', 'useT'].concat(extraFunctions || []);
