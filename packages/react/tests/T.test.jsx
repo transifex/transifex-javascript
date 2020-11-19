@@ -39,4 +39,11 @@ describe('T', () => {
     );
     expect(screen.getByText('hello world')).toBeTruthy();
   });
+
+  it('interpolates elements', () => {
+    const b = <span>bbb</span>;
+    const d = <span>ddd</span>;
+    render(<T _str="a { b } c { d } e" b={b} d={d} />);
+    expect(screen.getByText('bbb')).toBeTruthy();
+  });
 });
