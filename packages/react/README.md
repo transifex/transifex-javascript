@@ -45,6 +45,39 @@ Available optional props:
 | _charlimit | Number | Character limit instruction for translators |
 | _tags      | String | Comma separated list of tags                |
 
+The T-component can accept React elements as properties and they will be
+rendered properly, ie this would be possible:
+
+```javascript
+<T
+  _str="A {button} and a {bold} walk into a bar"
+  button={<button><T _str="button" /></button>}
+  bold={<b><T _str="bold" /></b>} />
+```
+
+This will render like this in English:
+
+```html
+A <button>button</button> and a <b>bold</b> walk into a bar
+```
+
+And like this in Greek:
+
+```html
+Ένα <button>κουμπί</button> και ένα <b>βαρύ</b> μπαίνουν σε ένα μπαρ
+```
+
+Assuming the translations look like this:
+
+| source                                  | translation                                      |
+|-----------------------------------------|--------------------------------------------------|
+| A {button} and a {bold} walk into a bar | Ένα {button} και ένα {bold} μπαίνουν σε ένα μπαρ |
+| button                                  | κουμπί                                           |
+| bold                                    | βαρύ                                             |
+
+The main thing to keep in mind is that the `_str` property to the T-component
+must **always** be a valid ICU messageformat template.
+
 ### `UT` Component
 
 ```javascript
@@ -72,6 +105,10 @@ Available optional props: All the options of `T` plus:
 | Prop    | Type    | Description                                     |
 |---------|---------|-------------------------------------------------|
 | _inline | Boolean | Wrap translation in `span` when `_html` is used |
+
+_Note: If you supply React elements as properties to the `UT` component, it
+will misbehave by rendering `[object Object]`. Only use React elements as
+properties with the `T` component._
 
 ### `useT` hook
 

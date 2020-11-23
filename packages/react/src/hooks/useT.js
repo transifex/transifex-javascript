@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import {
-  t, onEvent, offEvent, LOCALE_CHANGED,
-} from '@transifex/native';
+import { onEvent, offEvent, LOCALE_CHANGED } from '@transifex/native';
+import translateWithElements from '../utils/translateWithElements';
 
 /* Return a state variable with the translation of `_str` against props. In
  * case the language changes, the variable will be updated, causing the
@@ -19,12 +18,12 @@ import {
  * } */
 
 export default function useT(_str, props) {
-  const [translation, setTranslation] = useState('');
+  const [, setCounter] = useState(0);
   useEffect(() => {
-    function render() { setTranslation(t(_str, props)); }
-    render();
-    onEvent(LOCALE_CHANGED, render);
-    return () => { offEvent(LOCALE_CHANGED, render); };
-  }, [_str, props]);
-  return translation;
+    // Using `setCounter` will trigger a rerender
+    function rerender() { setCounter((c) => c + 1); }
+    onEvent(LOCALE_CHANGED, rerender);
+    return () => { offEvent(LOCALE_CHANGED, rerender); };
+  }, [setCounter]);
+  return translateWithElements(_str, props);
 }
