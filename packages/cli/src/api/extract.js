@@ -6,7 +6,6 @@ const babelTraverse = require('@babel/traverse').default;
 const _ = require('lodash');
 const { generateKey } = require('@transifex/native');
 
-// Extend Acorn walk with JSX
 const mergePayload = require('./merge');
 const { stringToArray, mergeArrays } = require('./utils');
 

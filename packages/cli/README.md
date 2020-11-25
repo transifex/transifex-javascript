@@ -1,6 +1,6 @@
 # Transifex Native CLI
 
-A command line tool that parses `.js` or `.jsx` source files, extracts phrases marked for localization by [Transifex Native](https://www.transifex.com/native/) and pushes them to [Transifex](https:/www.transifex.com) for translation.
+A command line tool that parses `.js`, `.ts`, `.jsx` and `.tsx` source files, extracts phrases marked for localization by [Transifex Native](https://www.transifex.com/native/) and pushes them to [Transifex](https:/www.transifex.com) for translation.
 
 Related packages:
 * [@transifex/native](https://www.npmjs.com/package/@transifex/native)
@@ -77,7 +77,7 @@ USAGE
   $ txjs-cli push [PATTERN]
 
 ARGUMENTS
-  PATTERN  [default: **/*.{js,jsx}] file pattern to scan for strings
+  PATTERN  [default: **/*.{js,jsx,ts,tsx}] file pattern to scan for strings
 
 OPTIONS
   -v, --verbose        Verbose output
@@ -89,7 +89,7 @@ OPTIONS
   --tags=tags          Globally add tags to strings
 
 DESCRIPTION
-  Parse .js or .jsx files and detect phrases marked for
+  Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
   translation by Transifex Native toolkit for Javascript and
   upload them to Transifex for translation.
 

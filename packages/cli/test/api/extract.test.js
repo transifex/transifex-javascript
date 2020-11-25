@@ -113,6 +113,68 @@ describe('extractPhrases', () => {
           string: 'Text 4',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
+        '90da95711d6dc69953b2978d2bed9b7d': {
+          string: 'A {button} and a {bold} walk into a bar',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        a667d8741bde4f79971b6220a0c0b647: {
+          string: 'button',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        e5f9dda0c39f13357321d0c07bb7a3ff: {
+          string: 'bold',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+      });
+  });
+
+  it('works with tsx', async () => {
+    expect(await extractPhrases('test/fixtures/react.tsx', 'react.tsx'))
+      .to.deep.equal({
+        '6f48100ca5a57d2db9b685a8373be8a6': {
+          string: 'Text 1',
+          meta: {
+            character_limit: 10,
+            context: ['foo'],
+            tags: ['tag1', 'tag2'],
+            developer_comment: 'comment',
+            occurrences: ['react.tsx'],
+          },
+        },
+        '5d47152bcd597dd6adbff4884374aaad': {
+          string: 'Text 2',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+        '3cd62915590816fdbf53852e44ee675a': {
+          string: 'Text 3',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+        '33f5afa925f1464280d72d6d9086057c': {
+          string: 'Text 4',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+        '90da95711d6dc69953b2978d2bed9b7d': {
+          string: 'A {button} and a {bold} walk into a bar',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+        a667d8741bde4f79971b6220a0c0b647: {
+          string: 'button',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+        e5f9dda0c39f13357321d0c07bb7a3ff: {
+          string: 'bold',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+      });
+  });
+
+  it('works with typescript', async () => {
+    expect(await extractPhrases('test/fixtures/typescript.ts', 'typescript.ts'))
+      .to.deep.equal({
+        d3b72592c4af5b55aac2dd0c88a9422a: {
+          string: 'Shoes',
+          meta: { context: [], tags: [], occurrences: ['typescript.ts'] },
+        },
       });
   });
 });
