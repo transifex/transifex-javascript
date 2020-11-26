@@ -1,3 +1,5 @@
+import { T } from '@transifex/react';
+
 function foo() {
   return (
     <div>
@@ -11,6 +13,9 @@ function foo() {
       <T _str="Text 2" _html/>
       <T _str="Text 3" _html _inline />
       <T _str="Text 4" />
+      <T _str="A {button} and a {bold} walk into a bar"
+          button={<button><T _str="button" /></button>}
+          bold={<b><T _str="bold" /></b>} />
     </div>
   );
 }

@@ -37,7 +37,7 @@ class PushCommand extends Command {
       : path.join(pwd, args.pattern);
 
     if (isFolder(filePattern)) {
-      filePattern = path.join(filePattern, '**/*.{js,jsx}');
+      filePattern = path.join(filePattern, '**/*.{js,jsx,ts,tsx}');
     }
 
     const globalTags = stringToArray(flags.tags);
@@ -171,7 +171,7 @@ class PushCommand extends Command {
 }
 
 PushCommand.description = `Detect translatable strings and push content to Transifex
-Parse .js or .jsx files and detect phrases marked for
+Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
 translation by Transifex Native toolkit for Javascript and
 upload them to Transifex for translation.
 
@@ -198,7 +198,7 @@ TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 PushCommand.args = [{
   name: 'pattern',
   description: 'file pattern to scan for strings',
-  default: '**/*.{js,jsx}',
+  default: '**/*.{js,jsx,ts,tsx}',
   required: false,
 }];
 

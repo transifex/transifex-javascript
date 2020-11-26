@@ -1,20 +1,13 @@
 /* eslint no-underscore-dangle: 0 */
 
 const fs = require('fs');
-const acorn = require('acorn');
-const jsx = require('acorn-jsx');
+const babelParser = require('@babel/parser');
+const babelTraverse = require('@babel/traverse').default;
 const _ = require('lodash');
 const { generateKey } = require('@transifex/native');
 
-const parser = acorn.Parser.extend(jsx());
-
-// Extend Acorn walk with JSX
-const walk = require('acorn-walk');
-const { extend } = require('acorn-jsx-walk');
 const mergePayload = require('./merge');
 const { stringToArray, mergeArrays } = require('./utils');
-
-extend(walk.base);
 
 /**
  * Create an extraction payload
@@ -65,6 +58,20 @@ function isTransifexCall(node) {
   return false;
 }
 
+function _parse(source) {
+  try {
+    return babelParser.parse(
+      source,
+      { sourceType: 'unambiguous', plugins: ['jsx', 'typescript'] },
+    );
+  } catch (e) {
+    return babelParser.parse(
+      source,
+      { sourceType: 'unambiguous', plugins: ['jsx', 'flow'] },
+    );
+  }
+}
+
 /**
  * Parse file and extract phrases using AST
  *
@@ -76,10 +83,10 @@ function isTransifexCall(node) {
 function extractPhrases(file, relativeFile, globalTags) {
   const HASHES = {};
   const source = fs.readFileSync(file, 'utf8');
-  const ast = parser.parse(source, { sourceType: 'module' });
-  walk.simple(ast, {
+  const ast = _parse(source);
+  babelTraverse(ast, {
     // T / UT functions
-    CallExpression(node) {
+    CallExpression({ node }) {
       // Check if node is a Transifex function
       if (!isTransifexCall(node)) return;
       if (_.isEmpty(node.arguments)) return;
@@ -112,7 +119,7 @@ function extractPhrases(file, relativeFile, globalTags) {
     },
 
     // React component
-    JSXElement(node) {
+    JSXElement({ node }) {
       const elem = node.openingElement;
 
       if (!elem || !elem.name || elem.name.name !== 'T') return;
