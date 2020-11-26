@@ -39,4 +39,9 @@ describe('T', () => {
     );
     expect(screen.getByText('hello world')).toBeTruthy();
   });
+
+  it('renders react elements', () => {
+    render(<T _str="hello {w}" w={<b>world</b>} />);
+    expect(screen.getByText('world')).toBeTruthy();
+  });
 });
