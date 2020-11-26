@@ -7,13 +7,15 @@ To release a new version to NPM follow those steps:
 From the `master` branch (requires administrative permissions) execute the
 following command:
 
-```npm run release```
+```sh
+npm run release
+```
 
 Lerna will detect changes in the packages and start an interactive prompt to
 select the next version (major, minor or patch).
 
-Upon finish, lerna will **create a version commit and push it directly to master and
-tag the release**, e.g. `v0.10.0`.
+Upon finish, lerna will **create a version commit and push it directly to
+master and tag the release**, e.g. `v0.10.0`.
 
 > Note: Lerna does not update npm `peerDependencies`, so make sure that
 > your packages are updated before releasing, for example check
