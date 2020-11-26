@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { t } from '@transifex/native';
 
@@ -34,7 +34,7 @@ function translateWithElements(_str, props) {
   while (match !== null) {
     const chunk = translation.slice(lastEnd, match.index);
     if (chunk) {
-      result.push(<React.Fragment key={lastKey}>{chunk}</React.Fragment>);
+      result.push(<Fragment key={lastKey}>{chunk}</Fragment>);
       lastKey += 1;
     }
     result.push(
@@ -48,12 +48,12 @@ function translateWithElements(_str, props) {
   }
   const chunk = translation.slice(lastEnd);
   if (chunk) {
-    result.push(<React.Fragment key={lastKey}>{chunk}</React.Fragment>);
+    result.push(<Fragment key={lastKey}>{chunk}</Fragment>);
   }
 
   if (result.length === 0) { return ''; }
   if (result.length === 1) { return result[0].props.children; }
-  return <>{result}</>;
+  return <Fragment>{result}</Fragment>;
 }
 
 export default translateWithElements;
