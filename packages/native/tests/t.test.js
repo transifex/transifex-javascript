@@ -79,4 +79,12 @@ describe('t function', () => {
     tx.currentLocale = prevLocale;
     tx.cache.translationsByLocale = prevTranslationsByLocale;
   });
+
+  it('always returns a string', () => {
+    expect(t('{number}', {
+      number: 1,
+    })).to.equal('1');
+    expect(t({})).to.equal('[object Object]');
+    expect(t(null)).to.equal('null');
+  });
 });
