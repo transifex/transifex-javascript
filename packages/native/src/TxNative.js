@@ -124,9 +124,11 @@ export default class TxNative {
         translation = this.missingPolicy.handle(translation, this.currentLocale);
       }
 
+      if (!isString(translation)) translation = `${translation}`;
       return translation;
     } catch (err) {
-      return this.errorPolicy.handle(err, sourceString, this.currentLocale, params);
+      return this.errorPolicy.handle(err,
+        `${sourceString}`, this.currentLocale, params);
     }
   }
 
