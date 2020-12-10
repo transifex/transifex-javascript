@@ -14,9 +14,16 @@ describe('Missing policy', () => {
     expect(policy.handle('Hello {}')).to.equal('Hello {}');
   });
 
-  it('PseudoTranslationPolicy works', () => {
-    const policy = new PseudoTranslationPolicy();
-    expect(policy.handle('Hello {}')).to.equal('Ħḗḗŀŀǿǿ {}');
+  describe('PseudoTranslationPolicy', () => {
+    it('works', () => {
+      const policy = new PseudoTranslationPolicy();
+      expect(policy.handle('Hello {}')).to.equal('Ħḗḗŀŀǿǿ {}');
+    });
+
+    it('ignores react interpolation properties', () => {
+      const policy = new PseudoTranslationPolicy();
+      expect(policy.handle('Hello __txnative__50__txnative__ world')).to.equal('Ħḗḗŀŀǿǿ __txnative__50__txnative__ ẇǿǿřŀḓ');
+    });
   });
 });
 

@@ -63,20 +63,25 @@ const MAP = {
  */
 export default class PseudoTranslationPolicy {
   handle(sourceString, localeCode) {
-    let pseudoString = '';
-    for (let i = 0; i < sourceString.length; ++i) {
-      const c = sourceString.charAt(i);
-      if (MAP[c]) {
-        const cl = c.toLowerCase();
-        if (cl === 'a' || cl === 'e' || cl === 'o' || cl === 'u') {
-          pseudoString += MAP[c] + MAP[c];
-        } else {
-          pseudoString += MAP[c];
+    return sourceString
+      .split(/__txnative__/)
+      .map((group) => {
+        let pseudoString = '';
+        for (let i = 0; i < group.length; i += 1) {
+          const c = group.charAt(i);
+          if (MAP[c]) {
+            const cl = c.toLowerCase();
+            if (cl === 'a' || cl === 'e' || cl === 'o' || cl === 'u') {
+              pseudoString += MAP[c] + MAP[c];
+            } else {
+              pseudoString += MAP[c];
+            }
+          } else {
+            pseudoString += c;
+          }
         }
-      } else {
-        pseudoString += c;
-      }
-    }
-    return pseudoString;
+        return pseudoString;
+      })
+      .join('__txnative__');
   }
 }
