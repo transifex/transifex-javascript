@@ -6,10 +6,11 @@
     "bootstrap": "lerna bootstrap --no-ci",
     "test": "lerna run test",
     "build": "lerna run build",
-    "release": "lerna version",
+    "release": "del-cli packages/**/package-lock.json && lerna version",
     "publish": "lerna exec -- npm publish"
   },
   "devDependencies": {
+    "del-cli": "^3.0.1",
     "lerna": "^3.22.1"
   }
 }
