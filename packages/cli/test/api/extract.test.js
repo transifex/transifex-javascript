@@ -125,6 +125,14 @@ describe('extractPhrases', () => {
           string: 'bold',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
+        '16c514ade457a04f8a5e074fe705fd09': {
+          string: '<b>HTML text</b>',
+          meta: { context: [], tags: ['tag1'], occurrences: ['react.jsx'] },
+        },
+        ff6354c17646535001825818343d64f3: {
+          string: '<b>HTML inline text</b>',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
       });
   });
 
@@ -163,6 +171,14 @@ describe('extractPhrases', () => {
         },
         e5f9dda0c39f13357321d0c07bb7a3ff: {
           string: 'bold',
+          meta: { context: [], tags: [], occurrences: ['react.tsx'] },
+        },
+        '16c514ade457a04f8a5e074fe705fd09': {
+          string: '<b>HTML text</b>',
+          meta: { context: [], tags: ['tag1'], occurrences: ['react.tsx'] },
+        },
+        ff6354c17646535001825818343d64f3: {
+          string: '<b>HTML inline text</b>',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
       });

@@ -104,7 +104,7 @@ Available optional props: All the options of `T` plus:
 
 | Prop    | Type    | Description                                     |
 |---------|---------|-------------------------------------------------|
-| _inline | Boolean | Wrap translation in `span` when `_html` is used |
+| _inline | Boolean | Wrap translation in `span` |
 
 _Note: If you supply React elements as properties to the `UT` component, it
 will misbehave by rendering `[object Object]`. Only use React elements as

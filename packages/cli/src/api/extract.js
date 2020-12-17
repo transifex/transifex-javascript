@@ -122,7 +122,8 @@ function extractPhrases(file, relativeFile, globalTags) {
     JSXElement({ node }) {
       const elem = node.openingElement;
 
-      if (!elem || !elem.name || elem.name.name !== 'T') return;
+      if (!elem || !elem.name) return;
+      if (elem.name.name !== 'T' && elem.name.name !== 'UT') return;
 
       let string;
       const params = {};
