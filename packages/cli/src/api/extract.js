@@ -52,7 +52,7 @@ function createPayload(string, params, occurence, globalTags) {
 function isTransifexCall(node) {
   const { callee } = node;
   if (!callee) return false;
-  if (callee.name === 't') return true;
+  if (_.includes(['t', 'useT'], callee.name)) { return true; }
   if (!callee.object || !callee.property) return false;
   if (callee.property.name === 'translate') return true;
   return false;

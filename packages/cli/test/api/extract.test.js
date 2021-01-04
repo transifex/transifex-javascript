@@ -91,6 +91,10 @@ describe('extractPhrases', () => {
   it('works with jsx', async () => {
     expect(await extractPhrases('test/fixtures/react.jsx', 'react.jsx'))
       .to.deep.equal({
+        a8b326ca0f8eacfd2ecf1140a860fccc: {
+          string: 'uses useT',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
         '6f48100ca5a57d2db9b685a8373be8a6': {
           string: 'Text 1',
           meta: {
