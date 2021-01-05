@@ -1,6 +1,7 @@
-import { T, UT } from '@transifex/react';
+import { T, UT, useT } from '@transifex/react';
 
 function foo() {
+  let msg = useT('uses useT');
   return (
     <div>
       <T
@@ -18,6 +19,7 @@ function foo() {
           bold={<b><T _str="bold" /></b>} />
       <UT _str="<b>HTML text</b>" _tags="tag1" />
       <UT _str="<b>HTML inline text</b>" _inline />
+      {msg}
     </div>
   );
 }
