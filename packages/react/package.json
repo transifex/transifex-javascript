@@ -1,6 +1,6 @@
 {
   "name": "@transifex/react",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Transifex Native for React",
   "keywords": [
     "transifex",
