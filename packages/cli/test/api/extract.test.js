@@ -197,4 +197,26 @@ describe('extractPhrases', () => {
         },
       });
   });
+
+  it('works with decorators', async () => {
+    expect(await extractPhrases('test/fixtures/decorators.js', 'decorators.js'))
+      .to.deep.equal({
+        bc077c881a53b3575ffe7eaf390ffca4: {
+          string: 'Component with decorator',
+          meta: { context: [], tags: [], occurrences: ['decorators.js'] },
+        },
+        d1695cddb12ea34290ad14c90bc88a39: {
+          string: 'TestClass1 example',
+          meta: { context: [], tags: [], occurrences: ['decorators.js'] },
+        },
+        cf24b3ddbdaaa21f7aba79187ef01f63: {
+          string: 'TestClass2 example',
+          meta: { context: [], tags: [], occurrences: ['decorators.js'] },
+        },
+        d18654e576453293d60dbb2833b914f3: {
+          string: 'TestClass3 example',
+          meta: { context: [], tags: [], occurrences: ['decorators.js'] },
+        },
+      });
+  });
 });

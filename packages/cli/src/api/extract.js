@@ -62,12 +62,26 @@ function _parse(source) {
   try {
     return babelParser.parse(
       source,
-      { sourceType: 'unambiguous', plugins: ['jsx', 'typescript'] },
+      {
+        sourceType: 'unambiguous',
+        plugins: [
+          'decorators-legacy',
+          'jsx',
+          'typescript',
+        ],
+      },
     );
   } catch (e) {
     return babelParser.parse(
       source,
-      { sourceType: 'unambiguous', plugins: ['jsx', 'flow'] },
+      {
+        sourceType: 'unambiguous',
+        plugins: [
+          'decorators-legacy',
+          'jsx',
+          'flow',
+        ],
+      },
     );
   }
 }
