@@ -66,6 +66,7 @@ function _parse(source) {
         sourceType: 'unambiguous',
         plugins: [
           'decorators-legacy',
+          'classProperties',
           'jsx',
           'typescript',
         ],

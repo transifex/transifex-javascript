@@ -219,4 +219,22 @@ describe('extractPhrases', () => {
         },
       });
   });
+
+  it('works with class properties', async () => {
+    expect(await extractPhrases('test/fixtures/classproperties.js', 'classproperties.js'))
+      .to.deep.equal({
+        '4f8d30aecb6784371423169bd67067f4': {
+          string: 'Static Property text',
+          meta: { context: [], tags: [], occurrences: ['classproperties.js'] },
+        },
+        '6eb781ad9f94e72e7e3e1eb8d84e9b23': {
+          string: 'Instance property text',
+          meta: { context: [], tags: [], occurrences: ['classproperties.js'] },
+        },
+        a5341bc1ed5a4c2278f50fa60cd359c9: {
+          string: 'Static Function text',
+          meta: { context: [], tags: [], occurrences: ['classproperties.js'] },
+        },
+      });
+  });
 });
