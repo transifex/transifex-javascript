@@ -5,22 +5,7 @@ import nock from 'nock';
 import { tx, t, generateKey } from '../src/index';
 
 describe('tx instance', () => {
-  it('sets current locale to source locale on init', () => {
-    const prev = tx.sourceLocale;
-
-    tx.currentLocale = '';
-    tx.init({
-      sourceLocale: 'en',
-    });
-
-    expect(tx.getCurrentLocale()).to.equal('en');
-
-    tx.init({
-      sourceLocale: prev,
-    });
-  });
-
-  it('getRemoteLocales fetches locales', async () => {
+  it('getLocales fetches locales', async () => {
     tx.init({
       token: 'abcd',
     });
@@ -38,103 +23,8 @@ describe('tx instance', () => {
         ],
       });
 
-    const locales = await tx.getRemoteLocales({ refresh: true });
+    const locales = await tx.getLocales({ refresh: true });
     expect(locales).to.deep.equal(['el']);
-  });
-
-  it('getAppLocales returns app locales', async () => {
-    tx.init({
-      appLocales: ['de', 'fr'],
-    });
-
-    const locales = tx.getAppLocales();
-    expect(locales).to.deep.equal(['de', 'fr']);
-  });
-
-  it('getSupportedLocales returns locales', async () => {
-    tx.init({
-      token: 'abcd',
-      appLocales: ['de', 'fr'],
-    });
-
-    nock(tx.cdsHost)
-      .get('/languages')
-      .reply(200, {
-        data: [
-          {
-            name: 'French',
-            code: 'fr',
-            localized_name: 'French',
-            rtl: false,
-          },
-          {
-            name: 'Greek',
-            code: 'el',
-            localized_name: 'Ελληνικά',
-            rtl: false,
-          },
-        ],
-      });
-
-    await tx.getRemoteLocales({ refresh: true });
-    const locales = await tx.getSupportedLocales();
-    expect(locales).to.deep.equal(['fr']);
-
-    const languages = await tx.getLanguages();
-    expect(languages).to.deep.equal([
-      {
-        name: 'French',
-        code: 'fr',
-        localized_name: 'French',
-        rtl: false,
-      },
-    ]);
-  });
-
-  it('getSupportedLocales returns remote when app locales are missing', async () => {
-    tx.init({
-      token: 'abcd',
-      appLocales: [],
-    });
-
-    nock(tx.cdsHost)
-      .get('/languages')
-      .reply(200, {
-        data: [
-          {
-            name: 'French',
-            code: 'fr',
-            localized_name: 'French',
-            rtl: false,
-          },
-          {
-            name: 'Greek',
-            code: 'el',
-            localized_name: 'Ελληνικά',
-            rtl: false,
-          },
-        ],
-      });
-
-    await tx.getRemoteLocales({ refresh: true });
-    const locales = await tx.getSupportedLocales();
-    expect(locales).to.deep.equal(['fr', 'el']);
-
-    const languages = await tx.getLanguages();
-    expect(languages).to.deep.equal([
-      {
-        name: 'French',
-        code: 'fr',
-        localized_name: 'French',
-        rtl: false,
-      },
-      {
-        name: 'Greek',
-        code: 'el',
-        localized_name: 'Ελληνικά',
-        rtl: false,
-      },
-    ]);
   });
 
   it('setCurrentLocale translates strings', async () => {
@@ -159,7 +49,7 @@ describe('tx instance', () => {
     expect(t('World')).to.deep.equal('World');
 
     // restore to source
-    await tx.setCurrentLocale(tx.sourceLocale);
+    await tx.setCurrentLocale('');
     expect(t('Hello')).to.deep.equal('Hello');
   });
 
@@ -179,7 +69,7 @@ describe('tx instance', () => {
       threw = true;
     }
     expect(threw).to.equal(true);
-    expect(tx.getCurrentLocale()).to.equal(tx.sourceLocale);
+    expect(tx.getCurrentLocale()).to.equal('');
   });
 
   it('setCurrentLocale throws when remote translations are invalid', async () => {
@@ -198,7 +88,7 @@ describe('tx instance', () => {
       threw = true;
     }
     expect(threw).to.equal(true);
-    expect(tx.getCurrentLocale()).to.equal(tx.sourceLocale);
+    expect(tx.getCurrentLocale()).to.equal('');
   });
 
   it('setCurrentLocale skips when locale is already set', async () => {
@@ -207,7 +97,7 @@ describe('tx instance', () => {
     expect(tx.getCurrentLocale()).to.equal(current);
   });
 
-  it('getRemoteLocales throws when remote does not respond', async () => {
+  it('getLocales throws when remote does not respond', async () => {
     tx.init({
       token: 'abcd',
     });
@@ -218,14 +108,14 @@ describe('tx instance', () => {
 
     let threw = false;
     try {
-      await tx.getRemoteLocales({ refresh: true });
+      await tx.getLocales({ refresh: true });
     } catch (err) {
       threw = true;
     }
     expect(threw).to.equal(true);
   });
 
-  it('getRemoteLocales throws when remote response is wrong', async () => {
+  it('getLocales throws when remote response is wrong', async () => {
     tx.init({
       token: 'abcd',
     });
@@ -236,18 +126,18 @@ describe('tx instance', () => {
 
     let threw = false;
     try {
-      await tx.getRemoteLocales({ refresh: true });
+      await tx.getLocales({ refresh: true });
     } catch (err) {
       threw = true;
     }
     expect(threw).to.equal(true);
   });
 
-  it('getRemoteLocales returns empty array when token is not set', async () => {
+  it('getLocales returns empty array when token is not set', async () => {
     tx.init({
       token: '',
     });
-    const locales = await tx.getRemoteLocales({ refresh: true });
+    const locales = await tx.getLocales({ refresh: true });
     expect(locales).to.deep.equal([]);
   });
 
@@ -274,7 +164,7 @@ describe('tx instance', () => {
           rtl: false,
         }],
       });
-    const locales = await tx.getRemoteLocales({ refresh: true });
+    const locales = await tx.getLocales({ refresh: true });
     expect(locales).to.deep.equal(['el']);
   });
 
