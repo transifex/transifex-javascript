@@ -24,7 +24,6 @@ import { tx, t } from '@transifex/native';
 // initialize
 tx.init({
   token: '<PUBLIC PROJECT TOKEN>',
-  sourceLocale: 'en',
 });
 
 async function main() {
@@ -61,7 +60,6 @@ const { tx, t } = require('@transifex/native');
 // initialize
 tx.init({
   token: '<PUBLIC PROJECT TOKEN>',
-  sourceLocale: 'en',
 });
 
 ...
@@ -78,7 +76,6 @@ tx.init({
   // initialize SDK
   tx.init({
     token: '<PUBLIC PROJECT TOKEN>',
-    sourceLocale: 'en',
   });
 
   // get all languages
@@ -99,12 +96,6 @@ tx.init({
 tx.init({
   // Public project token, defaults to empty string
   token: String,
-
-  // Source language locale code
-  sourceLocale: String,
-
-  // Optional list of enabled locales codes for translation
-  appLocales: Array[String],
 
   // CDS endpoint, defaults to https://cds.svc.transifex.net
   cdsHost: String,
@@ -144,19 +135,7 @@ tx.getLanguages().
 Get a list of available locales based on CDS.
 
 ```js
-tx.getRemoteLocales(): Promise(['code', 'code',...])
-```
-
-Get a list of app locales based on library initialization.
-
-```js
-tx.getAppLocales(): Array(['code', 'code',...])
-```
-
-Get a list of supported locales based on user preference and CDS languages
-
-```js
-tx.getSupportedLocales(): Promise(['code', 'code',...])
+tx.getLocales(): Promise(['code', 'code',...])
 ```
 
 #### Set current translation language
