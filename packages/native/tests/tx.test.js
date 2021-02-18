@@ -27,6 +27,33 @@ describe('tx instance', () => {
     expect(locales).to.deep.equal(['el']);
   });
 
+  it('getLanguages fetches languages', async () => {
+    tx.init({
+      token: 'abcd',
+    });
+
+    nock(tx.cdsHost)
+      .get('/languages')
+      .reply(200, {
+        data: [
+          {
+            name: 'German',
+            code: 'de',
+            localized_name: 'German',
+            rtl: false,
+          },
+        ],
+      });
+
+    const langs = await tx.getLanguages({ refresh: true });
+    expect(langs).to.deep.equal([{
+      name: 'German',
+      code: 'de',
+      localized_name: 'German',
+      rtl: false,
+    }]);
+  });
+
   it('setCurrentLocale translates strings', async () => {
     tx.init({
       token: 'abcd',
