@@ -81,13 +81,15 @@ ARGUMENTS
   PATTERN  [default: **/*.{js,jsx,ts,tsx}] file pattern to scan for strings
 
 OPTIONS
-  -v, --verbose        verbose output
-  --cds-host=cds-host  CDS host URL
-  --dry-run            dry run, do not push to Transifex
-  --purge              purge content on Transifex
-  --secret=secret      native project secret
-  --tags=tags          globally tag strings
-  --token=token        native project public token
+  -v, --verbose                          verbose output
+  --append-tags=append-tags              append tags to strings
+  --cds-host=cds-host                    CDS host URL
+  --dry-run                              dry run, do not push to Transifex
+  --purge                                purge content on Transifex
+  --secret=secret                        native project secret
+  --token=token                          native project public token
+  --with-tags-only=with-tags-only        push strings with specific tags
+  --without-tags-only=without-tags-only  push strings without specific tags
 
 DESCRIPTION
   Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
@@ -109,7 +111,9 @@ DESCRIPTION
   txjs-cli push /home/repo/src
   txjs-cli push "*.js"
   txjs-cli push --dry-run
-  txjs-cli push --tags="master,release:2.5"
+  txjs-cli push --append-tags="master,release:2.5"
+  txjs-cli push --with-tags-only="home,error"
+  txjs-cli push --without-tags-only="custom"
   txjs-cli push --token=mytoken --secret=mysecret
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 ```

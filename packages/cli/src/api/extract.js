@@ -19,7 +19,7 @@ const { stringToArray, mergeArrays } = require('./utils');
  * @param {Number} params._charlimit
  * @param {Number} params._tags
  * @param {String} occurence
- * @param {String[]} globalTags
+ * @param {String[]} appendTags
  * @returns {Object} Payload
  * @returns {String} Payload.string
  * @returns {String} Payload.key
@@ -29,7 +29,7 @@ const { stringToArray, mergeArrays } = require('./utils');
  * @returns {String[]} Payload.meta.tags
  * @returns {String[]} Payload.meta.occurrences
  */
-function createPayload(string, params, occurence, globalTags) {
+function createPayload(string, params, occurence, appendTags) {
   return {
     string,
     key: generateKey(string, params),
@@ -37,10 +37,34 @@ function createPayload(string, params, occurence, globalTags) {
       context: stringToArray(params._context),
       developer_comment: params._comment,
       character_limit: params._charlimit ? parseInt(params._charlimit, 10) : undefined,
-      tags: mergeArrays(stringToArray(params._tags), globalTags),
+      tags: mergeArrays(stringToArray(params._tags), appendTags),
       occurrences: [occurence],
     }, _.isNil),
   };
+}
+
+/**
+ * Check if payload coming from createPayload is valid based on tag filters
+ *
+ * @param {Object} payload
+ * @param {String[]} options.filterWithTags
+ * @param {String[]} options.filterWithoutTags
+ * @returns {Boolean}
+ */
+function isPayloadValid(payload, options = {}) {
+  const { filterWithTags, filterWithoutTags } = options;
+  let isValid = true;
+  _.each(filterWithTags, (tag) => {
+    if (!_.includes(payload.meta.tags, tag)) {
+      isValid = false;
+    }
+  });
+  _.each(filterWithoutTags, (tag) => {
+    if (_.includes(payload.meta.tags, tag)) {
+      isValid = false;
+    }
+  });
+  return isValid;
 }
 
 /**
@@ -92,10 +116,14 @@ function _parse(source) {
  *
  * @param {String} file absolute file path
  * @param {String} relativeFile occurence
- * @param {String[]} globalTags
+ * @param {Object} options
+ * @param {String[]} options.appendTags
+ * @param {String[]} options.filterWithTags
+ * @param {String[]} options.filterWithoutTags
  * @returns {Object}
  */
-function extractPhrases(file, relativeFile, globalTags) {
+function extractPhrases(file, relativeFile, options = {}) {
+  const { appendTags } = options;
   const HASHES = {};
   const source = fs.readFileSync(file, 'utf8');
   const ast = _parse(source);
@@ -124,7 +152,9 @@ function extractPhrases(file, relativeFile, globalTags) {
         });
       }
 
-      const partial = createPayload(string, params, relativeFile, globalTags);
+      const partial = createPayload(string, params, relativeFile, appendTags);
+      if (!isPayloadValid(partial, options)) return;
+
       mergePayload(HASHES, {
         [partial.key]: {
           string: partial.string,
@@ -156,7 +186,10 @@ function extractPhrases(file, relativeFile, globalTags) {
       });
 
       if (!string) return;
-      const partial = createPayload(string, params, relativeFile, globalTags);
+
+      const partial = createPayload(string, params, relativeFile, appendTags);
+      if (!isPayloadValid(partial, options)) return;
+
       mergePayload(HASHES, {
         [partial.key]: {
           string: partial.string,

@@ -32,8 +32,8 @@ describe('extractPhrases', () => {
       });
   });
 
-  it('works with global tags', async () => {
-    expect(await extractPhrases('test/fixtures/webpack.js', 'webpack.js', ['g1', 'g2']))
+  it('works with append tags', async () => {
+    expect(await extractPhrases('test/fixtures/webpack.js', 'webpack.js', { appendTags: ['g1', 'g2'] }))
       .to.deep.equal({
         '6f48100ca5a57d2db9b685a8373be8a6': {
           string: 'Text 1',
