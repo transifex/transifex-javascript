@@ -264,13 +264,16 @@ export default class TxNative {
    * Set detailed list of supported languages, useful for creating
    * language pickers
    *
+   * @param {Object} params
+   * @param {Boolean} params.refresh - Force re-fetching of content
    * @returns {Promise<Language[]>}
    * @returns {String} Language.name
    * @returns {String} Language.code
    * @returns {String} Language.localized_name
    * @returns {Boolean} Language.rtl
    */
-  async getLanguages() {
+  async getLanguages(params = {}) {
+    await this.getLocales(params);
     return [...this.languages];
   }
 }
