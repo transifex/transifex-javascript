@@ -43,6 +43,32 @@ describe('push command', () => {
     });
 
   test
+    .stdout()
+    .command(['push', 'test/fixtures/tags.js', '--dry-run', '-v', '--append-tags=custom'])
+    .it('append tags', (ctx) => {
+      expect(ctx.stdout).to.contain('tags: ["tag1","tag2","custom"]');
+      expect(ctx.stdout).to.contain('tags: ["tag2","tag3","custom"]');
+      expect(ctx.stdout).to.contain('tags: ["custom"]');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/tags.js', '--dry-run', '-v', '--with-tags-only=tag1'])
+    .it('filters-in tags', (ctx) => {
+      expect(ctx.stdout).to.not.contain('tag3');
+      expect(ctx.stdout).to.contain('tag1');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/tags.js', '--dry-run', '-v', '--without-tags-only=tag1'])
+    .it('filters-out tags', (ctx) => {
+      expect(ctx.stdout).to.contain('tag2');
+      expect(ctx.stdout).to.contain('tag3');
+      expect(ctx.stdout).to.not.contain('tag1');
+    });
+
+  test
     .nock('https://cds.svc.transifex.net', (api) => api
       .post('/content')
       .reply(200, {

@@ -40,7 +40,9 @@ class PushCommand extends Command {
       filePattern = path.join(filePattern, '**/*.{js,jsx,ts,tsx}');
     }
 
-    const globalTags = stringToArray(flags.tags);
+    const appendTags = stringToArray(flags['append-tags']);
+    const filterWithTags = stringToArray(flags['with-tags-only']);
+    const filterWithoutTags = stringToArray(flags['without-tags-only']);
 
     this.log('Parsing all files to detect translatable content...');
 
@@ -64,11 +66,17 @@ class PushCommand extends Command {
     });
     bar.start(allFiles.length, 0);
 
+    const extractOptions = {
+      appendTags,
+      filterWithTags,
+      filterWithoutTags,
+    };
+
     _.each(allFiles, (file) => {
       const relativeFile = file.replace(pwd, '');
       bar.increment({ file: relativeFile.gray });
       try {
-        const data = extractPhrases(file, relativeFile, globalTags);
+        const data = extractPhrases(file, relativeFile, extractOptions);
         tree[relativeFile] = data;
         if (_.isEmpty(data)) {
           emptyFiles += 1;
@@ -170,7 +178,7 @@ class PushCommand extends Command {
   }
 }
 
-PushCommand.description = `Detect translatable strings and push content to Transifex
+PushCommand.description = `detect and push source content to Transifex
 Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
 translation by Transifex Native toolkit for Javascript and
 upload them to Transifex for translation.
@@ -190,7 +198,9 @@ txjs-cli push src/
 txjs-cli push /home/repo/src
 txjs-cli push "*.js"
 txjs-cli push --dry-run
-txjs-cli push --tags="master,release:2.5"
+txjs-cli push --append-tags="master,release:2.5"
+txjs-cli push --with-tags-only="home,error"
+txjs-cli push --without-tags-only="custom"
 txjs-cli push --token=mytoken --secret=mysecret
 TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 `;
@@ -204,28 +214,36 @@ PushCommand.args = [{
 
 PushCommand.flags = {
   'dry-run': flags.boolean({
-    description: 'Dry run, do not push to Transifex',
+    description: 'dry run, do not push to Transifex',
     default: false,
   }),
   verbose: flags.boolean({
     char: 'v',
-    description: 'Verbose output',
+    description: 'verbose output',
     default: false,
   }),
   purge: flags.boolean({
-    description: 'Purge content on Transifex',
+    description: 'purge content on Transifex',
     default: false,
   }),
   token: flags.string({
-    description: 'Native project public token',
+    description: 'native project public token',
     default: '',
   }),
   secret: flags.string({
-    description: 'Native project secret',
+    description: 'native project secret',
     default: '',
   }),
-  tags: flags.string({
-    description: 'Globally tag strings',
+  'append-tags': flags.string({
+    description: 'append tags to strings',
+    default: '',
+  }),
+  'with-tags-only': flags.string({
+    description: 'push strings with specific tags',
+    default: '',
+  }),
+  'without-tags-only': flags.string({
+    description: 'push strings without specific tags',
     default: '',
   }),
   'cds-host': flags.string({
