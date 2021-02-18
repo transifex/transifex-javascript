@@ -11,7 +11,6 @@ import { tx } from '@transifex/native';
  *
  *   return (
  *     <select onChange={ (e) => tx.setCurrentLocale(e.target.value) }>
- *       <option value='en'>English</option>
  *       { languages.map(({code, name}) => (
  *         <option key={ code } value={ code }>{ name }</option>
  *       )) }

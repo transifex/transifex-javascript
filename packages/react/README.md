@@ -175,7 +175,6 @@ function App () {
 
 Accepts properties:
 
-- `sourceLanguage`: defaults to `{code: 'en', name: 'English'}`
 - `className`: The CSS class that will be applied to the `<select>` tag
 
 If you want something different than a `<select>`, it should be easy to write
@@ -191,9 +190,6 @@ function MyLanguagePicker () {
 
   return (
     <>
-      <button onClick={() => tx.setCurrentLocale('en')}>
-        English
-      </button>
       {languages.map(({ code, name }) => (
         <button key={code} onClick={() => tx.setCurrentLocale(code)}>
           {name}

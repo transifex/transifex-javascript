@@ -26,7 +26,6 @@ afterEach(() => {
 test('display language picker', async () => {
   render(<LanguagePicker />);
   await waitFor(() => screen.getByText('Greek'));
-  expect(screen.queryByText('English')).toBeTruthy();
   expect(screen.queryByText('Greek')).toBeTruthy();
   expect(screen.queryByText('French')).toBeTruthy();
 });
