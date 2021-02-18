@@ -52,6 +52,7 @@ $ npm run push
 # Commands
 * [`txjs-cli help [COMMAND]`](#txjs-cli-help-command)
 * [`txjs-cli push [PATTERN]`](#txjs-cli-push-pattern)
+* [`txjs-cli invalidate`](#txjs-cli-invalidate)
 
 ## `txjs-cli help [COMMAND]`
 
@@ -70,7 +71,7 @@ OPTIONS
 
 ## `txjs-cli push [PATTERN]`
 
-Detect translatable strings and push content to Transifex
+detect and push source content to Transifex
 
 ```
 USAGE
@@ -80,13 +81,13 @@ ARGUMENTS
   PATTERN  [default: **/*.{js,jsx,ts,tsx}] file pattern to scan for strings
 
 OPTIONS
-  -v, --verbose        Verbose output
+  -v, --verbose        verbose output
   --cds-host=cds-host  CDS host URL
-  --dry-run            Dry run, do not push to Transifex
-  --purge              Purge content on Transifex
-  --secret=secret      Native project secret
-  --token=token        Native project public token
-  --tags=tags          Globally add tags to strings
+  --dry-run            dry run, do not push to Transifex
+  --purge              purge content on Transifex
+  --secret=secret      native project secret
+  --tags=tags          globally tag strings
+  --token=token        native project public token
 
 DESCRIPTION
   Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
@@ -111,6 +112,47 @@ DESCRIPTION
   txjs-cli push --tags="master,release:2.5"
   txjs-cli push --token=mytoken --secret=mysecret
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
+```
+
+## `txjs-cli invalidate`
+
+invalidate and refresh CDS cache
+
+```
+USAGE
+  $ txjs-cli invalidate
+
+OPTIONS
+  --cds-host=cds-host  CDS host URL
+  --purge              force delete CDS cached content
+  --secret=secret      native project secret
+  --token=token        native project public token
+
+DESCRIPTION
+  Content for delivery is cached in CDS and refreshed automatically every hour.
+  This command triggers a refresh of cached content on the fly.
+
+  By default, invalidation does not remove existing cached content, but
+  starts the process of updating with latest translations from Transifex.
+
+  Passing the --purge option, cached content will be forced to be deleted,
+  however use that with caution, as it may introduce downtime of
+  translation delivery to the apps until fresh content is cached in the CDS.
+
+  To invalidate translations some environment variables must be set:
+  TRANSIFEX_TOKEN=<Transifex Native Project Token>
+  TRANSIFEX_SECRET=<Transifex Native Project Secret>
+  (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
+
+  or passed as --token=<TOKEN> --secret=<SECRET> parameters
+
+  Default CDS Host is https://cds.svc.transifex.net
+
+  Examples:
+  txjs-cli invalidate
+  txjs-cli invalidate --purge
+  txjs-cli invalidate --token=mytoken --secret=mysecret
+  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli invalidate
 ```
 
 # License

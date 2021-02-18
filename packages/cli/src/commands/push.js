@@ -170,7 +170,7 @@ class PushCommand extends Command {
   }
 }
 
-PushCommand.description = `Detect translatable strings and push content to Transifex
+PushCommand.description = `detect and push source content to Transifex
 Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
 translation by Transifex Native toolkit for Javascript and
 upload them to Transifex for translation.
@@ -204,28 +204,28 @@ PushCommand.args = [{
 
 PushCommand.flags = {
   'dry-run': flags.boolean({
-    description: 'Dry run, do not push to Transifex',
+    description: 'dry run, do not push to Transifex',
     default: false,
   }),
   verbose: flags.boolean({
     char: 'v',
-    description: 'Verbose output',
+    description: 'verbose output',
     default: false,
   }),
   purge: flags.boolean({
-    description: 'Purge content on Transifex',
+    description: 'purge content on Transifex',
     default: false,
   }),
   token: flags.string({
-    description: 'Native project public token',
+    description: 'native project public token',
     default: '',
   }),
   secret: flags.string({
-    description: 'Native project secret',
+    description: 'native project secret',
     default: '',
   }),
   tags: flags.string({
-    description: 'Globally tag strings',
+    description: 'globally tag strings',
     default: '',
   }),
   'cds-host': flags.string({
