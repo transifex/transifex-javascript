@@ -29,6 +29,7 @@ export default class TxNative {
     this.cdsHost = 'https://cds.svc.transifex.net';
     this.token = '';
     this.secret = '';
+    this.filterTags = '';
     this.cache = new MemoryCache();
     this.missingPolicy = new SourceStringPolicy();
     this.errorPolicy = new SourceErrorPolicy();
@@ -42,6 +43,7 @@ export default class TxNative {
    *
    * @param {Object} params
    * @param {String} params.cdsHost
+   * @param {String} params.filterTags
    * @param {String} params.token
    * @param {String} params.secret
    * @param {Function} params.cache
@@ -56,6 +58,7 @@ export default class TxNative {
       'token',
       'secret',
       'cache',
+      'filterTags',
       'missingPolicy',
       'errorPolicy',
       'currentLocale',
@@ -157,7 +160,11 @@ export default class TxNative {
       let lastResponseStatus = 202;
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
-        response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
+        let url = `${this.cdsHost}/content/${localeCode}`;
+        if (this.filterTags) {
+          url = `${url}?filter[tags]=${this.filterTags}`;
+        }
+        response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`,
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
