@@ -80,10 +80,22 @@ export default class TxNative {
    * @returns {String}
    */
   translate(sourceString, params) {
+    return this.translateLocale(this.currentLocale, sourceString, params);
+  }
+
+  /**
+   * Translate string to specific locale
+   *
+   * @param {String} locale
+   * @param {String} sourceString
+   * @param {Object} params - See {@link translate}
+   * @returns {String}
+   */
+  translateLocale(locale, sourceString, params) {
     try {
       const pluralized = isPluralized(sourceString);
       const key = generateKey(sourceString, params);
-      let translation = this.cache.get(key, this.currentLocale);
+      let translation = this.cache.get(key, locale);
 
       if (translation && pluralized && translation.startsWith('{???')) {
         const variableName = sourceString
@@ -110,15 +122,15 @@ export default class TxNative {
         translation = msg(params);
       }
 
-      if (isMissing && this.currentLocale) {
-        translation = this.missingPolicy.handle(translation, this.currentLocale);
+      if (isMissing && locale) {
+        translation = this.missingPolicy.handle(translation, locale);
       }
 
       if (!isString(translation)) translation = `${translation}`;
       return translation;
     } catch (err) {
       return this.errorPolicy.handle(err,
-        `${sourceString}`, this.currentLocale, params);
+        `${sourceString}`, locale, params);
     }
   }
 
