@@ -176,6 +176,27 @@ describe('tx instance', () => {
     });
   });
 
+  it('fetchTranslations respects filterTags', async () => {
+    const scope = nock(tx.cdsHost)
+      .get('/content/lang?filter[tags]=tag1,tag2')
+      .reply(200, {
+        data: {},
+      });
+
+    tx.init({
+      token: '',
+      filterTags: 'tag1,tag2',
+    });
+    await tx.fetchTranslations('lang');
+    expect(scope.isDone()).to.equal(true);
+
+    // clean up
+    tx.init({
+      token: '',
+      filterTags: null,
+    });
+  });
+
   it('retries fetching languages', async () => {
     tx.init({ token: 'abcd' });
     nock(tx.cdsHost)

@@ -36,6 +36,16 @@ export default class MemoryCache {
   }
 
   /**
+   * Check if translations are stale and need refreshing
+   *
+   * @param {String} localeCode
+   * @returns {Boolean}
+   */
+  isStale(localeCode) {
+    return !this.hasTranslations(localeCode);
+  }
+
+  /**
    * Get translation by key. If key does not exist in cache,
    * return empty string
    *

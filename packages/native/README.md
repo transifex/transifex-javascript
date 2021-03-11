@@ -100,6 +100,9 @@ tx.init({
   // CDS endpoint, defaults to https://cds.svc.transifex.net
   cdsHost: String,
 
+  // Fetch only strings that contain specific tags from CDS, e.g. "master,react"
+  filterTags: String,
+
   // Missing translation policy, defaults to "new SourceStringPolicy()"
   missingPolicy: Function,
 

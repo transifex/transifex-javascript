@@ -29,6 +29,7 @@ export default class TxNative {
     this.cdsHost = 'https://cds.svc.transifex.net';
     this.token = '';
     this.secret = '';
+    this.filterTags = '';
     this.cache = new MemoryCache();
     this.missingPolicy = new SourceStringPolicy();
     this.errorPolicy = new SourceErrorPolicy();
@@ -42,6 +43,7 @@ export default class TxNative {
    *
    * @param {Object} params
    * @param {String} params.cdsHost
+   * @param {String} params.filterTags
    * @param {String} params.token
    * @param {String} params.secret
    * @param {Function} params.cache
@@ -56,6 +58,7 @@ export default class TxNative {
       'token',
       'secret',
       'cache',
+      'filterTags',
       'missingPolicy',
       'errorPolicy',
       'currentLocale',
@@ -80,10 +83,22 @@ export default class TxNative {
    * @returns {String}
    */
   translate(sourceString, params) {
+    return this.translateLocale(this.currentLocale, sourceString, params);
+  }
+
+  /**
+   * Translate string to specific locale
+   *
+   * @param {String} locale
+   * @param {String} sourceString
+   * @param {Object} params - See {@link translate}
+   * @returns {String}
+   */
+  translateLocale(locale, sourceString, params) {
     try {
       const pluralized = isPluralized(sourceString);
       const key = generateKey(sourceString, params);
-      let translation = this.cache.get(key, this.currentLocale);
+      let translation = this.cache.get(key, locale);
 
       if (translation && pluralized && translation.startsWith('{???')) {
         const variableName = sourceString
@@ -110,15 +125,15 @@ export default class TxNative {
         translation = msg(params);
       }
 
-      if (isMissing && this.currentLocale) {
-        translation = this.missingPolicy.handle(translation, this.currentLocale);
+      if (isMissing && locale) {
+        translation = this.missingPolicy.handle(translation, locale);
       }
 
       if (!isString(translation)) translation = `${translation}`;
       return translation;
     } catch (err) {
       return this.errorPolicy.handle(err,
-        `${sourceString}`, this.currentLocale, params);
+        `${sourceString}`, locale, params);
     }
   }
 
@@ -131,8 +146,10 @@ export default class TxNative {
    * @returns {Promise}
    */
   async fetchTranslations(localeCode, params = {}) {
-    const refresh = !!params.refresh;
-    if (!refresh && this.cache.hasTranslations(localeCode)) {
+    if (!params.refresh
+      && this.cache.hasTranslations(localeCode)
+      && !this.cache.isStale(localeCode)
+    ) {
       return;
     }
 
@@ -143,7 +160,11 @@ export default class TxNative {
       let lastResponseStatus = 202;
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
-        response = await axios.get(`${this.cdsHost}/content/${localeCode}`, {
+        let url = `${this.cdsHost}/content/${localeCode}`;
+        if (this.filterTags) {
+          url = `${url}?filter[tags]=${this.filterTags}`;
+        }
+        response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`,
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
