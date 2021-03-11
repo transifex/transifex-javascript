@@ -143,8 +143,10 @@ export default class TxNative {
    * @returns {Promise}
    */
   async fetchTranslations(localeCode, params = {}) {
-    const refresh = !!params.refresh;
-    if (!refresh && this.cache.hasTranslations(localeCode)) {
+    if (!params.refresh
+      && this.cache.hasTranslations(localeCode)
+      && !this.cache.isStale(localeCode)
+    ) {
       return;
     }
 
