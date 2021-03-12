@@ -37,7 +37,7 @@ class PushCommand extends Command {
       : path.join(pwd, args.pattern);
 
     if (isFolder(filePattern)) {
-      filePattern = path.join(filePattern, '**/*.{js,jsx,ts,tsx}');
+      filePattern = path.join(filePattern, '**/*.{js,jsx,ts,tsx,html}');
     }
 
     const appendTags = stringToArray(flags['append-tags']);
@@ -179,7 +179,7 @@ class PushCommand extends Command {
 }
 
 PushCommand.description = `detect and push source content to Transifex
-Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
+Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
 translation by Transifex Native toolkit for Javascript and
 upload them to Transifex for translation.
 

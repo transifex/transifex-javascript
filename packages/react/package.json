@@ -22,10 +22,11 @@
   "scripts": {
     "build": "NODE_ENV=production microbundle-crl --no-compress --format modern,cjs && cp src/index.d.ts dist/index.d.ts && cp src/index.d.ts dist/index.modern.d.ts",
     "prepare": "run-s build",
-    "test": "run-s test:unit test:lint test:build",
+    "lint": "eslint src/ tests/",
+    "test": "run-s test:unit test:build",
     "test:build": "run-s build",
-    "test:lint": "eslint src",
-    "test:unit": "jest --coverage=true --forceExit"
+    "test:unit": "jest --coverage=true --forceExit",
+    "publish": "npm publish"
   },
   "bugs": {
     "url": "https://github.com/transifex/transifex-javascript/issues"

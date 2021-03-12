@@ -1,0 +1,26 @@
+{
+  "name": "@transifex/angular",
+  "version": "0.0.1",
+  "description": "Transifex Native for Angular",
+  "keywords": [
+    "transifex",
+    "i18n",
+    "l10n",
+    "localization",
+    "angular"
+  ],
+  "author": "Transifex",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/angular",
+  "license": "Apache-2.0",
+  "peerDependencies": {
+    "@angular/common": "^11.1.2",
+    "@angular/core": "^11.1.2",
+    "@transifex/native": "^0.11.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.35"
+  }
+}

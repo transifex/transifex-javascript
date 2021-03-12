@@ -3,7 +3,7 @@
 import React from 'react';
 
 import {
-  render, screen, cleanup, waitFor,
+  render, screen, cleanup,
 } from '@testing-library/react';
 
 import { tx } from '@transifex/native';
@@ -13,7 +13,7 @@ let oldGetCurrentLocale;
 beforeEach(() => {
   // Start mocking
   oldGetCurrentLocale = tx.getCurrentLocale;
-  tx.getCurrentLocale = () => { return 'en' };
+  tx.getCurrentLocale = () => 'en';
 });
 afterEach(() => {
   // Reset mocking

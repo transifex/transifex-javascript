@@ -1,6 +1,8 @@
 {
   "extends": ["airbnb"],
   "rules": {
-    "react/jsx-fragments": "off"
+    "react/jsx-fragments": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-one-expression-per-line": "off"
   }
 }
