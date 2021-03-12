@@ -17,14 +17,16 @@ import { t } from '@transifex/native';
 function translateWithElements(_str, props) {
   const actualProps = {};
   const reactElements = [];
-  Object.entries(props).forEach(([key, value]) => {
-    if (React.isValidElement(value)) {
-      actualProps[key] = `__txnative__${reactElements.length}__txnative__`;
-      reactElements.push(value);
-    } else {
-      actualProps[key] = value;
-    }
-  });
+  if (props) {
+    Object.entries(props).forEach(([key, value]) => {
+      if (React.isValidElement(value)) {
+        actualProps[key] = `__txnative__${reactElements.length}__txnative__`;
+        reactElements.push(value);
+      } else {
+        actualProps[key] = value;
+      }
+    });
+  }
   const translation = t(_str, actualProps);
   const result = [];
   let lastEnd = 0;
