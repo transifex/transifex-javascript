@@ -154,10 +154,27 @@ function LanguageList () {
 }
 ```
 
+### `useLocale` hook
+
+Returns a state variable with the currently selected locale.
+
+```jsx
+import React from 'react';
+import { useLocale } from '@transifex/react';
+
+function DisplayLocale () {
+  const locale = useLocale();
+  return (
+    <p>Currently selected locale is {locale}</p>
+  );
+}
+```
+
 ### `LanguagePicker` component
 
 Renders a `<select>` tag that displays supported languages and switches the
-application's selected language on change. Uses `useLanguages` internally.
+application's selected language on change.
+Uses `useLanguages` and `useLocale` internally.
 
 ```jsx
 import React from 'react';
@@ -183,16 +200,17 @@ your own language picker using `useLanguages`:
 ```jsx
 import React from 'react';
 import { tx } from '@transifex/native';
-import { useLanguages } from '@transifex/react';
+import { useLanguages, useLocale } from '@transifex/react';
 
 function MyLanguagePicker () {
   const languages = useLanguages();
+  const locale = useLocale();
 
   return (
     <>
       {languages.map(({ code, name }) => (
         <button key={code} onClick={() => tx.setCurrentLocale(code)}>
-          {name}
+          {name} {locale === code ? '(selected)' : ''}
         </button>
       ))}
     </>

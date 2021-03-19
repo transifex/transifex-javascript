@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { tx } from '@transifex/native';
 
 import useLanguages from '../hooks/useLanguages';
+import useLocale from '../hooks/useLocale';
 
 /* Component to render a language picker. Language options will be fetched
   * asynchronously. Accepts props:
@@ -12,10 +13,12 @@ import useLanguages from '../hooks/useLanguages';
 
 export default function LanguagePicker({ className }) {
   const languages = useLanguages();
+  const locale = useLocale();
 
   return (
     <select
       className={className}
+      value={locale}
       onChange={(e) => tx.setCurrentLocale(e.target.value)}
     >
       {languages.map(({ name, code }) => (
