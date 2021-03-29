@@ -6,7 +6,7 @@ describe('push command', () => {
     .stdout()
     .command(['push', 'test/fixtures/simple.js', '--dry-run'])
     .it('extracts simple phrases', (ctx) => {
-      expect(ctx.stdout).to.contain('Processed 1 file(s) and found 4 translatable phrases');
+      expect(ctx.stdout).to.contain('Processed 1 file(s) and found 6 translatable phrases');
       expect(ctx.stdout).to.contain('Content detected in 1 file(s)');
     });
 

@@ -112,6 +112,62 @@ function _parse(source) {
 }
 
 /**
+ * Find value bound to some identifier with passed name.
+ *
+ * @param {Object} scope AST Scope to use for lookup.
+ * @param {String} name Name of the identifier.
+ * @returns {String?} declared value or null.
+ */
+function findIdentifierValue(scope, name) {
+  if (!scope) return null;
+
+  if (scope.bindings[name]) {
+    const binding = scope.bindings[name];
+
+    if (binding.kind !== 'const') return null;
+    const { node } = binding.path;
+
+    if (node.type === 'VariableDeclarator' && node.init) {
+      return findDeclaredValue(scope, node.init);
+    }
+  }
+
+  if (scope.path.parentPath) {
+    return findIdentifierValue(scope.path.parentPath.scope, name);
+  }
+
+  return null;
+}
+
+/**
+ * Find declared value bound to identifier defined in init.
+ *
+ * @param {Object} scope AST Scope to use for lookup.
+ * @param {Object} init AST Node to work with.
+ * @returns {String?} declared value or null.
+ */
+function findDeclaredValue(scope, init) {
+  if (init.type === 'StringLiteral') {
+    return init.value;
+  }
+
+  if (init.type === 'Identifier') {
+    return findIdentifierValue(scope, init.name);
+  }
+
+  if (init.type === 'BinaryExpression' && init.operator === '+') {
+    const left = findDeclaredValue(scope, init.left);
+    const right = findDeclaredValue(scope, init.right);
+
+    if (left && right) {
+      return left + right;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Parse file and extract phrases using AST
  *
  * @param {String} file absolute file path
@@ -129,13 +185,15 @@ function extractPhrases(file, relativeFile, options = {}) {
   const ast = _parse(source);
   babelTraverse(ast, {
     // T / UT functions
-    CallExpression({ node }) {
+    CallExpression({ node, scope }) {
       // Check if node is a Transifex function
       if (!isTransifexCall(node)) return;
       if (_.isEmpty(node.arguments)) return;
 
+      // Try to find the value of first argument
+      const string = findDeclaredValue(scope, node.arguments[0]);
+
       // Verify that at least the string is passed to the function
-      const string = node.arguments[0].value;
       if (!_.isString(string)) return;
 
       // Extract function parameters
