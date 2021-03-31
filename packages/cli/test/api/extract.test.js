@@ -237,4 +237,34 @@ describe('extractPhrases', () => {
         },
       });
   });
+
+  it('works with const identifiers', async () => {
+    expect(await extractPhrases('test/fixtures/variables.js', 'variables.js'))
+      .to.deep.equal({
+        '5d34b0b02c893763b0679f0aeab472ae': {
+          string: 'abc',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+        '06af01ed1976798d82a569a6e0af7537': {
+          string: 'Outer Text',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+        f089f645d1baa0ce4f398a4388520de3: {
+          string: ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+        ac186ba33ab07d1ba8864f15662c308c: {
+          string: 'Outer Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+        e5609fd3ccf5a0e9eea07d2a0918c2bd: {
+          string: 'abcdefg',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+        '3a2a11e5b86fdb8e2807170eca54171f': {
+          string: 'Inner Text',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+      });
+  });
 });
