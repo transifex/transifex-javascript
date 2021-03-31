@@ -1,6 +1,6 @@
 {
   "name": "@transifex/native",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Transifex Native for Javascript",
   "keywords": [
     "transifex",
