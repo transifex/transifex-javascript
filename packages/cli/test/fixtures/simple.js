@@ -14,6 +14,7 @@ t('Text 1' + text);
 Instance.translate(text);
 
 // invalid
+t('');
 Instance.translateme('Text 5');
 Instance.translate();
 Instance.translate({ foo: 'bar' });
