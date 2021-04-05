@@ -3,8 +3,8 @@ const { t } = require('@transifex/native');
 function log() {}
 
 const outer = 'Outer Text';
-const long = 
-    ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text'
+const long = ''
+  + ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text'
   + ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text'
   + ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text';
 const merged = outer + long;

@@ -159,7 +159,7 @@ function findDeclaredValue(scope, init) {
     const left = findDeclaredValue(scope, init.left);
     const right = findDeclaredValue(scope, init.right);
 
-    if (left && right) {
+    if (_.isString(left) && _.isString(right)) {
       return left + right;
     }
   }
@@ -209,6 +209,8 @@ function extractPhrases(file, relativeFile, options = {}) {
           }
         });
       }
+
+      if (!string) return;
 
       const partial = createPayload(string, params, relativeFile, appendTags);
       if (!isPayloadValid(partial, options)) return;
