@@ -34,8 +34,10 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/tx-native-angular-sdk/**/*.ts",
-              "projects/tx-native-angular-sdk/**/*.html"
+              "projects/tx-native-angular-sdk/src/**/*.ts",
+              "projects/tx-native-angular-sdk/src/**/*.html",
+              "projects/tx-native-angular-sdk/tests/**/*.ts",
+              "projects/tx-native-angular-sdk/tests/**/*.html"
             ]
           }
         }
