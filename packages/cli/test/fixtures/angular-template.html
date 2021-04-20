@@ -1,0 +1,24 @@
+<div class="bg-white centered width-small divider padding-1x">
+  <h1 class="marginBottom-2x">
+    <T str="This is a test" key="text.main_title"></T>
+  </h1>
+
+  <p class="color-secondary">
+    <UT
+      str="It’s {weekday} today, and it is a fine day to try out Native! Checkout the offering below!"
+      key="text.intro_message"
+      [vars]="{ weekday: weekday }"
+    ></UT>
+  </p>
+
+  <p class="small-text">
+    <T
+      str="By proceeding you agree to the {terms_of_services} and {privacy_policy}."
+      key="text.agree_message"
+      sanitize="true"
+      [vars]="{ terms_of_services: '<a href=\'terms\'>' + terms + '</a>',
+        privacy_policy: '<a href=\'privacy\'>' + privacy + '</a>'
+      }"
+    ></T>
+  </p>
+</div>

@@ -4,10 +4,11 @@
   "scripts": {
     "lerna": "lerna",
     "bootstrap": "lerna bootstrap --no-ci",
+    "lint": "lerna run lint",
     "test": "lerna run test",
     "build": "lerna run build",
     "release": "del-cli packages/**/package-lock.json && lerna version --force-publish",
-    "publish": "lerna exec -- npm publish"
+    "publish": "lerna run publish"
   },
   "devDependencies": {
     "del-cli": "^3.0.1",

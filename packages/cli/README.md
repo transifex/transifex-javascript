@@ -1,6 +1,6 @@
 # Transifex Native CLI
 
-A command line tool that parses `.js`, `.ts`, `.jsx` and `.tsx` source files, extracts phrases marked for localization by [Transifex Native](https://www.transifex.com/native/) and pushes them to [Transifex](https:/www.transifex.com) for translation.
+A command line tool that parses `.js`, `.ts`, `.jsx`, `.tsx` and `.html` source files, extracts phrases marked for localization by [Transifex Native](https://www.transifex.com/native/) and pushes them to [Transifex](https:/www.transifex.com) for translation.
 
 Related packages:
 * [@transifex/native](https://www.npmjs.com/package/@transifex/native)

@@ -1,0 +1,75 @@
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
+
+import { ITranslationServiceConfig } from './interfaces';
+
+const { tx } = require('@transifex/native');
+
+/** Singleton Injection */
+@Injectable({
+  providedIn: 'root',
+})
+
+/**
+ * Service which wraps the Transifex Native library for using
+ * inside components
+ */
+export class TranslationService {
+  // Observables for detecting locale change
+  get localeChanged(): Observable<string> {
+    return this.localeChangedSubject.asObservable();
+  }
+
+  private localeChangedSubject = new ReplaySubject<string>(0);
+
+  /**
+   * Initializes the translation service
+   *
+   * @param config
+   * @returns void
+   */
+  public async init(config: ITranslationServiceConfig) {
+    tx.init(config);
+    await this.getLanguages();
+  }
+
+  /**
+   * Sets the current locale
+   *
+   * @param locale
+   * @returns void
+   */
+  public async setCurrentLocale(locale: string) {
+    await tx.setCurrentLocale(locale);
+    this.localeChangedSubject.next(locale);
+  }
+
+  /**
+   * Gets the current locale
+   *
+   * @returns string
+   */
+  public getCurrentLocale(): string {
+    return tx.getCurrentLocale() || '';
+  }
+
+  /**
+   * Gets the languages collection
+   *
+   * @returns any
+   */
+  public async getLanguages() {
+    return tx.getLanguages();
+  }
+
+  /**
+   * Translate a string
+   *
+   * @param str
+   * @param params
+   * @returns void
+   */
+  public translate(str: string, params: Record<string, unknown>): string {
+    return tx.translate(str, params);
+  }
+}

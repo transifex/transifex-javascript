@@ -191,6 +191,10 @@ describe('extractPhrases', () => {
   it('works with typescript', async () => {
     expect(await extractPhrases('test/fixtures/typescript.ts', 'typescript.ts'))
       .to.deep.equal({
+        'text.monday': {
+          string: 'Monday',
+          meta: { context: [], tags: [], occurrences: ['typescript.ts'] },
+        },
         d3b72592c4af5b55aac2dd0c88a9422a: {
           string: 'Shoes',
           meta: { context: [], tags: [], occurrences: ['typescript.ts'] },
@@ -264,6 +268,24 @@ describe('extractPhrases', () => {
         '3a2a11e5b86fdb8e2807170eca54171f': {
           string: 'Inner Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
+      });
+  });
+
+  it('works with angular html templates', async () => {
+    expect(await extractPhrases('test/fixtures/angular-template.html', 'angular-template.html'))
+      .to.deep.equal({
+        'text.agree_message': {
+          string: 'By proceeding you agree to the {terms_of_services} and {privacy_policy}.',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'text.intro_message': {
+          string: 'It’s {weekday} today, and it is a fine day to try out Native! Checkout the offering below!',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'text.main_title': {
+          string: 'This is a test',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
       });
   });

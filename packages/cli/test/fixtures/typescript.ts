@@ -9,6 +9,9 @@ class ItemRegistry {
   name: string;
   id: number;
 
+  @T('Monday', { _key: 'text.monday' })
+  weekday: string;
+
   constructor(name: string, id: number) {
     this.name = name;
     this.id = id;
