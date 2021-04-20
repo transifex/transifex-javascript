@@ -70,6 +70,6 @@
     "prepack": "oclif-dev manifest",
     "lint": "eslint src/",
     "test": "nyc mocha \"test/**/*.test.js\"",
-    "publish": "npm publish"
+    "publish-npm": "npm publish"
   }
 }

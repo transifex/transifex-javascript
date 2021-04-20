@@ -32,6 +32,6 @@ jobs:
       - run: npm install
       - run: npm run bootstrap
       - run: npm run build
-      - run: npm run publish
+      - run: npm run publish-npm
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

@@ -8,7 +8,7 @@
     "test": "lerna run test",
     "build": "lerna run build",
     "release": "del-cli packages/**/package-lock.json && lerna version --force-publish",
-    "publish": "lerna run publish"
+    "publish-npm": "lerna run publish-npm"
   },
   "devDependencies": {
     "del-cli": "^3.0.1",

@@ -19,7 +19,7 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "publish": "cd dist/tx-native-angular-sdk && npm publish"
+    "publish-npm": "cd dist/tx-native-angular-sdk && npm publish"
   },
   "private": true,
   "dependencies": {
