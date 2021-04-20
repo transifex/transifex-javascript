@@ -1,5 +1,5 @@
 {
-  "name": "@transifex/angular",
+  "name": "@transifex/angular-projects",
   "version": "0.0.1",
   "description": "Transifex Native for Angular",
   "keywords": [
@@ -12,16 +12,14 @@
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/angular",
   "repository": "git://github.com/transifex/transifex-javascript.git",
-  "publishConfig": {
-    "access": "public"
-  },
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "publish": "cd dist/tx-native-angular-sdk && npm publish"
   },
   "private": true,
   "dependencies": {

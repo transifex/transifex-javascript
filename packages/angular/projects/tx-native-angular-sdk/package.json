@@ -10,7 +10,8 @@
     "angular"
   ],
   "author": "Transifex",
-  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/angular",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/angular/projects/tx-native-angular-sdk",
+  "repository": "git://github.com/transifex/transifex-javascript.git",
   "license": "Apache-2.0",
   "peerDependencies": {
     "@angular/common": "^11.1.2",
