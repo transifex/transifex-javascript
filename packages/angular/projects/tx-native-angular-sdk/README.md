@@ -106,7 +106,6 @@ Available optional props:
 | charlimit  | Number  | Character limit instruction for translators |
 | tags       | String  | Comma separated list of tags                |
 | escapeVars | Boolean | If escaping should be applied to ICU variables                |
-| inline     | Boolean | If should wrap the translation with `span`                |
 | sanitize   | Boolean | Safe render of the HTML result after translation takes place   |
 | vars       | Object  | ICU variables to render in the string       |
 
@@ -163,7 +162,14 @@ must **always** be a valid ICU message format template.
 ```
 
 `UT` has the same behaviour as `T`, but renders source string as HTML inside a
-`div` tag or a `span` tag if `inline` property is true.
+`div` tag or a `span` tag if `inline` property is true. By default this property
+is set to `false`.
+
+Available optional props:
+
+| Prop       | Type    | Description                                 |
+|------------|---------|---------------------------------------------|
+| inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
 
 ### `TranslationService` service
 
@@ -202,7 +208,7 @@ Exposes the following methods and properties:
 | Method           | Parameters       | Description                                       |
 |------------------|------------------|---------------------------------------------------|
 | init             | config <sup>1</sup>          | Initializes the TX Native object                  |
-| setCurrentLocale | none             | Set the current locale in the TX Native object    |
+| setCurrentLocale | locale           | Set the current locale in the TX Native object    |
 | getCurrentLocale | none             | Returns the current locale of the TX Native object|
 | getLanguages     | none             | Returns an array of available languages           |
 | translate        | translate params <sup>2</sup> | Returns the translation for a string with given translation params |
