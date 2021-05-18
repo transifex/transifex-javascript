@@ -18,6 +18,11 @@ Vanilla Javascript library to localize web apps using Transifex Native.
 Transifex Native support for localizing React components.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/react)
 
+## Transifex Native for Angular
+
+Transifex Native support for localizing Angular components.
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/angular/projects/tx-native-angular-sdk)
+
 ## Transifex Native CLI
 
 Command line tool for extracting phrases from source files and pushing content to Transifex.
