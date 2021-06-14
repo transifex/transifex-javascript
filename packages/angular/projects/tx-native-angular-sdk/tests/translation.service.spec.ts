@@ -13,6 +13,7 @@ describe('TranslationService', () => {
     errorPolicy: () => { },
     filterTags: '',
     missingPolicy: () => { },
+    stringRenderer: () => { },
   };
   const translationParams = {
     _key: '',

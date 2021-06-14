@@ -5,3 +5,4 @@ export const PseudoTranslationPolicy: Native.PseudoTranslationPolicy;
 export const SourceStringPolicy: Native.SourceStringPolicy;
 export const SourceErrorPolicy: Native.SourceErrorPolicy;
 export const ThrowErrorPolicy: Native.ThrowErrorPolicy;
+export const MessageFormatRenderer: Native.MessageFormatRenderer;

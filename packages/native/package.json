@@ -31,28 +31,28 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/plugin-transform-runtime": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
-    "@babel/runtime": "^7.13.10",
+    "@babel/core": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.14.5",
+    "@babel/preset-env": "^7.14.5",
+    "@babel/runtime": "^7.14.5",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "chai": "^4.3.3",
-    "eslint": "^7.21.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-loader": "^4.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "glob": "^7.1.6",
-    "mocha": "^8.3.1",
-    "nock": "^13.0.11",
+    "eslint-plugin-import": "^2.23.4",
+    "glob": "^7.1.7",
+    "mocha": "^8.4.0",
+    "nock": "^13.1.0",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "@messageformat/core": "^3.0.0",
     "axios": "^0.21.1",
-    "md5": "^2.3.0",
-    "messageformat": "^2.3.0"
+    "md5": "^2.3.0"
   }
 }

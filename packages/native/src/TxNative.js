@@ -1,10 +1,10 @@
 /* globals __VERSION__, __PLATFORM__ */
 import axios from 'axios';
-import MessageFormat from 'messageformat';
 
 import MemoryCache from './cache/MemoryCache';
 import SourceErrorPolicy from './policies/SourceErrorPolicy';
 import SourceStringPolicy from './policies/SourceStringPolicy';
+import MessageFormatRenderer from './renderers/MessageFormatRenderer';
 import {
   generateKey, isString, isPluralized, escape,
 } from './utils';
@@ -14,8 +14,6 @@ import {
   FETCHING_LOCALES, LOCALES_FETCHED, LOCALES_FETCH_FAILED,
   LOCALE_CHANGED,
 } from './events';
-
-const MF = new MessageFormat();
 
 /**
  * Native instance, combines functionality from
@@ -33,6 +31,7 @@ export default class TxNative {
     this.cache = new MemoryCache();
     this.missingPolicy = new SourceStringPolicy();
     this.errorPolicy = new SourceErrorPolicy();
+    this.stringRenderer = new MessageFormatRenderer();
     this.currentLocale = '';
     this.locales = [];
     this.languages = [];
@@ -49,6 +48,7 @@ export default class TxNative {
    * @param {Function} params.cache
    * @param {Function} params.missingPolicy
    * @param {Function} params.errorPolicy
+   * @param {Function} params.stringRenderer
    */
   init(params) {
     const that = this;
@@ -61,6 +61,7 @@ export default class TxNative {
       'filterTags',
       'missingPolicy',
       'errorPolicy',
+      'stringRenderer',
       'currentLocale',
     ].forEach((value) => {
       if (params[value] !== undefined) {
@@ -113,16 +114,15 @@ export default class TxNative {
         translation = sourceString;
       }
 
-      const msg = MF.compile(translation);
       if (params && params._escapeVars) {
         const safeParams = {};
         Object.keys(params).forEach((property) => {
           const value = params[property];
           safeParams[property] = isString(value) ? escape(value) : value;
         });
-        translation = msg(safeParams);
+        translation = this.stringRenderer.render(translation, locale, safeParams);
       } else {
-        translation = msg(params);
+        translation = this.stringRenderer.render(translation, locale, params);
       }
 
       if (isMissing && locale) {

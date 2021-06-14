@@ -6,6 +6,7 @@ export interface ITranslationServiceConfig {
   cache?: () => void;
   missingPolicy?: () => void;
   errorPolicy?: () => void;
+  stringRenderer?: () => void;
 }
 
 export interface ILanguage {
