@@ -223,9 +223,10 @@ export interface ITranslationServiceConfig {
   cache?: () => void;
   missingPolicy?: () => void;
   errorPolicy?: () => void;
+  stringRenderer?: () => void;
 }
 ```
-- `cache`, `missingPolicy` and `errorPolicy` are set by default by
+- `cache`, `missingPolicy`, `errorPolicy` and `stringRenderer` are set by default by
 `@transifex/native` package but you can provide if you wish custom functions
 of your own, or use another policy provided by the `@transifex/native` package.
 

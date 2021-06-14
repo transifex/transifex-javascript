@@ -109,6 +109,9 @@ tx.init({
   // Error policy, defaults to "new SourceErrorPolicy()"
   errorPolicy: Function,
 
+  // String renderer, defaults to "new MessageFormatRenderer()"
+  stringRenderer: Function,
+
   // Translation cache, defaults to "new MemoryCache()"
   cache: Function,
 })
