@@ -209,8 +209,18 @@ function findIdentifierValue(scope, name) {
  * @returns {String?} declared value or null.
  */
 function findDeclaredValue(scope, init) {
+  if (!init) return null;
+
   if (init.type === 'StringLiteral') {
     return init.value;
+  }
+
+  if (init.type === 'NumericLiteral') {
+    return init.value;
+  }
+
+  if (init.type === 'JSXExpressionContainer') {
+    return findDeclaredValue(scope, init.expression);
   }
 
   if (init.type === 'Identifier') {
@@ -322,7 +332,7 @@ function extractPhrases(file, relativeFile, options = {}) {
       },
 
       // React component
-      JSXElement({ node }) {
+      JSXElement({ node, scope }) {
         const elem = node.openingElement;
 
         if (!elem || !elem.name) return;
@@ -332,15 +342,16 @@ function extractPhrases(file, relativeFile, options = {}) {
         const params = {};
         _.each(elem.attributes, (attr) => {
           const property = attr.name && attr.name.name;
-          const value = attr.value && attr.value.value;
-          if (!property || !value) return;
+          if (!property || !attr.value) return;
+
+          const attrValue = findDeclaredValue(scope, attr.value);
+          if (!attrValue) return;
+
           if (property === '_str') {
-            string = value;
+            string = attrValue;
             return;
           }
-          if (_.isString(value) || _.isNumber(value)) {
-            params[property] = value;
-          }
+          params[property] = attrValue;
         });
 
         if (!string) return;

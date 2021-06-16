@@ -95,6 +95,14 @@ describe('extractPhrases', () => {
           string: 'uses useT',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
+        '41ea834f9604545bba088de53e71a159': {
+          string: 'uses useT as const',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        '14a6af017c176654aaf0df13d1179418': {
+          string: 'uses _str as const',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
         '6f48100ca5a57d2db9b685a8373be8a6': {
           string: 'Text 1',
           meta: {
