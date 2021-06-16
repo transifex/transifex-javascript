@@ -3,5 +3,5 @@
     "packages/*",
     "packages/angular/projects/*"
   ],
-  "version": "0.12.2"
+  "version": "0.13.0"
 }
