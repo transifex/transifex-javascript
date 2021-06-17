@@ -236,6 +236,16 @@ function findDeclaredValue(scope, init) {
     }
   }
 
+  if(init.type === 'TemplateLiteral') {
+    const expressions = init.expressions.map(node => findDeclaredValue(scope, node));
+    if (expressions.includes(null)) return null;
+
+    const elements = init.quasis.flatMap(
+      ({ tail, value }, i) => (tail ? value.raw : [value.raw, expressions[i]]),
+    );
+    return elements.join('');
+  }
+
   return null;
 }
 
