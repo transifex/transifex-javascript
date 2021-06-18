@@ -20,6 +20,7 @@ function foo() {
   log(t(merged));
   log(t(complicated));
   log(t(inner));
+  log(t(`${inner},${outer}`))
 
   const empty;
   let nonConst = 'should not be visible';

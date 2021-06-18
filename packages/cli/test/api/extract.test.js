@@ -277,6 +277,10 @@ describe('extractPhrases', () => {
           string: 'Inner Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
+        '7c023dc6beb7e942ab667c8d32a488e7': {
+          string: 'Inner Text,Outer Text',
+          meta: { context: [], tags: [], occurrences: ['variables.js'] },
+        },
       });
   });
 
