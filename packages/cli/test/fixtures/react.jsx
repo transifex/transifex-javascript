@@ -7,11 +7,13 @@ function foo() {
   let msg2 = useT(str2);
 
   const str3 = 'uses _str as const';
+  const context = 'foo';
+
   return (
     <div>
       <T
         _str="Text 1"
-        _context="foo"
+        _context={context}
         _tags="tag1,tag2"
         _charlimit="10"
         _comment="comment" />
