@@ -299,6 +299,38 @@ describe('extractPhrases', () => {
           string: 'This is a test',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
+        'text.pipe_text': {
+          string: 'This is a pipe text',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'def7319eabb4be374d5fae8ea5b79d55': {
+          string: 'This is a second pipe text',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        '9eae72bb80f1d30adc39a97c56eb2f6b': {
+          string: '\n      This is a\n      third pipe text\n      ',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'text.pipe_text_fourth': {
+          string: 'This is a fourth pipe text',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'text.fifth': {
+          string: 'It’s {weekday} today, and it is a fine day to try out Native!',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'text.pipe_text_sixth': {
+          string: 'This is a sixth pipe text, no one should do this',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        '867b7cc4643da9b4c97ababa43c50c23': {
+          string: 'Used in a {binding}',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'text.pipe_binding': {
+          string: 'Used in a second binding',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        }
       });
   });
 });
