@@ -221,9 +221,9 @@ export interface ITranslationServiceConfig {
   cdsHost?: string;
   filterTags?: string;
   cache?: () => void;
-  missingPolicy?: () => void;
-  errorPolicy?: () => void;
-  stringRenderer?: () => void;
+  missingPolicy?: IPolicy;
+  errorPolicy?: IPolicy;
+  stringRenderer?: IStringRenderer;
 }
 ```
 - `cache`, `missingPolicy`, `errorPolicy` and `stringRenderer` are set by default by
