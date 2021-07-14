@@ -1,11 +1,12 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { LanguagePickerComponent } from './language-picker.component';
 import { TComponent } from './T.component';
 import { UTComponent } from './UT.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { TranslationService } from './translation.service';
+import { TranslatePipe } from './translate.pipe';
 
 @NgModule({
   declarations: [
@@ -13,13 +14,15 @@ import { TranslationService } from './translation.service';
     UTComponent,
     LanguagePickerComponent,
     SafeHtmlPipe,
+    TranslatePipe,
   ],
-  imports: [BrowserModule],
+  imports: [CommonModule],
   exports: [
     TComponent,
     UTComponent,
     LanguagePickerComponent,
     SafeHtmlPipe,
+    TranslatePipe,
   ],
 })
 export class TxNativeModule {

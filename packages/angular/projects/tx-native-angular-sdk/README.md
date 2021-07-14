@@ -171,6 +171,15 @@ Available optional props:
 |------------|---------|---------------------------------------------|
 | inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
 
+### `translate` Pipe
+
+```html
+  {{ 'Copyright {year} by Transifex' | translate:{ key: 'text.copyright' } }}
+
+  <p [matTooltip]="'A paragraph' | translate">A paragraph</p>
+```
+
+
 ### `TranslationService` service
 
 This is the main service exposed from the SDK in order to intialize the TX Native object.
@@ -221,9 +230,9 @@ export interface ITranslationServiceConfig {
   cdsHost?: string;
   filterTags?: string;
   cache?: () => void;
-  missingPolicy?: () => void;
-  errorPolicy?: () => void;
-  stringRenderer?: () => void;
+  missingPolicy?: IPolicy;
+  errorPolicy?: IPolicy;
+  stringRenderer?: IStringRenderer;
 }
 ```
 - `cache`, `missingPolicy`, `errorPolicy` and `stringRenderer` are set by default by

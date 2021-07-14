@@ -5,6 +5,7 @@
 export * from './lib/interfaces';
 export * from './lib/T.decorator';
 export * from './lib/safe-html.pipe';
+export * from './lib/translate.pipe';
 export * from './lib/translation.service';
 export * from './lib/T.component';
 export * from './lib/UT.component';
