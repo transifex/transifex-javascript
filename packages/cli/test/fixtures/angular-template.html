@@ -21,4 +21,47 @@
       }"
     ></T>
   </p>
+
+  {{ 'This should be ignored by any test' }}
+
+  <p class="using-pipe">
+    <!-- Note: Object is in JSON to make it parse, Angular will interpolate correctly -->
+    {{ 'This is a pipe text' | translate:{ key: "text.pipe_text" } }}
+  </p>
+
+  <p class="using-pipe-second">
+    {{ 'This is a second pipe text' | translate }}
+    {{
+      '
+      This is a
+      third pipe text
+      ' | translate:{}
+    }}
+  </p>
+
+  <p class="using-pipe-third">
+    {{ "This is a fourth pipe text" | translate:{ key: "text.pipe_text_fourth" } }}
+  </p>
+
+  <p class="using-pipe-third">
+    {{ "It’s {weekday} today, and it is a fine day to try out Native!" | translate:{
+      key: "text.fifth"
+    }}}
+  </p>
+
+  <p class="using-pipe-third">
+    {{'This is a sixth pipe text, no one should do this'|translate:{
+      key
+      :
+      "text.pipe_text_sixth"
+    }}}
+  </p>
+
+  <p [matTooltip]="'Used in a {binding}' | translate">
+    Inside a p
+  </p>
+
+  <p [matTooltip]="'Used in a second binding'|translate:{key: 'text.pipe_binding', _secondParam: true, _thirdParams:false }">
+    Inside a p
+  </p>
 </div>

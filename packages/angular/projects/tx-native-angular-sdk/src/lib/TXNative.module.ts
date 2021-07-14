@@ -6,6 +6,7 @@ import { TComponent } from './T.component';
 import { UTComponent } from './UT.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { TranslationService } from './translation.service';
+import { TranslatePipe } from './translate.pipe';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TranslationService } from './translation.service';
     UTComponent,
     LanguagePickerComponent,
     SafeHtmlPipe,
+    TranslatePipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -20,6 +22,7 @@ import { TranslationService } from './translation.service';
     UTComponent,
     LanguagePickerComponent,
     SafeHtmlPipe,
+    TranslatePipe,
   ],
 })
 export class TxNativeModule {
