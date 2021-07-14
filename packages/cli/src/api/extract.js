@@ -393,8 +393,9 @@ function extractPhrases(file, relativeFile, options = {}) {
         ) {
           _.each(node.arguments[1].properties, (prop) => {
           // get only string on number params
-            if (_.isString(prop.value.value) || _.isNumber(prop.value.value)) {
-              params[prop.key.name] = prop.value.value;
+            const value = findDeclaredValue(scope, prop.value);
+            if (_.isString(value) || _.isNumber(value)) {
+              params[prop.key.name] = value;
             }
           });
         }
