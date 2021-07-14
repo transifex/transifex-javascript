@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslationService } from '../src/lib/translation.service';
-import { ILanguage } from '../src/public-api';
+import { ILanguage, ITranslationServiceConfig } from '../src/public-api';
 
 const { tx } = require('@transifex/native');
 
 describe('TranslationService', () => {
   let service: TranslationService;
-  const txConfig = {
+  const txConfig: ITranslationServiceConfig = {
     token: '',
     cache: () => { },
     cdsHost: '',
-    errorPolicy: () => { },
+    errorPolicy: undefined,
     filterTags: '',
-    missingPolicy: () => { },
-    stringRenderer: () => { },
+    missingPolicy: undefined,
+    stringRenderer: undefined,
   };
   const translationParams = {
     _key: '',

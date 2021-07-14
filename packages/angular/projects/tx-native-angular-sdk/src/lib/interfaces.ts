@@ -4,9 +4,9 @@ export interface ITranslationServiceConfig {
   cdsHost?: string;
   filterTags?: string;
   cache?: () => void;
-  missingPolicy?: () => void;
-  errorPolicy?: () => void;
-  stringRenderer?: () => void;
+  missingPolicy?: IPolicy;
+  errorPolicy?: IPolicy;
+  stringRenderer?: IStringRenderer;
 }
 
 export interface ILanguage {
@@ -24,4 +24,12 @@ export interface ITranslateParams {
   _escapeVars?: boolean;
   _inline?: boolean;
   sanitize?: boolean;
+}
+
+export interface IPolicy {
+  handle(sourceString: string, localeCode: string): string;
+}
+
+export interface IStringRenderer {
+  render(sourceString: string, localeCode: string, params: ITranslateParams): string;
 }
