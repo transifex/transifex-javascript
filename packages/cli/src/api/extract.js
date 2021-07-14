@@ -108,8 +108,16 @@ const pipeBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate\s*?:?({[\s\S]*?})?/i;
  * @returns {*}
  */
 function looseJsonParse(obj) {
-  // eslint-disable-next-line no-new-func
-  return Function(`"use strict";return (${obj})`)();
+  let parsed;
+
+  try {
+    // eslint-disable-next-line no-new-func
+    parsed = Function(`"use strict";return (${obj})`)();
+  } catch (err) {
+    parsed = {};
+  }
+
+  return parsed;
 }
 
 /**
