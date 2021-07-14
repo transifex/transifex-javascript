@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { LanguagePickerComponent } from './language-picker.component';
 import { TComponent } from './T.component';
@@ -14,7 +14,7 @@ import { TranslationService } from './translation.service';
     LanguagePickerComponent,
     SafeHtmlPipe,
   ],
-  imports: [BrowserModule],
+  imports: [CommonModule],
   exports: [
     TComponent,
     UTComponent,
