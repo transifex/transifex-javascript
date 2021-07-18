@@ -5,7 +5,7 @@ import { TranslationService } from './translation.service';
 /**
  * Decorator for using transparently the translation service as a property
  */
-export const T = (str: string, params: Record<string, unknown>) => (target: any, key: string) => {
+export const T = (str: string, params?: Record<string, unknown>) => (target: any, key: string) => {
   const injector = Injector.create(
     {
       providers: [{ provide: TranslationService, useClass: TranslationService }],
@@ -15,6 +15,6 @@ export const T = (str: string, params: Record<string, unknown>) => (target: any,
 
   Object.defineProperty(target, key, {
     configurable: false,
-    get: () => translationService.translate(str, params),
+    get: () => translationService.translate(str, { ...params }),
   });
 };
