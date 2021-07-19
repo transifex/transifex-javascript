@@ -81,6 +81,22 @@ describe('TComponent', () => {
     expect(component.translatedStr).toEqual('translated');
   });
 
+  it('should translate string without vars', () => {
+    // setup
+    spyOn(service, 'translate').and.returnValue('translated');
+
+    // act
+    component.str = 'not-translated';
+    component.vars = {};
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    // assert
+    expect(service.translate).toHaveBeenCalledWith('not-translated',
+      { ...translationParams });
+    expect(component.translatedStr).toEqual('translated');
+  });
+
   it('should translate string with key', () => {
     // setup
     spyOn(service, 'translate').and.returnValue('translated');
