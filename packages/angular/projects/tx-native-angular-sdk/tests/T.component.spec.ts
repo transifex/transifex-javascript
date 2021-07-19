@@ -29,20 +29,22 @@ describe('TComponent', () => {
       declarations: [TComponent, SafeHtmlPipe],
     })
       .compileComponents();
+
+    localeChangedSubject = new ReplaySubject<string>(0);
+
     service = TestBed.inject(TranslationService);
-    spyOn(service, 'setCurrentLocale');
+
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
+    spyOnProperty(service, 'localeChanged', 'get').and.returnValue(localeChangedSubject);
+    spyOn(service, 'setCurrentLocale').and.callFake(async (locale) => {
+      localeChangedSubject.next(locale);
+    });
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    localeChangedSubject = new ReplaySubject<string>(0);
-    (service.setCurrentLocale as jasmine.Spy).and.returnValue(
-      localeChangedSubject.asObservable(),
-    );
   });
 
   it('should create the component', () => {
@@ -144,5 +146,25 @@ describe('TComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect((compiled as HTMLDivElement).innerHTML)
       .toContain('&lt;a&gt;translated&lt;/a&gt;');
+  });
+
+  it('should detect localeChange and translate', async () => {
+    // act
+    component.str = 'not-translated';
+    component.key = 'key-not-translated';
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    // change
+    spyOn(service, 'translate').and.returnValue('translated-again');
+
+    await service.setCurrentLocale('nb');
+
+    fixture.detectChanges();
+
+    // assert
+    expect(service.translate).toHaveBeenCalledWith('not-translated',
+      { ...translationParams, _key: 'key-not-translated' });
+    expect(component.translatedStr).toEqual('translated-again');
   });
 });
