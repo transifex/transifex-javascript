@@ -15,6 +15,7 @@ Related packages:
   * [UT Component](#ut-component)
   * [TranslationService service](#translationservice-service)
   * [@T Decorator](#@t-decorator)
+  * [translate Pipe](#translate-pipe)
   * [Language Picker Component](#language-picker-component)
 * [License](#license)
 
@@ -171,15 +172,6 @@ Available optional props:
 |------------|---------|---------------------------------------------|
 | inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
 
-### `translate` Pipe
-
-```html
-  {{ 'Copyright {year} by Transifex' | translate:{ key: 'text.copyright' } }}
-
-  <p [matTooltip]="'A paragraph' | translate">A paragraph</p>
-```
-
-
 ### `TranslationService` service
 
 This is the main service exposed from the SDK in order to intialize the TX Native object.
@@ -312,6 +304,25 @@ and the use of the properties in the template:
       }"
     ></T>
   </p>
+```
+
+### `translate` Pipe
+
+You have available a `translate` pipe for inline strings translations, the only limitation that it has is that
+you cannot translate strings with embedded HTML.
+
+These examples will work:
+
+```html
+  {{ 'Copyright {year} by Transifex' | translate:{ key: 'text.copyright' } }}
+
+  <p [matTooltip]="'A paragraph' | translate">A paragraph</p>
+```
+
+this example will not work, as it has HTML embedded:
+
+```html
+  {{ 'A string with <b>HTML embedded</b>' | translate }}
 ```
 
 ### Language Picker Component
