@@ -59,7 +59,13 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
   sanitize?: boolean = false;
 
   @Input()
-  vars?: Record<string, unknown> = {};
+  get vars(): Record<string, unknown> {
+    return this.actualVars;
+  }
+
+  set vars(v: Record<string, unknown>) {
+    this.actualVars = { ...v };
+  }
 
   translateParams: ITranslateParams = {
     _key: '',
@@ -80,6 +86,8 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   localeChangeSubscription: Subscription;
+
+  private actualVars: Record<string, unknown> = {};
 
   /**
    * Constructor
@@ -140,6 +148,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    */
   translate() {
     this.translatedStr = this.translationService.translate(this.str,
-      { ...this.translateParams, ...this.vars || {} });
+      { ...this.translateParams, ...this.vars });
   }
 }
