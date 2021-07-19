@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { ITranslationServiceConfig } from './interfaces';
+import { ILanguage, ITranslationServiceConfig } from './interfaces';
 
 const { tx } = require('@transifex/native');
 
@@ -17,7 +17,7 @@ const { tx } = require('@transifex/native');
 export class TranslationService {
   // Observables for detecting locale change
   get localeChanged(): Observable<string> {
-    return this.localeChangedSubject.asObservable();
+    return this.localeChangedSubject;
   }
 
   private localeChangedSubject = new ReplaySubject<string>(0);
@@ -58,7 +58,7 @@ export class TranslationService {
    *
    * @returns any
    */
-  public async getLanguages() {
+  public async getLanguages(): Promise<ILanguage[]> {
     return tx.getLanguages();
   }
 
