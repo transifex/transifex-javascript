@@ -51,4 +51,6 @@ function mergePayload(parent, child) {
   return parent;
 }
 
-module.exports = mergePayload;
+module.exports = {
+  mergePayload,
+};

@@ -3,7 +3,7 @@
 require('colors');
 const { Command, flags } = require('@oclif/command');
 const { cli } = require('cli-ux');
-const invalidateCDS = require('../api/invalidate');
+const { invalidateCDS } = require('../api/invalidate');
 
 class InvalidateCommand extends Command {
   async run() {
@@ -36,18 +36,12 @@ class InvalidateCommand extends Command {
         secret: projectSecret,
         purge: flags.purge,
       });
-      if (res.success) {
-        cli.action.stop('Success'.green);
-        this.log(`${(res.data.count || 0).toString().green} records invalidated`);
-        this.log('Note: It might take a few minutes for fresh content to be available'.yellow);
-      } else {
-        cli.action.stop('Failed'.red);
-        this.log(`Status code: ${res.status}`.red);
-        this.error(JSON.stringify(res.data));
-      }
+      cli.action.stop('Success'.green);
+      this.log(`${(res.data.count || 0).toString().green} records invalidated`);
+      this.log('Note: It might take a few minutes for fresh content to be available'.yellow);
     } catch (err) {
       cli.action.stop('Failed'.red);
-      throw err;
+      this.error(err);
     }
   }
 }

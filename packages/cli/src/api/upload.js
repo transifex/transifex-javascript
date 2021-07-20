@@ -11,45 +11,61 @@ const { version } = require('../../package.json');
  * @param {String} params.secret
  * @param {Boolean} params.purge
  * @returns {Object} Data
- * @returns {Boolean} Data.success
- * @returns {String} Data.status
- * @returns {Object} Data.data
- * @returns {Number} Data.data.created
- * @returns {Number} Data.data.updated
- * @returns {Number} Data.data.skipped
- * @returns {Number} Data.data.deleted
- * @returns {Number} Data.data.failed
- * @returns {String[]} Data.data.errors
+ * @returns {String} Data.jobUrl
  */
 async function uploadPhrases(payload, params) {
-  try {
-    const res = await axios.post(`${params.url}/content`, {
-      data: payload,
-      meta: {
-        purge: !!params.purge,
-      },
-    }, {
-      headers: {
-        Authorization: `Bearer ${params.token}:${params.secret}`,
-        'Content-Type': 'application/json;charset=utf-8',
-        'X-NATIVE-SDK': `txjs/cli/${version}`,
-      },
-    });
-    return {
-      success: true,
-      status: res.status,
-      data: res.data,
-    };
-  } catch (error) {
-    if (error.response) {
-      return {
-        success: false,
-        status: error.response.status,
-        data: error.response.data,
-      };
-    }
-    throw new Error(error.message);
-  }
+  const res = await axios.post(`${params.url}/content`, {
+    data: payload,
+    meta: {
+      purge: !!params.purge,
+    },
+  }, {
+    headers: {
+      Authorization: `Bearer ${params.token}:${params.secret}`,
+      'Accept-version': 'v2',
+      'Content-Type': 'application/json;charset=utf-8',
+      'X-NATIVE-SDK': `txjs/cli/${version}`,
+    },
+  });
+  return {
+    jobUrl: res.data.data.links.job,
+  };
 }
 
-module.exports = uploadPhrases;
+/**
+ * Poll upload status
+ *
+ * @param {Object} params
+ * @param {String} params.url
+ * @param {String} params.token
+ * @param {String} params.secret
+ * @returns {Object} Data
+ * @returns {Number} Data.created
+ * @returns {Number} Data.updated
+ * @returns {Number} Data.skipped
+ * @returns {Number} Data.deleted
+ * @returns {Number} Data.failed
+ * @returns {String[]} Data.errors
+ * @returns {String} Data.status
+ */
+async function pollJob(params) {
+  const res = await axios.get(params.url, {
+    headers: {
+      Authorization: `Bearer ${params.token}:${params.secret}`,
+      'Accept-version': 'v2',
+      'Content-Type': 'application/json;charset=utf-8',
+      'X-NATIVE-SDK': `txjs/cli/${version}`,
+    },
+  });
+  const { data } = res.data;
+  return {
+    ...(data.details || {}),
+    errors: data.errors || [],
+    status: data.status,
+  };
+}
+
+module.exports = {
+  uploadPhrases,
+  pollJob,
+};

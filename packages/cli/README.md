@@ -111,6 +111,7 @@ DESCRIPTION
   txjs-cli push /home/repo/src
   txjs-cli push "*.js"
   txjs-cli push --dry-run
+  txjs-cli push --no-wait
   txjs-cli push --append-tags="master,release:2.5"
   txjs-cli push --with-tags-only="home,error"
   txjs-cli push --without-tags-only="custom"

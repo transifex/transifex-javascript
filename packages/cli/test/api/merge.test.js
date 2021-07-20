@@ -1,7 +1,7 @@
 /* globals describe, it */
 
 const { expect } = require('chai');
-const mergePayload = require('../../src/api/merge');
+const { mergePayload } = require('../../src/api/merge');
 
 describe('mergePayload', () => {
   it('merges json', async () => {

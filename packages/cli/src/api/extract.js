@@ -8,7 +8,7 @@ const _ = require('lodash');
 const path = require('path');
 const { generateKey } = require('@transifex/native');
 
-const mergePayload = require('./merge');
+const { mergePayload } = require('./merge');
 const { stringToArray, mergeArrays } = require('./utils');
 
 /**
@@ -499,4 +499,6 @@ function extractPhrases(file, relativeFile, options = {}) {
   return HASHES;
 }
 
-module.exports = extractPhrases;
+module.exports = {
+  extractPhrases,
+};

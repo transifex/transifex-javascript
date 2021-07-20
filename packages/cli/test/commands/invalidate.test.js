@@ -6,9 +6,11 @@ describe('invalidate command', () => {
     .nock('https://cds.svc.transifex.net', (api) => api
       .post('/invalidate')
       .reply(200, {
-        status: 'success',
-        token: 't',
-        count: 5,
+        data: {
+          status: 'success',
+          token: 't',
+          count: 5,
+        },
       }))
     .stdout()
     .command(['invalidate', '--secret=s', '--token=t'])
@@ -20,9 +22,11 @@ describe('invalidate command', () => {
     .nock('https://cds.svc.transifex.net', (api) => api
       .post('/purge')
       .reply(200, {
-        status: 'success',
-        token: 't',
-        count: 10,
+        data: {
+          status: 'success',
+          token: 't',
+          count: 10,
+        },
       }))
     .stdout()
     .command(['invalidate', '--purge', '--secret=s', '--token=t'])
@@ -39,6 +43,6 @@ describe('invalidate command', () => {
     .command(['invalidate', '--secret=s', '--token=t'])
     .exit(2)
     .it('handles invalidate error', (ctx) => {
-      expect(ctx.stdout).to.contain('Status code: 403');
+      expect(ctx.stdout).to.contain('Invalidating CDS cache... Failed');
     });
 });
