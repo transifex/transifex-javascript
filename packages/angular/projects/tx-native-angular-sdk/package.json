@@ -1,6 +1,6 @@
 {
   "name": "@transifex/angular",
-  "version": "0.14.1",
+  "version": "1.0.0",
   "description": "Transifex Native for Angular",
   "keywords": [
     "transifex",
