@@ -167,6 +167,7 @@ export default class TxNative {
         response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`,
+            'Accept-version': 'v2',
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
         });
@@ -220,6 +221,7 @@ export default class TxNative {
         response = await axios.get(`${this.cdsHost}/languages`, {
           headers: {
             Authorization: `Bearer ${this.token}`,
+            'Accept-version': 'v2',
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
         });

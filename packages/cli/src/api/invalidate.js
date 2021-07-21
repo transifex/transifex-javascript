@@ -10,38 +10,24 @@ const { version } = require('../../package.json');
  * @param {String} params.secret
  * @param {Boolean} params.purge
  * @returns {Object} Data
- * @returns {Boolean} Data.success
- * @returns {String} Data.status
- * @returns {Number} Data.data.count
- * @returns {Number} Data.data.status
- * @returns {Number} Data.data.token
+ * @returns {Number} Data.count
+ * @returns {Number} Data.status
+ * @returns {Number} Data.token
  */
 async function invalidateCDS(params) {
   const action = params.purge ? 'purge' : 'invalidate';
-  try {
-    const res = await axios.post(`${params.url}/${action}`, {
-    }, {
-      headers: {
-        Authorization: `Bearer ${params.token}:${params.secret}`,
-        'Content-Type': 'application/json;charset=utf-8',
-        'X-NATIVE-SDK': `txjs/cli/${version}`,
-      },
-    });
-    return {
-      success: true,
-      status: res.status,
-      data: res.data,
-    };
-  } catch (error) {
-    if (error.response) {
-      return {
-        success: false,
-        status: error.response.status,
-        data: error.response.data,
-      };
-    }
-    throw new Error(error.message);
-  }
+  const res = await axios.post(`${params.url}/${action}`, {
+  }, {
+    headers: {
+      Authorization: `Bearer ${params.token}:${params.secret}`,
+      'Accept-version': 'v2',
+      'Content-Type': 'application/json;charset=utf-8',
+      'X-NATIVE-SDK': `txjs/cli/${version}`,
+    },
+  });
+  return res.data;
 }
 
-module.exports = invalidateCDS;
+module.exports = {
+  invalidateCDS,
+};

@@ -72,12 +72,27 @@ describe('push command', () => {
     .nock('https://cds.svc.transifex.net', (api) => api
       .post('/content')
       .reply(200, {
-        created: 2,
-        updated: 2,
-        skipped: 0,
-        deleted: 0,
-        failed: 0,
-        errors: [],
+        data: {
+          id: '1',
+          links: {
+            job: '/jobs/content/1',
+          },
+        },
+      }))
+    .nock('https://cds.svc.transifex.net', (api) => api
+      .get('/jobs/content/1')
+      .reply(200, {
+        data: {
+          details: {
+            created: 2,
+            updated: 2,
+            skipped: 0,
+            deleted: 0,
+            failed: 0,
+          },
+          errors: [],
+          status: 'completed',
+        },
       }))
     .stdout()
     .command(['push', 'test/fixtures/simple.js', '--secret=s', '--token=t'])
@@ -95,6 +110,6 @@ describe('push command', () => {
     .command(['push', 'test/fixtures/simple.js', '--secret=s', '--token=t'])
     .exit(2)
     .it('handles push error', (ctx) => {
-      expect(ctx.stdout).to.contain('Status code: 403');
+      expect(ctx.stdout).to.contain('Uploading content to Transifex... Failed');
     });
 });

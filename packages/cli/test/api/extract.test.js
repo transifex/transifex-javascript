@@ -1,7 +1,7 @@
 /* globals describe, it */
 
 const { expect } = require('chai');
-const extractPhrases = require('../../src/api/extract');
+const { extractPhrases } = require('../../src/api/extract');
 
 describe('extractPhrases', () => {
   it('works with webpack', async () => {
@@ -303,7 +303,7 @@ describe('extractPhrases', () => {
           string: 'This is a pipe text',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
-        'def7319eabb4be374d5fae8ea5b79d55': {
+        def7319eabb4be374d5fae8ea5b79d55: {
           string: 'This is a second pipe text',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
@@ -330,7 +330,7 @@ describe('extractPhrases', () => {
         'text.pipe_binding': {
           string: 'Used in a second binding',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
-        }
+        },
       });
   });
 });

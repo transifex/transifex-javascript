@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint no-shadow: 0 */
 
 require('colors');
@@ -8,9 +9,9 @@ const { Command, flags } = require('@oclif/command');
 const shelljs = require('shelljs');
 const { glob } = require('glob');
 const { cli } = require('cli-ux');
-const extractPhrases = require('../api/extract');
-const uploadPhrases = require('../api/upload');
-const mergePayload = require('../api/merge');
+const { extractPhrases } = require('../api/extract');
+const { uploadPhrases, pollJob } = require('../api/upload');
+const { mergePayload } = require('../api/merge');
 const { stringToArray } = require('../api/utils');
 
 /**
@@ -148,31 +149,75 @@ class PushCommand extends Command {
         process.exit();
       }
 
-      cli.action.start('Uploading content to Transifex', '', { stdout: true });
+      const uploadMessage = 'Uploading content to Transifex';
+
+      this.log('');
+      cli.action.start(uploadMessage, '', { stdout: true });
       try {
-        const res = await uploadPhrases(payload, {
+        let res = await uploadPhrases(payload, {
           url: cdsHost,
           token: projectToken,
           secret: projectSecret,
           purge: flags.purge,
         });
-        if (res.success) {
+
+        if (flags['no-wait']) {
+          cli.action.stop('Queued'.green);
+          return;
+        }
+
+        // poll for completion
+        const jobUrl = `${cdsHost}${res.jobUrl}`;
+        let status = '';
+        do {
+          await cli.wait(1500);
+          res = await pollJob({
+            url: jobUrl,
+            token: projectToken,
+            secret: projectSecret,
+          });
+          if (status !== res.status) {
+            status = res.status;
+            switch (status) {
+              case 'pending':
+                cli.action.start(uploadMessage, 'In queue', { stdout: true });
+                break;
+              case 'processing':
+                cli.action.start(uploadMessage, 'Processing', { stdout: true });
+                break;
+              default:
+                break;
+            }
+          }
+        } while (status === 'pending' || status === 'processing');
+
+        if (status === 'completed') {
           cli.action.stop('Success'.green);
-          this.log(`${'✓'.green} Successfully pushed strings to Transifex.`);
-          this.log(`Created strings: ${(res.data.created || 0).toString().green}`);
-          this.log(`Updated strings: ${(res.data.updated || 0).toString().green}`);
-          this.log(`Skipped strings: ${(res.data.skipped || 0).toString().green}`);
-          this.log(`Deleted strings: ${(res.data.deleted || 0).toString().green}`);
-          this.log(`Failed strings: ${(res.data.failed || 0).toString().red}`);
-          this.log(`Errors: ${(res.data.errors || []).length.toString().red}`);
+          this.log(`${'✓'.green} Successfully pushed strings to Transifex:`);
+          if (res.created > 0) {
+            this.log(`  Created strings: ${res.created.toString().green}`);
+          }
+          if (res.updated > 0) {
+            this.log(`  Updated strings: ${res.updated.toString().green}`);
+          }
+          if (res.skipped > 0) {
+            this.log(`  Skipped strings: ${res.skipped.toString().green}`);
+          }
+          if (res.deleted > 0) {
+            this.log(`  Deleted strings: ${res.deleted.toString().green}`);
+          }
+          if (res.failed > 0) {
+            this.log(`  Failed strings: ${res.failed.toString().red}`);
+          }
         } else {
           cli.action.stop('Failed'.red);
-          this.log(`Status code: ${res.status}`.red);
-          this.error(JSON.stringify(res.data));
         }
+        _.each(res.errors, (error) => {
+          this.log(`Error: ${JSON.stringify(error).red}`);
+        });
       } catch (err) {
         cli.action.stop('Failed'.red);
-        throw err;
+        this.error(err);
       }
     }
   }
@@ -198,6 +243,7 @@ txjs-cli push src/
 txjs-cli push /home/repo/src
 txjs-cli push "*.js"
 txjs-cli push --dry-run
+txjs-cli push --no-wait
 txjs-cli push --append-tags="master,release:2.5"
 txjs-cli push --with-tags-only="home,error"
 txjs-cli push --without-tags-only="custom"
@@ -224,6 +270,10 @@ PushCommand.flags = {
   }),
   purge: flags.boolean({
     description: 'purge content on Transifex',
+    default: false,
+  }),
+  'no-wait': flags.boolean({
+    description: 'disable polling for upload results',
     default: false,
   }),
   token: flags.string({
