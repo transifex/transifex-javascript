@@ -64,4 +64,9 @@
   <p [matTooltip]="'Used in a second binding'|translate:{key: 'text.pipe_binding', _secondParam: true, _thirdParams:false }">
     Inside a p
   </p>
+
+  <T str="This is a text with a context, and it should be recognized as one"
+    key="content.is-text"
+    context="is-text">
+  </T>
 </div>

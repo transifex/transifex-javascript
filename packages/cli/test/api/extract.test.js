@@ -331,6 +331,14 @@ describe('extractPhrases', () => {
           string: 'Used in a second binding',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
+        'content.is-text': {
+          string: 'This is a text with a context, and it should be recognized as one',
+          meta: { context: ['is-text'], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'content.is-text': {
+          string: 'This is a text with a context, and it should be recognized as one',
+          meta: { context: ['is-text'], tags: [], occurrences: ['angular-template.html'] },
+        },
       });
   });
 });

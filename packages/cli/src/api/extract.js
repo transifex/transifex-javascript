@@ -36,10 +36,12 @@ function createPayload(string, params, occurence, appendTags) {
     string,
     key: generateKey(string, params),
     meta: _.omitBy({
-      context: stringToArray(params._context),
-      developer_comment: params._comment,
-      character_limit: params._charlimit ? parseInt(params._charlimit, 10) : undefined,
-      tags: mergeArrays(stringToArray(params._tags), appendTags),
+      context: stringToArray(params._context || params.context),
+      developer_comment: params._comment || params.comment,
+      character_limit: params._charlimit || params.charlimit
+        ? parseInt(params._charlimit || params.charlimit, 10)
+        : undefined,
+      tags: mergeArrays(stringToArray(params._tags || params.tags), appendTags),
       occurrences: [occurence],
     }, _.isNil),
   };
