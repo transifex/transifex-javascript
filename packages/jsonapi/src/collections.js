@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
 import { DoesNotExist, MultipleObjectsReturned } from './errors';
-import { hasData, isNull } from './utils';
-import { Resource } from './resources';
+import { hasData, isNull } from './utils'; /* eslint-disable-line import/no-cycle */
+import Resource from './resources'; /* eslint-disable-line import/no-cycle */
 
-export class Collection {
+export default class Collection {
   /*  A class for holding responses to collection URLs (eg '/parents'). You
     * will not have to instanciate this class yourself, but you can create
     * instances from `Resource`'s static methods:
@@ -40,11 +40,12 @@ export class Collection {
     this._url = url;
     this._params = params;
     this.data = null;
-    this.next = this.previous = null;
+    this.next = null;
+    this.previous = null;
   }
 
   async fetch() {
-    if (! isNull(this.data)) {
+    if (!isNull(this.data)) {
       return;
     }
 
@@ -56,30 +57,31 @@ export class Collection {
 
     const includedMap = {};
     if ('included' in response.data) {
-      for (const includedItem of response.data.included) {
+      response.data.included.forEach((includedItem) => {
         const key = `${includedItem.type}__${includedItem.id}`;
         includedMap[key] = includedItem;
-      }
+      });
     }
 
     this.data = [];
-    for (const item of response.data.data) {
+    response.data.data.forEach((item) => {
       const related = {};
-      for (const name in (item.relationships || {})) {
-        const relationship = item.relationships[name];
-        if (isNull(relationship) || ! hasData(relationship)) {
-          continue;
-        }
-        const key = `${relationship.data.type}__${relationship.data.id}`;
-        if (key in includedMap) {
-          related[name] = this._API.new(includedMap[key]);
-        }
-      }
+      Object
+        .entries(item.relationships || {})
+        .forEach(([name, relationship]) => {
+          if (isNull(relationship) || !hasData(relationship)) {
+            return;
+          }
+          const key = `${relationship.data.type}__${relationship.data.id}`;
+          if (key in includedMap) {
+            related[name] = this._API.new(includedMap[key]);
+          }
+        });
       const relationships = item.relationships || {};
-      delete item.relationships;
+      delete item.relationships; /* eslint-disable-line no-param-reassign */
       Object.assign(relationships, related);
       this.data.push(this._API.new({ relationships, ...item }));
-    }
+    });
 
     this.next = (response.data.links || {}).next || null;
     this.previous = (response.data.links || {}).previous || null;
@@ -171,19 +173,18 @@ export class Collection {
       * */
 
     const params = {};
-    for (const key in filters) {
-      let value = filters[key];
+    Object.entries(filters).forEach(([key, value]) => {
       const parts = key.split('__');
-      const filterKey = [ `filter[${parts[0]}]` ];
+      const filterKey = [`filter[${parts[0]}]`];
       for (let i = 1; i < parts.length; i++) {
         const part = parts[i];
         filterKey.push(`[${part}]`);
       }
       if (value instanceof Resource) {
-        value = value.id;
+        value = value.id; /* eslint-disable-line no-param-reassign */
       }
       params[filterKey.join('')] = value;
-    }
+    });
     return this.extra(params);
   }
 
@@ -212,14 +213,12 @@ export class Collection {
       *   GET /children?page[cursor]=XXX
       * */
 
-    let params = {};
+    const params = {};
     if (_.isPlainObject(arg)) {
-      for (const key in arg) {
-        const value = arg[key];
+      Object.entries(arg).forEach(([key, value]) => {
         params[`page[${key}]`] = value;
-      }
-    }
-    else {
+      });
+    } else {
       params.page = arg;
     }
     return this.extra(params);
@@ -280,16 +279,15 @@ export class Collection {
     await qs.fetch();
     if (qs.data.length === 0) {
       throw new DoesNotExist();
-    }
-    else if (qs.data.length > 1) {
+    } else if (qs.data.length > 1) {
       throw new MultipleObjectsReturned(qs.data.length);
-    }
-    else {
+    } else {
       return qs.data[0];
     }
   }
 
-  async * allPages() {
+  /* eslint-disable no-await-in-loop, no-restricted-syntax */
+  async* allPages() {
     /*  Async generator that returns all the pages of a paginated response:
       *
       *   const children = familyApi.Child.list();
@@ -305,14 +303,13 @@ export class Collection {
       yield page;
       if (page.next) {
         page = await page.getNext();
-      }
-      else {
+      } else {
         break;
       }
     }
   }
 
-  async * all() {
+  async* all() {
     /*  Async generator that returns all the items of a paginated response:
       *
       *   const children = familyApi.Child.list();
@@ -328,4 +325,5 @@ export class Collection {
       }
     }
   }
+  /* eslint-enable */
 }

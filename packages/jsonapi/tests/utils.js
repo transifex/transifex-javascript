@@ -2,8 +2,8 @@
 
 import axios from 'axios';
 
-import { Resource } from '../src/resources';
-import { JsonApi } from '../src/apis';
+import Resource from '../src/resources';
+import JsonApi from '../src/apis';
 
 export class Api extends JsonApi {
   static HOST = 'https://api.families.com';

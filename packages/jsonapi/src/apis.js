@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import _ from 'lodash'; /* eslint-disable-line max-classes-per-file */
 import axios from 'axios';
 
 import { isNull, isResource } from './utils';
 import { JsonApiException } from './errors';
-import { Resource } from './resources';
+import Resource from './resources';
 
-export class JsonApi {
+export default class JsonApi {
   /*  {json:api} connection **type** class. You need to subclass this to
     * establish communication with a compatible server. Then, **before**
     * creating a connection **instance**, you need to register `Resource`
@@ -83,11 +83,8 @@ export class JsonApi {
     if (auth) {
       if (_.isFunction(auth)) {
         this.auth = auth;
-      }
-      else {
-        this.auth = () => {
-          return { Authorization: `Bearer ${auth}` };
-        };
+      } else {
+        this.auth = () => ({ Authorization: `Bearer ${auth}` });
       }
     }
   }
@@ -96,7 +93,7 @@ export class JsonApi {
     function get() {
       const jsonApiInstance = this;
       let childCls = jsonApiInstance.registry[parentCls.TYPE];
-      if (! childCls) {
+      if (!childCls) {
         childCls = class extends parentCls {
           static API = jsonApiInstance;
         };
@@ -108,11 +105,13 @@ export class JsonApi {
     Object.defineProperty(this.prototype, parentCls.TYPE, { get });
   }
 
-  async request({ url,
-                  bulk = false,
-                  headers = {},
-                  maxRedirects = 0,
-                  ...props }) {
+  async request({
+    url,
+    bulk = false,
+    headers = {},
+    maxRedirects = 0,
+    ...props
+  }) {
     /*  Perform an HTTP request to the server. Most of the parameters will be
       * filled in with sensible defaults for {json:api} interactons. The rest
       * will be forwarded to `axios.request()`. In case of error, an attempt
@@ -121,32 +120,32 @@ export class JsonApi {
       * originated in the load balancer sitting in front of the server), the
       * axios error will be thrown. */
 
+    let actualUrl = url;
     if (url[0] === '/') {
-      url = this.host + url;
+      actualUrl = this.host + url;
     }
     const actualHeaders = this.auth();
     if (bulk) {
       actualHeaders['Content-Type'] = (
         'application/vnd.api+json;profile="bulk"'
       );
-    }
-    else {
+    } else {
       actualHeaders['Content-Type'] = 'application/vnd.api+json';
     }
     Object.assign(actualHeaders, headers);
     let response;
     try {
-      response = await axios.request({ url,
-                                       headers: actualHeaders,
-                                       maxRedirects,
-                                       ...props });
-    }
-    catch (e) {
+      response = await axios.request({
+        url: actualUrl,
+        headers: actualHeaders,
+        maxRedirects,
+        ...props,
+      });
+    } catch (e) {
       const errors = _.get(e.response, 'data.errors');
       if (errors) {
         throw new JsonApiException(e.response.status, errors);
-      }
-      else {
+      } else {
         throw e;
       }
     }
@@ -159,8 +158,8 @@ export class JsonApi {
       */
 
     const jsonApiInstance = this;
-    let cls = this.registry[type];
-    if (! cls) {
+    const cls = this.registry[type];
+    if (!cls) {
       this.registry[type] = class extends Resource {
         static TYPE = type;
 
@@ -178,12 +177,11 @@ export class JsonApi {
     if (isNull(value) || isResource(value)) {
       return value;
     }
-    else {
-      if ('data' in value) {
-        value = value.data;
-      }
-      return this.new(value);
+    let actualValue = value;
+    if ('data' in value) {
+      actualValue = value.data;
     }
+    return this.new(actualValue);
   }
 
   static extend({ HOST, ...proto }) {

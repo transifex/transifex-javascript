@@ -4,7 +4,7 @@ import './utils';
 
 import axios from 'axios';
 
-import { JsonApi } from '../src/apis';
+import JsonApi from '../src/apis';
 import { JsonApiException } from '../src/errors';
 
 jest.mock('axios');

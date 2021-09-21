@@ -1,3 +1,21 @@
+/* eslint-disable max-classes-per-file */
+
+class JsonApiError {
+  constructor({
+    status, code, title, detail, source = null,
+  }) {
+    this.status = status;
+    this.code = code;
+    this.title = title;
+    this.detail = detail;
+    this.source = source;
+  }
+
+  toString() {
+    return `<JsonApiError: ${this.status} - ${this.detail}> `;
+  }
+}
+
 export class JsonApiException extends Error {
   constructor(statusCode, errors, ...args) {
     super(...args);
@@ -13,20 +31,8 @@ export class JsonApiException extends Error {
   }
 }
 
-class JsonApiError {
-  constructor({ status, code, title, detail, source = null }) {
-    this.status = status;
-    this.code = code;
-    this.title = title;
-    this.detail = detail;
-    this.source = source;
-  }
-
-  toString() {
-    return `<JsonApiError: ${this.status} - ${this.detail}> `;
-  }
-}
-
 export class NotSingleItem extends Error {}
 export class DoesNotExist extends NotSingleItem {}
 export class MultipleObjectsReturned extends NotSingleItem {}
+
+/* eslint-enable */

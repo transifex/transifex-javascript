@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-import { Collection } from '../src/collections';
+import Collection from '../src/collections';
 import { DoesNotExist, MultipleObjectsReturned } from '../src/errors';
 import { api, expectRequestMock } from './utils';
 
@@ -18,7 +18,6 @@ function testItem(id, attributes = {}) {
     related: {},
   };
 }
-
 
 test('list', async () => {
   let collection;
@@ -242,23 +241,24 @@ test('get with errors', async () => {
   errorRaised = false;
   try {
     await api.Item.get();
-  }
-  catch (e) {
+  } catch (e) {
     if (e instanceof DoesNotExist) {
       errorRaised = true;
     }
   }
   expect(errorRaised).toBeTruthy();
 
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-    { type: 'items', id: '1' },
-    { type: 'items', id: '2' },
-  ] } }));
+  axios.request.mockResolvedValue(Promise.resolve({
+    data: {
+      data: [
+        { type: 'items', id: '1' }, { type: 'items', id: '2' },
+      ],
+    },
+  }));
   errorRaised = false;
   try {
     await api.Item.get();
-  }
-  catch (e) {
+  } catch (e) {
     if (e instanceof MultipleObjectsReturned) {
       errorRaised = true;
     }

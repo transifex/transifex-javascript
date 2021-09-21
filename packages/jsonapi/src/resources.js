@@ -1,11 +1,20 @@
-import _ from 'lodash';
+import _ from 'lodash'; /* eslint-disable-line max-classes-per-file */
 import axios from 'axios';
 
-import { hasData, hasLinks, isList, isNull, isObject, isPluralFetched,
-         isResource, isResourceIdentifier, isSingularFetched } from './utils';
-import { Collection } from './collections';
+import { /* eslint-disable-line import/no-cycle */
+  hasData,
+  hasLinks,
+  isList,
+  isNull,
+  isObject,
+  isPluralFetched,
+  isResource,
+  isResourceIdentifier,
+  isSingularFetched,
+} from './utils';
+import Collection from './collections'; /* eslint-disable-line import/no-cycle */
 
-export class Resource {
+export default class Resource {
   /*  Subclass like this:
     *
     *     class Parent extends Resource {
@@ -34,14 +43,16 @@ export class Resource {
     this._overwrite(data);
   }
 
-  _overwrite({ id = null,
-               attributes = {},
-               relationships = {},
-               links = {},
-               redirect = null,
-               type = null,
-               included = [],
-               ...props }) {
+  _overwrite({
+    id = null,
+    attributes = {},
+    relationships = {},
+    links = {},
+    redirect = null,
+    type = null,
+    included = [],
+    ...props
+  }) {
     /*  Write to the basic attributes of the resource. The input should
       * resemble the body of the 'data' field of an {json:api} response. Used
       * by the constructor, 'reload' and 'save'.
@@ -77,103 +88,109 @@ export class Resource {
       );
     }
 
-    for (const key in props) {
-      const value = props[key];
+    const actualAttributes = attributes;
+    const actualRelationships = relationships;
+
+    Object.entries(props).forEach(([key, value]) => {
       if (
         // Parent: { type: 'parents', id: '1' }
-        isResourceIdentifier(value) ||
+        isResourceIdentifier(value)
 
         // Parent: new Parent({ id: '1' })
-        isResource(value) ||
+        || isResource(value)
 
-        (isObject(value) && (
+        || (isObject(value) && (
 
           // Parent: { links: { related: 'related' } }
-          hasLinks(value) ||
+          hasLinks(value)
 
-          (hasData(value) && (
+          || (hasData(value) && (
 
             // Parent: { data: { type: 'parents', id: '1' } }
-            isResourceIdentifier(value.data) ||
+            isResourceIdentifier(value.data)
 
             // Parent: { data: new Parent({ id: '1' }) }
-            isResource(value.data) ||
+            || isResource(value.data)
 
             // Children: { data: [{ type: 'children', id: '1' },
             //                    New Child({ id: '1' })] }
-            _.every(value.data, (item) => (isResourceIdentifier(item) ||
-                                           isResource(item)))
+            || _.every(value.data, (item) => (
+              isResourceIdentifier(item) || isResource(item)
+            ))
           ))
-        )) ||
+        ))
 
         // Children: [{ type: 'children', id: '1' }, new Child({ id: '1' })]
-        isList(value) && value.length > 0 && _.every(value, (item) => (
-          isResourceIdentifier(item) ||
-          isResource(item)
-        ))
+        || (isList(value) && value.length > 0 && _.every(value, (item) => (
+          isResourceIdentifier(item)
+          || isResource(item)
+        )))
       ) {
-        relationships[key] = value;
+        actualRelationships[key] = value;
+      } else {
+        actualAttributes[key] = value;
       }
-      else {
-        attributes[key] = value;
-      }
-    }
+    });
 
     this.id = id;
-    this.attributes = attributes;
+    this.attributes = actualAttributes;
     this.links = links;
     this.redirect = redirect;
 
-    this.relationships = _.pickBy(this.relationships,
-                                  (value, key) => key in relationships);
-    this.related = _.pickBy(this.related,
-                            (value, key) => key in relationships);
+    this.relationships = _.pickBy(
+      this.relationships,
+      (value, key) => key in actualRelationships,
+    );
+    this.related = _.pickBy(
+      this.related,
+      (value, key) => key in actualRelationships,
+    );
     const includedMap = {};
-    for (const includedItem of included) {
+    included.forEach((includedItem) => {
       const key = `${includedItem.type}__${includedItem.id}`;
       includedMap[key] = this.constructor.API.asResource(includedItem);
-    }
-    for (const key in relationships) {
-      const value = relationships[key];
+    });
+    Object.entries(actualRelationships).forEach(([key, value]) => {
       this._setRelated(key, value, includedMap);
-    }
+    });
   }
 
   _setRelated(relationshipName, value, includedMap = null) {
-    if (! includedMap) {
-      includedMap = {};
+    let actualValue = value;
+    let actualIncludedMap = includedMap;
+    if (!actualIncludedMap) {
+      actualIncludedMap = {};
     }
-    if (! value) {
+    if (!actualValue) {
       this.relationships[relationshipName] = null;
       this.related[relationshipName] = null;
-    }
-    else if (
-      isList(value) ||
-      (isObject(value) && isList(value.data)) ||
-      (isObject(value) && hasLinks(value) && ! hasData(value))
+    } else if (
+      isList(actualValue)
+      || (isObject(actualValue) && isList(actualValue.data))
+      || (isObject(actualValue) && hasLinks(actualValue) && !hasData(actualValue))
     ) {
       this.relationships[relationshipName] = {};
       const relationship = this.relationships[relationshipName];
-      if (isObject(value) && hasLinks(value)) {
-        relationship.links = value.links;
+      if (isObject(actualValue) && hasLinks(actualValue)) {
+        relationship.links = actualValue.links;
       }
-      if (hasData(value)) {
-        value = value.data;
+      if (hasData(actualValue)) {
+        actualValue = actualValue.data;
       }
-      if (isList(value)) {
-        let datas = [], resources = [];
-        for (const item of value) {
+      if (isList(actualValue)) {
+        const datas = [];
+        const resources = [];
+        actualValue.forEach((item) => {
           const resource = this.constructor.API.asResource(item);
           const data = resource.asResourceIdentifier();
           datas.push(data);
           const key = `${data.type}__${data.id}`;
-          if (key in includedMap) {
-            resources.push(includedMap[key]);
-          }
-          else {
+          if (key in actualIncludedMap) {
+            resources.push(actualIncludedMap[key]);
+          } else {
             resources.push(resource);
           }
-        }
+        });
 
         relationship.data = datas;
         let url = null;
@@ -182,14 +199,16 @@ export class Resource {
         }
 
         if (
-          ! this.related[relationshipName] ||
-          ! this.related[relationshipName].data ||
-          this.related[relationshipName].data.length !== resources.length ||
-          _.some(
+          !this.related[relationshipName]
+          || !this.related[relationshipName].data
+          || this.related[relationshipName].data.length !== resources.length
+          || _.some(
             _.zip(this.related[relationshipName].data, resources),
-            ([ previous, next ]) => (previous.id !== next.id ||
-                                     _.size(next.attributes) > 0 ||
-                                     _.size(next.relationships) > 0),
+            ([previous, next]) => (
+              previous.id !== next.id
+              || _.size(next.attributes) > 0
+              || _.size(next.relationships) > 0
+            ),
           )
         ) {
           this.related[relationshipName] = Collection.fromData(
@@ -197,31 +216,29 @@ export class Resource {
           );
         }
       }
-    }
-    else {
-      let resource, data, links = null;
-      if (isObject(value)) {
-        if (hasData(value)) {
-          data = value.data;
-          if ('links' in value) {
-            links = value.links;
+    } else {
+      let resource;
+      let data;
+      let links = null;
+      if (isObject(actualValue)) {
+        if (hasData(actualValue)) {
+          data = actualValue.data;
+          if ('links' in actualValue) {
+            links = actualValue.links;
           }
-        }
-        else {
-          data = value;
+        } else {
+          data = actualValue;
         }
         resource = this.constructor.API.new(data);
-      }
-      else if (isResource(value)) {
-        resource = value;
+      } else if (isResource(actualValue)) {
+        resource = actualValue;
         data = resource.asResourceIdentifier();
-      }
-      else {
+      } else {
         throw new Error(`Cannot set relationship '${relationshipName}'`);
       }
       const key = `${data.type}__${data.id}`;
-      if (key in includedMap) {
-        resource = includedMap[key];
+      if (key in actualIncludedMap) {
+        resource = actualIncludedMap[key];
       }
 
       this.relationships[relationshipName] = { data };
@@ -230,9 +247,9 @@ export class Resource {
       }
 
       if (
-        (this.related[relationshipName] || {}).id !== resource.id ||
-        _.size(resource.attributes) > 0 ||
-        _.size(resource.relationships) > 0
+        (this.related[relationshipName] || {}).id !== resource.id
+        || _.size(resource.attributes) > 0
+        || _.size(resource.relationships) > 0
       ) {
         this.related[relationshipName] = resource;
       }
@@ -254,9 +271,7 @@ export class Resource {
     if (key in this.related) {
       return this.related[key];
     }
-    else {
-      return this.attributes[key];
-    }
+    return this.attributes[key];
   }
 
   set(key, value) {
@@ -275,8 +290,7 @@ export class Resource {
     if (key in this.relationships) {
       this._setRelated(key, value);
       this.relationships[key] = this.related[key].asRelationship();
-    }
-    else {
+    } else {
       this.attributes[key] = value;
     }
   }
@@ -289,9 +303,11 @@ export class Resource {
       url: this.getItemUrl(),
       params: include ? { include: include.join(',') } : null,
     });
-    if (response.status >= 300 &&
-        response.status < 400 &&
-        response.headers.Location) {
+    if (
+      response.status >= 300
+      && response.status < 400
+      && response.headers.Location
+    ) {
       this._overwrite({
         id: this.id,
         attributes: this.attributes,
@@ -302,7 +318,7 @@ export class Resource {
       return;
     }
     const body = response.data;
-    const data = response.data.data;
+    const { data } = body;
     if ('included' in body) {
       data.included = body.included;
     }
@@ -310,8 +326,7 @@ export class Resource {
   }
 
   static async get(arg = null, { include = null } = {}) {
-    /*
-      * Get an item by its id:
+    /*  Get an item by its id:
       *
       *   const child = await familyApi.Child.get('1');
       *
@@ -347,13 +362,11 @@ export class Resource {
       if (include) {
         result = result.include(...include);
       }
-      return result.get(arg);
+      return result.get(arg || {});
     }
-    else {
-      const instance = new this({ id: arg });
-      await instance.reload(include);
-      return instance;
-    }
+    const instance = new this({ id: arg });
+    await instance.reload(include);
+    return instance;
   }
 
   async fetch(relationshipName, force = false) {
@@ -366,7 +379,7 @@ export class Resource {
       * are advised to reuse 'fetch'.
       * */
 
-    if (! (relationshipName in this.relationships)) {
+    if (!(relationshipName in this.relationships)) {
       throw new Error(
         `Resource does not have relationship '${relationshipName}'`,
       );
@@ -376,22 +389,22 @@ export class Resource {
       return null;
     }
     const related = this.related[relationshipName];
-    if ((isSingularFetched(related) || isPluralFetched(related)) && ! force) {
+    if ((isSingularFetched(related) || isPluralFetched(related)) && !force) {
       return related;
     }
     if (_.isObject(relationship.data)) {
       await related.reload();
       return related;
     }
-    else {
-      const url = (relationship.links || {}).related;
-      if (! url) {
-        throw new Error(`Cannot fetch ${relationshipName}, no 'related' link`);
-      }
-      this.related[relationshipName] = new Collection(this.constructor.API,
-                                                      url);
-      return this.related[relationshipName];
+    const url = (relationship.links || {}).related;
+    if (!url) {
+      throw new Error(`Cannot fetch ${relationshipName}, no 'related' link`);
     }
+    this.related[relationshipName] = new Collection(
+      this.constructor.API,
+      url,
+    );
+    return this.related[relationshipName];
   }
 
   async save(firstArg = null, secondArg = null) {
@@ -415,46 +428,45 @@ export class Resource {
       *     // or
       *     await parent.save({ age: 54 });
       */
-    let fields = [], props = {};
+    let fields = [];
+    let props = {};
     if (firstArg && secondArg) {
       fields = firstArg;
       props = secondArg;
-    }
-    else if (firstArg) {
+    } else if (firstArg) {
       if (_.isArray(firstArg)) {
         fields = firstArg;
-      }
-      else if (_.isObject(firstArg)) {
+      } else if (_.isObject(firstArg)) {
         props = firstArg;
       }
     }
 
-    for (const field in props) {
-      const value = props[field];
+    Object.entries(props).forEach(([field, value]) => {
       this.set(field, value);
       fields.push(field);
-    }
+    });
 
     if (this.id) {
       await this._saveExisting(fields);
-    }
-    else {
+    } else {
       await this._saveNew(fields);
     }
   }
 
   async _saveExisting(fields = []) {
     if (fields.length === 0) {
-      for (const field in this.attributes) {
+      Object.keys(this.attribute).forEach((field) => {
         fields.push(field);
-      }
-      for (const field in this.related) {
+      });
+      Object.keys(this.related).forEach((field) => {
         fields.push(field);
-      }
+      });
     }
 
-    const data = { ...this.asResourceIdentifier(),
-                   ...this._generateDataForSaving(fields) };
+    const data = {
+      ...this.asResourceIdentifier(),
+      ...this._generateDataForSaving(fields),
+    };
     const response = await this.constructor.API.request({
       method: 'patch',
       url: this.getItemUrl(),
@@ -465,15 +477,15 @@ export class Resource {
 
   async _saveNew(fields = []) {
     if (fields.length === 0) {
-      for (const field in this.attributes) {
+      Object.keys(this.attributes).forEach((field) => {
         fields.push(field);
-      }
-      for (const field in this.related) {
+      });
+      Object.keys(this.related).forEach((field) => {
         fields.push(field);
-      }
+      });
     }
 
-    let data = { type: this.constructor.TYPE };
+    const data = { type: this.constructor.TYPE };
     if (this.id) {
       data.id = this.id;
     }
@@ -487,34 +499,31 @@ export class Resource {
   }
 
   _generateDataForSaving(fields) {
-    let result = {};
-    for (const field of fields) {
+    const result = {};
+    fields.forEach((field) => {
       if (field in this.attributes) {
-        if (! ('attributes' in result)) {
+        if (!('attributes' in result)) {
           result.attributes = {};
         }
         result.attributes[field] = this.attributes[field];
-      }
-      else if (field in this.relationships) {
-        if (! ('relationships' in result)) {
+      } else if (field in this.relationships) {
+        if (!('relationships' in result)) {
           result.relationships = {};
         }
         result.relationships[field] = this.constructor.API.asResource(
           this.relationships[field],
         ).asRelationship();
-      }
-      else {
+      } else {
         throw new Error(`Unknown field '${field}'`);
       }
-    }
+    });
     return result;
   }
 
   _postSave(response) {
-    const data = response.data.data;
-    let related = { ...this.related };
-    for (const relationshipName in related) {
-      const relatedInstance = related[relationshipName];
+    const { data } = response.data;
+    const related = { ...this.related };
+    Object.entries(related).forEach(([relationshipName, relatedInstance]) => {
       const oldId = relatedInstance.id;
       const newId = data.relationships[relationshipName].data.id;
       if (oldId !== newId) {
@@ -522,13 +531,12 @@ export class Resource {
           related[relationshipName] = this.constructor.API.new(
             data.relationships[relationshipName],
           );
-        }
-        else {
+        } else {
           delete related[relationshipName];
         }
       }
-    }
-    let relationships = data.relationships || {};
+    });
+    const relationships = data.relationships || {};
     delete data.relationships;
     Object.assign(relationships, related);
     this._overwrite({ relationships, ...data });
@@ -563,8 +571,10 @@ export class Resource {
       *     await parent.save(['name']);
       * */
 
-    await this.constructor.API.request({ method: 'delete',
-                                         url: this.getItemUrl() });
+    await this.constructor.API.request({
+      method: 'delete',
+      url: this.getItemUrl(),
+    });
     this.id = null;
   }
 
@@ -584,20 +594,24 @@ export class Resource {
       *   {"data": {"type": "parents", "id": "2"}}
       * */
 
-    if (! (field in this.relationships)) {
+    let actualValue = value;
+
+    if (!(field in this.relationships)) {
       throw new Error(`${field} is not a relationship`);
     }
 
-    value = value && this.constructor.API.asResource(value);
-    await this._editRelationship('patch',
-                                 field,
-                                 value && value.asResourceIdentifier());
-    if (! this.relationships[field]) {
+    actualValue = actualValue && this.constructor.API.asResource(actualValue);
+    await this._editRelationship(
+      'patch',
+      field,
+      actualValue && actualValue.asResourceIdentifier(),
+    );
+    if (!this.relationships[field]) {
       this.relationships[field] = {};
     }
-    this.relationships[field].data = value && value.asResourceIdentifier();
-    if ((this.related[field] || {}).id !== (value || {}).id) {
-      this.related[field] = value;
+    this.relationships[field].data = actualValue && actualValue.asResourceIdentifier();
+    if ((this.related[field] || {}).id !== (actualValue || {}).id) {
+      this.related[field] = actualValue;
     }
   }
 
@@ -736,10 +750,10 @@ export class Resource {
       *   }, 1000);
       * */
 
-    if (! this.redirect) {
+    if (!this.redirect) {
       throw new Error('Cannot follow without redirect');
     }
-    return await axios.get(this.redirect);
+    return axios.get(this.redirect);
   }
 
   static async bulkCreate(args) {
@@ -759,7 +773,7 @@ export class Resource {
       * */
 
     const data = [];
-    for (const arg of args) {
+    args.forEach((arg) => {
       const resource = this.API.asResource(arg);
       const payloadItem = { type: this.TYPE };
       if (_.size(resource.attributes)) {
@@ -772,11 +786,13 @@ export class Resource {
         payloadItem.id = resource.id;
       }
       data.push(payloadItem);
-    }
-    const response = await this.API.request({ method: 'post',
-                                              url: this.getCollectionUrl(),
-                                              data: { data },
-                                              bulk: true });
+    });
+    const response = await this.API.request({
+      method: 'post',
+      url: this.getCollectionUrl(),
+      data: { data },
+      bulk: true,
+    });
     return Collection.fromData(this.API, response.data.data);
   }
 
@@ -797,21 +813,21 @@ export class Resource {
       * */
 
     const data = [];
-    for (const arg of args) {
+    args.forEach((arg) => {
       if (isResource(arg)) {
         data.push(arg.asResourceIdentifier());
-      }
-      else if (_.isPlainObject(arg)) {
+      } else if (_.isPlainObject(arg)) {
         data.push(this.API.asResource(arg).asResourceIdentifier());
-      }
-      else {
+      } else {
         data.push({ type: this.TYPE, id: arg });
       }
-    }
-    await this.API.request({ method: 'delete',
-                             url: this.getCollectionUrl(),
-                             data: { data },
-                             bulk: true });
+    });
+    await this.API.request({
+      method: 'delete',
+      url: this.getCollectionUrl(),
+      data: { data },
+      bulk: true,
+    });
     return data.length;
   }
 
@@ -837,32 +853,32 @@ export class Resource {
       * */
 
     const data = [];
-    for (const arg of args) {
+    args.forEach((arg) => {
       const resource = this.API.asResource(arg);
       const payloadItem = resource.asResourceIdentifier();
-      for (const field of fields) {
+      fields.forEach((field) => {
         if (field in resource.attributes) {
-          if (! ('attributes' in payloadItem)) {
+          if (!('attributes' in payloadItem)) {
             payloadItem.attributes = {};
           }
           payloadItem.attributes[field] = resource.attributes[field];
-        }
-        else if (field in resource.relationships) {
-          if (! ('relationships' in payloadItem)) {
+        } else if (field in resource.relationships) {
+          if (!('relationships' in payloadItem)) {
             payloadItem.relationships = {};
           }
           payloadItem.relationships[field] = resource.relationships[field];
-        }
-        else {
+        } else {
           throw new Error(`${field} is not part of one of the resources`);
         }
-      }
+      });
       data.push(payloadItem);
-    }
-    const response = await this.API.request({ method: 'patch',
-                                              url: this.getCollectionUrl(),
-                                              data: { data },
-                                              bulk: true });
+    });
+    const response = await this.API.request({
+      method: 'patch',
+      url: this.getCollectionUrl(),
+      data: { data },
+      bulk: true,
+    });
     return Collection.fromData(this.API, response.data.data);
   }
 
@@ -870,12 +886,13 @@ export class Resource {
     /*  Make a POST request to the collection URL, passing options directly to
       * axios */
 
-    const response = await this.API.request({ method: 'post',
-                                              url: this.getCollectionUrl(),
-                                              ...props });
+    const response = await this.API.request({
+      method: 'post',
+      url: this.getCollectionUrl(),
+      ...props,
+    });
     const body = response.data;
-    const data = body.data;
-    const included = body.included;
+    const { data, included } = body;
     if (included) {
       data.included = included;
     }
@@ -884,7 +901,7 @@ export class Resource {
 
   getItemUrl() {
     let url = this.links.self;
-    if (! url) {
+    if (!url) {
       url = `/${this.constructor.TYPE}/${this.id}`;
     }
     return url;
@@ -938,8 +955,8 @@ export class Resource {
   }
 }
 
-for (const listMethod of [ 'filter', 'page', 'include', 'sort', 'fields' ]) {
-  Resource[listMethod] = function(...args) {
+['filter', 'page', 'include', 'sort', 'fields'].forEach((listMethod) => {
+  Resource[listMethod] = function (...args) { /* eslint-disable-line func-names */
     return this.list()[listMethod](...args);
   };
-}
+});
