@@ -21,7 +21,7 @@
   "scripts": {
     "lint": "eslint src",
     "build": "babel src --out-dir dist --source-maps true && webpack",
-    "test": "jest",
+    "test": "jest && npm run build",
     "publish-npm": "npm publish"
   },
   "bugs": {
