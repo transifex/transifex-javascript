@@ -9,7 +9,7 @@ as much as possible.
 ## Setting up
 
 ```sh
-npm install --save javascript-jsonapi-sdk-library
+npm install --save @transifex/jsonapi
 ```
 
 Using  this library means creating your own API SDK for a remote service. In
@@ -17,10 +17,10 @@ order to do that, you need to first define an *API connection type*. This is
 done by subclassing `JsonApi`:
 
 ```javascript
-import { JsonApi } from 'javascript-jsonapi-sdk-library';
+import { JsonApi } from '@transifex/jsonapi';
 
 class FamilyApi extends JsonApi {
-    static HOST = 'https://api.families.com';
+  static HOST = 'https://api.families.com';
 }
 ```
 
@@ -29,17 +29,17 @@ Next, you have to define some *API resource types* and register them to the
 with the connection type's `register` method:
 
 ```javascript
-import { Resource } from 'javascript-jsonapi-sdk-library';
+import { Resource } from '@transifex/jsonapi';
 
 class Parent extends Resource {
-    static name = 'Parent';
-    static TYPE = 'parents';
+  static name = 'Parent';
+  static TYPE = 'parents';
 }
 FamilyApi.register(Parent);
 
 class Child extends Resource {
-    static name = 'Child';
-    static TYPE = 'children';
+  static name = 'Child';
+  static TYPE = 'children';
 }
 FamilyApi.register(Child);
 ```
@@ -65,8 +65,8 @@ against a sandbox API server and not the production one:
 
 ```javascript
 const familyApi = new FamilyApi({
-    host: 'https://sandbox.api.families.com',
-    auth: 'MYTOKEN',
+  host: 'https://sandbox.api.families.com',
+  auth: 'MYTOKEN',
 });
 ```
 
@@ -150,15 +150,15 @@ fact, this is exactly how `@transifex/api` has been set up:
 ```javascript
 // transifexApi/src/index.js
 
-import { JsonApi, Resource } from 'javascript-jsonapi-sdk-library';
+import { JsonApi, Resource } from '@transifex/jsonapi';
 
 export class TransifexApi extends JsonApi {
-    static HOST = 'https://rest.api.transifex.com';
+  static HOST = 'https://rest.api.transifex.com';
 }
 
 class Organization extends Resource {
-    static name = "Organization";
-    static TYPE = "organizations";
+  static name = "Organization";
+  static TYPE = "organizations";
 }
 TransifexApi.register(Organization);
 
@@ -203,7 +203,7 @@ The `auth` property to `JsonApi` or `setup` can either be:
    import { encrypt } from './crypto';
 
    function myAuth() {
-       return { 'x-signature': encrypt(Date()) };
+     return { 'x-signature': encrypt(Date()) };
    }
 
    const familyApi = new FamilyApi({ auth: myAuth });
@@ -221,16 +221,16 @@ of the resource's subclass:
 
 ```javascript
 class Child extends Resource {
-    static name = 'Child';
-    static TYPE = 'children';
+  static name = 'Child';
+  static TYPE = 'children';
 
-    static getCollectionUrl() {
-        return '/children_collection';
-    }
+  static getCollectionUrl() {
+      return '/children_collection';
+  }
 
-    getItemUrl() {
-        return `/child_item/${this.id}`;
-    }
+  getItemUrl() {
+      return `/child_item/${this.id}`;
+  }
 }
 FamilyApi.register(Child);
 ```
@@ -307,9 +307,9 @@ relationship can either be:
      id: '...',
      attributes: { ... },
      relationships: {
-         parent: { data: { type: 'parents', id: '...' },      // <---
-                   links: { self: '...', related: '...' } },  // <---
-         ... ,
+       parent: { data: { type: 'parents', id: '...' },      // <---
+                 links: { self: '...', related: '...' } },  // <---
+       ... ,
      },
      links: { ... } }
    ```
@@ -323,8 +323,8 @@ relationship can either be:
      id: '...',
      attributes: { ... },
      relationships: {
-         children: { links: { self: '...', related: '...' } },  // <---
-         ...,
+       children: { links: { self: '...', related: '...' } },  // <---
+       ...,
      },
      links: { ... } }
    ```
@@ -336,11 +336,11 @@ relationship can either be:
      id: '...',
      attributes: { ... },
      relationships: {
-         children: { links: { self: '...', related: '...' },    // <---
-                     data: [{ type: 'children', id: '...' },    // <---
-                            { type: 'children', id: '...' },    // <---
-                            ... ] },                            // <---
-         ... ,
+       children: { links: { self: '...', related: '...' },    // <---
+                   data: [{ type: 'children', id: '...' },    // <---
+                          { type: 'children', id: '...' },    // <---
+                          ... ] },                            // <---
+       ... ,
      },
      links: { ... } }
    ```
@@ -582,15 +582,15 @@ will not actually make any requests to the server until you await a `.fetch()`
 call on the collection. So this:
 
 ```javascript
-function getChildren(gender = null, hair_color = null) {
-    let result = familyApi.Child.list();
-    if (gender) {
-        result = result.filter({ gender });
-    }
-    if (hair_color) {
-        result = result.filter({ hair_color });
-    }
-    return result
+function getChildren({ gender = null, hair_color = null }) {
+  let result = familyApi.Child.list();
+  if (gender) {
+    result = result.filter({ gender });
+  }
+  if (hair_color) {
+    result = result.filter({ hair_color });
+  }
+  return result
 }
 const children = getChildren({ hair_color: 'red' });
 await children.fetch();
@@ -609,13 +609,13 @@ const all = [];
 let page = familyApi.Child.list();
 await page.fetch();
 while (true) {
-    for (const item of page.data) {
-        all.push(item);
-    }
-    if (! page.next) {
-        break;
-    }
-    page = await page.getNext();
+  for (const item of page.data) {
+    all.push(item);
+  }
+  if (! page.next) {
+    break;
+  }
+  page = await page.getNext();
 }
 ```
 
@@ -644,7 +644,7 @@ values of the response will be used to prefill the relevant fields of
 `related`:
 
 ```javascript
-const child = await familyApi.Child.get("1", { include: ['parent'] })
+const child = await familyApi.Child.get('1', { include: ['parent'] })
 console.log(child.get('parent').get('name'));  // No need to fetch the parent
 // <<< 'Zeus'
 
@@ -663,7 +663,7 @@ supplies the related items in the `included` section, these too will be
 prefilled.
 
 ```javascript
-const parent = await familyApi.Parent.get("1", { include: ['children'] });
+const parent = await familyApi.Parent.get('1', { include: ['children'] });
 
 // Assuming the response looks like:
 // {'data': {'type': "parents",
@@ -741,8 +741,8 @@ request which will (attempt to) create the resource on the server.
 ```javascript
 const parent = await familyApi.Parent.get('1');
 const child = new familyApi.Child({
-    attributes: { name: 'Hercules' },
-    relationships: { parent },
+  attributes: { name: 'Hercules' },
+  relationships: { parent },
 });
 await child.save();
 ```
@@ -756,8 +756,8 @@ There is a shortcut for the above, called `.create()`
 ```javascript
 const parent = await familyApi.Parent.get('1');
 const child = await familyApi.Child.create({
-    attributes: { name: 'Hercules' },
-    relationships: { parent },
+  attributes: { name: 'Hercules' },
+  relationships: { parent },
 });
 ```
 
@@ -769,20 +769,20 @@ relationship from another resource. So, the following are equivalent:_
 // Well, almost equivalent, the first example will trigger a request to fetch
 // the parent's data from the server
 const child = await familyApi.Child.create({
-    attributes: { name: 'Hercules' },
-    relationships: { parent: await familyApi.Parent.get('1') },
+  attributes: { name: 'Hercules' },
+  relationships: { parent: await familyApi.Parent.get('1') },
 });
 const child = await familyApi.Child.create({
-    attributes: { name: 'Hercules' },
-    relationships: { parent: new familyApi.Parent({ id: '1' }) },
+  attributes: { name: 'Hercules' },
+  relationships: { parent: new familyApi.Parent({ id: '1' }) },
 });
 const child = familyApi.Child.create({
-    attributes: { name: 'Hercules' },
-    relationships: { parent: { type: 'parents', id: '1' } },
+  attributes: { name: 'Hercules' },
+  relationships: { parent: { type: 'parents', id: '1' } },
 });
 const child = familyApi.Child.create({
-    attributes: { name: 'Hercules' },
-    relationships: { parent: { data: { type: 'parents', id: '1' } } },
+  attributes: { name: 'Hercules' },
+  relationships: { parent: { data: { type: 'parents', id: '1' } } },
 });
 ```
 
@@ -791,8 +791,8 @@ without having to fetch the relationship:
 
 ```javascript
 const newChild = await familyApi.Child.create({
-    attributes: { name: 'Achilles' },
-    relationships: { parent: old_child.get('parent') },
+  attributes: { name: 'Achilles' },
+  relationships: { parent: old_child.get('parent') },
 });
 ```
 
@@ -965,8 +965,7 @@ const child = await familyApi.Child.get('a');
 child.set('married', true);
 
 const children = await familyApi.Child.bulkUpdate(
-   [child,
-    { type: 'children', id: 'b', attributes: { married: true } }],
+   [child, { type: 'children', id: 'b', attributes: { married: true } }],
    ['married'],
 );
 
@@ -978,7 +977,7 @@ const parent = await familyApi.Parent.get('1');
 const childrenCollection = await parent.fetch('children');
 const allChildren = [];
 for await (const child of children_collection.all()) {
-    allChildren.push(child);
+  allChildren.push(child);
 }
 await familyApi.Child.bulkDelete(allChildren);
 ```
