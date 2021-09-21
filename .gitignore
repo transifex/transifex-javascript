@@ -3,6 +3,7 @@ packages/*/package-lock.json
 package-lock.json
 coverage
 dist
+bundle
 test_dist
 .DS_store
 .nyc_output
