@@ -2,10 +2,10 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  entry: './src/transifexApi.js',
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'transifexApi.js',
+    path: path.resolve(__dirname, 'bundle'),
     library: {
       name: 'transifexApi',
       type: 'umd',

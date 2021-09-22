@@ -2,18 +2,13 @@
   "name": "@transifex/jsonapi",
   "version": "1.0.4",
   "description": "{json:api} SDK library",
-  "keywords": [
-    "jsonapi",
-    "sdk",
-    "api",
-    "client"
-  ],
+  "keywords": ["jsonapi", "sdk", "api", "client"],
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "browser": "bundle/jsonapi.js",
-  "module": "dist/index.js",
+  "module": "src/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -22,7 +17,7 @@
     "build": "babel src --out-dir dist --source-maps true && webpack",
     "lint": "eslint src",
     "publish-npm": "npm publish",
-    "test": "jest && npm run build"
+    "test": "jest"
   },
   "bugs": {
     "url": "https://github.com/transifex/transifex-javascript/issues"
