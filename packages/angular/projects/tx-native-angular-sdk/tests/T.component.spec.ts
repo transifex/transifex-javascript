@@ -183,4 +183,27 @@ describe('TComponent', () => {
       { ...translationParams, _key: 'key-not-translated' });
     expect(component.translatedStr).toEqual('translated-again');
   });
+
+  it('should respect changes to input params', async () => {
+    // setup
+    spyOn(service, 'translate').and.returnValue('translated');
+
+    // act
+    component.str = 'not-translated';
+    component.key = 'key-not-translated';
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    component.context = 'late';
+    component.ngOnChanges({});
+    fixture.detectChanges();
+
+    // assert
+    expect(service.translate).toHaveBeenCalledWith('not-translated', {
+      ...translationParams,
+      _key: 'key-not-translated',
+      _context: 'late',
+    });
+    expect(component.translatedStr).toEqual('translated');
+  });
 });
