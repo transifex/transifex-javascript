@@ -17,13 +17,13 @@ import Resource from './resources';
   *
   *   class Parent extends Resource {...}
   *
-  *   FamilyApi.register(Parent);
+  *   FamilyApi.register(Parent, 'Parent');
   *
   *   const familyApi = new FamilyApi({ auth: 'MYTOKEN' });
   *
   * After this, you can access the `Resouce` subclass and its methods on the
-  * connection instance directly. You can use either the `Resource`
-  * subclass's name or its TYPE static field:
+  * connection instance directly. You can use either the name you supplied as a
+  * second argument to `.register()` or its TYPE static field:
   *
   *   const parent = await familyApi.Parent.get('1');
   *   const parent = await familyApi.parents.get('1');
@@ -89,7 +89,7 @@ export default class JsonApi {
     }
   }
 
-  static register(parentCls) {
+  static register(parentCls, name) {
     function get() {
       const jsonApiInstance = this;
       let childCls = jsonApiInstance.registry[parentCls.TYPE];
@@ -101,8 +101,13 @@ export default class JsonApi {
       }
       return childCls;
     }
-    Object.defineProperty(this.prototype, parentCls.name, { get });
-    Object.defineProperty(this.prototype, parentCls.TYPE, { get });
+    const descriptor = {
+      configurable: true,
+      enumerable: true,
+      get,
+    };
+    Object.defineProperty(this.prototype, name, descriptor);
+    Object.defineProperty(this.prototype, parentCls.TYPE, descriptor);
   }
 
   /**

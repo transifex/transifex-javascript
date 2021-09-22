@@ -32,32 +32,15 @@ with the connection type's `register` method:
 import { Resource } from '@transifex/jsonapi';
 
 class Parent extends Resource {
-  static name = 'Parent';
   static TYPE = 'parents';
 }
-FamilyApi.register(Parent);
+FamilyApi.register(Parent, 'Parent');
 
 class Child extends Resource {
-  static name = 'Child';
   static TYPE = 'children';
 }
-FamilyApi.register(Child);
+FamilyApi.register(Child, 'Child');
 ```
-
-> Note: The static attribute `name` is used by us in order to expose a version
-> of the class that is _bound_ to the API connection type as an attribute of
-> the API connection _instances_. Typically, javascript classes automatically
-> have a `.name` attribute that is set as the name we used for the class. So:
->
-> ```javascript
-> class Something {}
-> console.log(Something.name);
-> // <<< 'Something'
-> ```
->
-> However, when the code is minified, for example when you bundle it using
-> webpack in production mode, the class names get converted to a single letter.
-> This is why it is safer to add a static 'name' attribute manually.
 
 Users of your SDK can then instantiate your *API connection type*, providing
 authentication credentials and/or overriding the host, in case you want to test
@@ -71,8 +54,8 @@ const familyApi = new FamilyApi({
 ```
 
 Finally the API resource types you have registered can be accessed as
-attributes on this _API connection instance_. You can either use the class's
-name or the API resource's type:
+attributes on this _API connection instance_. You can either use the name you
+provided as the second argument to `.register()` or the API resource's type:
 
 ```javascript
 const child = await familyApi.Child.get('1')
@@ -98,19 +81,18 @@ and `Resource` to achieve the same results:
   <body>
     <script src="jsonapi.js"></script>
     <script>
-      var JsonApi = jsonapi.JsonApi;
-      var Resource = jsonapi.Resource;
+      var JsonApi = window.jsonapi.JsonApi;
+      var Resource = window.jsonapi.Resource;
 
       var FamilyApi = JsonApi.extend({
         HOST: 'https://api.families.com',
       });
 
       var Parent = Resource.extend({
-        name: 'Parent',
         TYPE: 'parents',
       });
 
-      FamilyApi.register(Parent);
+      FamilyApi.register(Parent, 'Parent');
 
       var familyApi = new FamilyApi({
         auth: 'MYTOKEN',
@@ -148,7 +130,7 @@ to either use a _global API connection instance_ or multiple instances. In
 fact, this is exactly how `@transifex/api` has been set up:
 
 ```javascript
-// transifexApi/src/index.js
+// @transifex/api/src/index.js
 
 import { JsonApi, Resource } from '@transifex/jsonapi';
 
@@ -157,10 +139,9 @@ export class TransifexApi extends JsonApi {
 }
 
 class Organization extends Resource {
-  static name = "Organization";
   static TYPE = "organizations";
 }
-TransifexApi.register(Organization);
+TransifexApi.register(Organization, 'Organization');
 
 export const transifexApi = TransifexApi();
 ```
@@ -221,7 +202,6 @@ of the resource's subclass:
 
 ```javascript
 class Child extends Resource {
-  static name = 'Child';
   static TYPE = 'children';
 
   static getCollectionUrl() {
@@ -232,7 +212,7 @@ class Child extends Resource {
       return `/child_item/${this.id}`;
   }
 }
-FamilyApi.register(Child);
+FamilyApi.register(Child, 'Child');
 ```
 
 ### Getting a single resource object from the API
@@ -697,7 +677,7 @@ const child = await familyApi.Child.filter({ name: 'Bill' }).get();
 ```
 
 The `Resource`'s `.get()` static method, which we covered before, also accepts
-properties as an argument. Calling it this way, will apply the filters and use
+properties as an argument. Calling it this way will apply the filters and use
 the collection's `.get()` method on the result.
 
 ```javascript

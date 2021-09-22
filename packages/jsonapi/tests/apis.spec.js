@@ -34,7 +34,7 @@ test('JsonApi.register', () => {
   class Resource {
     static TYPE = 'resources';
   }
-  Api.register(Resource);
+  Api.register(Resource, 'Resource');
 
   const api = new Api();
   expect(api.Resource).toBeTruthy();

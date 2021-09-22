@@ -18,15 +18,11 @@ import Collection from './collections'; /* eslint-disable-line import/no-cycle *
   * Subclass like this:
   *
   *     class Parent extends Resource {
-  *       static name = 'Parent';
   *       static TYPE = 'parents';
   *     }
   *
   * - 'TYPE' is needed to map this resource to the proper URLs and map API
   *   responses to the proper registered classes
-  * - 'name' is also needed in case your code gets minified because
-  *   registering the Resource subclass to an 'API connection type' depends
-  *   on the '.name' attribute of the class to be reliable.
   *
   * To register a Resource subclass to an API connection type, do this:
   *
@@ -36,7 +32,7 @@ import Collection from './collections'; /* eslint-disable-line import/no-cycle *
   *     class Parent extends Resource {
   *       // ...
   *     }
-  *     FamilyApi.register();
+  *     FamilyApi.register(Parent, 'Parent');
   */
 export default class Resource {
   constructor(data = {}) {
@@ -927,7 +923,6 @@ export default class Resource {
     * the resource type:
     *
     *   var Child = Resource.extend({
-    *     name: 'Child',
     *     TYPE: 'children',
     *     pprint: function() {
     *       return `<Child: ${this.id}>`;
@@ -937,8 +932,6 @@ export default class Resource {
     *   // equivalent to
     *
     *   class Child extends Resource {
-    *     static name = 'Child';
-    *
     *     static TYPE = 'children';
     *
     *     pprint() {
@@ -946,10 +939,8 @@ export default class Resource {
     *     }
     *   }
     * */
-  static extend({ name, TYPE, ...proto }) {
+  static extend({ TYPE, ...proto }) {
     const cls = class extends this {
-      static name = name;
-
       static TYPE = TYPE;
     };
     Object.assign(cls.prototype, proto);
