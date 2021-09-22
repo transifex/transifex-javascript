@@ -948,7 +948,7 @@ export default class Resource {
   }
 }
 
-['filter', 'page', 'include', 'sort', 'fields'].forEach((listMethod) => {
+['filter', 'page', 'include', 'sort', 'fields', 'all', 'allPages'].forEach((listMethod) => {
   Resource[listMethod] = function (...args) { /* eslint-disable-line func-names */
     return this.list()[listMethod](...args);
   };

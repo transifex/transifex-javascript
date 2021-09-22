@@ -1,28 +1,31 @@
 {
-  "name": "@transifex/jsonapi",
+  "name": "@transifex/api",
   "version": "1.0.2",
-  "description": "{json:api} SDK library",
+  "description": "Transifex API SDK",
   "keywords": [
-    "jsonapi",
-    "sdk",
-    "api",
-    "client"
+    "transifex",
+    "i18n",
+    "l10n",
+    "localization",
+    "API",
+    "SDK"
   ],
   "author": "Transifex",
-  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/api",
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "browser": "bundle/jsonapi.js",
+  "source": "src/index.js",
+  "browser": "dist/index.js",
   "module": "dist/index.js",
   "publishConfig": {
     "access": "public"
   },
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
-    "build": "babel src --out-dir dist --source-maps true && webpack",
+    "build": "webpack",
     "lint": "eslint src",
     "publish-npm": "npm publish",
-    "test": "jest && npm run build"
+    "test": "webpack"
   },
   "bugs": {
     "url": "https://github.com/transifex/transifex-javascript/issues"
@@ -32,21 +35,19 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.0",
+    "@transifex/jsonapi": "^1.0.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^27.0.6",
     "babel-loader": "^8.2.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
-    "jest": "^27.0.6",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "axios": "^0.21.1",
     "core-js": "^3.17.2",
-    "lodash": "^4.17.21",
     "regenerator-runtime": "^0.13.9"
   }
 }
