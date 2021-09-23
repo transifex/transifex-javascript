@@ -1,6 +1,6 @@
 {
   "name": "@transifex/api",
-  "version": "1.0.5",
+  "version": "1.0.4",
   "description": "Transifex API SDK",
   "keywords": ["transifex", "i18n", "l10n", "localization", "API", "SDK"],
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/api",
@@ -15,8 +15,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint src",
-    "publish-npm": "npm publish",
-    "test": "webpack"
+    "publish-npm": "npm publish"
   },
   "peerDependencies": {
     "@transifex/jsonapi": "^1.0.0"
@@ -27,7 +26,6 @@
   "devDependencies": {
     "@babel/cli": "^7.15.4",
     "@babel/core": "^7.15.5",
-    "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@transifex/jsonapi": "^1.0.4",
     "babel-eslint": "^10.1.0",

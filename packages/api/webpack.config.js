@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = [
   {
-    mode: 'development',
+    mode: 'production',
     entry: './src/transifexApi.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -14,7 +14,7 @@ module.exports = [
     devtool: 'source-map',
   },
   {
-    mode: 'development',
+    mode: 'production',
     entry: './src/transifexApi.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -31,10 +31,6 @@ module.exports = [
           exclude: /(node_modules|dist)/,
           use: {
             loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-              plugins: [['@babel/transform-runtime']],
-            },
           },
         },
       ],
