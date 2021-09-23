@@ -1,8 +1,13 @@
 {
   "name": "@transifex/jsonapi",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "{json:api} SDK library",
-  "keywords": ["jsonapi", "sdk", "api", "client"],
+  "keywords": [
+    "jsonapi",
+    "sdk",
+    "api",
+    "client"
+  ],
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi",
   "license": "Apache-2.0",
