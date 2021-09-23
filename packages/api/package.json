@@ -2,36 +2,26 @@
   "name": "@transifex/api",
   "version": "1.0.4",
   "description": "Transifex API SDK",
-  "keywords": [
-    "transifex",
-    "i18n",
-    "l10n",
-    "localization",
-    "API",
-    "SDK"
-  ],
-  "author": "Transifex",
+  "keywords": ["transifex", "i18n", "l10n", "localization", "API", "SDK"],
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/api",
-  "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "source": "src/index.js",
-  "browser": "dist/index.js",
-  "module": "src/index.js",
-  "publishConfig": {
-    "access": "public"
+  "bugs": {
+    "url": "https://github.com/transifex/transifex-javascript/issues"
   },
+  "license": "Apache-2.0",
+  "author": "Transifex",
+  "main": "dist/node.transifexApi.js",
+  "browser": "dist/browser.transifexApi.js",
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
     "build": "webpack",
     "lint": "eslint src",
-    "publish-npm": "npm publish",
-    "test": "webpack"
+    "publish-npm": "npm publish"
   },
-  "bugs": {
-    "url": "https://github.com/transifex/transifex-javascript/issues"
+  "peerDependencies": {
+    "@transifex/jsonapi": "^1.0.0"
   },
-  "engines": {
-    "node": ">=10.0.0"
+  "dependencies": {
+    "core-js": "^3.17.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
@@ -46,8 +36,10 @@
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
   },
-  "dependencies": {
-    "core-js": "^3.17.2",
-    "regenerator-runtime": "^0.13.9"
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
