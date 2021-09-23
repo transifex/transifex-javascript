@@ -10,4 +10,3 @@ export {
 
 export const JsonApi = _JsonApi;
 export const Resource = _Resource;
-export default { JsonApi, Resource };

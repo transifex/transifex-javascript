@@ -1,26 +1,43 @@
 const path = require('path');
 
-module.exports = {
-  mode: 'production',
-  entry: './src/index.js',
-  output: {
-    filename: 'jsonapi.js',
-    path: path.resolve(__dirname, 'bundle'),
-    library: {
-      name: 'jsonapi',
-      type: 'umd',
+module.exports = [
+  {
+    mode: 'development',
+    entry: './src/index.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'node.jsonapi.js',
+      library: 'jsonapi',
+      libraryTarget: 'umd',
     },
-    globalObject: 'this',
-    clean: true,
+    target: 'node',
+    devtool: 'source-map',
   },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: 'babel-loader',
-      },
-    ],
+  {
+    mode: 'development',
+    entry: './src/index.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'browser.jsonapi.js',
+      library: 'jsonapi',
+      libraryTarget: 'umd',
+    },
+    target: 'web',
+    devtool: 'source-map',
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /(node_modules)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: [['@babel/transform-runtime']],
+            },
+          },
+        },
+      ],
+    },
   },
-  devtool: 'source-map',
-};
+];

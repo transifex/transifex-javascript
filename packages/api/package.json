@@ -9,11 +9,11 @@
   },
   "license": "Apache-2.0",
   "author": "Transifex",
-  "main": "dist/transifexApi.js",
-  "browser": "bundle/transifexApi.js",
+  "main": "dist/node.transifexApi.js",
+  "browser": "dist/browser.transifexApi.js",
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
-    "build": "babel src --out-dir dist --source-maps true && webpack",
+    "build": "webpack",
     "lint": "eslint src",
     "publish-npm": "npm publish",
     "test": "webpack"
@@ -27,15 +27,16 @@
   "devDependencies": {
     "@babel/cli": "^7.15.4",
     "@babel/core": "^7.15.5",
+    "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
+    "@transifex/jsonapi": "^1.0.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
     "webpack": "^5.51.1",
-    "webpack-cli": "^4.8.0",
-    "@transifex/jsonapi": "^1.0.4"
+    "webpack-cli": "^4.8.0"
   },
   "engines": {
     "node": ">=10.0.0"

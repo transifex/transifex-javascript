@@ -6,15 +6,14 @@
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi",
   "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "browser": "bundle/jsonapi.js",
-  "module": "src/index.js",
+  "main": "dist/node.jsonapi.js",
+  "browser": "dist/browser.jsonapi.js",
   "publishConfig": {
     "access": "public"
   },
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
-    "build": "babel src --out-dir dist --source-maps true && webpack",
+    "build": "webpack",
     "lint": "eslint src",
     "publish-npm": "npm publish",
     "test": "jest"
@@ -27,6 +26,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
+    "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.6",
