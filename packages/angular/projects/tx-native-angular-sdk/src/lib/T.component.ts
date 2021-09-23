@@ -67,16 +67,18 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
     this.actualVars = { ...v };
   }
 
-  translateParams: ITranslateParams = {
-    _key: '',
-    _context: '',
-    _comment: '',
-    _charlimit: 0,
-    _tags: '',
-    _escapeVars: false,
-    _inline: false,
-    sanitize: false,
-  };
+  get translateParams(): ITranslateParams {
+    return {
+      _key: this.key,
+      _context: this.context,
+      _comment: this.comment,
+      _charlimit: this.charlimit,
+      _tags: this.tags,
+      _escapeVars: this.escapeVars,
+      _inline: this.inline,
+      sanitize: this.sanitize,
+    };
+  }
 
   translatedStr = '';
 
@@ -97,7 +99,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
   constructor(protected translationService: TranslationService) {
     this.localeChangeSubscription = this.localeChanged.subscribe(
       (locale) => {
-        this.setTranslateParams();
         this.translate();
       },
     );
@@ -107,7 +108,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Component initialization
    */
   ngOnInit() {
-    this.setTranslateParams();
     this.translate();
   }
 
@@ -125,22 +125,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.translate();
-  }
-
-  /**
-   * Set translation params
-   */
-  setTranslateParams() {
-    Object.assign(this.translateParams, {
-      _key: this.key,
-      _context: this.context,
-      _comment: this.comment,
-      _charlimit: this.charlimit,
-      _tags: this.tags,
-      _escapeVars: this.escapeVars,
-      _inline: this.inline,
-      sanitize: this.sanitize,
-    });
   }
 
   /**
