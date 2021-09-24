@@ -28,6 +28,18 @@ Transifex Native support for localizing Angular components.
 Command line tool for extracting phrases from source files and pushing content to Transifex.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/cli)
 
+## Transifex API SDK
+
+A javascript SDK for the [Transifex API v3](https://transifex.github.io/openapi).
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/api)
+
+### {json:api} SDK library
+
+A javascript library for building SDKs for APIs that implement the {json:api}
+specification. This is what our API SDK is based on.
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi)
+
+
 # License
 
 Licensed under Apache License 2.0, see [LICENSE](LICENSE) file.
