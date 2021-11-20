@@ -22,7 +22,7 @@ import useT from '../hooks/useT';
  * } */
 
 export default function T({ _str, ...props }) {
-  return useT(_str, props);
+  return useT()(_str, props);
 }
 
 T.defaultProps = {};

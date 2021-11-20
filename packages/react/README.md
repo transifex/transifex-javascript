@@ -112,9 +112,8 @@ properties with the `T` component._
 
 ### `useT` hook
 
-Returns a state variable that will be automatically updated when the selected
-language changes. Used internally by the `T` and `UT` components. Accepts the
-same props as the `T` component.
+Makes the current component re-render when a language change is detected and
+returns a t-function you can use to translate strings programmatically.
 
 You will most likely prefer to use the `T` or `UT` components over this, unless
 for some reason you want to have the translation output in a variable for
@@ -126,7 +125,8 @@ import React from 'react';
 import { useT } from '@transifex/react';
 
 function Capitalized() {
-  const message = useT('Hello world');
+  const t = useT();
+  const message = t('Hello world');
   return <span>{message.toUpperCase()}</span>;
 }
 ```
