@@ -3,11 +3,11 @@
 const { expect } = require('chai');
 const { extractPhrases } = require('../../src/api/extract');
 
-describe('extractPhrases', () => {
+describe('extractPhrases with source keys', () => {
   it('works with webpack', async () => {
     expect(await extractPhrases('test/fixtures/webpack.js', 'webpack.js'))
       .to.deep.equal({
-        '6f48100ca5a57d2db9b685a8373be8a6': {
+        'Text 1::foo': {
           string: 'Text 1',
           meta: {
             character_limit: 10,
@@ -17,15 +17,15 @@ describe('extractPhrases', () => {
             occurrences: ['webpack.js'],
           },
         },
-        '5d47152bcd597dd6adbff4884374aaad': {
+        'Text 2': {
           string: 'Text 2',
           meta: { context: [], tags: [], occurrences: ['webpack.js'] },
         },
-        '3cd62915590816fdbf53852e44ee675a': {
+        'Text 3': {
           string: 'Text 3',
           meta: { context: [], tags: [], occurrences: ['webpack.js'] },
         },
-        '33f5afa925f1464280d72d6d9086057c': {
+        'Text 4': {
           string: 'Text 4',
           meta: { context: [], tags: [], occurrences: ['webpack.js'] },
         },
@@ -33,9 +33,11 @@ describe('extractPhrases', () => {
   });
 
   it('works with append tags', async () => {
-    expect(await extractPhrases('test/fixtures/webpack.js', 'webpack.js', { appendTags: ['g1', 'g2'] }))
+    expect(await extractPhrases('test/fixtures/webpack.js', 'webpack.js', {
+      appendTags: ['g1', 'g2'],
+    }))
       .to.deep.equal({
-        '6f48100ca5a57d2db9b685a8373be8a6': {
+        'Text 1::foo': {
           string: 'Text 1',
           meta: {
             character_limit: 10,
@@ -45,15 +47,15 @@ describe('extractPhrases', () => {
             occurrences: ['webpack.js'],
           },
         },
-        '5d47152bcd597dd6adbff4884374aaad': {
+        'Text 2': {
           string: 'Text 2',
           meta: { context: [], tags: ['g1', 'g2'], occurrences: ['webpack.js'] },
         },
-        '3cd62915590816fdbf53852e44ee675a': {
+        'Text 3': {
           string: 'Text 3',
           meta: { context: [], tags: ['g1', 'g2'], occurrences: ['webpack.js'] },
         },
-        '33f5afa925f1464280d72d6d9086057c': {
+        'Text 4': {
           string: 'Text 4',
           meta: { context: [], tags: ['g1', 'g2'], occurrences: ['webpack.js'] },
         },
@@ -63,7 +65,7 @@ describe('extractPhrases', () => {
   it('works with node', async () => {
     expect(await extractPhrases('test/fixtures/node.js', 'node.js'))
       .to.deep.equal({
-        '6f48100ca5a57d2db9b685a8373be8a6': {
+        'Text 1::foo': {
           string: 'Text 1',
           meta: {
             character_limit: 10,
@@ -73,15 +75,15 @@ describe('extractPhrases', () => {
             occurrences: ['node.js'],
           },
         },
-        '5d47152bcd597dd6adbff4884374aaad': {
+        'Text 2': {
           string: 'Text 2',
           meta: { context: [], tags: [], occurrences: ['node.js'] },
         },
-        '3cd62915590816fdbf53852e44ee675a': {
+        'Text 3': {
           string: 'Text 3',
           meta: { context: [], tags: [], occurrences: ['node.js'] },
         },
-        '33f5afa925f1464280d72d6d9086057c': {
+        'Text 4': {
           string: 'Text 4',
           meta: { context: [], tags: [], occurrences: ['node.js'] },
         },
@@ -91,19 +93,19 @@ describe('extractPhrases', () => {
   it('works with jsx', async () => {
     expect(await extractPhrases('test/fixtures/react.jsx', 'react.jsx'))
       .to.deep.equal({
-        a8b326ca0f8eacfd2ecf1140a860fccc: {
+        'uses useT': {
           string: 'uses useT',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '41ea834f9604545bba088de53e71a159': {
+        'uses useT as const': {
           string: 'uses useT as const',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '14a6af017c176654aaf0df13d1179418': {
+        'uses _str as const': {
           string: 'uses _str as const',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '6f48100ca5a57d2db9b685a8373be8a6': {
+        'Text 1::foo': {
           string: 'Text 1',
           meta: {
             character_limit: 10,
@@ -113,35 +115,35 @@ describe('extractPhrases', () => {
             occurrences: ['react.jsx'],
           },
         },
-        '5d47152bcd597dd6adbff4884374aaad': {
+        'Text 2': {
           string: 'Text 2',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '3cd62915590816fdbf53852e44ee675a': {
+        'Text 3': {
           string: 'Text 3',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '33f5afa925f1464280d72d6d9086057c': {
+        'Text 4': {
           string: 'Text 4',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '90da95711d6dc69953b2978d2bed9b7d': {
+        'A {button} and a {bold} walk into a bar': {
           string: 'A {button} and a {bold} walk into a bar',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        a667d8741bde4f79971b6220a0c0b647: {
+        button: {
           string: 'button',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        e5f9dda0c39f13357321d0c07bb7a3ff: {
+        bold: {
           string: 'bold',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '16c514ade457a04f8a5e074fe705fd09': {
+        '<b>HTML text</b>': {
           string: '<b>HTML text</b>',
           meta: { context: [], tags: ['tag1'], occurrences: ['react.jsx'] },
         },
-        ff6354c17646535001825818343d64f3: {
+        '<b>HTML inline text</b>': {
           string: '<b>HTML inline text</b>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
@@ -151,7 +153,7 @@ describe('extractPhrases', () => {
   it('works with tsx', async () => {
     expect(await extractPhrases('test/fixtures/react.tsx', 'react.tsx'))
       .to.deep.equal({
-        '6f48100ca5a57d2db9b685a8373be8a6': {
+        'Text 1::foo': {
           string: 'Text 1',
           meta: {
             character_limit: 10,
@@ -161,35 +163,35 @@ describe('extractPhrases', () => {
             occurrences: ['react.tsx'],
           },
         },
-        '5d47152bcd597dd6adbff4884374aaad': {
+        'Text 2': {
           string: 'Text 2',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
-        '3cd62915590816fdbf53852e44ee675a': {
+        'Text 3': {
           string: 'Text 3',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
-        '33f5afa925f1464280d72d6d9086057c': {
+        'Text 4': {
           string: 'Text 4',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
-        '90da95711d6dc69953b2978d2bed9b7d': {
+        'A {button} and a {bold} walk into a bar': {
           string: 'A {button} and a {bold} walk into a bar',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
-        a667d8741bde4f79971b6220a0c0b647: {
+        button: {
           string: 'button',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
-        e5f9dda0c39f13357321d0c07bb7a3ff: {
+        bold: {
           string: 'bold',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
-        '16c514ade457a04f8a5e074fe705fd09': {
+        '<b>HTML text</b>': {
           string: '<b>HTML text</b>',
           meta: { context: [], tags: ['tag1'], occurrences: ['react.tsx'] },
         },
-        ff6354c17646535001825818343d64f3: {
+        '<b>HTML inline text</b>': {
           string: '<b>HTML inline text</b>',
           meta: { context: [], tags: [], occurrences: ['react.tsx'] },
         },
@@ -203,7 +205,7 @@ describe('extractPhrases', () => {
           string: 'Monday',
           meta: { context: [], tags: [], occurrences: ['typescript.ts'] },
         },
-        d3b72592c4af5b55aac2dd0c88a9422a: {
+        Shoes: {
           string: 'Shoes',
           meta: { context: [], tags: [], occurrences: ['typescript.ts'] },
         },
@@ -213,19 +215,19 @@ describe('extractPhrases', () => {
   it('works with decorators', async () => {
     expect(await extractPhrases('test/fixtures/decorators.js', 'decorators.js'))
       .to.deep.equal({
-        bc077c881a53b3575ffe7eaf390ffca4: {
+        'Component with decorator': {
           string: 'Component with decorator',
           meta: { context: [], tags: [], occurrences: ['decorators.js'] },
         },
-        d1695cddb12ea34290ad14c90bc88a39: {
+        'TestClass1 example': {
           string: 'TestClass1 example',
           meta: { context: [], tags: [], occurrences: ['decorators.js'] },
         },
-        cf24b3ddbdaaa21f7aba79187ef01f63: {
+        'TestClass2 example': {
           string: 'TestClass2 example',
           meta: { context: [], tags: [], occurrences: ['decorators.js'] },
         },
-        d18654e576453293d60dbb2833b914f3: {
+        'TestClass3 example': {
           string: 'TestClass3 example',
           meta: { context: [], tags: [], occurrences: ['decorators.js'] },
         },
@@ -235,15 +237,15 @@ describe('extractPhrases', () => {
   it('works with class properties', async () => {
     expect(await extractPhrases('test/fixtures/classproperties.js', 'classproperties.js'))
       .to.deep.equal({
-        '4f8d30aecb6784371423169bd67067f4': {
+        'Static Property text': {
           string: 'Static Property text',
           meta: { context: [], tags: [], occurrences: ['classproperties.js'] },
         },
-        '6eb781ad9f94e72e7e3e1eb8d84e9b23': {
+        'Instance property text': {
           string: 'Instance property text',
           meta: { context: [], tags: [], occurrences: ['classproperties.js'] },
         },
-        a5341bc1ed5a4c2278f50fa60cd359c9: {
+        'Static Function text': {
           string: 'Static Function text',
           meta: { context: [], tags: [], occurrences: ['classproperties.js'] },
         },
@@ -253,31 +255,31 @@ describe('extractPhrases', () => {
   it('works with const identifiers', async () => {
     expect(await extractPhrases('test/fixtures/variables.js', 'variables.js'))
       .to.deep.equal({
-        '5d34b0b02c893763b0679f0aeab472ae': {
+        abc: {
           string: 'abc',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
-        '06af01ed1976798d82a569a6e0af7537': {
+        'Outer Text': {
           string: 'Outer Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
-        f089f645d1baa0ce4f398a4388520de3: {
+        ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text': {
           string: ' Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
-        ac186ba33ab07d1ba8864f15662c308c: {
+        'Outer Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text': {
           string: 'Outer Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
-        e5609fd3ccf5a0e9eea07d2a0918c2bd: {
+        abcdefg: {
           string: 'abcdefg',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
-        '3a2a11e5b86fdb8e2807170eca54171f': {
+        'Inner Text': {
           string: 'Inner Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
-        '7c023dc6beb7e942ab667c8d32a488e7': {
+        'Inner Text,Outer Text': {
           string: 'Inner Text,Outer Text',
           meta: { context: [], tags: [], occurrences: ['variables.js'] },
         },
@@ -303,11 +305,11 @@ describe('extractPhrases', () => {
           string: 'This is a pipe text',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
-        def7319eabb4be374d5fae8ea5b79d55: {
+        'This is a second pipe text': {
           string: 'This is a second pipe text',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
-        '9eae72bb80f1d30adc39a97c56eb2f6b': {
+        '\n      This is a\n      third pipe text\n      ': {
           string: '\n      This is a\n      third pipe text\n      ',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
@@ -323,17 +325,13 @@ describe('extractPhrases', () => {
           string: 'This is a sixth pipe text, no one should do this',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
-        '867b7cc4643da9b4c97ababa43c50c23': {
+        'Used in a {binding}': {
           string: 'Used in a {binding}',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
         'text.pipe_binding': {
           string: 'Used in a second binding',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
-        },
-        'content.is-text': {
-          string: 'This is a text with a context, and it should be recognized as one',
-          meta: { context: ['is-text'], tags: [], occurrences: ['angular-template.html'] },
         },
         'content.is-text': {
           string: 'This is a text with a context, and it should be recognized as one',

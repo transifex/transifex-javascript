@@ -85,6 +85,8 @@ OPTIONS
   --append-tags=append-tags              append tags to strings
   --cds-host=cds-host                    CDS host URL
   --dry-run                              dry run, do not push to Transifex
+  --key-generator=source|hash            [default: source] use hashed or source based keys
+  --no-wait                              disable polling for upload results
   --purge                                purge content on Transifex
   --secret=secret                        native project secret
   --token=token                          native project public token
@@ -92,7 +94,7 @@ OPTIONS
   --without-tags-only=without-tags-only  push strings without specific tags
 
 DESCRIPTION
-  Parse .js, .ts, .jsx and .tsx files and detect phrases marked for
+  Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
   translation by Transifex Native toolkit for Javascript and
   upload them to Transifex for translation.
 
@@ -112,6 +114,7 @@ DESCRIPTION
   txjs-cli push "*.js"
   txjs-cli push --dry-run
   txjs-cli push --no-wait
+  txjs-cli push --key-generator=hash
   txjs-cli push --append-tags="master,release:2.5"
   txjs-cli push --with-tags-only="home,error"
   txjs-cli push --without-tags-only="custom"

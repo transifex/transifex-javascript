@@ -6,7 +6,7 @@ import SourceErrorPolicy from './policies/SourceErrorPolicy';
 import SourceStringPolicy from './policies/SourceStringPolicy';
 import MessageFormatRenderer from './renderers/MessageFormatRenderer';
 import {
-  generateKey, isString, isPluralized, escape,
+  generateKey, isString, isPluralized, escape, generateHashedKey,
 } from './utils';
 import {
   sendEvent,
@@ -97,11 +97,24 @@ export default class TxNative {
    */
   translateLocale(locale, sourceString, params) {
     try {
-      const pluralized = isPluralized(sourceString);
-      const key = generateKey(sourceString, params);
-      let translation = this.cache.get(key, locale);
+      // get translation from source based key (2.x.x)
+      let translation = this.cache.get(
+        generateKey(sourceString, params),
+        locale,
+      );
 
-      if (translation && pluralized && translation.startsWith('{???')) {
+      // fall back to hash based key (1.x.x)
+      if (!translation) {
+        translation = this.cache.get(
+          generateHashedKey(sourceString, params),
+          locale,
+        );
+      }
+
+      if (translation
+        && translation.startsWith('{???')
+        && isPluralized(sourceString)
+      ) {
         const variableName = sourceString
           .substring(1, sourceString.indexOf(','))
           .trim();

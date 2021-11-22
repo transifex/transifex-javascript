@@ -44,6 +44,7 @@ class PushCommand extends Command {
     const appendTags = stringToArray(flags['append-tags']);
     const filterWithTags = stringToArray(flags['with-tags-only']);
     const filterWithoutTags = stringToArray(flags['without-tags-only']);
+    const useHashedKeys = flags['key-generator'] === 'hash';
 
     this.log('Parsing all files to detect translatable content...');
 
@@ -71,6 +72,7 @@ class PushCommand extends Command {
       appendTags,
       filterWithTags,
       filterWithoutTags,
+      useHashedKeys,
     };
 
     _.each(allFiles, (file) => {
@@ -244,6 +246,7 @@ txjs-cli push /home/repo/src
 txjs-cli push "*.js"
 txjs-cli push --dry-run
 txjs-cli push --no-wait
+txjs-cli push --key-generator=hash
 txjs-cli push --append-tags="master,release:2.5"
 txjs-cli push --with-tags-only="home,error"
 txjs-cli push --without-tags-only="custom"
@@ -299,6 +302,11 @@ PushCommand.flags = {
   'cds-host': flags.string({
     description: 'CDS host URL',
     default: '',
+  }),
+  'key-generator': flags.string({
+    description: 'use hashed or source based keys',
+    default: 'source',
+    options: ['source', 'hash'],
   }),
 };
 
