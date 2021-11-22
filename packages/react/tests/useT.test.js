@@ -16,7 +16,8 @@ describe('useT', () => {
 
   it('renders text', () => {
     function MyComp() {
-      const message = useT('Hello <b>safe text</b>');
+      const t = useT();
+      const message = t('Hello <b>safe text</b>');
       return (message);
     }
 
@@ -26,7 +27,8 @@ describe('useT', () => {
 
   it('renders text with param', () => {
     function MyComp() {
-      const message = useT('Hello <b>{username}</b>', {
+      const t = useT();
+      const message = t('Hello <b>{username}</b>', {
         username: 'JohnDoe',
       });
       return (message);
@@ -39,9 +41,8 @@ describe('useT', () => {
   it('rerenders on prop change', () => {
     const MyComp = () => {
       const [word, setWord] = useState('');
-      const message = useT('hello {word}', {
-        word,
-      });
+      const t = useT();
+      const message = t('hello {word}', { word });
       return (
         <>
           <input value={word} onChange={(e) => setWord(e.target.value)} />
@@ -60,9 +61,8 @@ describe('useT', () => {
   it('renders react elements', () => {
     const MyComp = () => {
       const [word, setWord] = useState('');
-      const message = useT('hello {w}', {
-        w: <b>world</b>,
-      });
+      const t = useT();
+      const message = t('hello {w}', { w: <b>world</b> });
       return (
         <>
           <input value={word} onChange={(e) => setWord(e.target.value)} />
