@@ -11,6 +11,25 @@ import md5 from 'md5';
 export function generateKey(string, options = {}) {
   if (options._key) return options._key;
 
+  if (options._context) {
+    return `${string}::${options._context}`;
+  }
+
+  // ensure string is returned
+  return `${string}`;
+}
+
+/**
+ * Generate a hashed based string key
+ *
+ * @export
+ * @param {String} string
+ * @param {Object} options
+ * @returns {String} key
+ */
+export function generateHashedKey(string, options = {}) {
+  if (options._key) return options._key;
+
   let context = '';
   if (options._context) {
     context = options._context;
