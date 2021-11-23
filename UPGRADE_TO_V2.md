@@ -3,6 +3,11 @@
 Transifex Native 2.x.x is the next major release after 1.x.x,
 containing the following **breaking changes**:
 
+# NodeJS 12 is the minimum supported version
+
+Although some libraries might be 10.x.x compatible, we now run tests
+against node >= 12.x.x
+
 # Default key generation
 
 Version 1.x.x is using hashed based keys by default, unless
