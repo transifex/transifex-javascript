@@ -26,7 +26,8 @@
         "import/prefer-default-export": 0,
         "import/no-extraneous-dependencies": 0,
         "@typescript-eslint/no-unused-vars": 0,
-        "class-methods-use-this": 0
+        "class-methods-use-this": 0,
+        "@typescript-eslint/member-ordering": 0
       }
     },
     {
