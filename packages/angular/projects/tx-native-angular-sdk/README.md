@@ -7,6 +7,10 @@ Related packages:
 - [@transifex/native](https://www.npmjs.com/package/@transifex/native)
 - [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
+## Upgrade to v2
+
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
@@ -20,7 +24,7 @@ Related packages:
 * [License](#license)
 
 
-## Installation
+# Installation
 
 Install the library and its dependencies using:
 
@@ -28,9 +32,9 @@ Install the library and its dependencies using:
 npm install @transifex/native @transifex/angular --save
 ```
 
-## Usage
+# Usage
 
-### Initialization
+## Initialization
 
 In order to use the TX Native object globally, it is necessary to initialize
 the library in the angular application bootstrap, in two locations:
@@ -85,7 +89,7 @@ export class AppComponent {
 }
 ```
 
-### `T` Component
+## `T` Component
 
 ```html
   <p>
@@ -147,7 +151,7 @@ The main thing to keep in mind is that the `str` property to the T component
 must **always** be a valid ICU message format template.
 
 
-### `UT` Component
+## `UT` Component
 
 ```html
   <p>
@@ -172,7 +176,7 @@ Available optional props:
 |------------|---------|---------------------------------------------|
 | inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
 
-### `TranslationService` service
+## `TranslationService` service
 
 This is the main service exposed from the SDK in order to intialize the TX Native object.
 
@@ -255,7 +259,7 @@ export interface ITranslateParams {
 }
 ```
 
-### `@T` Decorator
+## `@T` Decorator
 
 This is a decorator for using inside classes and components in order to have
 properties with the translation and used them in code and templates.
@@ -306,7 +310,7 @@ and the use of the properties in the template:
   </p>
 ```
 
-### `translate` Pipe
+## `translate` Pipe
 
 You have available a `translate` pipe for inline strings translations, the only limitation that it has is that
 you cannot translate strings with embedded HTML.
@@ -325,7 +329,7 @@ this example will not work, as it has HTML embedded:
   {{ 'A string with <b>HTML embedded</b>' | translate }}
 ```
 
-### Language Picker Component
+## Language Picker Component
 
 Renders a `<select>` tag that displays supported languages and switches the
 application's selected language on change.

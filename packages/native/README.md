@@ -10,13 +10,17 @@ Related packages:
 * [@transifex/react](https://www.npmjs.com/package/@transifex/react)
 * [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
-## Quick starting guide
+# Upgrade to v2
+
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+
+# Quick starting guide
 
 Install the library using:
 
 ```npm install @transifex/native --save```
 
-### Webpack
+## Webpack
 
 ```js
 import { tx, t } from '@transifex/native';
@@ -52,7 +56,7 @@ async function main() {
 main();
 ```
 
-### Node.js
+## Node.js
 
 ```js
 const { tx, t } = require('@transifex/native');
@@ -65,7 +69,7 @@ tx.init({
 ...
 ```
 
-### Browser
+## Browser
 
 ```html
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@transifex/native/dist/browser.native.min.js"></script>
@@ -88,9 +92,9 @@ tx.init({
 </script>
 ```
 
-## API
+# API
 
-#### Initialize library
+## Initialize library
 
 ```js
 tx.init({
@@ -117,7 +121,7 @@ tx.init({
 })
 ```
 
-### Languages
+## Languages
 
 Fetches list of project languages from CDS, useful for creating a language picker.
 
@@ -144,7 +148,7 @@ Get a list of available locales based on CDS.
 tx.getLocales(): Promise(['code', 'code',...])
 ```
 
-#### Set current translation language
+### Set current translation language
 
 Fetches translations from the CDS and stores them in cache. When the
 promise returns, all content will be translated to that language.
@@ -158,7 +162,7 @@ tx.setCurrentLocale('el').
   catch(err => console.log(err))
 ```
 
-#### Get current translation language
+### Get current translation language
 
 Returns the currently selected language code.
 
@@ -169,7 +173,7 @@ tx.getCurrentLocale(): String(localeCode)
 console.log(tx.getCurrentLocale())
 ```
 
-### Content translation
+## Content translation
 
 Returns the translation of the passed source string based on the
 currenly selected language. If the translation is not found, the returned
@@ -212,12 +216,12 @@ console.log(
 // "Hello <b>Joe</b>"
 ```
 
-### Escaping translations
+## Escaping translations
 
 Using the translation as is from the `t` function inside HTML is dangerous for
 XSS attacks. The translation must be escaped based on two scenarios.
 
-#### Escaping text translations
+### Escaping text translations
 
 ```js
 import { t, escape } from '@transifex/native';
@@ -226,7 +230,7 @@ const translation = escape(t('Hello {username}', { username }));
 // translation is safe to include in HTML
 ```
 
-#### Escaping HTML source
+### Escaping HTML source
 
 HTML source content cannot be globally escaped. In that case, we can just escape
 the ICU variables using the `_escapeVars` parameter.
@@ -240,7 +244,7 @@ const html = t('<b>Hello {username}</b>', {
 });
 ```
 
-### Events
+## Events
 
 Library for listening to various async events.
 

@@ -6,6 +6,10 @@ Related packages:
 * [@transifex/native](https://www.npmjs.com/package/@transifex/native)
 * [@transifex/react](https://www.npmjs.com/package/@transifex/react)
 
+# Upgrade to v2
+
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+
 # Usage
 
 ## Global installation
