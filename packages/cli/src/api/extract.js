@@ -6,7 +6,7 @@ const babelParser = require('@babel/parser');
 const babelTraverse = require('@babel/traverse').default;
 const _ = require('lodash');
 const path = require('path');
-const { generateKey } = require('@transifex/native');
+const { generateKey, generateHashedKey } = require('@transifex/native');
 
 const { mergePayload } = require('./merge');
 const { stringToArray, mergeArrays } = require('./utils');
@@ -21,27 +21,21 @@ const { stringToArray, mergeArrays } = require('./utils');
  * @param {Number} params._charlimit
  * @param {Number} params._tags
  * @param {String} occurence
- * @param {String[]} appendTags
- * @returns {Object} Payload
- * @returns {String} Payload.string
- * @returns {String} Payload.key
- * @returns {String} Payload.meta.context
- * @returns {String} Payload.meta.developer_comment
- * @returns {Number} Payload.meta.character_limit
- * @returns {String[]} Payload.meta.tags
- * @returns {String[]} Payload.meta.occurrences
+ * @param {Object} options
  */
-function createPayload(string, params, occurence, appendTags) {
+function createPayload(string, params, occurence, options = {}) {
   return {
     string,
-    key: generateKey(string, params),
+    key: options.useHashedKeys
+      ? generateHashedKey(string, params)
+      : generateKey(string, params),
     meta: _.omitBy({
       context: stringToArray(params._context || params.context),
       developer_comment: params._comment || params.comment,
       character_limit: params._charlimit || params.charlimit
         ? parseInt(params._charlimit || params.charlimit, 10)
         : undefined,
-      tags: mergeArrays(stringToArray(params._tags || params.tags), appendTags),
+      tags: mergeArrays(stringToArray(params._tags || params.tags), options.appendTags),
       occurrences: [occurence],
     }, _.isNil),
   };
@@ -132,8 +126,7 @@ function looseJsonParse(obj) {
  * @param {Object} options
  * @returns void
  */
-function parseHTMLTemplateFile(HASHES, filename, relativeFile,
-  appendTags, options) {
+function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
   const TXComponents = [];
   const TXTemplateStrings = [];
 
@@ -228,7 +221,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile,
       });
     }
     if (string) {
-      const partial = createPayload(string, params, relativeFile, appendTags);
+      const partial = createPayload(string, params, relativeFile, options);
       if (!isPayloadValid(partial, options)) return;
 
       mergePayload(HASHES, {
@@ -247,7 +240,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile,
       key = txStr.params.key;
     }
 
-    const partial = createPayload(txStr.string, txStr.params, relativeFile, appendTags);
+    const partial = createPayload(txStr.string, txStr.params, relativeFile, options);
     if (!isPayloadValid(partial, options)) return;
 
     mergePayload(HASHES, {
@@ -374,10 +367,10 @@ function findDeclaredValue(scope, init) {
  * @param {String[]} options.appendTags
  * @param {String[]} options.filterWithTags
  * @param {String[]} options.filterWithoutTags
+ * @param {Boolean} options.useHashedKeys
  * @returns {Object}
  */
 function extractPhrases(file, relativeFile, options = {}) {
-  const { appendTags } = options;
   const HASHES = {};
   const source = fs.readFileSync(file, 'utf8');
   if (path.extname(file) !== '.html') {
@@ -410,7 +403,7 @@ function extractPhrases(file, relativeFile, options = {}) {
           });
         }
 
-        const partial = createPayload(string, params, relativeFile, appendTags);
+        const partial = createPayload(string, params, relativeFile, options);
         if (!isPayloadValid(partial, options)) return;
 
         mergePayload(HASHES, {
@@ -446,7 +439,7 @@ function extractPhrases(file, relativeFile, options = {}) {
         });
 
         if (string) {
-          const partial = createPayload(string, params, relativeFile, appendTags);
+          const partial = createPayload(string, params, relativeFile, options);
           if (!isPayloadValid(partial, options)) return;
 
           mergePayload(HASHES, {
@@ -483,7 +476,7 @@ function extractPhrases(file, relativeFile, options = {}) {
 
         if (!string) return;
 
-        const partial = createPayload(string, params, relativeFile, appendTags);
+        const partial = createPayload(string, params, relativeFile, options);
         if (!isPayloadValid(partial, options)) return;
 
         mergePayload(HASHES, {
@@ -495,7 +488,7 @@ function extractPhrases(file, relativeFile, options = {}) {
       },
     });
   } else if (path.extname(file) === '.html') {
-    parseHTMLTemplateFile(HASHES, file, relativeFile, appendTags, options);
+    parseHTMLTemplateFile(HASHES, file, relativeFile, options);
   }
 
   return HASHES;

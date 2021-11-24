@@ -12,7 +12,7 @@ describe('push command', () => {
 
   test
     .stdout()
-    .command(['push', 'test/fixtures/simple.js', '--dry-run', '-v'])
+    .command(['push', 'test/fixtures/simple.js', '--dry-run', '-v', '--key-generator=hash'])
     .it('outputs strings on verbose mode', (ctx) => {
       expect(ctx.stdout).to.contain('f2138b2131e064313c369b20006549df: Text 1');
       expect(ctx.stdout).to.contain('5d47152bcd597dd6adbff4884374aaad: Text 2');
@@ -23,7 +23,32 @@ describe('push command', () => {
 
   test
     .stdout()
+    .command(['push', 'test/fixtures/simple.js', '--dry-run', '-v'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.contain('Text 1: Text 1');
+      expect(ctx.stdout).to.contain('Text 2: Text 2');
+      expect(ctx.stdout).to.contain('Text 3: Text 3');
+      expect(ctx.stdout).to.contain('Text 4: Text 4');
+      expect(ctx.stdout).to.contain('occurrences: ["/test/fixtures/simple.js"]');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/', '--dry-run', '-v', '--key-generator=hash'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.contain('f2138b2131e064313c369b20006549df: Text 1');
+    });
+
+  test
+    .stdout()
     .command(['push', 'test/fixtures/', '--dry-run', '-v'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.contain('Text 1: Text 1');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/*.js', '--dry-run', '-v', '--key-generator=hash'])
     .it('outputs strings on verbose mode', (ctx) => {
       expect(ctx.stdout).to.contain('f2138b2131e064313c369b20006549df: Text 1');
     });
@@ -32,14 +57,21 @@ describe('push command', () => {
     .stdout()
     .command(['push', 'test/fixtures/*.js', '--dry-run', '-v'])
     .it('outputs strings on verbose mode', (ctx) => {
-      expect(ctx.stdout).to.contain('f2138b2131e064313c369b20006549df: Text 1');
+      expect(ctx.stdout).to.contain('Text 1: Text 1');
+    });
+
+  test
+    .stdout()
+    .command(['push', 'test/fixtures/*.foo', '--dry-run', '-v', '--key-generator=hash'])
+    .it('outputs strings on verbose mode', (ctx) => {
+      expect(ctx.stdout).to.not.contain('f2138b2131e064313c369b20006549df: Text 1');
     });
 
   test
     .stdout()
     .command(['push', 'test/fixtures/*.foo', '--dry-run', '-v'])
     .it('outputs strings on verbose mode', (ctx) => {
-      expect(ctx.stdout).to.not.contain('f2138b2131e064313c369b20006549df: Text 1');
+      expect(ctx.stdout).to.not.contain('Text 1: Text 1');
     });
 
   test

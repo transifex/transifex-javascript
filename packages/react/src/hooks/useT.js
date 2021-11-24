@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { onEvent, offEvent, LOCALE_CHANGED } from '@transifex/native';
 import translateWithElements from '../utils/translateWithElements';
 
-/* Return a state variable with the translation of `_str` against props. In
- * case the language changes, the variable will be updated, causing the
- * component that uses it to be rerendered.
+/* Return a reference of the 'translateWithElements' function. Also forces the
+ * component to re-render in case the language changes.
  *
  * In most cases, we expect you to prefer using the `T` component over this,
  * but if you want to save the translation outcome in a variable for
@@ -13,11 +12,12 @@ import translateWithElements from '../utils/translateWithElements';
  * Usage
  *
  * function Capitalized({ _str, ...props }) {
- *   const translation = useT(_str, props);
+ *   const t = useT();
+ *   const translation = t(_str, props);
  *   return <span>{translation.toUpperCase()}</span>;
  * } */
 
-export default function useT(_str, props) {
+export default function useT() {
   const [, setCounter] = useState(0);
   useEffect(() => {
     // Using `setCounter` will trigger a rerender
@@ -25,5 +25,5 @@ export default function useT(_str, props) {
     onEvent(LOCALE_CHANGED, rerender);
     return () => { offEvent(LOCALE_CHANGED, rerender); };
   }, [setCounter]);
-  return translateWithElements(_str, props);
+  return translateWithElements;
 }

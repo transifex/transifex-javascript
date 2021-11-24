@@ -26,7 +26,7 @@ describe('T Decorator', () => {
   })
   class TestComponent implements OnInit {
     @T('not-trans-dec', { _key: 'test' })
-    testProperty: any;
+      testProperty: any;
 
     ngOnInit() {
     }

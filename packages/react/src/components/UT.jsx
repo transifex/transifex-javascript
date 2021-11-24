@@ -19,7 +19,7 @@ import useT from '../hooks/useT';
  * */
 
 export default function UT({ _str, _inline, ...props }) {
-  const translation = useT(
+  const translation = useT()(
     _str,
     { _inline, _escapeVars: true, ...props },
   );

@@ -11,7 +11,7 @@
     "publish-npm": "lerna run publish-npm"
   },
   "devDependencies": {
-    "del-cli": "^3.0.1",
-    "lerna": "^3.22.1"
+    "del-cli": "^4.0.1",
+    "lerna": "^4.0.0"
   }
 }

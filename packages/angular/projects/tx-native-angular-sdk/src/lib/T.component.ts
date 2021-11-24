@@ -32,31 +32,31 @@ import { TranslationService } from './translation.service';
  */
 export class TComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
-  str = '';
+    str = '';
 
   @Input()
-  key?: string = '';
+    key?: string = '';
 
   @Input()
-  context?: string = '';
+    context?: string = '';
 
   @Input()
-  comment?: string = '';
+    comment?: string = '';
 
   @Input()
-  charlimit?: number = 0;
+    charlimit?: number = 0;
 
   @Input()
-  tags?: string = '';
+    tags?: string = '';
 
   @Input()
-  escapeVars?: boolean = false;
+    escapeVars?: boolean = false;
 
   @Input()
-  inline?: boolean = false;
+    inline?: boolean = false;
 
   @Input()
-  sanitize?: boolean = false;
+    sanitize?: boolean = false;
 
   @Input()
   get vars(): Record<string, unknown> {

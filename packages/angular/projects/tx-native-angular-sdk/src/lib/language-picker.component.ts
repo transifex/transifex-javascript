@@ -9,7 +9,9 @@ import { TranslationService } from './translation.service';
   selector: 'tx-language-picker',
   template: `
       <select [class]="className" (change)="onChange($event)" class="tx-language-picker">
-      <option *ngFor="let language of languages" [selected]="language.code === translationService.getCurrentLocale()" [value]="language.code">
+      <option *ngFor="let language of languages"
+        [selected]="language.code === translationService.getCurrentLocale()"
+        [value]="language.code">
       {{ language.localized_name || language.name }}
       </option>
     </select>`,
@@ -22,10 +24,10 @@ import { TranslationService } from './translation.service';
  */
 export class LanguagePickerComponent implements OnInit {
   @Input()
-  className = '';
+    className = '';
 
   @Output()
-  localeChanged: EventEmitter<string> = new EventEmitter<string>();
+    localeChanged: EventEmitter<string> = new EventEmitter<string>();
 
   languages: ILanguage[] = [];
 

@@ -7,7 +7,12 @@ Related packages:
 - [@transifex/native](https://www.npmjs.com/package/@transifex/native)
 - [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
-## Install
+# Upgrade to v2
+
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+
+
+# Install
 
 Install the library and its dependencies using:
 
@@ -15,9 +20,9 @@ Install the library and its dependencies using:
 npm install @transifex/native @transifex/react --save
 ```
 
-## Usage
+# Usage
 
-### `T` Component
+## `T` Component
 
 ```javascript
 import React from 'react';
@@ -78,7 +83,7 @@ Assuming the translations look like this:
 The main thing to keep in mind is that the `_str` property to the T-component
 must **always** be a valid ICU messageformat template.
 
-### `UT` Component
+## `UT` Component
 
 ```javascript
 import React from 'react';
@@ -110,11 +115,10 @@ _Note: If you supply React elements as properties to the `UT` component, it
 will misbehave by rendering `[object Object]`. Only use React elements as
 properties with the `T` component._
 
-### `useT` hook
+## `useT` hook
 
-Returns a state variable that will be automatically updated when the selected
-language changes. Used internally by the `T` and `UT` components. Accepts the
-same props as the `T` component.
+Makes the current component re-render when a language change is detected and
+returns a t-function you can use to translate strings programmatically.
 
 You will most likely prefer to use the `T` or `UT` components over this, unless
 for some reason you want to have the translation output in a variable for
@@ -126,12 +130,13 @@ import React from 'react';
 import { useT } from '@transifex/react';
 
 function Capitalized() {
-  const message = useT('Hello world');
+  const t = useT();
+  const message = t('Hello world');
   return <span>{message.toUpperCase()}</span>;
 }
 ```
 
-### `useLanguages` hook
+## `useLanguages` hook
 
 Returns a state variable that will eventually hold the supported languages of
 the application. Makes an asynchronous call to the CDS.
@@ -154,7 +159,7 @@ function LanguageList () {
 }
 ```
 
-### `useLocale` hook
+## `useLocale` hook
 
 Returns a state variable with the currently selected locale.
 
@@ -170,7 +175,7 @@ function DisplayLocale () {
 }
 ```
 
-### `LanguagePicker` component
+## `LanguagePicker` component
 
 Renders a `<select>` tag that displays supported languages and switches the
 application's selected language on change.
