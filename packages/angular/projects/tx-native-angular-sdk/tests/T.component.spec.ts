@@ -1,11 +1,11 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, ReplaySubject } from 'rxjs';
+import { tx } from '@transifex/native';
 
 import { TComponent } from '../src/lib/T.component';
 import { SafeHtmlPipe, TranslationService } from '../src/public-api';
 
-const { tx } = require('@transifex/native');
 
 describe('TComponent', () => {
   let localeChangedSubject: ReplaySubject<string>;

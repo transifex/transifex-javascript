@@ -1,8 +1,9 @@
-import Native = require('@transifex/native');
-export const tx : Native.tx;
-export const t : Native.t;
-export const PseudoTranslationPolicy: Native.PseudoTranslationPolicy;
-export const SourceStringPolicy: Native.SourceStringPolicy;
-export const SourceErrorPolicy: Native.SourceErrorPolicy;
-export const ThrowErrorPolicy: Native.ThrowErrorPolicy;
-export const MessageFormatRenderer: Native.MessageFormatRenderer;
+declare module '@transifex/native' {
+  export const tx: any;
+  export const t: any;
+  export const PseudoTranslationPolicy: any;
+  export const SourceStringPolicy: any;
+  export const SourceErrorPolicy: any;
+  export const ThrowErrorPolicy: any;
+  export const MessageFormatRenderer: any;
+}

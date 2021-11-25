@@ -1,5 +1,5 @@
-const nodeConfig = require('./webpack.node.js');
-const browserConfig = require('./webpack.browser.js');
+const nodeConfig = require('./webpack.node');
+const browserConfig = require('./webpack.browser');
 
 module.exports = [
   nodeConfig,

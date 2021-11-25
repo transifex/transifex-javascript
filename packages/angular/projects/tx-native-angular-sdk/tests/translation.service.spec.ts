@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+import { tx } from '@transifex/native';
 import { TranslationService } from '../src/lib/translation.service';
 import { ILanguage, ITranslationServiceConfig } from '../src/public-api';
 
-const { tx } = require('@transifex/native');
 
 describe('TranslationService', () => {
   let service: TranslationService;
