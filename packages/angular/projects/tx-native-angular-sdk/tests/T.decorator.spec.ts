@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { tx } from '@transifex/native';
 
 import { T } from '../src/lib/T.decorator';
 import { TranslationService } from '../src/public-api';
 
-const { tx } = require('@transifex/native');
 
 describe('T Decorator', () => {
   let service: TranslationService;

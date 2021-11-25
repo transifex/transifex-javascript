@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
+import { tx } from '@transifex/native';
 
 import { ILanguage, ITranslationServiceConfig } from './interfaces';
 
-const { tx } = require('@transifex/native');
 
 /** Singleton Injection */
 @Injectable({
