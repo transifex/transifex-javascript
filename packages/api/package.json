@@ -24,9 +24,6 @@
     "lint": "eslint src",
     "publish-npm": "npm publish"
   },
-  "peerDependencies": {
-    "@transifex/jsonapi": "^1.0.0 || ^2.0.0"
-  },
   "dependencies": {
     "core-js": "^3.17.2"
   },

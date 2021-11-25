@@ -8,6 +8,11 @@ containing the following **breaking changes**:
 Although some libraries might be 10.x.x compatible, we now run tests
 against node >= 12.x.x
 
+# Angular 12 is the minimum supported version
+
+@transifex/angular has been tested to work with Angular 12 & 13. If you are working
+on an Angular 11 project please use the 1.x.x version.
+
 # Default key generation
 
 Version 1.x.x is using hashed based keys by default, unless
