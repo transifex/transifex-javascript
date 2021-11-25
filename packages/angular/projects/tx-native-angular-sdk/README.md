@@ -11,7 +11,10 @@ Related packages:
 
 If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
+
+
 ## Table of Contents
+* [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
   * [Initialization](#initialization)
@@ -23,6 +26,11 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [Language Picker Component](#language-picker-component)
 * [License](#license)
 
+
+# Requirements
+
+Angular 12 or 13 is required. If you are using older versions, please use the `1.x.x` version of
+Transifex Native related packages.
 
 # Installation
 
