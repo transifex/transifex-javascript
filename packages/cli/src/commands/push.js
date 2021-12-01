@@ -108,7 +108,11 @@ class PushCommand extends Command {
         if (_.isEmpty(data)) return;
         this.log(file.green);
         _.each(data, (value, key) => {
-          this.log(`  └─ ${key}: ${value.string.underline}`);
+          if (key !== value.string) {
+            this.log(`  └─ ${key}: ${value.string.underline}`);
+          } else {
+            this.log(`  └─ ${value.string.underline}`);
+          }
           _.each(value.meta, (meta, metaKey) => {
             if ((_.isObject(meta) || _.isArray(meta)) && _.isEmpty(meta)) {
               return;
