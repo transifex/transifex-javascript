@@ -25,10 +25,10 @@ describe('push command', () => {
     .stdout()
     .command(['push', 'test/fixtures/simple.js', '--dry-run', '-v'])
     .it('outputs strings on verbose mode', (ctx) => {
-      expect(ctx.stdout).to.contain('Text 1: Text 1');
-      expect(ctx.stdout).to.contain('Text 2: Text 2');
-      expect(ctx.stdout).to.contain('Text 3: Text 3');
-      expect(ctx.stdout).to.contain('Text 4: Text 4');
+      expect(ctx.stdout).to.contain('Text 1');
+      expect(ctx.stdout).to.contain('Text 2');
+      expect(ctx.stdout).to.contain('Text 3');
+      expect(ctx.stdout).to.contain('Text 4');
       expect(ctx.stdout).to.contain('occurrences: ["/test/fixtures/simple.js"]');
     });
 
@@ -43,7 +43,7 @@ describe('push command', () => {
     .stdout()
     .command(['push', 'test/fixtures/', '--dry-run', '-v'])
     .it('outputs strings on verbose mode', (ctx) => {
-      expect(ctx.stdout).to.contain('Text 1: Text 1');
+      expect(ctx.stdout).to.contain('Text 1');
     });
 
   test
@@ -57,7 +57,7 @@ describe('push command', () => {
     .stdout()
     .command(['push', 'test/fixtures/*.js', '--dry-run', '-v'])
     .it('outputs strings on verbose mode', (ctx) => {
-      expect(ctx.stdout).to.contain('Text 1: Text 1');
+      expect(ctx.stdout).to.contain('Text 1');
     });
 
   test
@@ -71,7 +71,7 @@ describe('push command', () => {
     .stdout()
     .command(['push', 'test/fixtures/*.foo', '--dry-run', '-v'])
     .it('outputs strings on verbose mode', (ctx) => {
-      expect(ctx.stdout).to.not.contain('Text 1: Text 1');
+      expect(ctx.stdout).to.not.contain('Text 1');
     });
 
   test
