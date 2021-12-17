@@ -40,12 +40,12 @@ class ResourceString extends JsonApiResource {
 TransifexApi.register(ResourceString, 'ResourceString');
 
 class ResourceStringAsyncDownload extends JsonApiResource {
-  static TYPE = 'resource_string_async_downloads';
+  static TYPE = 'resource_strings_async_downloads';
 }
 TransifexApi.register(ResourceStringAsyncDownload, 'ResourceStringAsyncDownload');
 
 class ResourceStringAsyncUpload extends JsonApiResource {
-  static TYPE = 'resource_string_async_downloads';
+  static TYPE = 'resource_strings_async_downloads';
 }
 TransifexApi.register(ResourceStringAsyncUpload, 'ResourceStringAsyncUpload');
 
