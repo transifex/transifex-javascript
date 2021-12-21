@@ -45,12 +45,12 @@ class ResourceStringAsyncDownload extends JsonApiResource {
 TransifexApi.register(ResourceStringAsyncDownload, 'ResourceStringAsyncDownload');
 
 class ResourceStringAsyncUpload extends JsonApiResource {
-  static TYPE = 'resource_strings_async_downloads';
+  static TYPE = 'resource_strings_async_uploads';
 }
 TransifexApi.register(ResourceStringAsyncUpload, 'ResourceStringAsyncUpload');
 
 class ResourceStringComment extends JsonApiResource {
-  static TYPE = 'Resource_string_comments';
+  static TYPE = 'resource_string_comments';
 }
 TransifexApi.register(ResourceStringComment, 'ResourceStringComment');
 
