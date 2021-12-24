@@ -11,7 +11,10 @@ export default class MemoryCache {
    * @param {String} translations[key] - Translation string
    */
   update(localeCode, translations) {
-    this.translationsByLocale[localeCode] = translations;
+    if (!this.translationsByLocale[localeCode]) {
+      this.translationsByLocale[localeCode] = {};
+    }
+    Object.assign(this.translationsByLocale[localeCode], translations);
   }
 
   /**

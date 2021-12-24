@@ -68,6 +68,8 @@ export default class TxNative {
         that[value] = params[value];
       }
     });
+
+    this.fetchedTags = {}; // {langCode: [tag1, tag2, ...], ...}
   }
 
   /**
@@ -159,23 +161,37 @@ export default class TxNative {
    * @returns {Promise}
    */
   async fetchTranslations(localeCode, params = {}) {
+    const filterTags = params.filterTags || this.filterTags;
+
     if (!params.refresh
-      && this.cache.hasTranslations(localeCode)
       && !this.cache.isStale(localeCode)
-    ) {
+      && (
+        (!filterTags && this.cache.hasTranslations(localeCode))
+        || (filterTags
+          && (this.fetchedTags[localeCode] || []).indexOf(filterTags) !== -1)
+      )) {
       return;
+    }
+
+    if (filterTags) {
+      if (!(localeCode in this.fetchedTags)) {
+        this.fetchedTags[localeCode] = [];
+      }
+      if (this.fetchedTags[localeCode].indexOf(filterTags) === -1) {
+        this.fetchedTags[localeCode].push(filterTags);
+      }
     }
 
     // contact CDS
     try {
-      sendEvent(FETCHING_TRANSLATIONS, localeCode, this);
+      sendEvent(FETCHING_TRANSLATIONS, { localeCode, filterTags }, this);
       let response;
       let lastResponseStatus = 202;
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
         let url = `${this.cdsHost}/content/${localeCode}`;
-        if (this.filterTags) {
-          url = `${url}?filter[tags]=${this.filterTags}`;
+        if (filterTags) {
+          url = `${url}?filter[tags]=${filterTags}`;
         }
         response = await axios.get(url, {
           headers: {
@@ -197,13 +213,13 @@ export default class TxNative {
           }
         });
         this.cache.update(localeCode, hashmap);
-        sendEvent(TRANSLATIONS_FETCHED, localeCode, this);
+        sendEvent(TRANSLATIONS_FETCHED, { localeCode, filterTags }, this);
       } else {
-        sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
+        sendEvent(TRANSLATIONS_FETCH_FAILED, { localeCode, filterTags }, this);
         throw new Error('Could not fetch translations');
       }
     } catch (err) {
-      sendEvent(TRANSLATIONS_FETCH_FAILED, localeCode, this);
+      sendEvent(TRANSLATIONS_FETCH_FAILED, { localeCode, filterTags }, this);
       throw err;
     }
   }
