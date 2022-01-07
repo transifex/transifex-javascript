@@ -339,4 +339,58 @@ describe('extractPhrases with source keys', () => {
         },
       });
   });
+
+  it('works with vue', async () => {
+    expect(await extractPhrases('test/fixtures/vuejs.vue', 'vuejs.vue', {
+      useHashedKeys: false,
+    }))
+      .to.deep.equal({
+        'Text 1::foo': {
+          string: 'Text 1',
+          meta: {
+            character_limit: 10,
+            context: ['foo'],
+            tags: ['tag1', 'tag2'],
+            developer_comment: 'comment',
+            occurrences: ['vuejs.vue'],
+          },
+        },
+        'Text 2': {
+          string: 'Text 2',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text 3': {
+          string: 'Text 3',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text 4': {
+          string: 'Text 4',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '<b>HTML text</b>': {
+          string: '<b>HTML text</b>',
+          meta: { context: [], tags: ['tag1'], occurrences: ['vuejs.vue'] },
+        },
+        '<b>HTML inline text</b>': {
+          string: '<b>HTML inline text</b>',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text {somevalue}': {
+          string: 'Text {somevalue}',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text {someothervalue}': {
+          string: 'Text {someothervalue}',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text 5': {
+          string: 'Text 5',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text 6': {
+          string: 'Text 6',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+      });
+  });
 });

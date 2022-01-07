@@ -82,7 +82,7 @@ USAGE
   $ txjs-cli push [PATTERN]
 
 ARGUMENTS
-  PATTERN  [default: **/*.{js,jsx,ts,tsx}] file pattern to scan for strings
+  PATTERN  [default: **/*.{js,jsx,ts,tsx,vue}] file pattern to scan for strings
 
 OPTIONS
   -v, --verbose                          verbose output
@@ -98,7 +98,7 @@ OPTIONS
   --without-tags-only=without-tags-only  push strings without specific tags
 
 DESCRIPTION
-  Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
+  Parse .js, .ts, .jsx, .tsx, .html and .vue files and detect phrases marked for
   translation by Transifex Native toolkit for Javascript and
   upload them to Transifex for translation.
 

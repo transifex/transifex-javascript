@@ -358,4 +358,58 @@ describe('extractPhrases with hashed keys', () => {
         },
       });
   });
+
+  it('works with vue', async () => {
+    expect(await extractPhrases('test/fixtures/vuejs.vue', 'vuejs.vue', {
+      useHashedKeys: true,
+    }))
+      .to.deep.equal({
+        '6f48100ca5a57d2db9b685a8373be8a6': {
+          string: 'Text 1',
+          meta: {
+            character_limit: 10,
+            context: ['foo'],
+            tags: ['tag1', 'tag2'],
+            developer_comment: 'comment',
+            occurrences: ['vuejs.vue'],
+          },
+        },
+        '5d47152bcd597dd6adbff4884374aaad': {
+          string: 'Text 2',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '3cd62915590816fdbf53852e44ee675a': {
+          string: 'Text 3',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '33f5afa925f1464280d72d6d9086057c': {
+          string: 'Text 4',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '16c514ade457a04f8a5e074fe705fd09': {
+          string: '<b>HTML text</b>',
+          meta: { context: [], tags: ['tag1'], occurrences: ['vuejs.vue'] },
+        },
+        ff6354c17646535001825818343d64f3: {
+          string: '<b>HTML inline text</b>',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '8f97e92d0cd43c9012279b607c3c6e70': {
+          string: 'Text {somevalue}',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        fda1ca1ccc076b7eb193aff7a8a006b5: {
+          string: 'Text {someothervalue}',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '57b0d93fc0e1c3af68a41214147efd97': {
+          string: 'Text 5',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '39bcf931264f8a4de0d4c993ba8e7094': {
+          string: 'Text 6',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+      });
+  });
 });

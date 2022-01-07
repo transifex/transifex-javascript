@@ -88,7 +88,6 @@ tx.init({
     const message = t('Welcome {user}', {user: 'Joe'});
     console.log(message);
   });
-}
 </script>
 ```
 
