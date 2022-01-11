@@ -198,7 +198,7 @@ describe('extractPhrases with source keys', () => {
       });
   });
 
-  it('works with typescript', async () => {
+  it('works with angular typescript', async () => {
     expect(await extractPhrases('test/fixtures/typescript.ts', 'typescript.ts'))
       .to.deep.equal({
         'text.monday': {

@@ -207,7 +207,7 @@ describe('extractPhrases with hashed keys', () => {
       });
   });
 
-  it('works with typescript', async () => {
+  it('works with angular typescript', async () => {
     expect(await extractPhrases('test/fixtures/typescript.ts', 'typescript.ts', {
       useHashedKeys: true,
     }))

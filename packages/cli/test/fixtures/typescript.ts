@@ -12,6 +12,9 @@ class ItemRegistry {
   @T('Monday', { _key: 'text.monday' })
   weekday: string;
 
+  @ViewChild('someInput', { static: true })
+  someInputRef: ElementRef<any>;
+
   constructor(name: string, id: number) {
     this.name = name;
     this.id = id;
