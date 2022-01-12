@@ -30,7 +30,8 @@
     "build": "NODE_ENV=production rollup -c",
     "test": "run-s test:unit test:build",
     "test:build": "run-s build",
-    "test:unit": "jest --coverage=true --forceExit"
+    "test:unit": "jest --coverage=true --forceExit",
+    "publish-npm": "npm publish"
   },
   "peerDependencies": {
     "@transifex/native": "^2.0.0",
