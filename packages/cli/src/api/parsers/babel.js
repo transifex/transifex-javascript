@@ -77,40 +77,43 @@ function babelExtractPhrases(HASHES, source, relativeFile, options) {
       });
     },
 
-    // Decorator
+    // Supported SDK Decorators
     Decorator({ node }) {
       const elem = node.expression;
 
       if (!elem || !elem.arguments || !elem.arguments.length) return;
-      if (!node.expression.callee.name === 'T') return;
 
-      let string = '';
-      let key = '';
-      const params = {};
-      _.each(node.expression.arguments, (arg) => {
-        if (arg.type === 'StringLiteral') {
-          string = arg.value;
-        } else if (arg.type === 'ObjectExpression') {
-          _.each(arg.properties, (prop) => {
-            if (prop.key.name === '_key') {
-              key = prop.value.value;
-            } else {
-              params[prop.key.name] = prop.value.value;
-            }
+      // Angular SDK T Decorator
+      if (node && node.expression && node.expression.callee
+        && node.expression.callee.name === 'T') {
+        let string = '';
+        let key = '';
+        const params = {};
+        _.each(node.expression.arguments, (arg) => {
+          if (arg.type === 'StringLiteral') {
+            string = arg.value;
+          } else if (arg.type === 'ObjectExpression') {
+            _.each(arg.properties, (prop) => {
+              if (prop.key.name === '_key') {
+                key = prop.value.value;
+              } else {
+                params[prop.key.name] = prop.value.value;
+              }
+            });
+          }
+        });
+
+        if (string) {
+          const partial = createPayload(string, params, relativeFile, options);
+          if (!isPayloadValid(partial, options)) return;
+
+          mergePayload(HASHES, {
+            [key || partial.key]: {
+              string: partial.string,
+              meta: partial.meta,
+            },
           });
         }
-      });
-
-      if (string) {
-        const partial = createPayload(string, params, relativeFile, options);
-        if (!isPayloadValid(partial, options)) return;
-
-        mergePayload(HASHES, {
-          [key || partial.key]: {
-            string: partial.string,
-            meta: partial.meta,
-          },
-        });
       }
     },
 
