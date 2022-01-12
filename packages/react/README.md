@@ -223,6 +223,73 @@ function MyLanguagePicker () {
 }
 ```
 
+## `useTranslations` hook - aka Lazy Loading
+
+Fetches translations tagged with a specific combination of tags when a
+component first renders. This way, you can pull translations from the CDS in
+batches and only when needed:
+
+```jsx
+tx.init({ token: ..., filterTags: 'home' });
+
+export default function App() {
+  return (
+    <>
+      <T _str="This will be translated as soon as possible" _tags="home" />
+      {someCondition() && <Inner />}
+    </>
+  );
+}
+
+function Inner() {
+  useTranslations('inner');
+  return <T
+    _str="This will be translated when the inner component is rendered"
+    _tags="inner" />;
+}
+```
+
+The hook returns a boolean state variable called `ready` that you can use to
+handle a loading state:
+
+```jsx
+function Inner() {
+  const { ready } = useTranslations('inner');
+  if (!ready) { return 'Loading...'; }
+  return <T
+    _str="This will be translated when the inner component is rendered"
+    _tags="inner" />;
+}
+```
+
+_If you don't handle the loading state, the source string will be rendered
+first and then replaced with the translation when it becomes available._
+
+You can also use the hook in parent components that don't need the tagged
+translations themselves. This will make the translations available sooner for
+child components that may potentially need them:
+
+```jsx
+tx.init({ token: ..., filterTags: 'home' });
+
+export default function App() {
+  const { ready: innerReady } = useTranslations('inner');
+  return (
+    <>
+      <T _str="This will be translated as soon as possible" _tags="home" />
+      {someCondition() && <Inner ready={innerReady} />}
+    </>
+  );
+}
+
+function Inner({ ready }) {
+  if (!ready) { return 'Loading...'; }
+  return <T
+    _str="This will be translated when the inner component is rendered"
+    _tags="inner" />;
+}
+```
+
 # License
 
 Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.

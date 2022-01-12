@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { onEvent, offEvent, LOCALE_CHANGED } from '@transifex/native';
+import {
+  onEvent,
+  offEvent,
+  LOCALE_CHANGED,
+  TRANSLATIONS_FETCHED,
+} from '@transifex/native';
 import translateWithElements from '../utils/translateWithElements';
 
 /* Return a reference of the 'translateWithElements' function. Also forces the
@@ -23,7 +28,11 @@ export default function useT() {
     // Using `setCounter` will trigger a rerender
     function rerender() { setCounter((c) => c + 1); }
     onEvent(LOCALE_CHANGED, rerender);
-    return () => { offEvent(LOCALE_CHANGED, rerender); };
+    onEvent(TRANSLATIONS_FETCHED, rerender);
+    return () => {
+      offEvent(LOCALE_CHANGED, rerender);
+      offEvent(TRANSLATIONS_FETCHED, rerender);
+    };
   }, [setCounter]);
   return translateWithElements;
 }
