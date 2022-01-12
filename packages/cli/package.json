@@ -34,7 +34,8 @@
     "colors": "^1.4.0",
     "glob": "^7.1.6",
     "lodash": "^4.17.21",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "vue-template-compiler": "^2.6.14"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.26.0",

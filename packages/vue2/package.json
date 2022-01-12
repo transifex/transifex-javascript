@@ -1,0 +1,70 @@
+{
+  "name": "@transifex/vue2",
+  "version": "2.1.2",
+  "description": "Transifex Native for Vue 2",
+  "keywords": [
+    "transifex",
+    "i18n",
+    "l10n",
+    "localization",
+    "vue",
+    "vue 2"
+  ],
+  "author": "Transifex",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/vue2",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "bugs": {
+    "url": "https://github.com/transifex/transifex-javascript/issues"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "main": "dist/index.js",
+  "source": "src/index.js",
+  "scripts": {
+    "lint": "eslint src/ tests/",
+    "build": "NODE_ENV=production rollup -c",
+    "test": "run-s test:unit test:build",
+    "test:build": "run-s build",
+    "test:unit": "jest --coverage=true --forceExit"
+  },
+  "peerDependencies": {
+    "@transifex/native": "^2.0.0",
+    "vue": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/vue": "^5.8.2",
+    "@transifex/native": "^2.1.2",
+    "@vue/compiler-sfc": "^3.2.26",
+    "@vue/vue2-jest": "^27.0.0-alpha.4",
+    "babel-jest": "^27.4.5",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.4.5",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.62.0",
+    "rollup-plugin-vue2": "^0.8.1",
+    "vue": "^2.6.11"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.vue$": "@vue/vue2-jest"
+    }
+  },
+  "files": [
+    "dist"
+  ]
+}
