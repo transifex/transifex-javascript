@@ -23,6 +23,11 @@ Transifex Native support for localizing React components.
 Transifex Native support for localizing Angular components.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/angular/projects/tx-native-angular-sdk)
 
+## Transifex Native for Vue
+
+Transifex Native support for localizing Vue components.
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/vue2)
+
 ## Transifex Native CLI
 
 Command line tool for extracting phrases from source files and pushing content to Transifex.
