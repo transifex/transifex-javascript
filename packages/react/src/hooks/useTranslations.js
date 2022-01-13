@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   tx,
   onEvent,
@@ -7,21 +7,28 @@ import {
   TRANSLATIONS_FETCHED,
   LOCALE_CHANGED,
 } from '@transifex/native';
+import { TXNativeContext } from '../context/TXNativeContext';
 
 export default function useTranslations(filterTags) {
+  // Check for a different tx initialization
+  const context = useContext(TXNativeContext);
+  const instance = context.instance || tx;
+
   const [ready, setReady] = useState(
-    (tx.fetchedTags[tx.currentLocale] || []).indexOf(filterTags) !== -1,
+    (instance.fetchedTags[instance.currentLocale] || []).indexOf(filterTags) !== -1,
   );
 
   useEffect(() => {
-    function setReadyToFalse({ filterTags: eventFilterTags }) {
+    function setReadyToFalse({ filterTags: eventFilterTags }, caller) {
+      if (caller !== instance) return;
       if (eventFilterTags === filterTags) {
         setReady(false);
       }
     }
     onEvent(FETCHING_TRANSLATIONS, setReadyToFalse);
 
-    function setReadyToTrue({ filterTags: eventFilterTags }) {
+    function setReadyToTrue({ filterTags: eventFilterTags }, caller) {
+      if (caller !== instance) return;
       if (eventFilterTags === filterTags) {
         setReady(true);
       }
@@ -29,8 +36,8 @@ export default function useTranslations(filterTags) {
     onEvent(TRANSLATIONS_FETCHED, setReadyToTrue);
 
     async function fetchTranslations() {
-      if (tx.currentLocale) {
-        await tx.fetchTranslations(tx.currentLocale, { filterTags });
+      if (instance.currentLocale) {
+        await instance.fetchTranslations(instance.currentLocale, { filterTags });
       }
       setReady(true);
     }
@@ -43,7 +50,7 @@ export default function useTranslations(filterTags) {
       offEvent(TRANSLATIONS_FETCHED, setReadyToTrue);
       offEvent(LOCALE_CHANGED, fetchTranslations);
     };
-  }, [filterTags]);
+  }, [filterTags, instance]);
 
   return { ready };
 }

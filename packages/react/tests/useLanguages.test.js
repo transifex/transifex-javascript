@@ -6,8 +6,8 @@ import {
   render, screen, cleanup, waitFor,
 } from '@testing-library/react';
 
-import { tx } from '@transifex/native';
-import { useLanguages } from '../src';
+import { tx, createNativeInstance } from '@transifex/native';
+import { useLanguages, TXProvider } from '../src';
 
 let oldGetLanguages;
 beforeEach(() => {
@@ -39,4 +39,30 @@ test('fetches languages', async () => {
   await waitFor(() => screen.getByText('el: Greek'));
   expect(screen.queryByText('el: Greek')).toBeTruthy();
   expect(screen.queryByText('fr: French')).toBeTruthy();
+});
+
+test('fetches languages on provider', async () => {
+  function LanguageList() {
+    const languages = useLanguages();
+    return (
+      <>
+        {languages.map(({ code, name }) => {
+          const text = `${code}: ${name}`;
+          return <p key={code}>{text}</p>;
+        })}
+      </>
+    );
+  }
+  const instance = createNativeInstance();
+  instance.getLanguages = async () => [
+    { code: 'foo', name: 'Bar' },
+  ];
+
+  render(
+    <TXProvider instance={instance}>
+      <LanguageList />
+    </TXProvider>,
+  );
+  await waitFor(() => screen.getByText('foo: Bar'));
+  expect(screen.queryByText('foo: Bar')).toBeTruthy();
 });

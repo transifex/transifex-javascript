@@ -175,6 +175,24 @@ function DisplayLocale () {
 }
 ```
 
+## `useTX` hook
+
+Returns a state variable with the Native instance.
+
+```jsx
+import React from 'react';
+import { useTX } from '@transifex/react';
+
+function SetLocale () {
+  const tx = useTX();
+  return (
+    <button onClick={() => tx.setCurrentLocale('el')}>
+      Set to Greek
+    </button>
+  );
+}
+```
+
 ## `LanguagePicker` component
 
 Renders a `<select>` tag that displays supported languages and switches the
@@ -287,6 +305,37 @@ function Inner({ ready }) {
   return <T
     _str="This will be translated when the inner component is rendered"
     _tags="inner" />;
+}
+```
+
+## `TXProvider` provider
+If you need to use more than one Transifex Native instances - like for example if you have a component library - you can use this provider to pass the desired instance to the children components.
+
+```js
+import { tx, createNativeInstance } from '@transifex/native';
+import { TXProvider, LanguagePicker, T } from '@transifex/react';
+
+const myOtherTXInstance = createNativeInstance();
+myOtherTXInstance.init({ token: 'othertoken' })
+
+tx.init({
+  token: 'token',
+});
+
+// Make tx aware of the other instances so they can be synced when changing
+// language
+tx.controllerOf(myOtherTXInstance);
+
+export default function App() {
+  return (
+    <>
+      <LanguagePicker />
+      <TXProvider instance={myOtherTXInstance}>
+        <T _str="Hello {username}" username="John" />
+      </TXProvider>
+      <T _str="Hello World" />
+    </>
+  );
 }
 ```
 

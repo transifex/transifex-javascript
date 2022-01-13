@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
+  tx,
   onEvent,
   offEvent,
   LOCALE_CHANGED,
   TRANSLATIONS_FETCHED,
 } from '@transifex/native';
 import translateWithElements from '../utils/translateWithElements';
+import { TXNativeContext } from '../context/TXNativeContext';
 
 /* Return a reference of the 'translateWithElements' function. Also forces the
  * component to re-render in case the language changes.
@@ -23,16 +25,24 @@ import translateWithElements from '../utils/translateWithElements';
  * } */
 
 export default function useT() {
+  // Check for a different tx initialization
+  const context = useContext(TXNativeContext);
+  const instance = context.instance || tx;
+
   const [, setCounter] = useState(0);
   useEffect(() => {
     // Using `setCounter` will trigger a rerender
-    function rerender() { setCounter((c) => c + 1); }
+    function rerender(_, caller) {
+      if (instance === caller) {
+        setCounter((c) => c + 1);
+      }
+    }
     onEvent(LOCALE_CHANGED, rerender);
     onEvent(TRANSLATIONS_FETCHED, rerender);
     return () => {
       offEvent(LOCALE_CHANGED, rerender);
       offEvent(TRANSLATIONS_FETCHED, rerender);
     };
-  }, [setCounter]);
-  return translateWithElements;
+  }, [setCounter, instance]);
+  return (_str, props) => translateWithElements(_str, props, context);
 }

@@ -6,3 +6,4 @@ export const UT : TransifexReact.UT;
 export const useLanguages : TransifexReact.useLanguages;
 export const useLocale : TransifexReact.useLocale;
 export const useT : TransifexReact.useT;
+export const TXProvider : TransifexReact.TXProvider;
