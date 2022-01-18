@@ -6,4 +6,5 @@ declare module '@transifex/native' {
   export const SourceErrorPolicy: any;
   export const ThrowErrorPolicy: any;
   export const MessageFormatRenderer: any;
+  export const createNativeInstance: any;
 }

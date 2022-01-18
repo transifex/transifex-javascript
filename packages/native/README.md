@@ -266,6 +266,35 @@ offEvent(type, function)
 sendEvent(type, payload, caller)
 ```
 
+## Using more than one TX Native instances
+
+```js
+const { tx, t, createNativeInstance } = require('@transifex/native');
+
+// Initiatate a secondary TX Instance
+const txOtherInstance = createNativeInstance();
+txOtherInstance.init({
+  token: '<PUBLIC PROJECT TOKEN 2>',
+})
+
+// initialize SDK
+tx.init({
+  token: '<PUBLIC PROJECT TOKEN>',
+});
+
+// Use tx as a controller of the other instance
+tx.controllerOf(txOtherInstance);
+
+// get all languages
+tx.setCurrentLocale('fr').then(function() {
+  // translate something
+  const message = t('Welcome {user}', {user: 'Joe'});
+  console.log(message);
+  const message2 = txOtherInstance.t('Welcome {user}', {user: 'Joe'});
+  console.log(message2);
+});
+```
+
 # License
 
 Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.

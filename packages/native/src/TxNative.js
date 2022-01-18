@@ -35,6 +35,7 @@ export default class TxNative {
     this.currentLocale = '';
     this.locales = [];
     this.languages = [];
+    this.childInstances = [];
   }
 
   /**
@@ -52,7 +53,6 @@ export default class TxNative {
    */
   init(params) {
     const that = this;
-
     [
       'cdsHost',
       'token',
@@ -68,7 +68,6 @@ export default class TxNative {
         that[value] = params[value];
       }
     });
-
     this.fetchedTags = {}; // {langCode: [tag1, tag2, ...], ...}
   }
 
@@ -301,14 +300,27 @@ export default class TxNative {
    * @returns {Promise}
    */
   async setCurrentLocale(localeCode) {
-    if (this.isCurrent(localeCode)) return;
+    if (this.isCurrent(localeCode)) {
+      await this._syncInstances(this.childInstances);
+      return;
+    }
+
     if (!localeCode) {
+      // update controller
       this.currentLocale = '';
+      await this._syncInstances(this.childInstances);
       sendEvent(LOCALE_CHANGED, this.currentLocale, this);
       return;
     }
+
+    // Fetch translations for controller instance
     await this.fetchTranslations(localeCode);
     this.currentLocale = localeCode;
+
+    // Update children
+    await this._syncInstances(this.childInstances);
+
+    // Trigger controller change
     sendEvent(LOCALE_CHANGED, localeCode, this);
   }
 
@@ -327,5 +339,64 @@ export default class TxNative {
   async getLanguages(params = {}) {
     await this.getLocales(params);
     return [...this.languages];
+  }
+
+  /**
+   * Connect a child instance with this instance as controller.
+   * When the language is changing on this instance, all child
+   * instances will be updated as well.
+   *
+   * @param {*} instance
+   * @returns {Promise}
+   */
+  async controllerOf(instance) {
+    if (instance === this) {
+      throw new Error('Cannot add self as instance');
+    }
+    if (instance.childInstances.indexOf(this) !== -1) {
+      throw new Error('Cycle reference error, instance is controller of this');
+    }
+
+    this.childInstances.push(instance);
+    await this._syncInstances([instance]);
+
+    return instance;
+  }
+
+  /**
+   * Private function to sync controller with
+   * child instance.
+   *
+   * @param {Array} instances
+   * @memberof TxNative
+   */
+  async _syncInstances(instances) {
+    // update instance language
+    const localeCode = this.getCurrentLocale();
+
+    // update children instances
+    if (localeCode) {
+      for (let i = 0; i < instances.length; i++) {
+        // do not fetch language if not needed
+        if (instances[i].getCurrentLocale() !== localeCode) {
+          // Fetch translations for additional instance without blocking
+          // anything else in case of missing language
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await instances[i].fetchTranslations(localeCode);
+          } catch (e) {
+            // no-op
+          }
+        }
+      }
+    }
+    // Reloop through the instances to avoid content flash
+    instances.forEach((instance) => {
+      if (instance.getCurrentLocale() !== localeCode) {
+        // eslint-disable-next-line no-param-reassign
+        instance.currentLocale = localeCode;
+        sendEvent(LOCALE_CHANGED, localeCode, instance);
+      }
+    });
   }
 }

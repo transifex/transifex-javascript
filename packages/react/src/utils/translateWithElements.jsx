@@ -1,5 +1,5 @@
+/* eslint-disable no-underscore-dangle */
 import React, { Fragment } from 'react';
-
 import { t } from '@transifex/native';
 
 /*  Wrapper of `t`-function that can accept React elements as properties. This
@@ -14,7 +14,13 @@ import { t } from '@transifex/native';
   * an array of React elements, each within its unique `key` property and, if
   * there are more than one, will be returned as `<>{result}</>`. */
 
-function translateWithElements(_str, props) {
+function translateWithElements(_str, props, context) {
+  let _t = t;
+  if (context && context.instance) {
+    const _tx = context.instance;
+    _t = _tx.t;
+  }
+
   const actualProps = {};
   const reactElements = [];
   if (props) {
@@ -27,7 +33,7 @@ function translateWithElements(_str, props) {
       }
     });
   }
-  const translation = t(_str, actualProps);
+  const translation = _t(_str, actualProps);
   const result = [];
   let lastEnd = 0;
   let lastKey = 0;

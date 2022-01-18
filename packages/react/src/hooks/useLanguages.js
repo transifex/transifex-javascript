@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { tx } from '@transifex/native';
+import { TXNativeContext } from '../context/TXNativeContext';
 
 /* Return a state variable that will soon be populated with the available
  * languages
@@ -19,12 +20,16 @@ import { tx } from '@transifex/native';
  * } */
 
 export default function useLanguages() {
+  // Check for a different tx initialization
+  const context = useContext(TXNativeContext);
+  const instance = context.instance || tx;
+
   const [languages, setLanguages] = useState([]);
   useEffect(() => {
     async function fetch() {
-      setLanguages(await tx.getLanguages());
+      setLanguages(await instance.getLanguages());
     }
     fetch();
-  }, []);
+  }, [instance]);
   return languages;
 }
