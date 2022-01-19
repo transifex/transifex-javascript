@@ -31,7 +31,7 @@
     "angular-html-parser": "^1.7.1",
     "axios": "^0.24.0",
     "cli-ux": "^5.5.1",
-    "colors": "^1.4.0",
+    "colors": "1.4.0",
     "glob": "^7.1.6",
     "lodash": "^4.17.21",
     "shelljs": "^0.8.4",
