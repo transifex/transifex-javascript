@@ -53,7 +53,7 @@ When creating an improvement issue, make sure you include the following:
 
 ### Contributor License Agreement
 
-Before contributing with suggested changes, you must sign our [Contributor License Agreement](https://docs.transifex.com/legal/contributing).
+Before contributing with suggested changes, you must sign our [Contributor License Agreement](https://developers.transifex.com/docs/contributing).
 
 If you want to submit a patch that either fixes a bug or introduces a new feature, you need to have the following in mind:
 * The Pull Request (PR) handles one thing, i.e. fixes a certain bug or introduces a specific new functionality, instead of combining many at once.
