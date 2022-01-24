@@ -29,8 +29,8 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
 
 # Requirements
 
-Angular 12 or 13 is required. If you are using older versions, please use the `1.x.x` version of
-Transifex Native related packages.
+Angular 12 or 13 is required. If you are using Angular 11, please use the `1.x.x` version of
+Transifex Native related packages. Other Angular versions are not officially supported at the moment.
 
 # Installation
 
@@ -225,6 +225,7 @@ Exposes the following methods and properties:
 | getCurrentLocale | none             | Returns the current locale of the TX Native object|
 | getLanguages     | none             | Returns an array of available languages           |
 | translate        | translate params <sup>2</sup> | Returns the translation for a string with given translation params |
+| localeChanged    | none | Returns an observable for monitoring the locale changed event |
 
 <sup>(1)</sup> Initialization config
 
