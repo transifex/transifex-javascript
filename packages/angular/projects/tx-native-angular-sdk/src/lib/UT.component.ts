@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { TranslationService } from './translation.service';
+import { TXInstanceComponent } from './instance.component';
 import { TComponent } from './T.component';
+import { TranslationService } from './translation.service';
 
 @Component({
   selector: 'UT',
@@ -32,8 +33,9 @@ export class UTComponent extends TComponent {
    *
    * @param translationService
    */
-  constructor(translationService: TranslationService) {
-    super(translationService);
+  constructor(translationService: TranslationService,
+    protected instance: TXInstanceComponent) {
+    super(translationService, instance);
     this.escapeVars = true;
   }
 }

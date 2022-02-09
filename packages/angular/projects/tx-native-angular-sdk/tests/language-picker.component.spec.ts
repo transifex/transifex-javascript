@@ -1,13 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 import { LanguagePickerComponent } from '../src/lib/language-picker.component';
-import { ILanguage, TranslationService } from '../src/public-api';
+import { ILanguage, TranslationService, TXInstanceComponent } from '../src/public-api';
 
 describe('LanguagePickerComponent', () => {
   let component: LanguagePickerComponent;
   let fixture: ComponentFixture<LanguagePickerComponent>;
   let service: TranslationService;
+  let instance: TXInstanceComponent;
+
   const translationParams = {
     _key: '',
     _context: '',
@@ -25,10 +28,12 @@ describe('LanguagePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LanguagePickerComponent],
+      declarations: [LanguagePickerComponent, TXInstanceComponent],
+      providers: [TXInstanceComponent],
     })
       .compileComponents();
     service = TestBed.inject(TranslationService);
+    instance = TestBed.inject(TXInstanceComponent);
   });
 
   beforeEach(() => {
@@ -90,5 +95,23 @@ describe('LanguagePickerComponent', () => {
     const text = select.options[select.selectedIndex].label;
     expect(text).toBe('Ελληνικά');
     expect(await component.onChange).toHaveBeenCalled();
+  });
+
+  it('should get languages of an alternative instance', async () => {
+    // setup
+    instance.alias = 'test';
+    instance.token = 'test';
+    component.instance = instance;
+    const instanceReadySpy = spyOnProperty(component, 'instanceReady', 'get')
+      .and.returnValue(of(true));
+    spyOn(service, 'getLanguages').and.returnValue(Promise.resolve(languages));
+
+    // act
+    await instance.ngOnInit();
+    await component.ngOnInit();
+
+    // assert
+    expect(component.languages).toEqual(languages);
+    expect(service.getLanguages).toHaveBeenCalled();
   });
 });

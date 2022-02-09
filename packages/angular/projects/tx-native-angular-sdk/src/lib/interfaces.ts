@@ -33,3 +33,9 @@ export interface IPolicy {
 export interface IStringRenderer {
   render(sourceString: string, localeCode: string, params: ITranslateParams): string;
 }
+
+export interface ITXInstanceConfiguration {
+  token: string;
+  alias: string;
+  controlled: boolean;
+}
