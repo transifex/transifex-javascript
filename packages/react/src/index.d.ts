@@ -1,9 +1,10 @@
 import TransifexReact = require('@transifex/react');
 export const T : TransifexReact.T;
 export const LanguagePicker : TransifexReact.LanguagePicker;
-export const T : TransifexReact.T;
 export const UT : TransifexReact.UT;
 export const useLanguages : TransifexReact.useLanguages;
 export const useLocale : TransifexReact.useLocale;
 export const useT : TransifexReact.useT;
+export const useTranslations : TransifexReact.useTranslations;
+export const useTX : TransifexReact.useTX;
 export const TXProvider : TransifexReact.TXProvider;
