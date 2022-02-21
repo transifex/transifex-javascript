@@ -35,7 +35,7 @@ Command line tool for extracting phrases from source files and pushing content t
 
 ## Transifex API SDK
 
-A javascript SDK for the [Transifex API v3](https://transifex.github.io/openapi).
+A javascript SDK for the [Transifex API v3](https://developers.transifex.com/reference).
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/api)
 
 ### {json:api} SDK library

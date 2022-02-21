@@ -1,4 +1,4 @@
-A javascript SDK for the [Transifex API (v3)](https://transifex.github.io/openapi/)
+A javascript SDK for the [Transifex API (v3)](https://developers.transifex.com/reference)
 
 ## Intro
 
@@ -85,7 +85,7 @@ await projects.fetch();
 ```
 
 However, if you look at how a project is represented in the
-[API docs](https://transifex.github.io/openapi/#tag/Projects/paths/~1projects~1{project_id}/get),
+[API docs](https://developers.transifex.com/reference/get_projects-project-id),
 Organization objects have a `projects` relationship with a `related` link, so
 you can achieve the same thing with:
 
@@ -95,7 +95,7 @@ await projects.fetch();
 ```
 
 If you look into the
-[API docs](https://transifex.github.io/openapi/#tag/Projects/paths/~1projects/get),
+[API docs](https://developers.transifex.com/reference/get_projects),
 you can see that a `slug` filter is also supported, so to find a specific
 project, you can do:
 
@@ -184,7 +184,7 @@ await project.change('team', team_2);
 ```
 
 This will send a PATCH request to
-[`/projects/XXX/relationships/team`](https://transifex.github.io/openapi/#tag/Projects/paths/~1projects~1{project_id}~1relationships~1team/patch)
+[`/projects/XXX/relationships/team`](https://developers.transifex.com/reference/patch_projects-project-id-relationships-team)
 to perform the change. Again, you should consult the API documentation to see
 which relationships can be changed and with which methods (in this case -
 changing a project's team - both methods are available).
