@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { UTComponent } from '../src/lib/UT.component';
-import { SafeHtmlPipe, TranslationService } from '../src/public-api';
+import { SafeHtmlPipe, TranslationService, TXInstanceComponent } from '../src/public-api';
 
 describe('UTComponent', () => {
   let component: UTComponent;
@@ -21,7 +21,8 @@ describe('UTComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UTComponent, SafeHtmlPipe],
+      declarations: [UTComponent, SafeHtmlPipe, TXInstanceComponent],
+      providers: [TXInstanceComponent],
     })
       .compileComponents();
     service = TestBed.inject(TranslationService);
@@ -65,7 +66,7 @@ describe('UTComponent', () => {
 
     // assert
     expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams });
+      { ...translationParams }, '');
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -81,7 +82,7 @@ describe('UTComponent', () => {
 
     // assert
     expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams, _key: 'key-not-translated' });
+      { ...translationParams, _key: 'key-not-translated' }, '');
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -97,7 +98,7 @@ describe('UTComponent', () => {
 
       // assert
       expect(service.translate).toHaveBeenCalledWith('<a>not-translated</a>',
-        { ...translationParams, _inline: false });
+        { ...translationParams, _inline: false }, '');
       const compiled = fixture.debugElement.nativeElement;
       expect((compiled as HTMLDivElement).innerHTML)
         .toContain('<div><a>translated</a></div>');
@@ -116,7 +117,7 @@ describe('UTComponent', () => {
 
       // assert
       expect(service.translate).toHaveBeenCalledWith('<a>not-translated</a>',
-        { ...translationParams, _inline: true });
+        { ...translationParams, _inline: true }, '');
       const compiled = fixture.debugElement.nativeElement;
       expect((compiled as HTMLDivElement).innerHTML)
         .toContain('<span><a>translated</a></span>');

@@ -10,4 +10,5 @@ export * from './lib/translation.service';
 export * from './lib/T.component';
 export * from './lib/UT.component';
 export * from './lib/language-picker.component';
+export * from './lib/instance.component';
 export * from './lib/TXNative.module';

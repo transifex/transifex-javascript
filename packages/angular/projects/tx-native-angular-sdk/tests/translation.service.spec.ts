@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
+
 import { TranslationService } from '../src/lib/translation.service';
 import { ILanguage, ITranslationServiceConfig } from '../src/public-api';
-
 
 describe('TranslationService', () => {
   let service: TranslationService;
@@ -132,5 +132,109 @@ describe('TranslationService', () => {
     // assert
     expect(tx.getLanguages).toHaveBeenCalled();
     expect(result).toBe(languages);
+  });
+
+  it('should add a controlled instance successfully', async () => {
+    // setup
+    spyOn(tx, 'controllerOf').and.returnValue({});
+
+    const instanceConfig = {
+      token: 'token',
+      alias: 'alias',
+      controlled: true,
+    };
+
+    // act
+    const result = await service.addInstance(instanceConfig);
+
+    // assert
+    expect(tx.controllerOf).toHaveBeenCalled();
+    expect(result).toBe(true);
+  });
+
+  it('should add a not controlled instance successfully', async () => {
+    // setup
+    spyOn(tx, 'controllerOf').and.returnValue({});
+
+    const instanceConfig = {
+      token: 'token',
+      alias: 'alias',
+      controlled: false,
+    };
+
+    // act
+    const result = await service.addInstance(instanceConfig);
+
+    // assert
+    expect(tx.controllerOf).not.toHaveBeenCalled();
+    expect(result).toBe(true);
+  });
+
+  it('should not add a malformed instance (alias)', async () => {
+    // setup
+    spyOn(tx, 'controllerOf').and.returnValue({});
+
+    const instanceConfig = {
+      token: 'token',
+      alias: '',
+      controlled: false,
+    };
+
+    // act/assert
+    await expectAsync(service.addInstance(instanceConfig))
+      .toBeResolvedTo(false);
+    expect(tx.controllerOf).not.toHaveBeenCalled();
+  });
+
+  it('should not add a malformed instance (token)', async () => {
+    // setup
+    spyOn(tx, 'controllerOf').and.returnValue({});
+
+    const instanceConfig = {
+      token: '',
+      alias: 'alias',
+      controlled: false,
+    };
+
+    // act/assert
+    await expectAsync(service.addInstance(instanceConfig))
+      .toBeResolvedTo(false);
+    expect(tx.controllerOf).not.toHaveBeenCalled();
+  });
+
+  it('should not add an existing instance', async () => {
+    // setup
+    const instanceConfig = {
+      token: 'token',
+      alias: 'alias',
+      controlled: false,
+    };
+    await service.addInstance(instanceConfig);
+    spyOn(tx, 'controllerOf').and.returnValue({});
+
+    // act
+    const result = await service.addInstance(instanceConfig);
+
+    // assert
+    expect(tx.controllerOf).not.toHaveBeenCalled();
+    expect(result).toBe(true);
+  });
+
+  it('should not add instance when exception occurs', async () => {
+    // setup
+    const instanceConfig = {
+      token: 'token',
+      alias: 'alias',
+      controlled: true,
+    };
+
+    spyOn(tx, 'controllerOf').and.throwError('error');
+
+    // act
+    const result = await service.addInstance(instanceConfig);
+
+    // assert
+    expect(tx.controllerOf).toHaveBeenCalled();
+    expect(result).toBe(false);
   });
 });

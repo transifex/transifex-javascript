@@ -24,6 +24,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [@T Decorator](#@t-decorator)
   * [translate Pipe](#translate-pipe)
   * [Language Picker Component](#language-picker-component)
+  * [TX Instance Component](#tx-instance-component)
 * [License](#license)
 
 
@@ -158,6 +159,8 @@ The same block without the `sanitize` option would be like this, for Greek:
 The main thing to keep in mind is that the `str` property to the T component
 must **always** be a valid ICU message format template.
 
+If it is nested into a ```tx-instance``` tag, then the ```T component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#tx-instance-component) section for more information about additional instances.
+
 
 ## `UT` Component
 
@@ -183,6 +186,8 @@ Available optional props:
 | Prop       | Type    | Description                                 |
 |------------|---------|---------------------------------------------|
 | inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
+
+If it is nested into a ```tx-instance``` tag, then the ```UT component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#tx-instance-component) section for more information about additional instances.
 
 ## `TranslationService` service
 
@@ -216,6 +221,22 @@ export class AppComponent {
 ```
 The translation service is a `singleton` instance so the initialization will be shared across the whole application.
 
+It keeps also a collection of additional TX Native instances which can be added to the default instance for specific purposes.
+
+Each addional instance should have the following configuration:
+
+```ts
+ITXInstanceConfiguration {
+  token: string;
+  alias: string;
+  controlled: boolean;
+}
+```
+
+See the section [TX Instance Component](#tx-instance-component) for more details.
+
+The additional instances can be added and retrieved using exposed methods ```addInstance``` and ```getInstance```.
+
 Exposes the following methods and properties:
 
 | Method           | Parameters       | Description                                       |
@@ -226,6 +247,9 @@ Exposes the following methods and properties:
 | getLanguages     | none             | Returns an array of available languages           |
 | translate        | translate params <sup>2</sup> | Returns the translation for a string with given translation params |
 | localeChanged    | none | Returns an observable for monitoring the locale changed event |
+| addInstance      | ITXInstanceConfiguration | Returns true if the new TX Native instance was added succesfully and false otherwise |
+| getInstance      | string | Returns the TX Native instance with the given alias. If the operation is not possible the default one is returned as fallback.  |
+|
 
 <sup>(1)</sup> Initialization config
 
@@ -318,6 +342,28 @@ and the use of the properties in the template:
     ></T>
   </p>
 ```
+An instance configuration can be passed to the decorator in order to use an alternative instance instead of the main TX Native one. 
+
+See [TX Instance Component](#tx-instance-component) for more information.
+
+Example of alternative instance:
+
+```ts
+const INSTANCE_CONFIG = {
+  token: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  alias: 'mycmppage',
+  controlled: true,
+};
+
+@Component({
+  selector: 'my-component',
+  templateUrl: './my.component.html',
+  styleUrls: ['./my.component.scss']
+})
+export class MyComponent implements OnInit {
+  @T('My string', { _key: 'text.my_string' }, INSTANCE_CONFIG)
+  myString: string;
+```
 
 ## `translate` Pipe
 
@@ -327,7 +373,7 @@ you cannot translate strings with embedded HTML.
 These examples will work:
 
 ```html
-  {{ 'Copyright {year} by Transifex' | translate:{ key: 'text.copyright' } }}
+  {{ 'Copyright {year} by Transifex' | translate:{ _key: 'text.copyright' } }}
 
   <p [matTooltip]="'A paragraph' | translate">A paragraph</p>
 ```
@@ -337,6 +383,8 @@ this example will not work, as it has HTML embedded:
 ```html
   {{ 'A string with <b>HTML embedded</b>' | translate }}
 ```
+
+If it is nested into a ```tx-instance``` tag, then the pipe will use the new instance to fetch the translation. Check the [TX Instance Component](#tx-instance-component) section for more information about additional instances.
 
 ## Language Picker Component
 
@@ -384,6 +432,53 @@ You always can implement a language picker of your choice, injecting
 the `TranslationService` and using the different methods provided,
 such as `getLanguages`.
 
+## TX Instance Component
+
+Creates a new TX Native instance with the given configuration and adds it to the TX Native main instance. All the nested components will use the new instance in order to fetch the translations. This apply to components:
+
+- T/UT
+- translate pipe
+
+Uses `Translation Service` internally to add the instance.
+
+The html selector is `tx-instance`.
+
+This is an example of use for the instance component:
+
+```ts
+this.instanceConfig = {
+      token: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+      alias: 'homepage',
+      controlled: true,
+    };
+```
+
+```html
+<tx-instance
+  [token]="instanceConfig?.token"
+  [alias]="instanceConfig?.alias"
+  [controlled]="instanceConfig?.controlled"
+  (instanceReady)="onInstanceReady($event)"
+>
+  <T str="My brand new string"></T>
+</tx-instance>
+```
+
+Accepts properties:
+
+- `token`: The token for the new instance.
+
+- `alias`: A string indetifier of the instance, should be unique. If the identifier already exists, the existing instance with the given alias is used, and no new instance is created.
+
+- `controlled`: If the new instance is controlled (locale) by the main TX Native instance.
+
+Returns:
+
+- `instanceReady`: event for handling the readiness of the new instance.
+
+Exposes:
+
+- `instanceIsReady`: observable for listening the readiness of the new instance.
 
 # License
 

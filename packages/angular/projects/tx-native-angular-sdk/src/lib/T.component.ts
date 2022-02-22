@@ -1,9 +1,7 @@
-import {
-  Component, Input, OnChanges, OnDestroy,
-  OnInit, SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
+import { TXInstanceComponent } from './instance.component';
 import { ITranslateParams } from './interfaces';
 import { TranslationService } from './translation.service';
 
@@ -95,10 +93,12 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Constructor
    *
    * @param translationService
+   * @param instance
    */
-  constructor(protected translationService: TranslationService) {
+  constructor(protected translationService: TranslationService,
+    protected instance: TXInstanceComponent) {
     this.localeChangeSubscription = this.localeChanged.subscribe(
-      (locale) => {
+      () => {
         this.translate();
       },
     );
@@ -132,6 +132,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    */
   translate() {
     this.translatedStr = this.translationService.translate(this.str,
-      { ...this.translateParams, ...this.vars });
+      { ...this.translateParams, ...this.vars }, this.instance.alias || '');
   }
 }
