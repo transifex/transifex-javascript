@@ -1,10 +1,11 @@
 import { T, UT, useT } from '@transifex/react';
 
 function foo() {
-  let msg = useT('uses useT');
+  const t = useT();
+  let msg = t('uses useT');
 
   const str2 = 'uses useT as const';
-  let msg2 = useT(str2);
+  let msg2 = t(str2);
 
   const str3 = 'uses _str as const';
   const context = 'foo';

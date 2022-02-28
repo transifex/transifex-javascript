@@ -1,0 +1,10 @@
+div
+  p= t('Text 1', { _context: 'foo', _tags: 'tag1,tag2', _charlimit: '10', _comment: 'comment' })
+  p= t('Text 2')
+  p= t('Text 3')
+  p= t('Text 4')
+  p= t('Text {somevalue}', { somevalue: 'something' })
+  p= t('Text {someothervalue}', { somevalue: 'someothervalue' })
+  p= t('<b>HTML text</b>', { _tags: 'tag1' })
+  p= t('<b>HTML inline text</b>', { _inline: 'true' })
+  p= t('Text 5')

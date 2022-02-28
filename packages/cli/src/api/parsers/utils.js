@@ -112,7 +112,18 @@ function isPayloadValid(payload, options = {}) {
 function isTransifexCall(node) {
   const { callee } = node;
   if (!callee) return false;
-  if (_.includes(['t', 'useT', '$t'], callee.name)) { return true; }
+
+  let fnName;
+  if (callee.type === 'MemberExpression'
+    && callee.property.type === 'Identifier') {
+    fnName = callee.property.name;
+  } else if (callee.type === 'Identifier') {
+    fnName = callee.name;
+  } else {
+    return false;
+  }
+
+  if (_.includes(['t', 'ut', '$t'], fnName)) { return true; }
   if (!callee.object || !callee.property) return false;
   if (callee.property.name === 'translate') return true;
   return false;

@@ -55,7 +55,7 @@ function babelExtractPhrases(HASHES, source, relativeFile, options) {
       const params = {};
       if (
         node.arguments[1]
-    && node.arguments[1].type === 'ObjectExpression'
+        && node.arguments[1].type === 'ObjectExpression'
       ) {
         _.each(node.arguments[1].properties, (prop) => {
           // get only string on number params
