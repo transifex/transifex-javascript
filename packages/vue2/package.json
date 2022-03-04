@@ -34,7 +34,7 @@
     "publish-npm": "npm publish"
   },
   "peerDependencies": {
-    "@transifex/native": "^2.0.0",
+    "@transifex/native": "^2.4.1",
     "vue": "^2.0.0"
   },
   "devDependencies": {

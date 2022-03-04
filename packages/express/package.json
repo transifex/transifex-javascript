@@ -39,6 +39,6 @@
     "type-is": "^1.6.18"
   },
   "peerDependencies": {
-    "@transifex/native": "^2.3.0"
+    "@transifex/native": "^2.4.1"
   }
 }
