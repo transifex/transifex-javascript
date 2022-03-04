@@ -1,0 +1,44 @@
+{
+  "name": "@transifex/express",
+  "version": "2.4.0",
+  "description": "Transifex Native for Express JS",
+  "keywords": [
+    "transifex",
+    "i18n",
+    "l10n",
+    "localization"
+  ],
+  "author": "Transifex",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/express",
+  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "scripts": {
+    "lint": "eslint src/",
+    "build": "",
+    "test": "jest",
+    "publish-npm": "npm publish"
+  },
+  "bugs": {
+    "url": "https://github.com/transifex/transifex-javascript/issues"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {
+    "@transifex/native": "^2.3.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.5.1"
+  },
+  "dependencies": {
+    "type-is": "^1.6.18"
+  },
+  "peerDependencies": {
+    "@transifex/native": "^2.3.0"
+  }
+}

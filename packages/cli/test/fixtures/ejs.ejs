@@ -1,0 +1,11 @@
+<div>
+  <%- t('Text 1', { _context: 'foo', _tags: 'tag1,tag2', _charlimit: '10', _comment: 'comment' }) %>
+  <%- t('Text 2') %>
+  <%- t('Text 3') %>
+  <%- t('Text 4') %>
+  <%- t('Text {somevalue}', { somevalue: 'something' }) %>
+  <%- t('Text {someothervalue}', { somevalue: 'someothervalue' }) %>
+  <%- t('<b>HTML text</b>', { _tags: 'tag1' }) %>
+  <%- t('<b>HTML inline text</b>', { _inline: 'true' }) %>
+  <%- t('Text 5') %>
+</div>

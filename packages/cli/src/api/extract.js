@@ -3,6 +3,9 @@
 const fs = require('fs');
 const path = require('path');
 
+const ejs = require('ejs');
+const pug = require('pug');
+
 const { parseHTMLTemplateFile } = require('./parsers/angularHTML');
 const { babelExtractPhrases } = require('./parsers/babel');
 const { extractVuePhrases } = require('./parsers/vue');
@@ -21,7 +24,17 @@ const { extractVuePhrases } = require('./parsers/vue');
  */
 function extractPhrases(file, relativeFile, options = {}) {
   const HASHES = {};
-  const source = fs.readFileSync(file, 'utf8');
+  let source = fs.readFileSync(file, 'utf8');
+
+  // Handle simple templates that compile to javascript
+  if (path.extname(file) === '.pug') {
+    source = pug.compileClient(source);
+  } else if (path.extname(file) === '.ejs') {
+    const template = new ejs.Template(source);
+    template.generateSource();
+    source = template.source;
+  }
+
   if (path.extname(file) === '.html') {
     parseHTMLTemplateFile(HASHES, file, relativeFile, options);
   } else if (path.extname(file) === '.vue') {
