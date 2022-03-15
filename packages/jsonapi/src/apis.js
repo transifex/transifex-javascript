@@ -5,6 +5,10 @@ import { isNull, isResource } from './utils';
 import { JsonApiException } from './errors';
 import Resource from './resources';
 
+export function validateStatus(status) {
+  return status >= 200 && status < 400;
+}
+
 /**
   * {json:api} connection **type** class. You need to subclass this to
   * establish communication with a compatible server. Then, **before**
@@ -68,6 +72,8 @@ import Resource from './resources';
   *   const customApi1 = new FamilyApi({ auth: 'user2' });
   *   const customApi2 = new FamilyApi({ auth: 'user2' }); */
 export default class JsonApi {
+  static registry = {};
+
   constructor(props = {}) {
     this.host = this.constructor.HOST;
     this.auth = null;
@@ -90,24 +96,35 @@ export default class JsonApi {
   }
 
   static register(parentCls, name) {
-    function get() {
-      const jsonApiInstance = this;
-      let childCls = jsonApiInstance.registry[parentCls.TYPE];
-      if (!childCls) {
-        childCls = class extends parentCls {
-          static API = jsonApiInstance;
-        };
-        jsonApiInstance.registry[parentCls.TYPE] = childCls;
-      }
-      return childCls;
-    }
+    this.registry[parentCls.TYPE] = parentCls;
     const descriptor = {
       configurable: true,
       enumerable: true,
-      get,
+      get: function get() { return this.getCls(parentCls.TYPE); },
     };
     Object.defineProperty(this.prototype, name, descriptor);
     Object.defineProperty(this.prototype, parentCls.TYPE, descriptor);
+  }
+
+  getCls(type) {
+    const jsonApiInstance = this;
+    let childCls = jsonApiInstance.registry[type];
+    if (!childCls) {
+      const parentCls = jsonApiInstance.constructor.registry[type];
+      if (parentCls) {
+        childCls = class extends parentCls {
+          static API = jsonApiInstance;
+        };
+      } else {
+        childCls = class extends Resource {
+          static TYPE = type;
+
+          static API = jsonApiInstance;
+        };
+      }
+      jsonApiInstance.registry[type] = childCls;
+    }
+    return childCls;
   }
 
   /**
@@ -144,6 +161,7 @@ export default class JsonApi {
         url: actualUrl,
         headers: actualHeaders,
         maxRedirects,
+        validateStatus,
         ...props,
       });
     } catch (e) {
@@ -162,16 +180,8 @@ export default class JsonApi {
     * subclass, provided that it has been registered with this API instance.
     */
   new({ type, ...props }) {
-    const jsonApiInstance = this;
-    const cls = this.registry[type];
-    if (!cls) {
-      this.registry[type] = class extends Resource {
-        static TYPE = type;
-
-        static API = jsonApiInstance;
-      };
-    }
-    return new this.registry[type](props);
+    const Cls = this.getCls(type);
+    return new Cls(props);
   }
 
   /**

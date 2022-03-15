@@ -17,7 +17,7 @@
   },
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
-    "lint": "eslint src/",
+    "lint": "eslint src/ tests/",
     "build": "",
     "test": "jest",
     "publish-npm": "npm publish"

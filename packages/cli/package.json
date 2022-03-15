@@ -30,7 +30,7 @@
     "@oclif/plugin-help": "^3.2.1",
     "@transifex/native": "^2.4.1",
     "angular-html-parser": "^1.7.1",
-    "axios": "^0.24.0",
+    "axios": "^0.26.1",
     "cli-ux": "^5.5.1",
     "ejs": "^3.1.6",
     "glob": "^7.1.6",
@@ -71,7 +71,7 @@
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest",
-    "lint": "eslint src/",
+    "lint": "eslint src/ test/",
     "test": "nyc mocha \"test/**/*.test.js\"",
     "publish-npm": "npm publish"
   }

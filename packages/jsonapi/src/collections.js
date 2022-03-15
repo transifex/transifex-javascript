@@ -278,9 +278,13 @@ export default class Collection {
     const qs = this.filter(filters);
     await qs.fetch();
     if (qs.data.length === 0) {
-      throw new DoesNotExist();
+      throw new DoesNotExist(
+        `Does not exist for filter: ${JSON.stringify(filters)}`,
+      );
     } else if (qs.data.length > 1) {
-      throw new MultipleObjectsReturned(qs.data.length);
+      throw new MultipleObjectsReturned(
+        `Multiple objects returned (${qs.data.length}) for filter: ${JSON.stringify(filters)}`,
+      );
     } else {
       return qs.data[0];
     }

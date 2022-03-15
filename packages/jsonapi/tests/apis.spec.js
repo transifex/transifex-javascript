@@ -1,10 +1,11 @@
+/* eslint-disable max-classes-per-file */
 /* global test expect jest */
 
 import './utils';
 
 import axios from 'axios';
 
-import JsonApi from '../src/apis';
+import JsonApi, { validateStatus } from '../src/apis';
 import { JsonApiException } from '../src/errors';
 
 jest.mock('axios');
@@ -49,7 +50,7 @@ test('JsonApi.request with GET', async () => {
     static HOST = 'https://api.com';
   }
   const api = new Api({ auth: 'MYTOKEN' });
-  axios.request.mockResolvedValue(Promise.resolve('mock response'));
+  axios.request.mockResolvedValue('mock response');
   const actualResponse = await api.request({ method: 'get', url: '/path' });
   expect(actualResponse).toBe('mock response');
   expect(axios.request).toHaveBeenCalledWith({
@@ -60,6 +61,7 @@ test('JsonApi.request with GET', async () => {
       Authorization: 'Bearer MYTOKEN',
     },
     maxRedirects: 0,
+    validateStatus,
   });
 });
 
@@ -83,17 +85,18 @@ test('JsonApi.request with error', async () => {
       detail: '\'filter[project]\' parameter is required',
     },
   ];
-  axios.request.mockResolvedValue(Promise.reject({ response: {
-    status: 400,
-    data: { errors },
-  } }));
+  axios.request.mockRejectedValue({
+    response: {
+      status: 400,
+      data: { errors },
+    },
+  });
   try {
     await api.request({ method: 'get', url: 'path' });
-  }
-  catch (e) {
+  } catch (e) {
     errorRaised = true;
     expect(e instanceof JsonApiException).toBeTruthy();
-    expect(e).toEqual( new JsonApiException(400, errors) );
+    expect(e).toEqual(new JsonApiException(400, errors));
   }
   expect(errorRaised).toBeTruthy();
 });
