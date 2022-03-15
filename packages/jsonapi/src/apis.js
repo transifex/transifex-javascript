@@ -144,6 +144,7 @@ export default class JsonApi {
         url: actualUrl,
         headers: actualHeaders,
         maxRedirects,
+        validateStatus: (status) => status >= 200 && status < 400,
         ...props,
       });
     } catch (e) {

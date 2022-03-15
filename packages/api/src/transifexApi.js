@@ -4,6 +4,18 @@ export class TransifexApi extends JsonApi {
   static HOST = 'https://rest.api.transifex.com';
 }
 
+async function download({ interval = 5, ...data }) {
+  // 'this' is a Resource subclass
+  const resource = await this.create(data);
+  while (!resource.redirect) {
+    /* eslint-disable no-await-in-loop */
+    await new Promise((r) => setTimeout(r, interval * 1000)); // sleep
+    await resource.reload();
+    /* eslint-enable */
+  }
+  return resource.follow();
+}
+
 class Organization extends JsonApiResource {
   static TYPE = 'organizations';
 }
@@ -31,6 +43,32 @@ TransifexApi.register(ProjectWebhook, 'ProjectWebhook');
 
 class Resource extends JsonApiResource {
   static TYPE = 'resources';
+
+  async purge() {
+    let count = 0;
+    /* eslint-disable no-restricted-syntax */
+    for await (
+      const page of this.constructor.API.ResourceString
+        .filter({ resource: this })
+        .allPages()
+    ) {
+      count += page.data.length;
+      this.constructor.API.ResourceString.bulkDelete(page.data);
+    }
+    /* eslint-enable */
+    return count;
+  }
+
+  async downloadSource(attributes = {}) {
+    const actualAttributes = { ...attributes };
+    if (!('file_type' in attributes)) {
+      actualAttributes.file_type = 'default';
+    }
+    return this.constructor.API.ResourceStringsAsyncDownload.download({
+      resource: this,
+      ...actualAttributes,
+    });
+  }
 }
 TransifexApi.register(Resource, 'Resource');
 
@@ -39,15 +77,19 @@ class ResourceString extends JsonApiResource {
 }
 TransifexApi.register(ResourceString, 'ResourceString');
 
-class ResourceStringAsyncDownload extends JsonApiResource {
+class ResourceStringsAsyncDownload extends JsonApiResource {
   static TYPE = 'resource_strings_async_downloads';
-}
-TransifexApi.register(ResourceStringAsyncDownload, 'ResourceStringAsyncDownload');
 
-class ResourceStringAsyncUpload extends JsonApiResource {
+  static async download(data) {
+    return download.call(this, data);
+  }
+}
+TransifexApi.register(ResourceStringsAsyncDownload, 'ResourceStringsAsyncDownload');
+
+class ResourceStringsAsyncUpload extends JsonApiResource {
   static TYPE = 'resource_strings_async_uploads';
 }
-TransifexApi.register(ResourceStringAsyncUpload, 'ResourceStringAsyncUpload');
+TransifexApi.register(ResourceStringsAsyncUpload, 'ResourceStringsAsyncUpload');
 
 class ResourceStringComment extends JsonApiResource {
   static TYPE = 'resource_string_comments';
@@ -99,15 +141,15 @@ class ResourceTranslation extends JsonApiResource {
 }
 TransifexApi.register(ResourceTranslation, 'ResourceTranslation');
 
-class ResourceTranslationAsyncDownload extends JsonApiResource {
+class ResourceTranslationsAsyncDownload extends JsonApiResource {
   static TYPE = 'resource_translations_async_downloads';
 }
-TransifexApi.register(ResourceTranslationAsyncDownload, 'ResourceTranslationAsyncDownload');
+TransifexApi.register(ResourceTranslationsAsyncDownload, 'ResourceTranslationsAsyncDownload');
 
-class ResourceTranslationAsyncUpload extends JsonApiResource {
+class ResourceTranslationsAsyncUpload extends JsonApiResource {
   static TYPE = 'resource_translations_async_uploads';
 }
-TransifexApi.register(ResourceTranslationAsyncUpload, 'ResourceTranslationAsyncUpload');
+TransifexApi.register(ResourceTranslationsAsyncUpload, 'ResourceTranslationsAsyncUpload');
 
 class TeamMembership extends JsonApiResource {
   static TYPE = 'team_memberships';
@@ -128,5 +170,15 @@ class TmxAsyncUpload extends JsonApiResource {
   static TYPE = 'tmx_async_uploads';
 }
 TransifexApi.register(TmxAsyncUpload, 'TmxAsyncUpload');
+
+class ResourceLanguageStats extends JsonApiResource {
+  static TYPE = 'resource_language_stats';
+}
+TransifexApi.register(ResourceLanguageStats, 'ResourceLanguageStats');
+
+class ResourceStringsRevision extends JsonApiResource {
+  static TYPE = 'resource_strings_revisions';
+}
+TransifexApi.register(ResourceStringsRevision, 'ResourceStringsRevision');
 
 export const transifexApi = new TransifexApi();

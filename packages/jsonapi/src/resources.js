@@ -302,14 +302,14 @@ export default class Resource {
     if (
       response.status >= 300
       && response.status < 400
-      && response.headers.Location
+      && response.headers.location
     ) {
       this._overwrite({
         id: this.id,
         attributes: this.attributes,
         relationships: { ...this.relationships, ...this.related },
         links: this.links,
-        redirect: response.headers.Location,
+        redirect: response.headers.location,
       });
       return;
     }
