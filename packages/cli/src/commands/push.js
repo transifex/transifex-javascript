@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint no-shadow: 0 */
 
-require('colors');
+require('@colors/colors');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');

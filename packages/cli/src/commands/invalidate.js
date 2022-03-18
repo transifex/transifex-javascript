@@ -1,6 +1,6 @@
 /* eslint no-shadow: 0 */
 
-require('colors');
+require('@colors/colors');
 const { Command, flags } = require('@oclif/command');
 const { cli } = require('cli-ux');
 const { invalidateCDS } = require('../api/invalidate');
