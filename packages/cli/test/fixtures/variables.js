@@ -22,7 +22,7 @@ function foo() {
   log(t(inner));
   log(t(`${inner},${outer}`))
 
-  const empty;
+  const empty = undefined;
   let nonConst = 'should not be visible';
   const constMadeOfNonConsts = 'again, it ' + nonConst;
   const constMadeOfTemplateLiterals = `this one is ` + nonConst;
@@ -35,4 +35,3 @@ function foo() {
 }
 
 module.exports = foo;
-
