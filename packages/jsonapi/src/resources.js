@@ -1,5 +1,4 @@
 import _ from 'lodash'; /* eslint-disable-line max-classes-per-file */
-import axios from 'axios';
 
 import { /* eslint-disable-line import/no-cycle */
   hasData,
@@ -302,14 +301,14 @@ export default class Resource {
     if (
       response.status >= 300
       && response.status < 400
-      && response.headers.Location
+      && response.headers.location
     ) {
       this._overwrite({
         id: this.id,
         attributes: this.attributes,
         relationships: { ...this.relationships, ...this.related },
         links: this.links,
-        redirect: response.headers.Location,
+        redirect: response.headers.location,
       });
       return;
     }
@@ -726,32 +725,6 @@ export default class Resource {
     * */
   static list() {
     return new Collection(this.API, this.getCollectionUrl());
-  }
-
-  /**
-    * If a response to the server has a redirect HTTP status code (3XX), you
-    * can call `follow.()` on the resource object to get the axios response
-    * made to the URL indicated by the Location header. This will most likely
-    * happen after a call to `.save()`, `.create()` or `.reload()`:
-    *
-    *   const download = api.Download.create(...);
-    *   let response;
-    *   if (download.redirect) {
-    *     response = await download.follow();
-    *   }
-    *   const timerId = setInterval(async () => {
-    *     await download.reload();
-    *     if (download.redirect) {
-    *       response = await download.follow()
-    *       clearInterval(timerId);
-    *     }
-    *   }, 1000);
-    * */
-  async follow() {
-    if (!this.redirect) {
-      throw new Error('Cannot follow without redirect');
-    }
-    return axios.get(this.redirect);
   }
 
   /**

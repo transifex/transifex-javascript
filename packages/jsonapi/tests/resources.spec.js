@@ -22,34 +22,40 @@ test('Simple Resource constructor', () => {
 
 test('Constructor with JSON relationship', () => {
   const child = new api.Child({
-    relationships: { parent: {
-      data: { type: 'parents', id: '1' },
-      links: {
-        self: '/children/2/relationships/parent',
-        related: '/parents/1',
+    relationships: {
+      parent: {
+        data: { type: 'parents', id: '1' },
+        links: {
+          self: '/children/2/relationships/parent',
+          related: '/parents/1',
+        },
       },
-    } },
+    },
   });
   expect(child).toEqual({
     id: null,
     attributes: {},
     links: {},
     redirect: null,
-    relationships: { parent: {
-      data: { type: 'parents', id: '1' },
-      links: {
-        self: '/children/2/relationships/parent',
-        related: '/parents/1',
+    relationships: {
+      parent: {
+        data: { type: 'parents', id: '1' },
+        links: {
+          self: '/children/2/relationships/parent',
+          related: '/parents/1',
+        },
       },
-    } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
   expect(child.related.parent.constructor.TYPE).toEqual('parents');
   expect(child.related.parent.constructor.API).toBe(api);
@@ -57,21 +63,23 @@ test('Constructor with JSON relationship', () => {
 
 test('Constructor with Resource relationship', () => {
   const parent = new api.Parent({ id: '1' });
-  const child = new api.Child({ relationships: { parent: parent } });
+  const child = new api.Child({ relationships: { parent } });
   expect(child).toEqual({
     id: null,
     attributes: {},
     links: {},
     redirect: null,
     relationships: { parent: { data: { type: 'parents', id: '1' } } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
   expect(child.related.parent.constructor.TYPE).toEqual('parents');
   expect(child.related.parent.constructor.API).toBe(api);
@@ -98,23 +106,28 @@ test('Constructor with resource identifier relationship', () => {
     attributes: {},
     links: {},
     redirect: null,
-    relationships: { parent: {
-      data: { type: 'parents', id: '1' },
-    } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    relationships: {
+      parent: {
+        data: { type: 'parents', id: '1' },
+      },
+    },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
   expect(child.related.parent.constructor.TYPE).toEqual('parents');
   expect(child.related.parent.constructor.API).toBe(api);
 });
 
 test('Constructor with magic props', () => {
+  let item;
   const check = () => {
     expect(item).toEqual({
       id: null,
@@ -122,18 +135,20 @@ test('Constructor with magic props', () => {
       links: {},
       redirect: null,
       relationships: { parent: { data: { type: 'parents', id: '1' } } },
-      related: { parent: {
-        id: '1',
-        attributes: {},
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      } },
+      related: {
+        parent: {
+          id: '1',
+          attributes: {},
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        },
+      },
     });
   };
 
-  let item = new api.Child({
+  item = new api.Child({
     name: 'the item',
     parent: new api.Parent({ id: '1' }),
   });
@@ -189,23 +204,29 @@ test('set', () => {
     links: {},
     redirect: null,
     relationships: { parent: { data: { type: 'parents', id: '1' } } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 });
 
 test('reload', async () => {
   const item = new api.Item({ id: '1' });
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: {
-    id: '1',
-    attributes: { name: 'the item' },
-  } } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: {
+        id: '1',
+        attributes: { name: 'the item' },
+      },
+    },
+  });
   await item.reload();
   expect(item).toEqual({
     id: '1',
@@ -219,10 +240,14 @@ test('reload', async () => {
 });
 
 test('static get', async () => {
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: {
-    id: '1',
-    attributes: { name: 'the item' },
-  } } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: {
+        id: '1',
+        attributes: { name: 'the item' },
+      },
+    },
+  });
   const item = await api.Item.get('1');
   expect(item).toEqual({
     id: '1',
@@ -240,10 +265,14 @@ test('fetch', async () => {
     id: '1',
     parent: { data: { type: 'parents', id: '2' } },
   });
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: {
-    id: '2',
-    attributes: { name: 'the parent' },
-  } } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: {
+        id: '2',
+        attributes: { name: 'the parent' },
+      },
+    },
+  });
   const parent = await child.fetch('parent');
   expect(parent).toEqual({
     id: '2',
@@ -271,23 +300,29 @@ test('patch', async () => {
 
   function before() {
     child = new api.Child({ id: '1', name: 'John', parent: parent2 });
-    axios.request.mockResolvedValue(Promise.resolve({ data: { data: {
-      id: '1',
-      attributes: { name: 'Bill' },
-      relationships: { parent: { data: { type: 'parents', id: '3' } } },
-    } } }));
+    axios.request.mockResolvedValue({
+      data: {
+        data: {
+          id: '1',
+          attributes: { name: 'Bill' },
+          relationships: { parent: { data: { type: 'parents', id: '3' } } },
+        },
+      },
+    });
   }
 
   function after() {
     expectRequestMock({
       method: 'patch',
       url: '/children/1',
-      data: { data: {
-        type: 'children',
-        id: '1',
-        attributes: { name: 'Bill' },
-        relationships: { parent: { data: { type: 'parents', id: '3' } } },
-      } },
+      data: {
+        data: {
+          type: 'children',
+          id: '1',
+          attributes: { name: 'Bill' },
+          relationships: { parent: { data: { type: 'parents', id: '3' } } },
+        },
+      },
     });
     expect(child).toEqual({
       id: '1',
@@ -317,10 +352,14 @@ test('patch', async () => {
 
 test('save new', async () => {
   const child = new api.Child({ name: 'John' });
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: {
-    id: '1',
-    attributes: { name: 'John', created: 'now' },
-  } } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: {
+        id: '1',
+        attributes: { name: 'John', created: 'now' },
+      },
+    },
+  });
   await child.save();
   expectRequestMock({
     method: 'post',
@@ -338,10 +377,14 @@ test('save new', async () => {
 });
 
 test('create', async () => {
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: {
-    id: '1',
-    attributes: { name: 'John', created: 'now' },
-  } } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: {
+        id: '1',
+        attributes: { name: 'John', created: 'now' },
+      },
+    },
+  });
   const child = await api.Child.create({ name: 'John' });
   expectRequestMock({
     method: 'post',
@@ -360,7 +403,7 @@ test('create', async () => {
 
 test('delete', async () => {
   const child = new api.Child({ id: '1', name: 'John' });
-  axios.request.mockResolvedValue(Promise.resolve({}));
+  axios.request.mockResolvedValue({});
   await child.delete();
   expectRequestMock({ method: 'delete', url: '/children/1' });
   expect(child).toEqual({
@@ -375,13 +418,13 @@ test('delete', async () => {
 
 test('change', async () => {
   const child = new api.Child({ id: '1', relationships: { parent: null } });
-  axios.request.mockResolvedValue(Promise.resolve({}));
+  axios.request.mockResolvedValue({});
 
   await child.change('parent', new api.Parent({ id: '2' }));
   expectRequestMock({
     method: 'patch',
     url: '/children/1/relationships/parent',
-    data: { data: { type: 'parents' , id: '2' } },
+    data: { data: { type: 'parents', id: '2' } },
   });
   expect(child.related.parent.id).toBe('2');
 
@@ -401,11 +444,13 @@ test('edit plural relationships', async () => {
       children: { links: { self: '/parents/1/relationships/children' } },
     },
   });
-  axios.request.mockResolvedValue(Promise.resolve({}));
+  axios.request.mockResolvedValue({});
+  // eslint-disable-next-line no-restricted-syntax
   for (const row of [
     ['add', 'post'], ['reset', 'patch'], ['remove', 'delete'],
   ]) {
     const [instanceMethod, method] = row;
+    // eslint-disable-next-line no-await-in-loop
     await parent[instanceMethod](
       'children',
       [new api.Child({ id: '2' }), new api.Child({ id: '3' })],
@@ -413,10 +458,12 @@ test('edit plural relationships', async () => {
     expectRequestMock({
       method,
       url: '/parents/1/relationships/children',
-      data: { data: [
-        { type: 'children', id: '2' },
-        { type: 'children', id: '3' },
-      ] },
+      data: {
+        data: [
+          { type: 'children', id: '2' },
+          { type: 'children', id: '3' },
+        ],
+      },
     });
   }
 });
@@ -431,14 +478,16 @@ test('constructor with include', () => {
 });
 
 test('get with include', async () => {
-  axios.request.mockResolvedValue(Promise.resolve({ data: {
+  axios.request.mockResolvedValue({
     data: {
-      type: 'children',
-      id: '1',
-      relationships: { parent: { data: { type: 'parents', id: '2' } } },
+      data: {
+        type: 'children',
+        id: '1',
+        relationships: { parent: { data: { type: 'parents', id: '2' } } },
+      },
+      included: [{ type: 'parents', id: '2', attributes: { name: 'Zeus' } }],
     },
-    included: [{ type: 'parents', id: '2', attributes: { name: 'Zeus' } }],
-  } }));
+  });
   const child = await api.Child.get('1', { include: ['parent'] });
   expectRequestMock({
     method: 'get',
@@ -450,42 +499,42 @@ test('get with include', async () => {
 
 test('redirect', async () => {
   const item = new api.Item({ id: '1' });
-  axios.request.mockResolvedValue(Promise.resolve({
+  axios.request.mockResolvedValue({
     status: 302,
-    headers: { Location: 'http://redirect.com' },
-  }));
+    headers: { location: 'http://redirect.com' },
+  });
   await item.reload();
-  axios.get.mockResolvedValue(Promise.resolve('Redirect output'));
-  const response = await item.follow();
-
-  expect(axios.get).toHaveBeenCalledWith('http://redirect.com');
-  expect(response).toEqual('Redirect output');
+  expect(item.redirect).toEqual('http://redirect.com');
 });
 
 test('get with included plural relationship', async () => {
-  axios.request.mockResolvedValue(Promise.resolve({ data: {
+  axios.request.mockResolvedValue({
     data: {
-      type: 'parents',
-      relationships: { children: {
-        links: { related: '/parents/1/children' },
-        data: [{ type: 'children', id: '2' }, { type: 'children', id: '3' }],
-      } },
+      data: {
+        type: 'parents',
+        relationships: {
+          children: {
+            links: { related: '/parents/1/children' },
+            data: [{ type: 'children', id: '2' }, { type: 'children', id: '3' }],
+          },
+        },
+      },
+      included: [
+        {
+          type: 'children',
+          id: '2',
+          attributes: { name: 'Hercules' },
+          relationships: { parent: { data: { type: 'parents', id: '1' } } },
+        },
+        {
+          type: 'children',
+          id: '3',
+          attributes: { name: 'Achilles' },
+          relationships: { parent: { data: { type: 'parents', id: '1' } } },
+        },
+      ],
     },
-    included: [
-      {
-        type: 'children',
-        id: '2',
-        attributes: { name: 'Hercules' },
-        relationships: { parent: { data: { type: 'parents', id: '1' } } },
-      },
-      {
-        type: 'children',
-        id: '3',
-        attributes: { name: 'Achilles' },
-        relationships: { parent: { data: { type: 'parents', id: '1' } } },
-      },
-    ],
-  } }));
+  });
   const parent = await api.Parent.get('1', { include: ['children'] });
   expect(parent.get('children')).toEqual({
     _API: api,
@@ -498,14 +547,16 @@ test('get with included plural relationship', async () => {
         links: {},
         redirect: null,
         relationships: { parent: { data: { type: 'parents', id: '1' } } },
-        related: { parent: {
-          id: '1',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        } },
+        related: {
+          parent: {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        },
       },
       {
         id: '3',
@@ -513,14 +564,16 @@ test('get with included plural relationship', async () => {
         links: {},
         redirect: null,
         relationships: { parent: { data: { type: 'parents', id: '1' } } },
-        related: { parent: {
-          id: '1',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        } },
+        related: {
+          parent: {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        },
       },
     ],
     previous: null,
@@ -530,19 +583,25 @@ test('get with included plural relationship', async () => {
 
 test('bulk create', async () => {
   let items;
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-    { type: 'items', id: '1', attributes: { name: 'item 1' } },
-    { type: 'items', id: '2', attributes: { name: 'item 2' } },
-  ] } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: [
+        { type: 'items', id: '1', attributes: { name: 'item 1' } },
+        { type: 'items', id: '2', attributes: { name: 'item 2' } },
+      ],
+    },
+  });
   function checks() {
     expectRequestMock({
       method: 'post',
       url: '/items',
       bulk: true,
-      data: { data: [
-        { type: 'items', attributes: { name: 'item 1' } },
-        { type: 'items', attributes: { name: 'item 2' } },
-      ] },
+      data: {
+        data: [
+          { type: 'items', attributes: { name: 'item 1' } },
+          { type: 'items', attributes: { name: 'item 2' } },
+        ],
+      },
     });
     expect(items).toEqual({
       _API: api,
@@ -572,7 +631,7 @@ test('bulk create', async () => {
 
 test('bulk delete', async () => {
   let result;
-  axios.request.mockResolvedValue(Promise.resolve({}));
+  axios.request.mockResolvedValue({});
   function checks() {
     expect(result).toBe(2);
     expectRequestMock({
@@ -601,20 +660,24 @@ test('bulk delete', async () => {
 
 test('bulk update', async () => {
   let children;
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-    {
-      type: 'children',
-      id: '1',
-      attributes: { name: 'Hercules' },
-      relationships: { data: { type: 'parents', id: '1' } },
+  axios.request.mockResolvedValue({
+    data: {
+      data: [
+        {
+          type: 'children',
+          id: '1',
+          attributes: { name: 'Hercules' },
+          relationships: { data: { type: 'parents', id: '1' } },
+        },
+        {
+          type: 'children',
+          id: '2',
+          attributes: { name: 'Achilles' },
+          relationships: { data: { type: 'parents', id: '2' } },
+        },
+      ],
     },
-    {
-      type: 'children',
-      id: '2',
-      attributes: { name: 'Achilles' },
-      relationships: { data: { type: 'parents', id: '2' } },
-    },
-  ] } }));
+  });
   const zeus = new api.Parent({ id: '1', name: 'Zeus' });
   const apollo = new api.Parent({ id: '2', name: 'Apollo' });
 
@@ -653,10 +716,12 @@ test('bulk update', async () => {
     method: 'patch',
     url: '/children',
     bulk: true,
-    data: { data: [
-      { type: 'children', id: '1', attributes: { name: 'Hercules' } },
-      { type: 'children', id: '2', attributes: { name: 'Achilles' } },
-    ] },
+    data: {
+      data: [
+        { type: 'children', id: '1', attributes: { name: 'Hercules' } },
+        { type: 'children', id: '2', attributes: { name: 'Achilles' } },
+      ],
+    },
   });
   checkCollection();
 
@@ -671,18 +736,20 @@ test('bulk update', async () => {
     method: 'patch',
     url: '/children',
     bulk: true,
-    data: { data: [
-      {
-        type: 'children',
-        id: '1',
-        relationships: { parent: { data: { type: 'parents', id: '1' } } },
-      },
-      {
-        type: 'children',
-        id: '2',
-        relationships: { parent: { data: { type: 'parents', id: '2' } } },
-      },
-    ] },
+    data: {
+      data: [
+        {
+          type: 'children',
+          id: '1',
+          relationships: { parent: { data: { type: 'parents', id: '1' } } },
+        },
+        {
+          type: 'children',
+          id: '2',
+          relationships: { parent: { data: { type: 'parents', id: '2' } } },
+        },
+      ],
+    },
   });
   checkCollection();
 });
@@ -693,7 +760,7 @@ function checkSetRelated(item, props) {
     attributes: {},
     links: {},
     redirect: null,
-    ...props
+    ...props,
   });
 }
 
@@ -704,7 +771,6 @@ test('_setRelated null', () => {
     child,
     { relationships: { parent: null }, related: { parent: null } },
   );
-
 });
 
 test('_setRelated singular relationship', () => {
@@ -714,28 +780,32 @@ test('_setRelated singular relationship', () => {
   child._setRelated('parent', { type: 'parents', id: '1' });
   checkSetRelated(child, {
     relationships: { parent: { data: { type: 'parents', id: '1' } } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 
   child = new api.Child();
   child._setRelated('parent', { data: { type: 'parents', id: '1' } });
   checkSetRelated(child, {
     relationships: { parent: { data: { type: 'parents', id: '1' } } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 
   child = new api.Child();
@@ -747,18 +817,22 @@ test('_setRelated singular relationship', () => {
     },
   );
   checkSetRelated(child, {
-    relationships: { parent: {
-      data: { type: 'parents', id: '1' },
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { parent: {
-      id: '1',
-      attributes: {},
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    relationships: {
+      parent: {
+        data: { type: 'parents', id: '1' },
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      parent: {
+        id: '1',
+        attributes: {},
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 });
 
@@ -771,14 +845,16 @@ test('_setRelated singular relationship with included parent', () => {
   child._setRelated('parent', { type: 'parents', id: '1' }, includedMap);
   checkSetRelated(child, {
     relationships: { parent: { data: { type: 'parents', id: '1' } } },
-    related: { parent: {
-      id: '1',
-      attributes: { name: 'the parent' },
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    related: {
+      parent: {
+        id: '1',
+        attributes: { name: 'the parent' },
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 
   child = new api.Child();
@@ -789,14 +865,16 @@ test('_setRelated singular relationship with included parent', () => {
   );
   checkSetRelated(child, {
     relationships: { parent: { data: { type: 'parents', id: '1' } } },
-    related: { parent: {
-      id: '1',
-      attributes: { name: 'the parent' },
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    related: {
+      parent: {
+        id: '1',
+        attributes: { name: 'the parent' },
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 
   child = new api.Child();
@@ -809,18 +887,22 @@ test('_setRelated singular relationship with included parent', () => {
     includedMap,
   );
   checkSetRelated(child, {
-    relationships: { parent: {
-      data: { type: 'parents', id: '1' },
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { parent: {
-      id: '1',
-      attributes: { name: 'the parent' },
-      links: {},
-      redirect: null,
-      relationships: {},
-      related: {},
-    } },
+    relationships: {
+      parent: {
+        data: { type: 'parents', id: '1' },
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      parent: {
+        id: '1',
+        attributes: { name: 'the parent' },
+        links: {},
+        redirect: null,
+        relationships: {},
+        related: {},
+      },
+    },
   });
 });
 
@@ -829,14 +911,16 @@ test('_setRelated plural relationship empty array', () => {
   parent._setRelated('children', []);
   checkSetRelated(parent, {
     relationships: { children: { data: [] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -847,21 +931,23 @@ test('_setRelated plural relationship arrays of resource identifiers', () => {
   parent._setRelated('children', [{ type: 'children', id: '1' }]);
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: {},
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
+          id: '1',
+          attributes: {},
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -870,37 +956,42 @@ test('_setRelated plural relationship arrays of resource identifiers', () => {
     [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
   );
   checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
-          id: '1',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
-
 });
 
 test('_setRelated plural relationship data field with resource identifiers', () => {
@@ -910,35 +1001,39 @@ test('_setRelated plural relationship data field with resource identifiers', () 
   parent._setRelated('children', { data: [] });
   checkSetRelated(parent, {
     relationships: { children: { data: [] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
   parent._setRelated('children', { data: [{ type: 'children', id: '1' }] });
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: {},
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
+          id: '1',
+          attributes: {},
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -947,35 +1042,41 @@ test('_setRelated plural relationship data field with resource identifiers', () 
     { data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }] },
   );
   checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
-          id: '1',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -986,10 +1087,12 @@ test('_setRelated plural relationship links field only', () => {
     { links: { self: 'self', related: 'related' } },
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      links: { self: 'self', related: 'related' },
-    } },
-    related: {}
+    relationships: {
+      children: {
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {},
   });
 });
 
@@ -1002,18 +1105,22 @@ test('_setRelated plural relationship links and data fields with resource identi
     { data: [], links: { self: 'self', related: 'related' } },
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1025,25 +1132,29 @@ test('_setRelated plural relationship links and data fields with resource identi
     },
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [{
-        id: '1',
-        attributes: {},
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [{
+          id: '1',
+          attributes: {},
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1055,35 +1166,39 @@ test('_setRelated plural relationship links and data fields with resource identi
     },
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' } ],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [
-        {
-          id: '1',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: {},
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [
+          {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1094,21 +1209,23 @@ test('_setRelated plural relationship arrays of resource objects', () => {
   parent._setRelated('children', [new api.Child({ id: '1', name: 'child 1' })]);
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: { name: 'child 1' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
+          id: '1',
+          attributes: { name: 'child 1' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1120,35 +1237,41 @@ test('_setRelated plural relationship arrays of resource objects', () => {
     ],
   );
   checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 1' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 2' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 1' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 2' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1162,61 +1285,71 @@ test('_setRelated plural relationship data field with resource objects', () => {
   );
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: { name: 'child 1' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
-  });
-
-  parent = new api.Parent();
-  parent._setRelated(
-    'children',
-    { data: [
-      new api.Child({ id: '1', name: 'child 1' }),
-      new api.Child({ id: '2', name: 'child 2' }),
-    ] },
-  );
-  checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
           id: '1',
           attributes: { name: 'child 1' },
           links: {},
           redirect: null,
           relationships: {},
           related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 2' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
+        }],
+        next: null,
+        previous: null,
+      },
+    },
+  });
+
+  parent = new api.Parent();
+  parent._setRelated(
+    'children',
+    {
+      data: [
+        new api.Child({ id: '1', name: 'child 1' }),
+        new api.Child({ id: '2', name: 'child 2' }),
       ],
-      next: null,
-      previous: null,
-    } },
+    },
+  );
+  checkSetRelated(parent, {
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 1' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 2' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1232,25 +1365,29 @@ test('_setRelated plural relationship links and data fields with resource object
     },
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [{
-        id: '1',
-        attributes: { name: 'child 1' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [{
+          id: '1',
+          attributes: { name: 'child 1' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1265,35 +1402,39 @@ test('_setRelated plural relationship links and data fields with resource object
     },
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' } ],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 1' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 2' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 1' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 2' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1308,21 +1449,23 @@ test('_setRelated plural relationship arrays of resource identifiers with includ
   parent._setRelated('children', [{ type: 'children', id: '1' }], includedMap);
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: { name: 'child 1' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
+          id: '1',
+          attributes: { name: 'child 1' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1332,37 +1475,42 @@ test('_setRelated plural relationship arrays of resource identifiers with includ
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 1' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 2' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 1' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 2' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
-
 });
 
 test('_setRelated plural relationship data field with resource identifiers with includedMap', () => {
@@ -1376,35 +1524,39 @@ test('_setRelated plural relationship data field with resource identifiers with 
   parent._setRelated('children', { data: [] }, includedMap);
   checkSetRelated(parent, {
     relationships: { children: { data: [] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
   parent._setRelated('children', { data: [{ type: 'children', id: '1' }] }, includedMap);
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: { name: 'child 1' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
+          id: '1',
+          attributes: { name: 'child 1' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1414,35 +1566,41 @@ test('_setRelated plural relationship data field with resource identifiers with 
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 1' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 2' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 1' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 2' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1460,18 +1618,22 @@ test('_setRelated plural relationship links and data fields with resource identi
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1484,25 +1646,29 @@ test('_setRelated plural relationship links and data fields with resource identi
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [{
-        id: '1',
-        attributes: { name: 'child 1' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [{
+          id: '1',
+          attributes: { name: 'child 1' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1515,35 +1681,39 @@ test('_setRelated plural relationship links and data fields with resource identi
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' } ],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 1' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 2' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 1' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 2' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1558,21 +1728,23 @@ test('_setRelated plural relationship arrays of resource objects with includedMa
   parent._setRelated('children', [new api.Child({ id: '1', name: 'child 1' })], includedMap);
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: { name: 'child 3' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
+          id: '1',
+          attributes: { name: 'child 3' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1585,35 +1757,41 @@ test('_setRelated plural relationship arrays of resource objects with includedMa
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 3' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 4' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 3' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 4' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1632,62 +1810,72 @@ test('_setRelated plural relationship data field with resource objects with incl
   );
   checkSetRelated(parent, {
     relationships: { children: { data: [{ type: 'children', id: '1' }] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [{
-        id: '1',
-        attributes: { name: 'child 3' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
-  });
-
-  parent = new api.Parent();
-  parent._setRelated(
-    'children',
-    { data: [
-      new api.Child({ id: '1', name: 'child 1' }),
-      new api.Child({ id: '2', name: 'child 2' }),
-    ] },
-    includedMap,
-  );
-  checkSetRelated(parent, {
-    relationships: { children: { data: [
-      { type: 'children', id: '1' },
-      { type: 'children', id: '2' },
-    ] } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: null,
-      data: [
-        {
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [{
           id: '1',
           attributes: { name: 'child 3' },
           links: {},
           redirect: null,
           relationships: {},
           related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 4' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
+        }],
+        next: null,
+        previous: null,
+      },
+    },
+  });
+
+  parent = new api.Parent();
+  parent._setRelated(
+    'children',
+    {
+      data: [
+        new api.Child({ id: '1', name: 'child 1' }),
+        new api.Child({ id: '2', name: 'child 2' }),
       ],
-      next: null,
-      previous: null,
-    } },
+    },
+    includedMap,
+  );
+  checkSetRelated(parent, {
+    relationships: {
+      children: {
+        data: [
+          { type: 'children', id: '1' },
+          { type: 'children', id: '2' },
+        ],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: null,
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 3' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 4' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 
@@ -1708,25 +1896,29 @@ test('_setRelated plural relationship links and data fields with resource object
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [{
-        id: '1',
-        attributes: { name: 'child 3' },
-        links: {},
-        redirect: null,
-        relationships: {},
-        related: {},
-      }],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [{
+          id: '1',
+          attributes: { name: 'child 3' },
+          links: {},
+          redirect: null,
+          relationships: {},
+          related: {},
+        }],
+        next: null,
+        previous: null,
+      },
+    },
   });
 
   parent = new api.Parent();
@@ -1742,35 +1934,39 @@ test('_setRelated plural relationship links and data fields with resource object
     includedMap,
   );
   checkSetRelated(parent, {
-    relationships: { children: {
-      data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' } ],
-      links: { self: 'self', related: 'related' },
-    } },
-    related: { children: {
-      _API: api,
-      _params: null,
-      _url: 'related',
-      data: [
-        {
-          id: '1',
-          attributes: { name: 'child 3' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-        {
-          id: '2',
-          attributes: { name: 'child 4' },
-          links: {},
-          redirect: null,
-          relationships: {},
-          related: {},
-        },
-      ],
-      next: null,
-      previous: null,
-    } },
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+        links: { self: 'self', related: 'related' },
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _params: null,
+        _url: 'related',
+        data: [
+          {
+            id: '1',
+            attributes: { name: 'child 3' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: { name: 'child 4' },
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 

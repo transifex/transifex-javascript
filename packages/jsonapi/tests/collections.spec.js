@@ -22,10 +22,14 @@ function testItem(id, attributes = {}) {
 test('list', async () => {
   let collection;
   async function testList() {
-    axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-      { type: 'items', id: '1', attributes: { name: 'item 1' } },
-      { type: 'items', id: '2', attributes: { name: 'item 2' } },
-    ] } }));
+    axios.request.mockResolvedValue({
+      data: {
+        data: [
+          { type: 'items', id: '1', attributes: { name: 'item 1' } },
+          { type: 'items', id: '2', attributes: { name: 'item 2' } },
+        ],
+      },
+    });
     await collection.fetch();
 
     expectRequestMock({ method: 'get', url: '/items', params: null });
@@ -51,16 +55,20 @@ test('list', async () => {
 
 test('pagination', async () => {
   const page1 = api.Item.list();
-  const response1 = Promise.resolve({ data: {
-    data: [{ type: 'items', id: '1' }, { type: 'items', id: '2' }],
-    links: { next: '/items?page=2' },
-  } });
+  const response1 = {
+    data: {
+      data: [{ type: 'items', id: '1' }, { type: 'items', id: '2' }],
+      links: { next: '/items?page=2' },
+    },
+  };
   axios.request.mockResolvedValue(response1);
   await page1.fetch();
-  const response2 = Promise.resolve({ data: {
-    data: [{ type: 'items', id: '3' }, { type: 'items', id: '4' }],
-    links: { previous: '/items' },
-  } });
+  const response2 = {
+    data: {
+      data: [{ type: 'items', id: '3' }, { type: 'items', id: '4' }],
+      links: { previous: '/items' },
+    },
+  };
   axios.request.mockResolvedValue(response2);
   const page2 = await page1.getNext();
   expect(page2).toEqual({
@@ -71,13 +79,13 @@ test('pagination', async () => {
     next: null,
     previous: '/items',
   });
-  axios.request.mockResolvedValue(Promise.resolve(response1));
+  axios.request.mockResolvedValue(response1);
   const newPage1 = await page2.getPrevious();
   expect(newPage1).toEqual(page1);
 });
 
 async function testParams(items, params) {
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [] } }));
+  axios.request.mockResolvedValue({ data: { data: [] } });
   await items.fetch();
   expectRequestMock({ method: 'get', url: '/items', params });
   expect(items).toEqual({
@@ -146,24 +154,26 @@ test('include', async () => {
 
 test('include with response', async () => {
   const children = api.Child.include('parent');
-  axios.request.mockResolvedValue(Promise.resolve({ data: {
-    data: [
-      {
-        type: 'children',
-        id: '1',
-        relationships: { parent: { data: { type: 'parents', id: '3' } } },
-      },
-      {
-        type: 'children',
-        id: '2',
-        relationships: { parent: { data: { type: 'parents', id: '4' } } },
-      },
-    ],
-    included: [
-      { type: 'parents', id: '3', attributes: { name: 'Zeus' } },
-      { type: 'parents', id: '4', attributes: { name: 'Hera' } },
-    ],
-  } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: [
+        {
+          type: 'children',
+          id: '1',
+          relationships: { parent: { data: { type: 'parents', id: '3' } } },
+        },
+        {
+          type: 'children',
+          id: '2',
+          relationships: { parent: { data: { type: 'parents', id: '4' } } },
+        },
+      ],
+      included: [
+        { type: 'parents', id: '3', attributes: { name: 'Zeus' } },
+        { type: 'parents', id: '4', attributes: { name: 'Hera' } },
+      ],
+    },
+  });
   await children.fetch();
   expect(children.data[0].get('parent').get('name')).toEqual('Zeus');
   expect(children.data[1].get('parent').get('name')).toEqual('Hera');
@@ -205,13 +215,17 @@ test('get', async () => {
   let item;
 
   function before() {
-    axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-      {
-        type: 'items',
-        id: '1',
-        attributes: { name: 'item 1', created: 'yesterday' },
+    axios.request.mockResolvedValue({
+      data: {
+        data: [
+          {
+            type: 'items',
+            id: '1',
+            attributes: { name: 'item 1', created: 'yesterday' },
+          },
+        ],
       },
-    ] } }));
+    });
   }
 
   function after() {
@@ -237,7 +251,7 @@ test('get', async () => {
 test('get with errors', async () => {
   let errorRaised;
 
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [] } }));
+  axios.request.mockResolvedValue({ data: { data: [] } });
   errorRaised = false;
   try {
     await api.Item.get();
@@ -248,13 +262,13 @@ test('get with errors', async () => {
   }
   expect(errorRaised).toBeTruthy();
 
-  axios.request.mockResolvedValue(Promise.resolve({
+  axios.request.mockResolvedValue({
     data: {
       data: [
         { type: 'items', id: '1' }, { type: 'items', id: '2' },
       ],
     },
-  }));
+  });
   errorRaised = false;
   try {
     await api.Item.get();
@@ -268,13 +282,17 @@ test('get with errors', async () => {
 
 test('fetch plural relationship', async () => {
   const parent = new api.Parent({
-    id: '1', children: { links: { related: '/parents/1/children' } } ,
+    id: '1', children: { links: { related: '/parents/1/children' } },
   });
   const children = await parent.fetch('children');
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-    { type: 'children', id: '1' },
-    { type: 'children', id: '2' },
-  ] } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: [
+        { type: 'children', id: '1' },
+        { type: 'children', id: '2' },
+      ],
+    },
+  });
   await children.fetch();
   expectRequestMock({
     method: 'get',
@@ -293,13 +311,17 @@ test('fetch plural relationship', async () => {
 
 test('fetch plural relationship and apply filters', async () => {
   const parent = new api.Parent({
-    id: '1', children: { links: { related: '/parents/1/children' } } ,
+    id: '1', children: { links: { related: '/parents/1/children' } },
   });
   const children = (await parent.fetch('children')).filter({ a: 'b' });
-  axios.request.mockResolvedValue(Promise.resolve({ data: { data: [
-    { type: 'children', id: '1' },
-    { type: 'children', id: '2' },
-  ] } }));
+  axios.request.mockResolvedValue({
+    data: {
+      data: [
+        { type: 'children', id: '1' },
+        { type: 'children', id: '2' },
+      ],
+    },
+  });
   await children.fetch();
   expectRequestMock({
     method: 'get',
@@ -318,18 +340,23 @@ test('fetch plural relationship and apply filters', async () => {
 
 test('`allPages` generator', async () => {
   const list = api.Item.list();
-  const response1 = Promise.resolve({ data: {
-    data: [{ type: 'items', id: '1' }, { type: 'items', id: '2' }],
-    links: { next: '/items?page=2' },
-  } });
-  const response2 = Promise.resolve({ data: {
-    data: [{ type: 'items', id: '3' }, { type: 'items', id: '4' }],
-    links: { previous: '/items' },
-  } });
-  axios.request.
-    mockResolvedValueOnce(response1).
-    mockResolvedValueOnce(response2);
+  const response1 = {
+    data: {
+      data: [{ type: 'items', id: '1' }, { type: 'items', id: '2' }],
+      links: { next: '/items?page=2' },
+    },
+  };
+  const response2 = {
+    data: {
+      data: [{ type: 'items', id: '3' }, { type: 'items', id: '4' }],
+      links: { previous: '/items' },
+    },
+  };
+  axios.request
+    .mockResolvedValueOnce(response1)
+    .mockResolvedValueOnce(response2);
   const result = [];
+  // eslint-disable-next-line no-restricted-syntax
   for await (const page of list.allPages()) {
     result.push(page);
   }
@@ -349,24 +376,29 @@ test('`allPages` generator', async () => {
       data: [testItem('3'), testItem('4')],
       next: null,
       previous: '/items',
-    }
+    },
   ]);
 });
 
 test('`all` generator', async () => {
-  const response1 = Promise.resolve({ data: {
-    data: [{ type: 'items', id: '1' }, { type: 'items', id: '2' }],
-    links: { next: '/items?page=2' },
-  } });
-  const response2 = Promise.resolve({ data: {
-    data: [{ type: 'items', id: '3' }, { type: 'items', id: '4' }],
-    links: { previous: '/items' },
-  } });
-  axios.request.
-    mockResolvedValueOnce(response1).
-    mockResolvedValueOnce(response2);
+  const response1 = {
+    data: {
+      data: [{ type: 'items', id: '1' }, { type: 'items', id: '2' }],
+      links: { next: '/items?page=2' },
+    },
+  };
+  const response2 = {
+    data: {
+      data: [{ type: 'items', id: '3' }, { type: 'items', id: '4' }],
+      links: { previous: '/items' },
+    },
+  };
+  axios.request
+    .mockResolvedValueOnce(response1)
+    .mockResolvedValueOnce(response2);
   const result = [];
   const page = api.Item.list();
+  // eslint-disable-next-line no-restricted-syntax
   for await (const item of page.all()) {
     result.push(item);
   }

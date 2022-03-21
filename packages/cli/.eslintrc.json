@@ -1,3 +1,4 @@
 {
+  "ignorePatterns": ["**/fixtures/*"],
   "extends": ["airbnb-base"]
 }

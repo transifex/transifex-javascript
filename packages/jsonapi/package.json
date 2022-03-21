@@ -19,7 +19,7 @@
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
     "build": "webpack",
-    "lint": "eslint src",
+    "lint": "eslint src/ tests/",
     "publish-npm": "npm publish",
     "test": "jest"
   },
@@ -43,7 +43,7 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "axios": "^0.24.0",
+    "axios": "^0.26.1",
     "core-js": "^3.17.2",
     "lodash": "^4.17.21",
     "regenerator-runtime": "^0.13.9"
