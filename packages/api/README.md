@@ -251,3 +251,55 @@ To delete something:
 ```javascript
 await project.delete();
 ```
+
+## File uploads and downloads
+
+There is code in `@transifex/api` that automates several {json:api}
+interactions behind the scenes in order to help with file uploads and downloads.
+
+In order to upload a source file to a resource, you can do:
+
+```
+const content = JSON.stringify({ key: 'A value' });
+await transifexApi.ResourceStringsAsyncUpload.upload({
+  resource,
+  content,
+});
+```
+
+In order to upload a translation file to a resource, you can do:
+
+```
+const content = JSON.stringify({ key: 'A value in French' });
+const language = await transifexApi.Language.get({ code: 'fr' });
+await transifexApi.ResourceTranslationsAsyncUpload.upload({
+  resource,
+  language,
+  content,
+});
+```
+
+To upload binary files, convert file content to `base64` encoding:
+
+```
+await transifexApi.ResourceTranslationsAsyncUpload.upload({
+  resource,
+  language,
+  content, // base64 encoded string
+  content_encoding: 'base64',
+});
+```
+
+In order to download a translated language file, you can do:
+
+```
+const language = await transifexApi.Language.get({ code: 'fr' });
+const url = await transifexApi.ResourceTranslationsAsyncDownload.download({
+  resource,
+  language,
+});
+const response = await axios.get(url);
+console.log(response.data);
+```
+
+As always, in order to see how file uploads and downloads work in the Transifex API, you should check out the API documentation.
