@@ -38,7 +38,7 @@
     "vue": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.7",
+    "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/vue": "^5.8.2",
