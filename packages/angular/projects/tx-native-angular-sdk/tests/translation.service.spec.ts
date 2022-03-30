@@ -1,3 +1,4 @@
+import { not } from '@angular/compiler/src/output/output_ast';
 import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
 
@@ -41,9 +42,19 @@ describe('TranslationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should init the TX Native object', () => {
+  it('should init the TX Native object', async () => {
+    spyOn(service, 'getInstance').and.returnValue(
+      {
+        currentLocale: 'en',
+        fetchTranslations: tx.fetchTranslations,
+        init: tx.init,
+        fetchedTags: { en: [] },
+      },
+    );
+    spyOn(service, 'getLanguages');
+
     // act
-    service.init(txConfig);
+    await service.init(txConfig);
 
     // assert
     expect(service).toBeTruthy();
@@ -236,5 +247,89 @@ describe('TranslationService', () => {
     // assert
     expect(tx.controllerOf).toHaveBeenCalled();
     expect(result).toBe(false);
+  });
+
+  it('should fetch translations on demand without custom instance', async () => {
+    // setup
+    spyOn(tx, 'fetchTranslations').and.returnValue(
+      Promise.resolve({}),
+    );
+    spyOn(service, 'getInstance').and.returnValue(
+      {
+        currentLocale: 'en',
+        fetchTranslations: tx.fetchTranslations,
+        fetchedTags: { en: [] },
+      },
+    );
+
+    // act
+    await service.fetchTranslations('tag1');
+
+    // assert
+    expect(tx.fetchTranslations).toHaveBeenCalledWith(
+      'en',
+      { filterTags: 'tag1' },
+    );
+  });
+
+  it('should fetch translations on demand without custom instance no fetched tags',
+    async () => {
+      // setup
+      spyOn(tx, 'fetchTranslations').and.returnValue(
+        Promise.resolve({}),
+      );
+      spyOn(service, 'getInstance').and.returnValue(
+        {
+          currentLocale: 'en',
+          fetchTranslations: tx.fetchTranslations,
+          fetchedTags: undefined,
+        },
+      );
+
+      // act
+      await service.fetchTranslations('tag1');
+
+      // assert
+      expect(tx.fetchTranslations).toHaveBeenCalledWith(
+        'en',
+        { filterTags: 'tag1' },
+      );
+    });
+
+  it('should fetch translations on demand with custom instance', async () => {
+    // setup
+    spyOn(tx, 'fetchTranslations').and.returnValue(
+      Promise.resolve({}),
+    );
+    spyOn(service, 'getInstance').and.returnValue(
+      {
+        currentLocale: 'en',
+        fetchTranslations: tx.fetchTranslations,
+        fetchedTags: [],
+      },
+    );
+
+    // act
+    await service.fetchTranslations('tag1', 'my-instance');
+
+    // assert
+    expect(service.getInstance).toHaveBeenCalledWith('my-instance');
+    expect(tx.fetchTranslations).toHaveBeenCalledWith(
+      'en',
+      { filterTags: 'tag1' },
+    );
+  });
+
+  it('should not fetch translations on demand if no instance', async () => {
+    // setup
+    spyOn(tx, 'fetchTranslations').and.returnValue(
+      Promise.resolve({}),
+    );
+
+    // act
+    await service.fetchTranslations('tag1');
+
+    // assert
+    expect(tx.fetchTranslations).not.toHaveBeenCalled();
   });
 });

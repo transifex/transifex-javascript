@@ -9,11 +9,14 @@ import { SafeHtmlPipe, TranslationService, TXInstanceComponent } from '../src/pu
 
 describe('TComponent', () => {
   let localeChangedSubject: ReplaySubject<string>;
+  let translationsFetchedSubject: ReplaySubject<boolean>;
 
   let component: TComponent;
   let fixture: ComponentFixture<TComponent>;
   let service: TranslationService;
   let instance: TXInstanceComponent;
+  let localeChangedSpy: jasmine.Spy<jasmine.Func>;
+  let translationsFetchedSpy: jasmine.Spy<jasmine.Func>;
 
   const translationParams = {
     _key: '',
@@ -34,12 +37,13 @@ describe('TComponent', () => {
       .compileComponents();
 
     localeChangedSubject = new ReplaySubject<string>(0);
+    translationsFetchedSubject = new ReplaySubject<boolean>(0);
 
     service = TestBed.inject(TranslationService);
     instance = TestBed.inject(TXInstanceComponent);
 
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
-    spyOnProperty(service, 'localeChanged', 'get').and.returnValue(localeChangedSubject);
+    localeChangedSpy = spyOnProperty(service, 'localeChanged', 'get').and.returnValue(localeChangedSubject);
     spyOn(service, 'setCurrentLocale').and.callFake(async (locale) => {
       localeChangedSubject.next(locale);
     });
@@ -51,14 +55,15 @@ describe('TComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it('should create the component', async () => {
     // setup
     spyOn(component, 'translate');
-    const localeChangedSpy = spyOnProperty(component, 'localeChanged', 'get')
-      .and.returnValue(of('el'));
+    localeChangedSpy = spyOnProperty(component, 'localeChanged', 'get')
+      .and.returnValue(localeChangedSubject);
 
     // act
     component.ngOnInit();
+    await service.fetchTranslations('nb');
     fixture.detectChanges();
 
     // assert
@@ -66,7 +71,8 @@ describe('TComponent', () => {
     expect(service).toBeTruthy();
     expect(component.localeChanged).toBeTruthy();
     expect(component.translate).toHaveBeenCalled();
-    expect(component.localeChangeSubscription).toBeTruthy();
+    expect(component.onLocaleChange).toBeTruthy();
+    expect(component.onTranslationsFetch).toBeTruthy();
     expect(localeChangedSpy.calls.any()).toEqual(true);
   });
 
@@ -227,4 +233,42 @@ describe('TComponent', () => {
       { ...translationParams }, 'instance-alias');
     expect(component.translatedStr).toEqual('translated');
   });
+
+  it('should detect translationsFetched', async () => {
+    // setup
+    spyOn(service, 'translate').and.returnValue('translated');
+
+    // act
+    component.str = 'not-translated';
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    // change
+    await service.fetchTranslations('tag1');
+    fixture.detectChanges();
+
+    // assert
+    expect(service.translate).toHaveBeenCalled();
+  });
+
+  it('should detect translationsFetched using alternative instance',
+    async () => {
+      // setup
+      instance.token = 'instance-token';
+      instance.alias = 'instance-alias';
+      spyOn(service, 'translate').and.returnValue('translated');
+
+      // act
+      component.str = 'not-translated';
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      // change
+      await service.fetchTranslations('tag1');
+      fixture.detectChanges();
+
+      // assert
+      expect(service.translate).toHaveBeenCalledWith('not-translated',
+        { ...translationParams }, 'instance-alias');
+    });
 });

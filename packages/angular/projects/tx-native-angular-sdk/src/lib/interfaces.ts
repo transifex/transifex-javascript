@@ -7,6 +7,7 @@ export interface ITranslationServiceConfig {
   missingPolicy?: IPolicy;
   errorPolicy?: IPolicy;
   stringRenderer?: IStringRenderer;
+  instanceAlias?: string;
 }
 
 export interface ILanguage {

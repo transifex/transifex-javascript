@@ -85,7 +85,9 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
     return this.translationService.localeChanged;
   }
 
-  localeChangeSubscription: Subscription;
+  onLocaleChange: Subscription | undefined;
+
+  onTranslationsFetch: Subscription | undefined;
 
   private actualVars: Record<string, unknown> = {};
 
@@ -97,11 +99,17 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    */
   constructor(protected translationService: TranslationService,
     protected instance: TXInstanceComponent) {
-    this.localeChangeSubscription = this.localeChanged.subscribe(
+    this.onLocaleChange = this.localeChanged.subscribe(
       () => {
         this.translate();
       },
     );
+    this.onTranslationsFetch =
+      this.translationService.translationsFetched.subscribe(
+        () => {
+          this.translate();
+        },
+      );
   }
 
   /**
@@ -115,7 +123,14 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Component destruction
    */
   ngOnDestroy() {
-    this.localeChangeSubscription.unsubscribe();
+    if (typeof this.onLocaleChange !== 'undefined') {
+      this.onLocaleChange.unsubscribe();
+      this.onLocaleChange = undefined;
+    }
+    if (typeof this.onTranslationsFetch !== 'undefined') {
+      this.onTranslationsFetch.unsubscribe();
+      this.onTranslationsFetch = undefined;
+    }
   }
 
   /**

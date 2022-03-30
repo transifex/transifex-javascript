@@ -20,11 +20,19 @@ export class TranslationService {
     return this.localeChangedSubject;
   }
 
+  // Observables for detecting translations fetching
+  get translationsFetched(): Observable<boolean> {
+    return this.translationsFetchedSubject;
+  }
+
   // A dictionary with additional TX Native instances for translation
   private additionalInstances: { [id: string]: any } = {};
 
   // A subject for managing locale changes
   private localeChangedSubject = new ReplaySubject<string>(0);
+
+  // A subject for managing the lazy loading of translations
+  private translationsFetchedSubject = new ReplaySubject<boolean>(0);
 
   /**
    * Initializes the translation service
@@ -33,11 +41,15 @@ export class TranslationService {
    * @param instanceAlias
    * @returns void
    */
-  public async init(config: ITranslationServiceConfig,
-    instanceAlias?: string) {
-    const instance = this.getInstance(instanceAlias || '');
+  public async init(config: ITranslationServiceConfig) {
+    const instance = this.getInstance(config.instanceAlias || '');
     instance.init(config);
     await this.getLanguages();
+    this.translationsFetchedSubject.next(
+      (instance.fetchedTags &&
+        instance.fetchedTags[instance.currentLocale] || []).
+        indexOf(config.filterTags) !== -1,
+    );
   }
 
   /**
@@ -51,6 +63,11 @@ export class TranslationService {
     const instance = this.getInstance(instanceAlias || '');
     await instance.setCurrentLocale(locale);
     this.localeChangedSubject.next(locale);
+    this.translationsFetchedSubject.next(
+      (instance.fetchedTags &&
+        instance.fetchedTags[instance.currentLocale] || []).
+        indexOf(instance.filterTags) !== -1,
+    );
   }
 
   /**
@@ -136,5 +153,26 @@ export class TranslationService {
     } catch (e) {}
 
     return instance;
+  }
+
+  /**
+   * Retrieves the tagged translations from the given instance
+   * or from the default one
+   *
+   * @param tags
+   * @param instanceAlias
+   * @returns Promise<any>
+   */
+  public async fetchTranslations(tags: string, instanceAlias?: string): Promise<any> {
+    const instance = this.getInstance(instanceAlias);
+    if (instance && instance.currentLocale) {
+      await instance.fetchTranslations(instance.currentLocale, { filterTags: tags });
+      this.translationsFetchedSubject.next(
+        (instance && instance.fetchedTags && instance.fetchedTags[instance.currentLocale] || []).
+          indexOf(tags) !== -1,
+      );
+    } else {
+      this.translationsFetchedSubject.next(true);
+    }
   }
 }
