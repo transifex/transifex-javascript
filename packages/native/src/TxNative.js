@@ -1,4 +1,5 @@
 /* globals __VERSION__, __PLATFORM__ */
+
 import axios from 'axios';
 
 import MemoryCache from './cache/MemoryCache';
@@ -6,7 +7,7 @@ import SourceErrorPolicy from './policies/SourceErrorPolicy';
 import SourceStringPolicy from './policies/SourceStringPolicy';
 import MessageFormatRenderer from './renderers/MessageFormatRenderer';
 import {
-  generateKey, isString, isPluralized, escape, generateHashedKey,
+  generateKey, isString, isPluralized, escape, generateHashedKey, sleep,
 } from './utils';
 import {
   sendEvent,
@@ -221,6 +222,120 @@ export default class TxNative {
       sendEvent(TRANSLATIONS_FETCH_FAILED, { localeCode, filterTags }, this);
       throw err;
     }
+  }
+
+  /**
+   * Invalidate CDS cache
+   *
+   * @param {Object} params
+   * @param {Boolean} params.purge
+   * @returns {Object} Data
+   * @returns {Number} Data.count
+   * @returns {Number} Data.status
+   * @returns {Number} Data.token
+   */
+  async invalidateCDS(params = {}) {
+    if (!this.token) throw new Error('token is not defined');
+    if (!this.secret) throw new Error('secret is not defined');
+
+    const action = params.purge ? 'purge' : 'invalidate';
+    const res = await axios.post(`${this.cdsHost}/${action}`, {
+    }, {
+      headers: {
+        Authorization: `Bearer ${this.token}:${this.secret}`,
+        'Accept-version': 'v2',
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
+      },
+    });
+    return res.data;
+  }
+
+  /**
+   * Push source content to CDS.
+   *
+   * Payload is in the following format:
+   * {
+   *   <key>: {
+   *    string: <string>,
+   *     meta: {
+   *       context: <string>
+   *       developer_comment: <string>,
+   *       character_limit: <number>,
+   *       tags: <array>,
+   *       occurrences: <array>,
+   *     }
+   *   },
+   *   <key>: { .. }
+   * }
+   *
+   * @param {Object} payload
+   * @param {Object} params
+   * @param {Boolean} params.purge
+   * @param {Boolean} params.overrideTags
+   * @param {Boolean} params.noWait - do not wait for upload results
+   * @returns {Object} Data
+   * @returns {String} Data.jobUrl
+   * @returns {Number} Data.created
+   * @returns {Number} Data.updated
+   * @returns {Number} Data.skipped
+   * @returns {Number} Data.deleted
+   * @returns {Number} Data.failed
+   * @returns {String[]} Data.errors
+   * @returns {String} Data.status
+   */
+  async pushSource(payload, params = {}) {
+    if (!this.token) throw new Error('token is not defined');
+    if (!this.secret) throw new Error('secret is not defined');
+
+    const headers = {
+      Authorization: `Bearer ${this.token}:${this.secret}`,
+      'Accept-version': 'v2',
+      'Content-Type': 'application/json;charset=utf-8',
+      'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
+    };
+
+    const res = await axios.post(`${this.cdsHost}/content`, {
+      data: payload,
+      meta: {
+        purge: !!params.purge,
+        override_tags: !!params.overrideTags,
+      },
+    }, {
+      headers,
+    });
+
+    const jobUrl = `${this.cdsHost}${res.data.data.links.job}`;
+
+    if (params.noWait) {
+      return {
+        jobUrl,
+      };
+    }
+
+    let pollStatus = {
+      status: '',
+    };
+
+    do {
+      // eslint-disable-next-line no-await-in-loop
+      await sleep(1500);
+      // eslint-disable-next-line no-await-in-loop
+      const pollRes = await axios.get(jobUrl, {
+        headers,
+      });
+      const { data } = pollRes.data;
+      pollStatus = {
+        ...(data.details || {}),
+        errors: data.errors || [],
+        status: data.status,
+      };
+    } while (pollStatus.status === 'pending' || pollStatus.status === 'processing');
+
+    return {
+      jobUrl,
+      ...pollStatus,
+    };
   }
 
   /**
