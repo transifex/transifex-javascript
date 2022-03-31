@@ -25,6 +25,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [translate Pipe](#translate-pipe)
   * [Language Picker Component](#language-picker-component)
   * [TX Instance Component](#tx-instance-component)
+  * [txLoadTranslations Directive](#txloadtranslations-directive)
 * [License](#license)
 
 
@@ -237,6 +238,8 @@ See the section [TX Instance Component](#tx-instance-component) for more details
 
 The additional instances can be added and retrieved using exposed methods ```addInstance``` and ```getInstance```.
 
+The translation service also offers the possibility to retrieve translations that match a given list of tags, this way it's possible to fetch groups of translations in batches, at different times or for lazy loading. This can be achieved using the ```fetchTranslations``` method.
+
 Exposes the following methods and properties:
 
 | Method           | Parameters       | Description                                       |
@@ -247,9 +250,10 @@ Exposes the following methods and properties:
 | getLanguages     | none             | Returns an array of available languages           |
 | translate        | translate params <sup>2</sup> | Returns the translation for a string with given translation params |
 | localeChanged    | none | Returns an observable for monitoring the locale changed event |
+| translationsFetched    | none | Returns an observable for monitoring the fetch translations event |
 | addInstance      | ITXInstanceConfiguration | Returns true if the new TX Native instance was added succesfully and false otherwise |
 | getInstance      | string | Returns the TX Native instance with the given alias. If the operation is not possible the default one is returned as fallback.  |
-|
+| fetchTranslations      | array | Returns a collection of translations that match a given list of tags.  |
 
 <sup>(1)</sup> Initialization config
 
@@ -479,6 +483,33 @@ Returns:
 Exposes:
 
 - `instanceIsReady`: observable for listening the readiness of the new instance.
+
+## `txLoadTranslations` Directive
+
+This directive can be used within any html or angular tag in order to force a group of translations to be fetched, using a list of tags to retrieve the translations that match.
+
+This is an example of use:
+
+```html
+  <p class="small-text" [txLoadTranslations]="'menu'">
+    <a href="#/home">
+      <UT str="home" key="text.home" inline=true></UT>
+    </a>
+    <a href="#/terms">
+      <UT str="terms of service" key="text.terms_of_service" inline=true></UT>
+    </a>
+    <a href="#/privacy">
+      <UT str="privacy policy" key="text.privacy_policy" inline=true></UT>
+    </a>
+    <a class="align-right" href="#/login">
+      <UT str="logout" key="text.logout" inline=true></UT>
+    </a>
+  </p>
+```
+
+All the translations with the tag ```menu``` will be fetched using the current selected locale and instance, if the translations are already cached, they are not fetched again.
+
+This way we can fetch the translations related with the part of the component's template when the component is first used and not from the beginning when instance is initialized (in the initialization we can use the ```filterTags``` param in order to fetch an initial set of translations and then use the lazy loading and improve the performance).
 
 # License
 

@@ -8,6 +8,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { TranslationService } from './translation.service';
 import { TranslatePipe } from './translate.pipe';
 import { TXInstanceComponent } from './instance.component';
+import { LoadTranslationsDirective } from './load-translations.directive';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { TXInstanceComponent } from './instance.component';
     SafeHtmlPipe,
     TranslatePipe,
     TXInstanceComponent,
+    LoadTranslationsDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -27,6 +29,7 @@ import { TXInstanceComponent } from './instance.component';
     SafeHtmlPipe,
     TranslatePipe,
     TXInstanceComponent,
+    LoadTranslationsDirective,
   ],
   providers: [
     TXInstanceComponent,

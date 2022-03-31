@@ -51,7 +51,7 @@ describe('UTComponent', () => {
     expect(service).toBeTruthy();
     expect(component.localeChanged).toBeTruthy();
     expect(component.translate).toHaveBeenCalled();
-    expect(component.localeChangeSubscription).toBeTruthy();
+    expect(component.onLocaleChange).toBeTruthy();
     expect(localeChangedSpy.calls.any()).toEqual(true);
   });
 

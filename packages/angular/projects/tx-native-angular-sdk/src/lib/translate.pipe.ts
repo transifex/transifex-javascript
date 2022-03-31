@@ -18,6 +18,8 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 
   onLocaleChange: Subscription | undefined;
 
+  onTranslationsFetch: Subscription | undefined;
+
   /**
    * Constructor
    */
@@ -59,6 +61,15 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
       });
     }
 
+    if (!this.onTranslationsFetch) {
+      this.onTranslationsFetch =
+      this.translationService.translationsFetched.subscribe(
+        () => {
+          this.updateTranslation(str, params);
+        },
+      );
+    }
+
     this.translation = this.translationService.translate(str, params,
       this.instance && this.instance.alias
         ? this.instance.alias
@@ -74,6 +85,10 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
     if (typeof this.onLocaleChange !== 'undefined') {
       this.onLocaleChange.unsubscribe();
       this.onLocaleChange = undefined;
+    }
+    if (typeof this.onTranslationsFetch !== 'undefined') {
+      this.onTranslationsFetch.unsubscribe();
+      this.onTranslationsFetch = undefined;
     }
   }
 
