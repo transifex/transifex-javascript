@@ -38,6 +38,11 @@ Transifex Native support for localizing ExpressJS applications.
 Command line tool for extracting phrases from source files and pushing content to Transifex.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/cli)
 
+## Transifex DOM
+
+Transifex Native support for localizing generic HTML (both server or client side)
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/dom)
+
 ## Transifex API SDK
 
 A javascript SDK for the [Transifex API v3](https://developers.transifex.com/reference).

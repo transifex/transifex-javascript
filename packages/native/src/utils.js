@@ -215,3 +215,17 @@ export function isPluralized(string) {
 
   return true;
 }
+
+/**
+ * Sleep in msec
+ *
+ * @export
+ * @param {Number} msec
+ */
+export function sleep(msec) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, msec);
+  });
+}

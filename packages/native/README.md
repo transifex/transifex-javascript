@@ -243,6 +243,87 @@ const html = t('<b>Hello {username}</b>', {
 });
 ```
 
+## Push source content
+
+For server side integrations you can also push source content programmatically
+without using the CLI.
+
+```js
+tx.pushSource(payload, params): Promise
+payload: Object({
+  key: {
+   string: String,
+    meta: {
+      context: String,
+      developer_comment: String,
+      character_limit: Number,
+      tags: Array(String),
+      occurrences: Array(String),
+    },
+  },
+  key: { .. }
+})
+params: Object({
+  // Replace the entire resource content with the pushed content of this request
+  purge: Boolean,
+
+  // Replace the existing string tags with the tags of this request
+  overrideTags: Boolean,
+
+  // If true, when wait for processing to be complete before
+  // resolving this promise
+  noWait: Boolean,
+})
+```
+
+For example:
+
+```js
+const { createNativeInstance } = require('@transifex/native');
+
+const tx = createNativeInstance({
+  token: 'token',
+  secret: 'secret',
+});
+
+await tx.pushSource({
+  'mykey': {
+    string: 'My string',
+    meta: {
+      context: 'content', // optional
+      developer_comment: 'developer comment', // optional
+      character_limit: 10, // optional
+      tags: ['tag1', 'tag2'], // optional
+      occurrences: ['file.jsx', 'file2.js'], // optional
+    },
+  }
+});
+```
+
+## Invalidate CDS cache
+
+Server side integrations can also invalidate the CDS cache programmatically.
+
+```js
+tx.invalidateCDS({
+  // if true, then purge the cache entirely (not recommended)
+  purge: Boolean,
+}): Promise
+```
+
+For example:
+
+```js
+const { createNativeInstance } = require('@transifex/native');
+
+const tx = createNativeInstance({
+  token: 'token',
+  secret: 'secret',
+});
+
+await tx.invalidateCDS();
+```
+
 ## Events
 
 Library for listening to various async events.
