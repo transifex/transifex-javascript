@@ -1,6 +1,6 @@
 {
   "name": "@transifex/dom",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Transifex Native DOM Extention",
   "keywords": [
     "transifex",
@@ -43,11 +43,11 @@
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.23.4",
     "glob": "^7.1.7",
+    "linkedom": "^0.14.5",
     "mocha": "^9.1.3",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
     "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
-    "linkedom": "^0.14.5"
+    "webpack-cli": "^3.3.12"
   }
 }
