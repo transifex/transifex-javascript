@@ -249,19 +249,42 @@ export default class TxNativeDOM {
    * Get a JSON object with segmented strings:
    * {
    *   <key>: {
-   *     string: <phrase>
-   *   }
+   *     string: <phrase>,
+   *     meta: {
+   *       tags: Array<String>,
+   *       occurrences: Array<String>,
+   *     },
+   *   },
    * }
    *
+   * @param {Object} params
+   * @param {Array[String]} params.occurrences
+   * @param {Array[String]} params.tags
    * @return {*} json
    * @memberof TxNativeDOM
    */
-  getStringsJSON() {
+  getStringsJSON(params = {}) {
     const data = {};
     Object.keys(this.segments).forEach((key) => {
-      data[key] = {
+      const entry = {
         string: this.segments[key].sourceString,
+        meta: {},
       };
+      if (this.segments[key].tags.length) {
+        entry.meta.tags = [...this.segments[key].tags];
+      }
+      if (params.tags) {
+        entry.meta.tags = entry.meta.tags || [];
+        params.tags.forEach((tag) => {
+          if (entry.meta.tags.indexOf(tag) === -1) {
+            entry.meta.tags.push(tag);
+          }
+        });
+      }
+      if (params.occurrences) {
+        entry.meta.occurrences = [...params.occurrences];
+      }
+      data[key] = entry;
     });
     return data;
   }

@@ -1,5 +1,13 @@
 # Transifex Native integration for Express JS
 
+Express middleware for server side localization using [Transifex Native](https://www.transifex.com/native/).
+
+Related packages:
+- [@transifex/native](https://www.npmjs.com/package/@transifex/native)
+- [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+
+Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+
 ## Quick start
 
 Install the necessary express packages:

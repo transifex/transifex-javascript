@@ -7,6 +7,8 @@ Related packages:
 - [@transifex/native](https://www.npmjs.com/package/@transifex/native)
 - [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
+Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+
 # Upgrade to v2
 
 If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
