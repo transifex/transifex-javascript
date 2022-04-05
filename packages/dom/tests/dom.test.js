@@ -72,6 +72,41 @@ describe('TxNativeDOM', () => {
     txdom.toSource();
     expect(txdom.document.documentElement.outerHTML).to.equal(html);
   });
+
+  it('exports tags', () => {
+    const html = '<html><head></head><body><p tx-tags="tag1,tag2">Hello world</p></body></html>';
+    const { document } = parseHTML(html);
+    const txdom = new TxNativeDOM();
+
+    txdom.attachDOM(document);
+    expect(txdom.getStringsJSON()).to.deep.equal({
+      'Hello world': {
+        string: 'Hello world',
+        meta: {
+          tags: ['tag1', 'tag2'],
+        },
+      },
+    });
+
+    expect(txdom.getStringsJSON({ tags: ['tag2', 'tag3'] })).to.deep.equal({
+      'Hello world': {
+        string: 'Hello world',
+        meta: {
+          tags: ['tag1', 'tag2', 'tag3'],
+        },
+      },
+    });
+
+    expect(txdom.getStringsJSON({ occurrences: ['o1'] })).to.deep.equal({
+      'Hello world': {
+        string: 'Hello world',
+        meta: {
+          tags: ['tag1', 'tag2'],
+          occurrences: ['o1'],
+        },
+      },
+    });
+  });
 });
 
 describe('Strings', () => {
