@@ -1,4 +1,22 @@
-# Transifex Native DOM
+<p align="center">
+  <a href="https://www.transifex.com">
+    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  </a>
+</p>
+<p align="center">
+  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+</p>
+<p align="center">
+  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@transifex/dom">
+    <img src="https://img.shields.io/npm/v/@transifex/dom.svg">
+  </a>
+  <a href="https://developers.transifex.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  </a>
+</p>
+
+# Transifex Native SDK: i18n DOM library
 
 A utility library for managing the localization of generic HTML documents or fragments.
 Taking as input a `document` object it:

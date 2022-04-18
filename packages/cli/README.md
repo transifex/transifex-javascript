@@ -1,4 +1,22 @@
-# Transifex Native CLI
+<p align="center">
+  <a href="https://www.transifex.com">
+    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  </a>
+</p>
+<p align="center">
+  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+</p>
+<p align="center">
+  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@transifex/cli">
+    <img src="https://img.shields.io/npm/v/@transifex/cli.svg">
+  </a>
+  <a href="https://developers.transifex.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  </a>
+</p>
+
+# Transifex Native SDK: JavaScript i18n CLI tool
 
 A command line tool that parses `.js`, `.ts`, `.jsx`, `.tsx` and `.html` source files, extracts phrases marked for localization by [Transifex Native](https://www.transifex.com/native/) and pushes them to [Transifex](https:/www.transifex.com) for translation.
 
@@ -7,6 +25,8 @@ Related packages:
 * [@transifex/react](https://www.npmjs.com/package/@transifex/react)
 
 Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+
+![cli](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/cli.gif)
 
 # Upgrade to v2
 

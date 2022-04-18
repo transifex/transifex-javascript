@@ -1,12 +1,16 @@
 {
   "name": "@transifex/express",
   "version": "3.2.1",
-  "description": "Transifex Native for Express JS",
+  "description": "i18n express framework using Transifex Native",
   "keywords": [
     "transifex",
     "i18n",
     "l10n",
-    "localization"
+    "localization",
+    "internationalization",
+    "globalization",
+    "translation",
+    "express"
   ],
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/express",

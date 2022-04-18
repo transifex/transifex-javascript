@@ -1,6 +1,6 @@
 {
   "name": "@transifex/cli",
-  "description": "Transifex Native CLI",
+  "description": "i18n CLI tool for Transifex Native",
   "version": "3.2.1",
   "author": "Transifex",
   "keywords": [
@@ -8,6 +8,9 @@
     "i18n",
     "l10n",
     "localization",
+    "internationalization",
+    "globalization",
+    "translation",
     "cli"
   ],
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/cli",

@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/transifex/transifex-javascript.svg?branch=master)](https://travis-ci.org/transifex/transifex-javascript)
-
-
 # Transifex Javascript Toolkit
 
 Transifex Javascript Toolkit is a collection of tools to easily localize your Javascript applications using [Transifex Native](https://www.transifex.com/native/).
