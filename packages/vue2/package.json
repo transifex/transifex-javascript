@@ -1,14 +1,17 @@
 {
   "name": "@transifex/vue2",
   "version": "3.2.1",
-  "description": "Transifex Native for Vue 2",
+  "description": "Vue i18n framework using Transifex Native",
   "keywords": [
     "transifex",
     "i18n",
     "l10n",
     "localization",
+    "internationalization",
+    "globalization",
+    "translation",
     "vue",
-    "vue 2"
+    "vue.js"
   ],
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/vue2",

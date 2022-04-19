@@ -1,12 +1,15 @@
 {
   "name": "@transifex/native",
   "version": "3.2.1",
-  "description": "Transifex Native for Javascript",
+  "description": "i18n framework using Transifex Native",
   "keywords": [
     "transifex",
     "i18n",
     "l10n",
-    "localization"
+    "localization",
+    "internationalization",
+    "globalization",
+    "translation"
   ],
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/native",

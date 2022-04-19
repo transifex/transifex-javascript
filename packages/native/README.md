@@ -1,4 +1,22 @@
-# Transifex Native for Javascript
+<p align="center">
+  <a href="https://www.transifex.com">
+    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  </a>
+</p>
+<p align="center">
+  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+</p>
+<p align="center">
+  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@transifex/native">
+    <img src="https://img.shields.io/npm/v/@transifex/native.svg">
+  </a>
+  <a href="https://developers.transifex.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  </a>
+</p>
+
+# Transifex Native SDK: JavaScript i18n
 
 A general purpose Javascript library for localizing web apps using [Transifex Native](https://www.transifex.com/native/).
 
@@ -11,6 +29,22 @@ Related packages:
 * [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
 
 Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+
+# How it works
+
+**Step1**: Create a Transifex Native project in [Transifex](https://www.transifex.com).
+
+**Step2**: Grab credentials.
+
+**Step3**: Internationalize the code using the SDK.
+
+**Step4**: Push source phrases using the `@transifex/cli` tool.
+
+**Step5**: Translate the app using over-the-air updates.
+
+No translation files required.
+
+![native](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/native.gif)
 
 # Upgrade to v2
 

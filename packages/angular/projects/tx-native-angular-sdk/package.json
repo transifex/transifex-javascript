@@ -1,12 +1,15 @@
 {
   "name": "@transifex/angular",
   "version": "3.2.1",
-  "description": "Transifex Native for Angular",
+  "description": "i18n Angular framework using Transifex Native",
   "keywords": [
     "transifex",
     "i18n",
     "l10n",
     "localization",
+    "internationalization",
+    "globalization",
+    "translation",
     "angular"
   ],
   "author": "Transifex",

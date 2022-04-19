@@ -1,3 +1,10 @@
+# Transifex API JavaScript SDK
+
+![example workflow](https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg)
+[![npm version](https://img.shields.io/npm/v/@transifex/api.svg)](https://www.npmjs.com/package/@transifex/api)
+[![documentation](https://img.shields.io/badge/docs-transifex.com-blue)](https://developers.transifex.com/reference/api-javascript-sdk)
+
+
 A javascript SDK for the [Transifex API (v3)](https://developers.transifex.com/reference)
 
 ## Intro

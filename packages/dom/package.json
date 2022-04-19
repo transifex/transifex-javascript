@@ -1,12 +1,15 @@
 {
   "name": "@transifex/dom",
   "version": "3.2.1",
-  "description": "Transifex Native DOM Extention",
+  "description": "i18n DOM library using Transifex Native",
   "keywords": [
     "transifex",
     "i18n",
     "l10n",
-    "localization"
+    "localization",
+    "internationalization",
+    "globalization",
+    "translation"
   ],
   "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/dom",

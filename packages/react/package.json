@@ -1,12 +1,15 @@
 {
   "name": "@transifex/react",
   "version": "3.2.1",
-  "description": "Transifex Native for React",
+  "description": "i18n React framework using Transifex Native",
   "keywords": [
     "transifex",
     "i18n",
     "l10n",
     "localization",
+    "internationalization",
+    "globalization",
+    "translation",
     "react"
   ],
   "author": "Transifex",
