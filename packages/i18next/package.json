@@ -1,0 +1,59 @@
+{
+  "name": "@transifex/i18next",
+  "version": "4.0.0",
+  "description": "i18next backend plugin for Transifex Native",
+  "keywords": [
+    "i18next",
+    "transifex",
+    "i18n",
+    "l10n",
+    "localization",
+    "internationalization",
+    "globalization",
+    "translation"
+  ],
+  "author": "Transifex",
+  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/i18next",
+  "license": "Apache-2.0",
+  "main": "dist/node.i18next.js",
+  "browser": "dist/browser.i18next.js",
+  "types": "dist/node.i18next.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "scripts": {
+    "lint": "eslint src/ tests/",
+    "build": "NODE_ENV=production webpack --config ./webpack.config.js && cp src/index.d.ts dist/node.i18next.d.ts",
+    "test": "NODE_ENV=test webpack --config webpack.test.js && nyc --reporter=text mocha --exit dist/test.i18next.js --require source-map-support/register && rm -f ./dist/test.*",
+    "publish-npm": "npm publish"
+  },
+  "bugs": {
+    "url": "https://github.com/transifex/transifex-javascript/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/plugin-transform-runtime": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/runtime": "^7.17.8",
+    "babel-loader": "^8.1.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.23.4",
+    "glob": "^8.0.1",
+    "i18next": "^21.6.16",
+    "mocha": "^10.0.0",
+    "nock": "^13.2.4",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "@transifex/native": "^4.0.0"
+  }
+}

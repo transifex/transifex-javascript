@@ -9,6 +9,7 @@ const pug = require('pug');
 const { parseHTMLTemplateFile } = require('./parsers/angularHTML');
 const { babelExtractPhrases } = require('./parsers/babel');
 const { extractVuePhrases } = require('./parsers/vue');
+const { extractI18NextPhrases } = require('./parsers/i18next');
 
 /**
  * Parse file and extract phrases using AST
@@ -20,29 +21,49 @@ const { extractVuePhrases } = require('./parsers/vue');
  * @param {String[]} options.filterWithTags
  * @param {String[]} options.filterWithoutTags
  * @param {Boolean} options.useHashedKeys
+ * @param {String} options.parser
  * @returns {Object}
  */
 function extractPhrases(file, relativeFile, options = {}) {
   const HASHES = {};
   let source = fs.readFileSync(file, 'utf8');
 
-  // Handle simple templates that compile to javascript
+  // i18next JSON
+  if (options.parser === 'i18next') {
+    extractI18NextPhrases(HASHES, source, relativeFile, options);
+    return HASHES;
+  }
+
+  // PUBG templates
   if (path.extname(file) === '.pug') {
     source = pug.compileClient(source);
-  } else if (path.extname(file) === '.ejs') {
+    babelExtractPhrases(HASHES, source, relativeFile, options);
+    return HASHES;
+  }
+
+  // EJS templates
+  if (path.extname(file) === '.ejs') {
     const template = new ejs.Template(source);
     template.generateSource();
     source = template.source;
+    babelExtractPhrases(HASHES, source, relativeFile, options);
+    return HASHES;
   }
 
+  // HTML templates
   if (path.extname(file) === '.html') {
     parseHTMLTemplateFile(HASHES, file, relativeFile, options);
-  } else if (path.extname(file) === '.vue') {
-    extractVuePhrases(HASHES, source, relativeFile, options);
-  } else if (path.extname(file) !== '.html') {
-    babelExtractPhrases(HASHES, source, relativeFile, options);
+    return HASHES;
   }
 
+  // Vue templates
+  if (path.extname(file) === '.vue') {
+    extractVuePhrases(HASHES, source, relativeFile, options);
+    return HASHES;
+  }
+
+  // default
+  babelExtractPhrases(HASHES, source, relativeFile, options);
   return HASHES;
 }
 

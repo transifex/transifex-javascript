@@ -26,5 +26,7 @@ declare module '@transifex/native' {
   export const generateHashedKey: any;
   export const generateKey: any;
   export const isPluralized: any;
+  export const explodePlurals: any;
+  export const implodePlurals: any;
   export const normalizeLocale: any;
 }
