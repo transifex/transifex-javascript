@@ -17,6 +17,9 @@ module.exports = {
       __VERSION__: JSON.stringify(version),
       __PLATFORM__: JSON.stringify('test'),
     }),
-    new IgnorePlugin(/canvas/, /commonjs$/),
+    new IgnorePlugin({
+      resourceRegExp: /canvas/,
+      contextRegExp: /commonjs$/,
+    }),
   ],
 };

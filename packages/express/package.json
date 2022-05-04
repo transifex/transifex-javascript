@@ -30,14 +30,14 @@
     "url": "https://github.com/transifex/transifex-javascript/issues"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "devDependencies": {
     "@transifex/native": "^3.2.2",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
-    "jest": "^27.5.1"
+    "jest": "^28.0.3"
   },
   "dependencies": {
     "type-is": "^1.6.18"

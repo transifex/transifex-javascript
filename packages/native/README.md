@@ -22,7 +22,7 @@ A general purpose Javascript library for localizing web apps using [Transifex Na
 
 Requires a Transifex Native Project Token.
 
-Supported Node.js versions >= `12.x.x`
+Supported Node.js versions >= `14.x.x`
 
 Related packages:
 * [@transifex/react](https://www.npmjs.com/package/@transifex/react)
