@@ -212,7 +212,9 @@ txdom.attachDOM(jsdom.window.document);
 await tx.setCurrentLocale('fr');
 
 // Translate DOM
-txdom.toLanguage(tx.getCurrentLocale(), tx.t);
+txdom.toLanguage(tx.getCurrentLocale(), (key) => {
+  return tx.cache.get(key, tx.getCurrentLocale());
+});
 
 // Get back translated HTML
 const translatedHTML = jsdom.serialize();

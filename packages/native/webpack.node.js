@@ -20,23 +20,6 @@ module.exports = {
     }),
   ],
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            options: {
-              cache: true,
-              configFile: '.eslintrc.json',
-              formatter: 'eslint-formatter-pretty',
-              emitWarning: true,
-              failOnError: true,
-            },
-            loader: 'eslint-loader',
-          },
-        ],
-      },
-    ],
+    rules: [],
   },
 };
