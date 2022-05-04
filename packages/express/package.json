@@ -43,6 +43,6 @@
     "type-is": "^1.6.18"
   },
   "peerDependencies": {
-    "@transifex/native": "^3.0.0"
+    "@transifex/native": "^4.0.0"
   }
 }

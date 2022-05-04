@@ -19,6 +19,6 @@
   "peerDependencies": {
     "@angular/common": "^12.0.0 || ^13.0.0",
     "@angular/core": "^12.0.0 || ^13.0.0",
-    "@transifex/native": "^3.0.0"
+    "@transifex/native": "^4.0.0"
   }
 }
