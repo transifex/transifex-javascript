@@ -30,6 +30,11 @@ Transifex Native support for localizing Vue components.
 Transifex Native support for localizing ExpressJS applications.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/express)
 
+## Transifex Native for i18next
+
+Transifex Native backend support for i18next
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/i18next)
+
 ## Transifex Native CLI
 
 Command line tool for extracting phrases from source files and pushing content to Transifex.
@@ -50,7 +55,6 @@ A javascript SDK for the [Transifex API v3](https://developers.transifex.com/ref
 A javascript library for building SDKs for APIs that implement the {json:api}
 specification. This is what our API SDK is based on.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi)
-
 
 # License
 

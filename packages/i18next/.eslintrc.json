@@ -5,9 +5,5 @@
     "no-plusplus": "off",
     "no-underscore-dangle": "off"
   },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  }
+  "ignorePatterns": ["/**/*.d.ts"]
 }

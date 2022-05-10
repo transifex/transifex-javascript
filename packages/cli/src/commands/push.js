@@ -73,6 +73,7 @@ class PushCommand extends Command {
       filterWithTags,
       filterWithoutTags,
       useHashedKeys,
+      parser: flags.parser,
     };
 
     _.each(allFiles, (file) => {
@@ -255,6 +256,7 @@ txjs-cli push --append-tags="master,release:2.5"
 txjs-cli push --with-tags-only="home,error"
 txjs-cli push --without-tags-only="custom"
 txjs-cli push --token=mytoken --secret=mysecret
+txjs-cli push en.json --parser=i18next
 TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 `;
 
@@ -306,6 +308,11 @@ PushCommand.flags = {
   'cds-host': flags.string({
     description: 'CDS host URL',
     default: '',
+  }),
+  parser: flags.string({
+    description: 'file parser to use',
+    default: 'auto',
+    options: ['auto', 'i18next'],
   }),
   'key-generator': flags.string({
     description: 'use hashed or source based keys',

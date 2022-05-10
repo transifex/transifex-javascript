@@ -7,7 +7,7 @@ import SourceErrorPolicy from './policies/SourceErrorPolicy';
 import SourceStringPolicy from './policies/SourceStringPolicy';
 import MessageFormatRenderer from './renderers/MessageFormatRenderer';
 import {
-  generateKey, isString, isPluralized, escape, generateHashedKey, sleep,
+  generateKey, isString, escape, generateHashedKey, sleep,
 } from './utils';
 import {
   sendEvent,
@@ -15,6 +15,7 @@ import {
   FETCHING_LOCALES, LOCALES_FETCHED, LOCALES_FETCH_FAILED,
   LOCALE_CHANGED,
 } from './events';
+import { isPluralized } from './plurals';
 
 /**
  * Native instance, combines functionality from

@@ -17,6 +17,7 @@ function _createNativeInstance(initOptions) {
 }
 
 export * from './utils';
+export * from './plurals';
 export * from './events';
 
 export const PseudoTranslationPolicy = _PseudoTranslationPolicy;

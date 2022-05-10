@@ -113,6 +113,7 @@ OPTIONS
   --dry-run                              dry run, do not push to Transifex
   --key-generator=source|hash            [default: source] use hashed or source based keys
   --no-wait                              disable polling for upload results
+  --parser=auto|i18next                  [default: auto] file parser to use
   --purge                                purge content on Transifex
   --secret=secret                        native project secret
   --token=token                          native project public token
@@ -145,6 +146,7 @@ DESCRIPTION
   txjs-cli push --with-tags-only="home,error"
   txjs-cli push --without-tags-only="custom"
   txjs-cli push --token=mytoken --secret=mysecret
+  txjs-cli push en.json --parser=i18next
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 ```
 

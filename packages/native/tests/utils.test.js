@@ -2,7 +2,7 @@
 
 import { expect } from 'chai';
 import {
-  escape, generateKey, isString, normalizeLocale, isPluralized,
+  escape, generateKey, isString, normalizeLocale,
 } from '../src/index';
 import { generateHashedKey } from '../src/utils';
 
@@ -66,13 +66,5 @@ describe('Util functions', () => {
   it('normalizeLocale', () => {
     expect(normalizeLocale('en')).to.equal('en');
     expect(normalizeLocale('pt-br')).to.equal('pt_BR');
-  });
-
-  it('isPluralized', () => {
-    expect(isPluralized('hello world')).to.equal(false);
-    expect(isPluralized('{cnt, plural, one {ONE} other {OTHER}}'))
-      .to.equal(true);
-    expect(isPluralized('hello {cnt, plural, one {ONE} other {OTHER}}'))
-      .to.equal(false);
   });
 });
