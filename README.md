@@ -32,7 +32,7 @@ Transifex Native support for localizing ExpressJS applications.
 
 ## Transifex Native for i18next
 
-Transifex Native backend support for i18next
+Transifex Native backend support for i18next.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/i18next)
 
 ## Transifex Native CLI

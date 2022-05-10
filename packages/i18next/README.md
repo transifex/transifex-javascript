@@ -18,7 +18,7 @@
 
 # Transifex Native SDK: i18next backend plugin
 
-An i18next backend plugin, to load translations over-the-air using Transifex Native.
+An [i18next](https://www.i18next.com) backend plugin, to load translations over-the-air using Transifex Native.
 
 Related packages:
 * [@transifex/native](https://www.npmjs.com/package/@transifex/native)
