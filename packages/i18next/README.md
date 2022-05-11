@@ -92,6 +92,12 @@ npx txjs-cli push source.json --parser=i18next
 
 That's it. Given that the content is translated, translations will be downloaded over-the-air using the Transifex i18next backend.
 
+# Known limitations
+
+CLI does NOT parse and push the following key types:
+- keyWithArrayValue
+- keyWithObjectValue
+
 # License
 
 Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
