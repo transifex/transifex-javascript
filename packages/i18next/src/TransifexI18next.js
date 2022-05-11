@@ -1,13 +1,18 @@
 import { createNativeInstance, explodePlurals } from '@transifex/native';
 
 export default class TransifexI18next {
-  constructor(services, options) {
+  constructor(options) {
     this.type = 'backend';
-    this.init(services, options);
+    this.options = options || {};
+    this.init();
   }
 
   init(services, backendOptions) {
-    this.tx = createNativeInstance(backendOptions);
+    this.options = {
+      ...(this.options || {}),
+      ...(backendOptions || {}),
+    };
+    this.tx = createNativeInstance(this.options);
   }
 
   read(language, namespace, callback) {
@@ -47,7 +52,7 @@ export default class TransifexI18next {
         return;
       }
       const baseKey = key.slice(0, -('_txplural'.length));
-      const plurals = explodePlurals(translations[key])[1];
+      const plurals = explodePlurals(translations[key].replace('{???,', '{count,'))[1];
       Object.keys(plurals).forEach((plural) => {
         data[`${baseKey}_${plural}`] = plurals[plural];
       });
