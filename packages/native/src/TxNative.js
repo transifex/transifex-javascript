@@ -30,6 +30,8 @@ export default class TxNative {
     this.token = '';
     this.secret = '';
     this.filterTags = '';
+    this.fetchTimeout = 0;
+    this.fetchInterval = 250;
     this.cache = new MemoryCache();
     this.missingPolicy = new SourceStringPolicy();
     this.errorPolicy = new SourceErrorPolicy();
@@ -48,6 +50,8 @@ export default class TxNative {
    * @param {String} params.filterTags
    * @param {String} params.token
    * @param {String} params.secret
+   * @param {Number} params.fetchTimeout
+   * @param {Number} params.fetchInterval
    * @param {Function} params.cache
    * @param {Function} params.missingPolicy
    * @param {Function} params.errorPolicy
@@ -61,6 +65,8 @@ export default class TxNative {
       'secret',
       'cache',
       'filterTags',
+      'fetchTimeout',
+      'fetchInterval',
       'missingPolicy',
       'errorPolicy',
       'stringRenderer',
@@ -183,11 +189,17 @@ export default class TxNative {
       }
     }
 
+    const handleError = (err) => {
+      sendEvent(TRANSLATIONS_FETCH_FAILED, { localeCode, filterTags }, this);
+      return err;
+    };
+
     // contact CDS
     try {
       sendEvent(FETCHING_TRANSLATIONS, { localeCode, filterTags }, this);
       let response;
       let lastResponseStatus = 202;
+      const tsNow = Date.now();
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
         let url = `${this.cdsHost}/content/${localeCode}`;
@@ -201,8 +213,14 @@ export default class TxNative {
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
         });
-        /* eslint-enable no-await-in-loop */
         lastResponseStatus = response.status;
+        if (this.fetchTimeout > 0 && (Date.now() - tsNow) >= this.fetchTimeout) {
+          throw handleError(new Error('Fetch translations timeout'));
+        }
+        if (lastResponseStatus === 202 && this.fetchInterval > 0) {
+          await sleep(this.fetchInterval);
+        }
+        /* eslint-enable no-await-in-loop */
       }
 
       const { data } = response;
@@ -216,12 +234,10 @@ export default class TxNative {
         this.cache.update(localeCode, hashmap);
         sendEvent(TRANSLATIONS_FETCHED, { localeCode, filterTags }, this);
       } else {
-        sendEvent(TRANSLATIONS_FETCH_FAILED, { localeCode, filterTags }, this);
-        throw new Error('Could not fetch translations');
+        throw handleError(new Error('Could not fetch translations'));
       }
     } catch (err) {
-      sendEvent(TRANSLATIONS_FETCH_FAILED, { localeCode, filterTags }, this);
-      throw err;
+      throw handleError(err);
     }
   }
 
@@ -355,11 +371,17 @@ export default class TxNative {
 
     if (!this.token) return [];
 
+    const handleError = (err) => {
+      sendEvent(LOCALES_FETCH_FAILED, null, this);
+      return err;
+    };
+
     // contact CDS
     try {
       sendEvent(FETCHING_LOCALES, null, this);
       let response;
       let lastResponseStatus = 202;
+      const tsNow = Date.now();
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
         response = await axios.get(`${this.cdsHost}/languages`, {
@@ -369,8 +391,14 @@ export default class TxNative {
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
         });
-        /* eslint-enable no-await-in-loop */
         lastResponseStatus = response.status;
+        if (this.fetchTimeout > 0 && (Date.now() - tsNow) >= this.fetchTimeout) {
+          throw handleError(new Error('Get locales timeout'));
+        }
+        if (lastResponseStatus === 202 && this.fetchInterval > 0) {
+          await sleep(this.fetchInterval);
+        }
+        /* eslint-enable no-await-in-loop */
       }
 
       const { data } = response;
@@ -379,12 +407,10 @@ export default class TxNative {
         this.locales = this.languages.map((entry) => entry.code);
         sendEvent(LOCALES_FETCHED, null, this);
       } else {
-        sendEvent(LOCALES_FETCH_FAILED, null, this);
-        throw new Error('Could not fetch languages');
+        throw handleError(new Error('Could not fetch languages'));
       }
     } catch (err) {
-      sendEvent(LOCALES_FETCH_FAILED, null, this);
-      throw err;
+      throw handleError(err);
     }
 
     return [...this.locales];

@@ -1,10 +1,24 @@
-/* globals describe, it */
+/* globals describe, it, beforeEach, afterEach */
 
 import { expect } from 'chai';
 import nock from 'nock';
 import { tx, t, generateKey } from '../src/index';
 
 describe('tx instance', () => {
+  let fetchTimeout;
+  let fetchInterval;
+
+  beforeEach(() => {
+    fetchTimeout = tx.fetchTimeout;
+    fetchInterval = tx.fetchInterval;
+    tx.init({ fetchTimeout: 0, fetchInterval: 0 });
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    tx.init({ fetchTimeout, fetchInterval });
+  });
+
   it('getLocales fetches locales', async () => {
     tx.init({
       token: 'abcd',
@@ -216,6 +230,51 @@ describe('tx instance', () => {
     expect(locales).to.deep.equal(['el']);
   });
 
+  it('retries fetching languages with timeout', async () => {
+    tx.init({ token: 'abcd', fetchTimeout: 50 });
+    nock(tx.cdsHost)
+      .get('/languages')
+      .delayConnection(60)
+      .reply(202)
+      .get('/languages')
+      .reply(200, {
+        data: [{
+          name: 'Greek',
+          code: 'el',
+          localized_name: 'Ελληνικά',
+          rtl: false,
+        }],
+      });
+
+    let error;
+    try {
+      await tx.getLocales({ refresh: true });
+    } catch (err) {
+      error = err;
+    }
+    expect(error.message).to.equal('Get locales timeout');
+  });
+
+  it('retries fetching languages with interval', async () => {
+    tx.init({ token: 'abcd', fetchInterval: 50 });
+    nock(tx.cdsHost)
+      .get('/languages')
+      .reply(202)
+      .get('/languages')
+      .reply(200, {
+        data: [{
+          name: 'Greek',
+          code: 'el',
+          localized_name: 'Ελληνικά',
+          rtl: false,
+        }],
+      });
+
+    const ts = Date.now();
+    await tx.getLocales({ refresh: true });
+    expect(Date.now() - ts).to.be.greaterThan(50);
+  });
+
   it('retries fetching translations', async () => {
     tx.init({ token: 'abcd' });
     nock(tx.cdsHost)
@@ -226,5 +285,36 @@ describe('tx instance', () => {
       .reply(200, { data: { source: { string: 'translation' } } });
     await tx.fetchTranslations('el');
     expect(tx.cache.get('source', 'el')).to.equal('translation');
+  });
+
+  it('retries fetching translations with timeout', async () => {
+    tx.init({ token: 'abcd', fetchTimeout: 50 });
+    nock(tx.cdsHost)
+      .get('/content/el_timeout')
+      .delayConnection(60)
+      .reply(202)
+      .get('/content/el_timeout')
+      .reply(200, { data: { source: { string: 'translation' } } });
+
+    let error;
+    try {
+      await tx.fetchTranslations('el_timeout');
+    } catch (err) {
+      error = err;
+    }
+    expect(error.message).to.equal('Fetch translations timeout');
+  });
+
+  it('retries fetching translations with interval delays', async () => {
+    tx.init({ token: 'abcd', fetchInterval: 50 });
+    nock(tx.cdsHost)
+      .get('/content/el_interval')
+      .reply(202)
+      .get('/content/el_interval')
+      .reply(200, { data: { source: { string: 'translation' } } });
+
+    const ts = Date.now();
+    await tx.fetchTranslations('el_interval');
+    expect(Date.now() - ts).to.be.greaterThan(50);
   });
 });
