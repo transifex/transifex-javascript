@@ -153,6 +153,14 @@ tx.init({
 
   // Translation cache, defaults to "new MemoryCache()"
   cache: Function,
+
+  // Optional timeout in milliseconds when fetching languages and
+  // strings, defaults to 0 (no-timeout)
+  fetchTimeout: Number,
+
+  // Optional interval polling delay in milliseconds while waiting
+  // for CDS to warm-up with content, defaults to 250msec
+  fetchInterval: Number,
 })
 ```
 
