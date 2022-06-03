@@ -40,6 +40,7 @@ class PushCommand extends Command {
     if (isFolder(filePattern)) {
       filePattern = path.join(filePattern, PushCommand.args[0].default);
     }
+    filePattern = filePattern.replace(/\\/g, '/');
 
     const appendTags = stringToArray(flags['append-tags']);
     const filterWithTags = stringToArray(flags['with-tags-only']);
