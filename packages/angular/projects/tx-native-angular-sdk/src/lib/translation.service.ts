@@ -26,6 +26,7 @@ export class TranslationService {
   }
 
   // A dictionary with additional TX Native instances for translation
+  // eslint-disable-next-line space-infix-ops
   private additionalInstances: { [id: string]: any } = {};
 
   // A subject for managing locale changes
