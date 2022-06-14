@@ -1,6 +1,6 @@
 {
   "name": "@transifex/jsonapi",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "{json:api} SDK library",
   "keywords": [
     "jsonapi",
