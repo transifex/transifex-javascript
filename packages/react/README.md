@@ -130,15 +130,9 @@ mix of text and React elements:
 
 ```javascript
 <T>
-  A <button>button</button> and a <b>bold</b> walk into a bar
+  A <button title="button!!!">button</button> and a <b>bold</b> walk into a bar
 </T>
 ```
-
-You must not inject any javascript code in the content of a T-component because:
-
-1. It will be rendered differently every time and the SDK won't be able to
-   predictably find a translation
-2. The CLI will not be able to extract a source string from it
 
 If you do this, the string that will be sent to Transifex for translation will
 look like this:
@@ -150,6 +144,12 @@ A <1> button </1> and a <2> bold </2> walk into a bar
 As long as the translation respects the numbered tags, the T-component will
 render the translation properly. Any props that the React elements have in the
 source version of the text will be applied to the translation as well.
+
+You must not inject any javascript code in the content of a T-component because:
+
+1. It will be rendered differently every time and the SDK won't be able to
+   predictably find a translation
+2. The CLI will not be able to extract a source string from it
 
 You can interpolate parameters as before, but you have to be careful with how
 you define them in the source body:

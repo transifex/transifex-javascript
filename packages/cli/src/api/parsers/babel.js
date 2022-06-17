@@ -75,6 +75,12 @@ function toStr(children, counter = 0) {
       // Child is not a React element, append as-is
       const chunk = child.value.trim();
       if (chunk) { result.push(chunk); }
+    } else if (
+      child.type === 'JSXExpressionContainer'
+      && child.expression.type === 'StringLiteral'
+    ) {
+      const chunk = child.expression.value.trim();
+      if (chunk) { result.push(chunk); }
     } else {
       return [[], 0];
     }
