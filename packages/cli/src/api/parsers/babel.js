@@ -35,6 +35,53 @@ function babelParse(source) {
   }
 }
 
+/*  Converts a list of JSX AST nodes to a string. Each "tag" must be converted
+  * to a numbered tag in the order they were encountered in and all props must
+  * be stripped.
+  *
+  *   const root = babelParse('<><one two="three">four<five six="seven" /></one></>');
+  *   const children = root.program.body[0].expression.children;
+  *   const [result] = toStr(children)
+  *   console.log(result.join(''));
+  *   // <<< '<1>four<2/></1>'
+  *
+  * The second argument and return value are there because of how recursion
+  * works. For high-level invocation you won't have to worry about them.
+  * */
+function toStr(children, counter = 0) {
+  if (!children) { return [[], 0]; }
+
+  let result = [];
+
+  let actualCounter = counter;
+  for (let i = 0; i < children.length; i += 1) {
+    const child = children[i];
+    if (child.type === 'JSXElement') {
+      actualCounter += 1;
+      if (child.children && child.children.length > 0) {
+        // child has children, recursively run 'toStr' on them
+        const [newResult, newCounter] = toStr(child.children, actualCounter);
+        if (newResult.length === 0) { return [[], 0]; }
+        result.push(`<${actualCounter}>`); //  <4>
+        result = result.concat(newResult); //  <4>...
+        result.push(`</${actualCounter}>`); // <4>...</4>
+        // Take numbered tags that were found during the recursion into account
+        actualCounter = newCounter;
+      } else {
+        // child has no children of its own, replace with something like '<4/>'
+        result.push(`<${actualCounter}/>`);
+      }
+    } else if (child.type === 'JSXText') {
+      // Child is not a React element, append as-is
+      const chunk = child.value.trim();
+      if (chunk) { result.push(chunk); }
+    } else {
+      return [[], 0];
+    }
+  }
+  return [result, actualCounter];
+}
+
 function babelExtractPhrases(HASHES, source, relativeFile, options) {
   const ast = babelParse(source);
   babelTraverse(ast, {
@@ -139,6 +186,11 @@ function babelExtractPhrases(HASHES, source, relativeFile, options) {
         }
         params[property] = attrValue;
       });
+
+      if (!string && elem.name.name === 'T' && node.children && node.children.length) {
+        const [result] = toStr(node.children);
+        string = result.join(' ').trim();
+      }
 
       if (!string) return;
 
