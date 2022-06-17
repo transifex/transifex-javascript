@@ -60,6 +60,8 @@ npm install @transifex/native @transifex/react --save
 
 ## `T` Component
 
+### Regular usage
+
 ```javascript
 import React from 'react';
 
@@ -86,6 +88,8 @@ Available optional props:
 | _charlimit | Number | Character limit instruction for translators |
 | _tags      | String | Comma separated list of tags                |
 
+### Interpolation of React elements
+
 The T-component can accept React elements as properties and they will be
 rendered properly, ie this would be possible:
 
@@ -95,6 +99,14 @@ rendered properly, ie this would be possible:
   button={<button><T _str="button" /></button>}
   bold={<b><T _str="bold" /></b>} />
 ```
+
+Assuming the translations look like this:
+
+| source                                  | translation                                      |
+|-----------------------------------------|--------------------------------------------------|
+| A {button} and a {bold} walk into a bar | Ένα {button} και ένα {bold} μπαίνουν σε ένα μπαρ |
+| button                                  | κουμπί                                           |
+| bold                                    | βαρύ                                             |
 
 This will render like this in English:
 
@@ -108,16 +120,55 @@ And like this in Greek:
 Ένα <button>κουμπί</button> και ένα <b>βαρύ</b> μπαίνουν σε ένα μπαρ
 ```
 
-Assuming the translations look like this:
-
-| source                                  | translation                                      |
-|-----------------------------------------|--------------------------------------------------|
-| A {button} and a {bold} walk into a bar | Ένα {button} και ένα {bold} μπαίνουν σε ένα μπαρ |
-| button                                  | κουμπί                                           |
-| bold                                    | βαρύ                                             |
-
 The main thing to keep in mind is that the `_str` property to the T-component
 must **always** be a valid ICU messageformat template.
+
+### Translatable body
+
+Another way to use the T-component is to include a translatable body that is a
+mix of text and React elements:
+
+```javascript
+<T>
+  A <button>button</button> and a <b>bold</b> walk into a bar
+</T>
+```
+
+You must not inject any javascript code in the content of a T-component because:
+
+1. It will be rendered differently every time and the SDK won't be able to
+   predictably find a translation
+2. The CLI will not be able to extract a source string from it
+
+If you do this, the string that will be sent to Transifex for translation will
+look like this:
+
+```
+A <1> button </1> and a <2> bold </2> walk into a bar
+```
+
+As long as the translation respects the numbered tags, the T-component will
+render the translation properly. Any props that the React elements have in the
+source version of the text will be applied to the translation as well.
+
+You can interpolate parameters as before, but you have to be careful with how
+you define them in the source body:
+
+```javascript
+// ✗ Wrong, this is a javascript expression
+<T username="Bill">hello {username}</T>
+
+// ✓ Correct, this is a string
+<T username="Bill">hello {'{username}'}</T>
+```
+
+This time however, the interpolated values **cannot** be React elements.
+
+```javascript
+// ✗ Wrong, this will fail to render
+<T bold={<b>BOLD</b>}>This is {'{bold}'}</T>
+```
+
 
 ## `UT` Component
 
