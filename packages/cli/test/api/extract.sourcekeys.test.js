@@ -147,6 +147,34 @@ describe('extractPhrases with source keys', () => {
           string: '<b>HTML inline text</b>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
+        'Text 5': {
+          string: 'Text 5',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        'Text <1> 6 </1>': {
+          string: 'Text <1> 6 </1>',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        'Text <1> <2> 7 </2> </1>': {
+          string: 'Text <1> <2> 7 </2> </1>',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        'Text 8::foo': {
+          string: 'Text 8',
+          meta: { context: ['foo'], tags: [], occurrences: ['react.jsx'] },
+        },
+        'Text <1/> 9': {
+          string: 'Text <1/> 9',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        'Text {msg}': {
+          string: 'Text {msg}',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        'Text 10': {
+          string: 'Text 10',
+          meta: { context: [], tags: ['tag1', 'tag2'], occurrences: ['react.jsx'] },
+        },
       });
   });
 

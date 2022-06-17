@@ -109,7 +109,7 @@ export function toElement(translation, propsContainer) {
     if (rightSlash) {
       // Single tag, copy props and don't include children in the React element
       result.push(React.createElement(type, { ...props, key: lastKey }));
-      lastEnd += openingTag.length;
+      lastEnd += matchIndex + openingTag.length;
     } else {
       // Opening tag, find the closing tag which is guaranteed to be there and
       // to be unique

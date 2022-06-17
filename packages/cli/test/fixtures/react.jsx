@@ -30,6 +30,13 @@ function foo() {
       <T _str={str3} />
       {msg}
       {msg2}
+      <T>Text 5</T>
+      <T>Text <b>6</b></T>
+      <T>Text <b><i>7</i></b></T>
+      <T _context={context}>Text 8</T>
+      <T>Text <br /> 9</T>
+      <T msg={msg}>Text {'{msg}'}</T>
+      <T _tags="tag1,tag2">Text 10</T>
     </div>
   );
 }
