@@ -73,7 +73,7 @@ function toStr(children, counter = 0) {
       }
     } else if (child.type === 'JSXText') {
       // Child is not a React element, append as-is
-      const chunk = child.value.trim();
+      const chunk = child.value.trim().replace(/\s+/g, ' ');
       if (chunk) { result.push(chunk); }
     } else if (
       child.type === 'JSXExpressionContainer'
