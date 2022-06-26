@@ -64,7 +64,7 @@ export function toStr(children, counter = 0) {
       // Child is not a React element, append as-is
       /* eslint-disable no-lonely-if */
       if (typeof child === 'string' || child instanceof String) {
-        const chunk = child.trim();
+        const chunk = child.trim().replace(/\s+/g, ' ');
         if (chunk) { result.push(chunk); }
       } else {
         result.push(child);
