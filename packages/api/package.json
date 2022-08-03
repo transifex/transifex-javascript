@@ -1,6 +1,6 @@
 {
   "name": "@transifex/api",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "description": "Transifex API SDK",
   "keywords": [
     "transifex",
@@ -27,11 +27,13 @@
   "dependencies": {
     "core-js": "^3.22.4"
   },
+  "peerDependencies": {
+    "@transifex/jsonapi": "^4.2.3"
+  },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
-    "@transifex/jsonapi": "^4.2.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.5",
     "eslint": "^7.32.0",

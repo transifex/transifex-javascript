@@ -1,6 +1,6 @@
 {
   "name": "@transifex/native",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "description": "i18n framework using Transifex Native",
   "keywords": [
     "transifex",

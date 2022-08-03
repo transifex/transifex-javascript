@@ -1,7 +1,7 @@
 {
   "name": "@transifex/cli",
   "description": "i18n CLI tool for Transifex Native",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "author": "Transifex",
   "keywords": [
     "transifex",
@@ -31,7 +31,7 @@
     "@oclif/config": "^1.18.3",
     "@oclif/errors": "^1.3.5",
     "@oclif/plugin-help": "^5.1.12",
-    "@transifex/native": "^4.2.2",
+    "@transifex/native": "^4.2.3",
     "angular-html-parser": "^1.8.0",
     "axios": "^0.27.2",
     "cli-ux": "^6.0.9",
