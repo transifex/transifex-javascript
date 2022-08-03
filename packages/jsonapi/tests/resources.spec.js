@@ -350,6 +350,42 @@ test('patch', async () => {
   after();
 });
 
+test('patch Null Relationship', async () => {
+  const parent = new api.Parent({ id: '2' });
+  const child = new api.Child({ id: '1', name: 'John', parent });
+
+  axios.request.mockResolvedValue({
+    data: {
+      data: {
+        id: '1',
+        attributes: { name: 'Bill' },
+        relationships: { parent: null },
+      },
+    },
+  });
+  child.set('name', 'Bill');
+  await child.save(['name']);
+  expectRequestMock({
+    method: 'patch',
+    url: '/children/1',
+    data: {
+      data: {
+        type: 'children',
+        id: '1',
+        attributes: { name: 'Bill' },
+      },
+    },
+  });
+  expect(child).toEqual({
+    id: '1',
+    attributes: { name: 'Bill' },
+    links: {},
+    redirect: null,
+    relationships: { parent: null },
+    related: { parent: null },
+  });
+});
+
 test('save new', async () => {
   const child = new api.Child({ name: 'John' });
   axios.request.mockResolvedValue({
