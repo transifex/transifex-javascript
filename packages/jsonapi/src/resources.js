@@ -520,15 +520,19 @@ export default class Resource {
     const { data } = response.data;
     const related = { ...this.related };
     Object.entries(related).forEach(([relationshipName, relatedInstance]) => {
-      const oldId = relatedInstance.id;
-      const newId = data.relationships[relationshipName].data.id;
-      if (oldId !== newId) {
-        if (newId) {
-          related[relationshipName] = this.constructor.API.new(
-            data.relationships[relationshipName],
-          );
-        } else {
-          delete related[relationshipName];
+      if (data.relationships[relationshipName] === null) {
+        related[relationshipName] = null;
+      } else {
+        const oldId = relatedInstance.id;
+        const newId = data.relationships[relationshipName].data.id;
+        if (oldId !== newId) {
+          if (newId) {
+            related[relationshipName] = this.constructor.API.new(
+              data.relationships[relationshipName],
+            );
+          } else {
+            delete related[relationshipName];
+          }
         }
       }
     });
