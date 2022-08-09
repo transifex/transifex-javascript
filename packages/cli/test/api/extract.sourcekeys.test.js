@@ -393,4 +393,46 @@ describe('extractPhrases with source keys', () => {
         },
       });
   });
+
+  it('works with svelte', async () => {
+    expect(await extractPhrases('test/fixtures/svelte.svelte', 'svelte.svelte', {
+      useHashedKeys: false,
+    }))
+      .to.deep.equal({
+        'Text 1::foo': {
+          string: 'Text 1',
+          meta: {
+            character_limit: 10,
+            context: ['foo'],
+            tags: ['tag1', 'tag2'],
+            developer_comment: 'comment',
+            occurrences: ['svelte.svelte'],
+          },
+        },
+        'Text 2': {
+          string: 'Text 2',
+          meta: { context: [], tags: [], occurrences: ['svelte.svelte'] },
+        },
+        'Text 3': {
+          string: 'Text 3',
+          meta: { context: [], tags: [], occurrences: ['svelte.svelte'] },
+        },
+        'Text 4': {
+          string: 'Text 4',
+          meta: { context: [], tags: [], occurrences: ['svelte.svelte'] },
+        },
+        'Text {somevalue}': {
+          string: 'Text {somevalue}',
+          meta: { context: [], tags: [], occurrences: ['svelte.svelte'] },
+        },
+        'Text 5': {
+          string: 'Text 5',
+          meta: { context: [], tags: [], occurrences: ['svelte.svelte'] },
+        },
+        'Text 6': {
+          string: 'Text 6',
+          meta: { context: [], tags: [], occurrences: ['svelte.svelte'] },
+        },
+      });
+  });
 });

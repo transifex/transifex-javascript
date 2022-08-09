@@ -9,6 +9,7 @@ const pug = require('pug');
 const { parseHTMLTemplateFile } = require('./parsers/angularHTML');
 const { babelExtractPhrases } = require('./parsers/babel');
 const { extractVuePhrases } = require('./parsers/vue');
+const { extractSveltePhrases } = require('./parsers/svelte');
 const { extractI18NextPhrases } = require('./parsers/i18next');
 
 /**
@@ -59,6 +60,12 @@ function extractPhrases(file, relativeFile, options = {}) {
   // Vue templates
   if (path.extname(file) === '.vue') {
     extractVuePhrases(HASHES, source, relativeFile, options);
+    return HASHES;
+  }
+
+  // Svelte components
+  if (path.extname(file) === '.svelte') {
+    extractSveltePhrases(HASHES, source, relativeFile, options);
     return HASHES;
   }
 
