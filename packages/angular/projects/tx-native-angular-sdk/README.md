@@ -67,7 +67,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
 
 # Requirements
 
-Angular 12 or 13 is required. If you are using Angular 11, please use the `1.x.x` version of
+Angular 12, 13 or 14 is required. If you are using Angular 11, please use the `1.x.x` version of
 Transifex Native related packages. Other Angular versions are not officially supported at the moment.
 
 # Installation
