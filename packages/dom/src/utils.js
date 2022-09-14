@@ -99,5 +99,6 @@ export function stripWhitespace(str) {
  * @return {String}
  */
 export function removeComments(str) {
-  return (str || '').replace(/<!--([\s\S]*?)-->/g, '');
+  if (!str) return '';
+  return str.replace(/<!--[\s\S]*?(?:-->)/g, '');
 }
