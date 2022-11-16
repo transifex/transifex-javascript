@@ -15,21 +15,21 @@ declare class JsonApiResource {
   });
   get(key: string): any;
   set(key: string, value: any): void;
-  async reload(include: string[]): null;
-  static async get(arg:string | AnyDict): JsonApiResource;
-  async fetch(relationshipName: string, force: boolean): JsonApiResource | Collection;
-  async save(arg: AnyDict | string[]): null;
-  static async create({
+  reload(include: string[]): Promise<void>;
+  static get(arg:string | AnyDict): Promise<JsonApiResource>;
+  fetch(relationshipName: string, force: boolean): Promise<JsonApiResource | Collection>;
+  save(arg: AnyDict | string[]): Promise<void>;
+  static create({
     id: string,
     attributes: AnyDict,
     relationships: AnyDict,
     links: StringDict,
-  }): JsonApiResource;
-  async delete(): void;
-  async change(field: string, value:JsonApiResource | null): void;
-  async add(field: string, values: JsonApiResource[]): null;
-  async reset(field: string, values: JsonApiResource[]): null;
-  async remove(field: string, values: JsonApiResource[]): null;
+  }): Promise<JsonApiResource>;
+  delete(): Promise<void>;
+  change(field: string, value:JsonApiResource | null): Promise<void>;
+  add(field: string, values: JsonApiResource[]): Promise<void>;
+  reset(field: string, values: JsonApiResource[]): Promise<void>;
+  remove(field: string, values: JsonApiResource[]): Promise<void>;
   static list(): Collection;
   static extra(AnyDict): Collection;
   static filter(filters: AnyDict): Collection;
@@ -42,9 +42,9 @@ declare class JsonApiResource {
 }
 
 declare class Collection {
-  async fetch(): void;
-  async getNext(): Collection
-  async getPrevious(): Collection
+  fetch(): Promise<void>;
+  getNext(): Promise<Collection>;
+  getPrevious(): Promise<Collection>;
   extra(AnyDict): Collection;
   filter(filters: AnyDict): Collection;
   page(arg: AnyDict | string): Collection;
@@ -58,7 +58,7 @@ declare class Collection {
 type AuthFunction = () => string;
 type AuthArgument = string | AuthFunction;
 
-declare export class TransifexApi {
+export declare class TransifexApi {
   constructor({ host: string, auth: AuthArgument });
   setup({ host: string, auth: AuthArgument }): void;
 
@@ -117,4 +117,4 @@ declare export class TransifexApi {
   resource_strings_revisions: typeof JsonApiResource;
 }
 
-declare export var transifexApi: TransifexApi;
+export declare var transifexApi: TransifexApi;
