@@ -5,10 +5,10 @@ require('@colors/colors');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const { Command, flags } = require('@oclif/command');
+const { Command, Flags } = require('@oclif/core');
 const shelljs = require('shelljs');
 const { glob } = require('glob');
-const { cli } = require('cli-ux');
+const { CliUx } = require('@oclif/core');
 const { extractPhrases } = require('../api/extract');
 const { uploadPhrases, pollJob } = require('../api/upload');
 const { mergePayload } = require('../api/merge');
@@ -31,7 +31,7 @@ function isFolder(path) {
 
 class PushCommand extends Command {
   async run() {
-    const { args, flags } = this.parse(PushCommand);
+    const { args, flags } = await this.parse(PushCommand);
     const pwd = `${shelljs.pwd()}`;
     let filePattern = path.isAbsolute(args.pattern)
       ? args.pattern
@@ -61,7 +61,7 @@ class PushCommand extends Command {
     const payload = {};
     const tree = {};
 
-    const bar = cli.progress({
+    const bar = CliUx.ux.progress({
       format: '⸨{bar}⸩ {value}/{total} {file}',
       barCompleteChar: '\u2588',
       barIncompleteChar: '⠂',
@@ -160,7 +160,7 @@ class PushCommand extends Command {
       const uploadMessage = 'Uploading content to Transifex';
 
       this.log('');
-      cli.action.start(uploadMessage, '', { stdout: true });
+      CliUx.ux.action.start(uploadMessage, '', { stdout: true });
       try {
         let res = await uploadPhrases(payload, {
           url: cdsHost,
@@ -170,7 +170,7 @@ class PushCommand extends Command {
         });
 
         if (flags['no-wait']) {
-          cli.action.stop('Queued'.green);
+          CliUx.ux.action.stop('Queued'.green);
           return;
         }
 
@@ -178,7 +178,7 @@ class PushCommand extends Command {
         const jobUrl = `${cdsHost}${res.jobUrl}`;
         let status = '';
         do {
-          await cli.wait(1500);
+          await CliUx.ux.wait(1500);
           res = await pollJob({
             url: jobUrl,
             token: projectToken,
@@ -188,10 +188,10 @@ class PushCommand extends Command {
             status = res.status;
             switch (status) {
               case 'pending':
-                cli.action.start(uploadMessage, 'In queue', { stdout: true });
+                CliUx.ux.action.start(uploadMessage, 'In queue', { stdout: true });
                 break;
               case 'processing':
-                cli.action.start(uploadMessage, 'Processing', { stdout: true });
+                CliUx.ux.action.start(uploadMessage, 'Processing', { stdout: true });
                 break;
               default:
                 break;
@@ -200,7 +200,7 @@ class PushCommand extends Command {
         } while (status === 'pending' || status === 'processing');
 
         if (status === 'completed') {
-          cli.action.stop('Success'.green);
+          CliUx.ux.action.stop('Success'.green);
           this.log(`${'✓'.green} Successfully pushed strings to Transifex:`);
           if (res.created > 0) {
             this.log(`  Created strings: ${res.created.toString().green}`);
@@ -218,20 +218,20 @@ class PushCommand extends Command {
             this.log(`  Failed strings: ${res.failed.toString().red}`);
           }
         } else {
-          cli.action.stop('Failed'.red);
+          CliUx.ux.action.stop('Failed'.red);
         }
         _.each(res.errors, (error) => {
           this.log(`Error: ${JSON.stringify(error).red}`);
         });
       } catch (err) {
-        cli.action.stop('Failed'.red);
+        CliUx.ux.action.stop('Failed'.red);
         this.error(err);
       }
     }
   }
 }
 
-PushCommand.description = `detect and push source content to Transifex
+PushCommand.description = `Detect and push source content to Transifex
 Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
 translation by Transifex Native toolkit for Javascript and
 upload them to Transifex for translation.
@@ -269,53 +269,53 @@ PushCommand.args = [{
 }];
 
 PushCommand.flags = {
-  'dry-run': flags.boolean({
+  'dry-run': Flags.boolean({
     description: 'dry run, do not push to Transifex',
     default: false,
   }),
-  verbose: flags.boolean({
+  verbose: Flags.boolean({
     char: 'v',
     description: 'verbose output',
     default: false,
   }),
-  purge: flags.boolean({
+  purge: Flags.boolean({
     description: 'purge content on Transifex',
     default: false,
   }),
-  'no-wait': flags.boolean({
+  'no-wait': Flags.boolean({
     description: 'disable polling for upload results',
     default: false,
   }),
-  token: flags.string({
+  token: Flags.string({
     description: 'native project public token',
     default: '',
   }),
-  secret: flags.string({
+  secret: Flags.string({
     description: 'native project secret',
     default: '',
   }),
-  'append-tags': flags.string({
+  'append-tags': Flags.string({
     description: 'append tags to strings',
     default: '',
   }),
-  'with-tags-only': flags.string({
+  'with-tags-only': Flags.string({
     description: 'push strings with specific tags',
     default: '',
   }),
-  'without-tags-only': flags.string({
+  'without-tags-only': Flags.string({
     description: 'push strings without specific tags',
     default: '',
   }),
-  'cds-host': flags.string({
+  'cds-host': Flags.string({
     description: 'CDS host URL',
     default: '',
   }),
-  parser: flags.string({
+  parser: Flags.string({
     description: 'file parser to use',
     default: 'auto',
     options: ['auto', 'i18next'],
   }),
-  'key-generator': flags.string({
+  'key-generator': Flags.string({
     description: 'use hashed or source based keys',
     default: 'source',
     options: ['source', 'hash'],
