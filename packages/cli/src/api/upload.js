@@ -18,6 +18,7 @@ async function uploadPhrases(payload, params) {
     data: payload,
     meta: {
       purge: !!params.purge,
+      dry_run: !!params.dry_run,
     },
   }, {
     headers: {

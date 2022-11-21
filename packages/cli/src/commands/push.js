@@ -137,7 +137,7 @@ class PushCommand extends Command {
       }
     }
 
-    if (!flags['dry-run']) {
+    if (!flags.fake) {
       if (_.isEmpty(payload)) {
         this.log('⚠ Nothing to upload.'.yellow);
         process.exit();
@@ -157,7 +157,9 @@ class PushCommand extends Command {
         process.exit();
       }
 
-      const uploadMessage = 'Uploading content to Transifex';
+      const uploadMessage = flags['dry-run']
+        ? 'Uploading content to Transifex (dry run, no changes will be applied)'
+        : 'Uploading content to Transifex';
 
       this.log('');
       CliUx.ux.action.start(uploadMessage, '', { stdout: true });
@@ -167,6 +169,7 @@ class PushCommand extends Command {
           token: projectToken,
           secret: projectSecret,
           purge: flags.purge,
+          dry_run: flags['dry-run'],
         });
 
         if (flags['no-wait']) {
@@ -251,6 +254,7 @@ txjs-cli push src/
 txjs-cli push /home/repo/src
 txjs-cli push "*.js"
 txjs-cli push --dry-run
+txjs-cli push --fake -v
 txjs-cli push --no-wait
 txjs-cli push --key-generator=hash
 txjs-cli push --append-tags="master,release:2.5"
@@ -270,7 +274,11 @@ PushCommand.args = [{
 
 PushCommand.flags = {
   'dry-run': Flags.boolean({
-    description: 'dry run, do not push to Transifex',
+    description: 'dry run, do not apply changes in Transifex',
+    default: false,
+  }),
+  fake: Flags.boolean({
+    description: 'do not push content to remote server',
     default: false,
   }),
   verbose: Flags.boolean({
