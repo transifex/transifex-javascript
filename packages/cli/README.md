@@ -110,7 +110,8 @@ OPTIONS
   -v, --verbose                          verbose output
   --append-tags=append-tags              append tags to strings
   --cds-host=cds-host                    CDS host URL
-  --dry-run                              dry run, do not push to Transifex
+  --dry-run                              dry run, do not apply changes in Transifex
+  --fake                                 do not push content to remote server
   --key-generator=source|hash            [default: source] use hashed or source based keys
   --no-wait                              disable polling for upload results
   --parser=auto|i18next                  [default: auto] file parser to use
@@ -140,6 +141,7 @@ DESCRIPTION
   txjs-cli push /home/repo/src
   txjs-cli push "*.js"
   txjs-cli push --dry-run
+  txjs-cli push --fake -v
   txjs-cli push --no-wait
   txjs-cli push --key-generator=hash
   txjs-cli push --append-tags="master,release:2.5"
