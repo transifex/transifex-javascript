@@ -262,6 +262,7 @@ txjs-cli push --with-tags-only="home,error"
 txjs-cli push --without-tags-only="custom"
 txjs-cli push --token=mytoken --secret=mysecret
 txjs-cli push en.json --parser=i18next
+txjs-cli push en.json --parser=txnativejson
 TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
 `;
 
@@ -321,7 +322,7 @@ PushCommand.flags = {
   parser: Flags.string({
     description: 'file parser to use',
     default: 'auto',
-    options: ['auto', 'i18next'],
+    options: ['auto', 'i18next', 'txnativejson'],
   }),
   'key-generator': Flags.string({
     description: 'use hashed or source based keys',

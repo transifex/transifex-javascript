@@ -1,0 +1,11 @@
+{
+  "key1": {
+    "string": "str1",
+    "meta": {
+      "tags": ["tag1", "tag2"]
+    }
+  },
+  "key2": {
+    "string": "str2"
+  }
+}
