@@ -164,18 +164,18 @@ Pull content from Transifex for offline caching
 
 ```
 USAGE
-  $ txjs-cli pull [--token <value>] [--secret <value>] [-f
-    <value>] [-l <value>] [--pretty] [--filter-tags <value>] [--cds-host
-    <value>]
+  $ txjs-cli pull [--token <value>] [--secret <value>] [-f <value>] [-l <value>] [--pretty] [--filter-tags <value>] [--filter-status reviewed|proofread|finalized] [--cds-host <value>]
 
 FLAGS
-  -f, --folder=<value>   output as files to folder
-  -l, --locale=<value>   pull specific language locale code
-  --cds-host=<value>     CDS host URL
-  --filter-tags=<value>  filter over specific tags
-  --pretty               beautify JSON output
-  --secret=<value>       native project secret
-  --token=<value>        native project public token
+  -f, --folder=<value>      output as files to folder
+  -l, --locale=<value>      pull specific language locale code
+  --cds-host=<value>        CDS host URL
+  --filter-status=<option>  filter over translation status
+                            <options: reviewed|proofread|finalized>
+  --filter-tags=<value>     filter over specific tags
+  --pretty                  beautify JSON output
+  --secret=<value>          native project secret
+  --token=<value>           native project public token
 
 DESCRIPTION
   Pull content from Transifex for offline caching
@@ -184,8 +184,7 @@ DESCRIPTION
 
   By default, JSON files are printed in the console,
   unless the "-f foldername" parameter is provided. In that case
-  the JSON files will be downloaded to that folder with the <locale>.json
-  format.
+  the JSON files will be downloaded to that folder with the <locale>.json format.
 
   To pull content some environment variables must be set:
   TRANSIFEX_TOKEN=<Transifex Native Project Token>
@@ -200,8 +199,9 @@ DESCRIPTION
   txjs-cli pull
   txjs-cli pull --pretty
   txjs-cli pull -f languages/
-  txjs-cli pull --lang=fr -f .
+  txjs-cli pull --locale=fr -f .
   txjs-cli pull --filter-tags="foo,bar"
+  txjs-cli pull --filter-status="reviewed"
   txjs-cli pull --token=mytoken --secret=mysecret
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli pull
 ```

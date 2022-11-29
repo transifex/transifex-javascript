@@ -13,6 +13,7 @@ describe('TranslationService', () => {
     cdsHost: '',
     errorPolicy: undefined,
     filterTags: '',
+    filterStatus: '',
     missingPolicy: undefined,
     stringRenderer: undefined,
   };

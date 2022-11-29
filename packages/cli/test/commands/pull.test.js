@@ -60,6 +60,36 @@ describe('pull command', () => {
 
   test
     .nock('https://cds.svc.transifex.net', (api) => api
+      .get('/content/fr?filter[status]=reviewed')
+      .reply(200, {
+        data: [{
+          foo: 'bar',
+        }],
+      }))
+    .stdout()
+    .command(['pull', '-l=fr', '--filter-status=reviewed', '--secret=s', '--token=t'])
+    .it('pulls content with status filter', (ctx) => {
+      expect(ctx.stdout).to.contain('foo');
+      expect(ctx.stdout).to.contain('bar');
+    });
+
+  test
+    .nock('https://cds.svc.transifex.net', (api) => api
+      .get('/content/fr?filter[tags]=atag&filter[status]=reviewed')
+      .reply(200, {
+        data: [{
+          foo: 'bar',
+        }],
+      }))
+    .stdout()
+    .command(['pull', '-l=fr', '--filter-status=reviewed', '--filter-tags=atag', '--secret=s', '--token=t'])
+    .it('pulls content with status & tags filter', (ctx) => {
+      expect(ctx.stdout).to.contain('foo');
+      expect(ctx.stdout).to.contain('bar');
+    });
+
+  test
+    .nock('https://cds.svc.transifex.net', (api) => api
       .get('/languages')
       .reply(403))
     .stdout()

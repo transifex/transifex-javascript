@@ -3,6 +3,7 @@ export interface ITranslationServiceConfig {
   token: string;
   cdsHost?: string;
   filterTags?: string;
+  filterStatus?: string;
   cache?: () => void;
   missingPolicy?: IPolicy;
   errorPolicy?: IPolicy;

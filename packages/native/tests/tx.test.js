@@ -2,21 +2,22 @@
 
 import { expect } from 'chai';
 import nock from 'nock';
-import { tx, t, generateKey } from '../src/index';
+import { generateKey, createNativeInstance } from '../src/index';
 
 describe('tx instance', () => {
-  let fetchTimeout;
-  let fetchInterval;
+  let t;
+  let tx;
 
   beforeEach(() => {
-    fetchTimeout = tx.fetchTimeout;
-    fetchInterval = tx.fetchInterval;
-    tx.init({ fetchTimeout: 0, fetchInterval: 0 });
+    tx = createNativeInstance({
+      fetchTimeout: 0,
+      fetchInterval: 0,
+    });
+    t = tx.translate.bind(tx);
   });
 
   afterEach(() => {
     nock.cleanAll();
-    tx.init({ fetchTimeout, fetchInterval });
   });
 
   it('getLocales fetches locales', async () => {
@@ -203,12 +204,37 @@ describe('tx instance', () => {
     });
     await tx.fetchTranslations('lang');
     expect(scope.isDone()).to.equal(true);
+  });
 
-    // clean up
+  it('fetchTranslations respects filterStatus', async () => {
+    const scope = nock(tx.cdsHost)
+      .get('/content/lang?filter[status]=reviewed')
+      .reply(200, {
+        data: {},
+      });
+
     tx.init({
       token: '',
-      filterTags: null,
+      filterStatus: 'reviewed',
     });
+    await tx.fetchTranslations('lang');
+    expect(scope.isDone()).to.equal(true);
+  });
+
+  it('fetchTranslations respects both filterTags & filterStatus', async () => {
+    const scope = nock(tx.cdsHost)
+      .get('/content/lang?filter[tags]=tag1,tag2&filter[status]=reviewed')
+      .reply(200, {
+        data: {},
+      });
+
+    tx.init({
+      token: '',
+      filterTags: 'tag1,tag2',
+      filterStatus: 'reviewed',
+    });
+    await tx.fetchTranslations('lang');
+    expect(scope.isDone()).to.equal(true);
   });
 
   it('retries fetching languages', async () => {

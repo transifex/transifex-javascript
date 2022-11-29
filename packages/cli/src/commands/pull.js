@@ -32,6 +32,7 @@ class PullCommand extends Command {
         token: projectToken,
         secret: projectSecret,
         filterTags: flags['filter-tags'],
+        filterStatus: flags['filter-status'],
         locale: '',
       };
       const locales = [];
@@ -91,8 +92,9 @@ Examples:
 txjs-cli pull
 txjs-cli pull --pretty
 txjs-cli pull -f languages/
-txjs-cli pull --lang=fr -f .
+txjs-cli pull --locale=fr -f .
 txjs-cli pull --filter-tags="foo,bar"
+txjs-cli pull --filter-status="reviewed"
 txjs-cli pull --token=mytoken --secret=mysecret
 TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli pull
 `;
@@ -125,6 +127,11 @@ PullCommand.flags = {
   'filter-tags': Flags.string({
     description: 'filter over specific tags',
     default: '',
+  }),
+  'filter-status': Flags.string({
+    description: 'filter over translation status',
+    default: '',
+    options: ['reviewed', 'proofread', 'finalized'],
   }),
   'cds-host': Flags.string({
     description: 'CDS host URL',
