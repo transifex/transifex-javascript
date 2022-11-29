@@ -1,12 +1,20 @@
-/* globals describe, it */
+/* globals describe, it, beforeEach */
 
 import { expect } from 'chai';
 import {
-  tx, t, ThrowErrorPolicy, SourceErrorPolicy,
+  createNativeInstance, ThrowErrorPolicy, SourceErrorPolicy,
 } from '../src/index';
 import { generateKey } from '../src/utils';
 
 describe('t function', () => {
+  let t;
+  let tx;
+
+  beforeEach(() => {
+    tx = createNativeInstance();
+    t = tx.translate.bind(tx);
+  });
+
   it('translates string', () => {
     expect(t('Hello')).to.equal('Hello');
     expect(t('Hello {username}', { username: 'Joe' }))
@@ -39,8 +47,6 @@ describe('t function', () => {
   });
 
   it('uses error policy', () => {
-    const prevPolicy = tx.errorPolicy;
-
     tx.init({
       errorPolicy: new ThrowErrorPolicy(),
     });
@@ -52,10 +58,6 @@ describe('t function', () => {
     });
     expect(t('Hello {username}'))
       .to.equal('Hello {username}');
-
-    tx.init({
-      errorPolicy: prevPolicy,
-    });
   });
 
   it('handles plurals', () => {

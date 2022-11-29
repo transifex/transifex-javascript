@@ -1,11 +1,19 @@
-/* globals describe, it */
+/* globals describe, it, beforeEach */
 
 import { expect } from 'chai';
-import { tx, t } from '../src/index';
+import { createNativeInstance } from '../src/index';
 
 const NODE_VER = parseInt((process.version.split('.')[0]).replace('v', ''), 10);
 
 describe('String renderer', () => {
+  let t;
+  let tx;
+
+  beforeEach(() => {
+    tx = createNativeInstance();
+    t = tx.translate.bind(tx);
+  });
+
   it('renders with localized dates', async () => {
     const d = Date.parse('2020-02-01');
 
@@ -32,8 +40,6 @@ describe('String renderer', () => {
   });
 
   it('renders with custom renderer', async () => {
-    const oldRenderer = tx.stringRenderer;
-
     class CustomRenderer {
       // eslint-disable-next-line class-methods-use-this
       render() {
@@ -46,10 +52,5 @@ describe('String renderer', () => {
     });
 
     expect(t('Hello')).to.deep.equal('foo');
-
-    // revert
-    tx.init({
-      stringRenderer: oldRenderer,
-    });
   });
 });

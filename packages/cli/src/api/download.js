@@ -35,20 +35,29 @@ async function downloadLanguages({ cdsHost, token, secret }) {
  * Download phrases
  *
  * @param {*} {
- *   cdsHost, locale, filterTags, token, secret,
+ *   cdsHost, locale, filterTags, filterStatus, token, secret,
  * }
  * @return {Promise}
  */
 async function downloadPhrases({
-  cdsHost, locale, filterTags, token, secret,
+  cdsHost, locale, filterTags, filterStatus, token, secret,
 }) {
   let response;
   let lastResponseStatus = 202;
   while (lastResponseStatus === 202) {
     let url = `${cdsHost}/content/${locale}`;
+
+    const getOptions = [];
     if (filterTags) {
-      url = `${url}?filter[tags]=${filterTags}`;
+      getOptions.push(`filter[tags]=${filterTags}`);
     }
+    if (filterStatus) {
+      getOptions.push(`filter[status]=${filterStatus}`);
+    }
+    if (getOptions.length) {
+      url = `${url}?${getOptions.join('&')}`;
+    }
+
     /* eslint-disable no-await-in-loop */
     response = await axios.get(url, {
       headers: {

@@ -30,6 +30,7 @@ export default class TxNative {
     this.token = '';
     this.secret = '';
     this.filterTags = '';
+    this.filterStatus = '';
     this.fetchTimeout = 0;
     this.fetchInterval = 250;
     this.cache = new MemoryCache();
@@ -48,6 +49,7 @@ export default class TxNative {
    * @param {Object} params
    * @param {String} params.cdsHost
    * @param {String} params.filterTags
+   * @param {String} params.filterStatus
    * @param {String} params.token
    * @param {String} params.secret
    * @param {Number} params.fetchTimeout
@@ -65,6 +67,7 @@ export default class TxNative {
       'secret',
       'cache',
       'filterTags',
+      'filterStatus',
       'fetchTimeout',
       'fetchInterval',
       'missingPolicy',
@@ -203,8 +206,15 @@ export default class TxNative {
       while (lastResponseStatus === 202) {
         /* eslint-disable no-await-in-loop */
         let url = `${this.cdsHost}/content/${localeCode}`;
+        const getOptions = [];
         if (filterTags) {
-          url = `${url}?filter[tags]=${filterTags}`;
+          getOptions.push(`filter[tags]=${filterTags}`);
+        }
+        if (this.filterStatus) {
+          getOptions.push(`filter[status]=${this.filterStatus}`);
+        }
+        if (getOptions.length) {
+          url = `${url}?${getOptions.join('&')}`;
         }
         response = await axios.get(url, {
           headers: {
