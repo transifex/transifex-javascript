@@ -10,6 +10,7 @@ const { parseHTMLTemplateFile } = require('./parsers/angularHTML');
 const { babelExtractPhrases } = require('./parsers/babel');
 const { extractVuePhrases } = require('./parsers/vue');
 const { extractI18NextPhrases } = require('./parsers/i18next');
+const { extractTXNativeJSONPhrases } = require('./parsers/txnativejson');
 
 /**
  * Parse file and extract phrases using AST
@@ -31,6 +32,12 @@ function extractPhrases(file, relativeFile, options = {}) {
   // i18next JSON
   if (options.parser === 'i18next') {
     extractI18NextPhrases(HASHES, source, relativeFile, options);
+    return HASHES;
+  }
+
+  // Transifex Native JSON
+  if (options.parser === 'txnativejson') {
+    extractTXNativeJSONPhrases(HASHES, source, relativeFile, options);
     return HASHES;
   }
 

@@ -78,6 +78,7 @@ $ npm run push
 # Commands
 * [`txjs-cli help [COMMAND]`](#txjs-cli-help-command)
 * [`txjs-cli push [PATTERN]`](#txjs-cli-push-pattern)
+* [`txjs-cli pull [PATTERN]`](#txjs-cli-pull-pattern)
 * [`txjs-cli invalidate`](#txjs-cli-invalidate)
 
 ## `txjs-cli help [COMMAND]`
@@ -101,27 +102,32 @@ detect and push source content to Transifex
 
 ```
 USAGE
-  $ txjs-cli push [PATTERN]
+  $ txjs-cli push [PATTERN] [--dry-run] [--fake] [-v] [--purge] [--no-wait] [--token <value>] [--secret <value>] [--append-tags <value>] [--with-tags-only <value>] [--without-tags-only <value>]
+    [--cds-host <value>] [--parser auto|i18next|txnativejson] [--key-generator source|hash]
 
 ARGUMENTS
-  PATTERN  [default: **/*.{js,jsx,ts,tsx,vue}] file pattern to scan for strings
+  PATTERN  [default: **/*.{js,jsx,ts,tsx,html,vue,pug,ejs}] file pattern to scan for strings
 
-OPTIONS
-  -v, --verbose                          verbose output
-  --append-tags=append-tags              append tags to strings
-  --cds-host=cds-host                    CDS host URL
-  --dry-run                              dry run, do not push to Transifex
-  --key-generator=source|hash            [default: source] use hashed or source based keys
-  --no-wait                              disable polling for upload results
-  --parser=auto|i18next                  [default: auto] file parser to use
-  --purge                                purge content on Transifex
-  --secret=secret                        native project secret
-  --token=token                          native project public token
-  --with-tags-only=with-tags-only        push strings with specific tags
-  --without-tags-only=without-tags-only  push strings without specific tags
+FLAGS
+  -v, --verbose                verbose output
+  --append-tags=<value>        append tags to strings
+  --cds-host=<value>           CDS host URL
+  --dry-run                    dry run, do not apply changes in Transifex
+  --fake                       do not push content to remote server
+  --key-generator=<option>     [default: source] use hashed or source based keys
+                               <options: source|hash>
+  --no-wait                    disable polling for upload results
+  --parser=<option>            [default: auto] file parser to use
+                               <options: auto|i18next|txnativejson>
+  --purge                      purge content on Transifex
+  --secret=<value>             native project secret
+  --token=<value>              native project public token
+  --with-tags-only=<value>     push strings with specific tags
+  --without-tags-only=<value>  push strings without specific tags
 
 DESCRIPTION
-  Parse .js, .ts, .jsx, .tsx, .html and .vue files and detect phrases marked for
+  Detect and push source content to Transifex
+  Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
   translation by Transifex Native toolkit for Javascript and
   upload them to Transifex for translation.
 
@@ -140,6 +146,7 @@ DESCRIPTION
   txjs-cli push /home/repo/src
   txjs-cli push "*.js"
   txjs-cli push --dry-run
+  txjs-cli push --fake -v
   txjs-cli push --no-wait
   txjs-cli push --key-generator=hash
   txjs-cli push --append-tags="master,release:2.5"
@@ -147,7 +154,56 @@ DESCRIPTION
   txjs-cli push --without-tags-only="custom"
   txjs-cli push --token=mytoken --secret=mysecret
   txjs-cli push en.json --parser=i18next
+  txjs-cli push en.json --parser=txnativejson
   TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
+```
+
+## `txjs-cli pull [PATTERN]`
+
+Pull content from Transifex for offline caching
+
+```
+USAGE
+  $ txjs-cli pull [--token <value>] [--secret <value>] [-f
+    <value>] [-l <value>] [--pretty] [--filter-tags <value>] [--cds-host
+    <value>]
+
+FLAGS
+  -f, --folder=<value>   output as files to folder
+  -l, --locale=<value>   pull specific language locale code
+  --cds-host=<value>     CDS host URL
+  --filter-tags=<value>  filter over specific tags
+  --pretty               beautify JSON output
+  --secret=<value>       native project secret
+  --token=<value>        native project public token
+
+DESCRIPTION
+  Pull content from Transifex for offline caching
+  Get content as JSON files, to be used by mobile Javascript SDKs for
+  offline support or warming up the cache with initial translations.
+
+  By default, JSON files are printed in the console,
+  unless the "-f foldername" parameter is provided. In that case
+  the JSON files will be downloaded to that folder with the <locale>.json
+  format.
+
+  To pull content some environment variables must be set:
+  TRANSIFEX_TOKEN=<Transifex Native Project Token>
+  TRANSIFEX_SECRET=<Transifex Native Project Secret>
+  (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
+
+  or passed as --token=<TOKEN> --secret=<SECRET> parameters
+
+  Default CDS Host is https://cds.svc.transifex.net
+
+  Examples:
+  txjs-cli pull
+  txjs-cli pull --pretty
+  txjs-cli pull -f languages/
+  txjs-cli pull --lang=fr -f .
+  txjs-cli pull --filter-tags="foo,bar"
+  txjs-cli pull --token=mytoken --secret=mysecret
+  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli pull
 ```
 
 ## `txjs-cli invalidate`
@@ -156,20 +212,21 @@ invalidate and refresh CDS cache
 
 ```
 USAGE
-  $ txjs-cli invalidate
+  $ txjs-cli invalidate [--purge] [--token <value>] [--secret <value>] [--cds-host <value>]
 
-OPTIONS
-  --cds-host=cds-host  CDS host URL
-  --purge              force delete CDS cached content
-  --secret=secret      native project secret
-  --token=token        native project public token
+FLAGS
+  --cds-host=<value>  CDS host URL
+  --purge             force delete CDS cached content
+  --secret=<value>    native project secret
+  --token=<value>     native project public token
 
 DESCRIPTION
+  Invalidate and refresh CDS cache
   Content for delivery is cached in CDS and refreshed automatically every hour.
   This command triggers a refresh of cached content on the fly.
 
-  By default, invalidation does not remove existing cached content, but
-  starts the process of updating with latest translations from Transifex.
+  By default, invalidation does not remove existing cached content,
+  but starts the process of updating with latest translations from Transifex.
 
   Passing the --purge option, cached content will be forced to be deleted,
   however use that with caution, as it may introduce downtime of

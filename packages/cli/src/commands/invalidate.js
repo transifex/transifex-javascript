@@ -1,13 +1,13 @@
 /* eslint no-shadow: 0 */
 
 require('@colors/colors');
-const { Command, flags } = require('@oclif/command');
-const { cli } = require('cli-ux');
+const { Command, Flags } = require('@oclif/core');
+const { CliUx } = require('@oclif/core');
 const { invalidateCDS } = require('../api/invalidate');
 
 class InvalidateCommand extends Command {
   async run() {
-    const { flags } = this.parse(InvalidateCommand);
+    const { flags } = await this.parse(InvalidateCommand);
 
     let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.transifex.net';
     let projectToken = process.env.TRANSIFEX_TOKEN;
@@ -24,9 +24,9 @@ class InvalidateCommand extends Command {
     }
 
     if (flags.purge) {
-      cli.action.start('Invalidating and purging CDS cache', '', { stdout: true });
+      CliUx.ux.action.start('Invalidating and purging CDS cache', '', { stdout: true });
     } else {
-      cli.action.start('Invalidating CDS cache', '', { stdout: true });
+      CliUx.ux.action.start('Invalidating CDS cache', '', { stdout: true });
     }
 
     try {
@@ -36,22 +36,22 @@ class InvalidateCommand extends Command {
         secret: projectSecret,
         purge: flags.purge,
       });
-      cli.action.stop('Success'.green);
+      CliUx.ux.action.stop('Success'.green);
       this.log(`${(res.data.count || 0).toString().green} records invalidated`);
       this.log('Note: It might take a few minutes for fresh content to be available'.yellow);
     } catch (err) {
-      cli.action.stop('Failed'.red);
+      CliUx.ux.action.stop('Failed'.red);
       this.error(err);
     }
   }
 }
 
-InvalidateCommand.description = `invalidate and refresh CDS cache
+InvalidateCommand.description = `Invalidate and refresh CDS cache
 Content for delivery is cached in CDS and refreshed automatically every hour.
 This command triggers a refresh of cached content on the fly.
 
-By default, invalidation does not remove existing cached content, but
-starts the process of updating with latest translations from Transifex.
+By default, invalidation does not remove existing cached content,
+but starts the process of updating with latest translations from Transifex.
 
 Passing the --purge option, cached content will be forced to be deleted,
 however use that with caution, as it may introduce downtime of
@@ -76,19 +76,19 @@ TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli invalidate
 InvalidateCommand.args = [];
 
 InvalidateCommand.flags = {
-  purge: flags.boolean({
+  purge: Flags.boolean({
     description: 'force delete CDS cached content',
     default: false,
   }),
-  token: flags.string({
+  token: Flags.string({
     description: 'native project public token',
     default: '',
   }),
-  secret: flags.string({
+  secret: Flags.string({
     description: 'native project secret',
     default: '',
   }),
-  'cds-host': flags.string({
+  'cds-host': Flags.string({
     description: 'CDS host URL',
     default: '',
   }),

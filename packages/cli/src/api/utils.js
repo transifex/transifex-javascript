@@ -23,7 +23,22 @@ function mergeArrays(array1, array2) {
   return _.uniq(_.concat(array1 || [], array2 || []));
 }
 
+/**
+ * Async/await sleep
+ *
+ * @param {Number} msec
+ * @return {Promise}
+ */
+function sleep(msec) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, msec);
+  });
+}
+
 module.exports = {
   stringToArray,
   mergeArrays,
+  sleep,
 };
