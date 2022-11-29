@@ -29,14 +29,14 @@
     "@colors/colors": "^1.5.0",
     "@oclif/core": "^1.20.4",
     "@transifex/native": "^4.3.0",
+    "@vue/compiler-sfc": "^3.2.45",
     "angular-html-parser": "^1.8.0",
     "axios": "^1.1.3",
     "ejs": "^3.1.8",
     "glob": "^8.0.3",
     "lodash": "^4.17.21",
     "pug": "^3.0.2",
-    "shelljs": "^0.8.5",
-    "vue-template-compiler": "^2.7.14"
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.26.10",

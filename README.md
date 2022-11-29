@@ -22,8 +22,11 @@ Transifex Native support for localizing Angular components.
 
 ## Transifex Native for Vue
 
-Transifex Native support for localizing Vue components.
+### Transifex Native support for localizing Vue2 components.
 [Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/vue2)
+
+### Transifex Native support for localizing Vue3 components.
+[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/vue3)
 
 ## Transifex Native for ExpressJS
 
