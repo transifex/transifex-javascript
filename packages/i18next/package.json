@@ -1,6 +1,6 @@
 {
   "name": "@transifex/i18next",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "i18next backend plugin for Transifex Native",
   "keywords": [
     "i18next",
@@ -54,6 +54,6 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@transifex/native": "^4.3.0"
+    "@transifex/native": "^5.0.0"
   }
 }
