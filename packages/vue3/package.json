@@ -56,8 +56,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "@transifex/native": "^4.3.0",
-    "vue": "^3.2.45"
+    "@transifex/native": "^5.0.0",
+    "vue": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
