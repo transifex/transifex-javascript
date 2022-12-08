@@ -65,9 +65,7 @@
       "-h"
     ],
     "bin": "txjs-cli",
-    "plugins": [
-      "@oclif/plugin-help"
-    ]
+    "plugins": []
   },
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
