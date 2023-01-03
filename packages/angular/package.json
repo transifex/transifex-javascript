@@ -1,6 +1,6 @@
 {
   "name": "@transifex/angular-projects",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "i18n Angular framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -34,7 +34,7 @@
     "@angular/platform-browser": "~13.0.2",
     "@angular/platform-browser-dynamic": "~13.0.2",
     "@angular/router": "~13.0.2",
-    "@transifex/native": "^5.0.2",
+    "@transifex/native": "^5.0.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
