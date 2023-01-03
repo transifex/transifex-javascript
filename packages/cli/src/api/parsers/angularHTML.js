@@ -7,17 +7,17 @@ const { createPayload, isPayloadValid } = require('./utils');
 /**
  * Global regexp to find use of TranslatePipe.
  */
-const pipeRegexpG = /{{\s*?['|"]([\s\S]+?)['|"]\s*?\|\s*?translate\s*?:?({[\s\S]*?})?\s*?}}/gi;
+const pipeRegexpG = /{{\s*?['|"]([\s\S]+?)['|"]\s*?\|\s*?translate\s*?:?\s*?({[\s\S]*?})?\s*?}}/gi;
 
 /**
   * Regexp to find use of TranslatePipe and match with capture groups.
   */
-const pipeRegexp = /{{\s*?['|"]([\s\S]+?)['|"]\s*?\|\s*?translate\s*?:?({[\s\S]*?})?\s*?}}/i;
+const pipeRegexp = /{{\s*?['|"]([\s\S]+?)['|"]\s*?\|\s*?translate\s*?:?\s*?({[\s\S]*?})?\s*?}}/i;
 
 /**
   * Regexp to find use of TranslatePipe in Attributes;
   */
-const pipeBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate\s*?:?({[\s\S]*?})?/i;
+const pipeBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate\s*?:?\s*?({[\s\S]*?})?/i;
 
 /**
  * Loosely parses string (from HTML) to an object.

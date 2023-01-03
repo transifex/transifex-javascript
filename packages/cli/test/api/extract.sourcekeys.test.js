@@ -325,6 +325,10 @@ describe('extractPhrases with source keys', () => {
           string: 'This is a sixth pipe text, no one should do this',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
+        'text.pipe_text_seventh': {
+          string: 'This is a seventh pipe test for additional white spaces',
+          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+        },
         'Used in a {binding}': {
           string: 'Used in a {binding}',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
