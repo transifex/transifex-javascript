@@ -406,6 +406,46 @@ describe('extractPhrases with hashed keys', () => {
           string: 'Text {someothervalue}',
           meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
         },
+        b1cb1acd2052787f97693d8eb660e366: {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'Text 7',
+        },
+        bc34d6c4a81fe6764e851ef5c4597f9b: {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'Text 8',
+        },
+        c2f94cf9d2c1065bc2ef5e766fa0f4ca: {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'A prop string',
+        },
+        f6d3188db065ecf6b7b4165b030f3bc6: {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'Text 9 with siblings',
+        },
         '57b0d93fc0e1c3af68a41214147efd97': {
           string: 'Text 5',
           meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },

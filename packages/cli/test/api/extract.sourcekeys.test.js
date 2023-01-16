@@ -395,6 +395,46 @@ describe('extractPhrases with source keys', () => {
           string: 'Text 6',
           meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
         },
+        'Text 7': {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'Text 7',
+        },
+        'Text 8': {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'Text 8',
+        },
+        'A prop string': {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'A prop string',
+        },
+        'Text 9 with siblings': {
+          meta: {
+            context: [],
+            occurrences: [
+              'vuejs.vue',
+            ],
+            tags: [],
+          },
+          string: 'Text 9 with siblings',
+        },
       });
   });
 });
