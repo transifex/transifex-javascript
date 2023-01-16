@@ -1,6 +1,6 @@
 {
   "name": "@transifex/vue2",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Vue i18n framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -45,7 +45,7 @@
     "@babel/preset-env": "^7.17.10",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/vue": "^5.8.2",
-    "@transifex/native": "^5.0.3",
+    "@transifex/native": "^5.0.4",
     "@vue/compiler-sfc": "^3.2.33",
     "@vue/vue2-jest": "^27.0.0",
     "babel-jest": "^27.5.1",

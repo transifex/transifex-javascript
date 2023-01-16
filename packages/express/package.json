@@ -1,6 +1,6 @@
 {
   "name": "@transifex/express",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "i18n express framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -33,7 +33,7 @@
     "node": ">=14.0.0"
   },
   "devDependencies": {
-    "@transifex/native": "^5.0.3",
+    "@transifex/native": "^5.0.4",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
