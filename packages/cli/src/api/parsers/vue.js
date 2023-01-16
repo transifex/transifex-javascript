@@ -15,6 +15,7 @@ function traverseVueTemplateAst(ast, visitor = {}) {
   // Tag to identify it with when traversing
   const VISITORS = {
     5: 'Expression',
+    12: 'Expression',
   };
 
   function traverseArray(array, parent) {
@@ -34,6 +35,24 @@ function traverseVueTemplateAst(ast, visitor = {}) {
     if (node.children) traverseArray(node.children, node);
     if (node.content) {
       if (node.content.children) traverseArray(node.content.children, node);
+    }
+    // Take care of template conditions
+    if (node.branches) {
+      if (node.branches.length) {
+        node.branches.forEach((element) => {
+          traverseArray(element.children, element);
+        });
+      }
+    }
+    // Take care of props
+    if (node.props) {
+      if (node.props.length) {
+        node.props.forEach((element) => {
+          if (element.exp && element.exp.type === 8) {
+            visitor.PropsExpression(element, node);
+          }
+        });
+      }
     }
     if (visitor.exit) visitor.exit(node, parent);
   }
@@ -122,6 +141,9 @@ function extractVuePhrases(HASHES, source, relativeFile, options) {
     });
 
     traverseVueTemplateAst(template.ast, {
+      PropsExpression(node) {
+        babelExtractPhrases(HASHES, node.exp.loc.source, relativeFile, options);
+      },
       Expression(node) {
         babelExtractPhrases(HASHES, node.content.loc.source, relativeFile, options);
       },
