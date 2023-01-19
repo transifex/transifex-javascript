@@ -23,6 +23,10 @@
       </div>
       <span>{{ t(`Text 9 with siblings`) }}<sup>*</sup></span>
       <SomeComponent :aprop="t('A prop string')"/>
+      <p>
+        Try out <a href="some" target="string">simple dom</a> doesn't break
+          things
+      </p>
   </div>
 </template>
 <script>
