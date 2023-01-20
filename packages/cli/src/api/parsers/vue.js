@@ -15,7 +15,6 @@ function traverseVueTemplateAst(ast, visitor = {}) {
   // Tag to identify it with when traversing
   const VISITORS = {
     5: 'Expression',
-    12: 'Expression',
   };
 
   function traverseArray(array, parent) {
@@ -35,6 +34,7 @@ function traverseVueTemplateAst(ast, visitor = {}) {
     if (node.children) traverseArray(node.children, node);
     if (node.content) {
       if (node.content.children) traverseArray(node.content.children, node);
+      traverseNode(node.content, node);
     }
     // Take care of template conditions
     if (node.branches) {
