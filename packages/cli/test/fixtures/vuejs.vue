@@ -27,6 +27,12 @@
         Try out <a href="some" target="string">simple dom</a> doesn't break
           things
       </p>
+      <Comp :to="{
+        aprop: `${avariable}`,
+        anotherprop: {
+          something: 'something',
+        }}"
+      />
   </div>
 </template>
 <script>
