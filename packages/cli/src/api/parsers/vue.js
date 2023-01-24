@@ -142,7 +142,11 @@ function extractVuePhrases(HASHES, source, relativeFile, options) {
 
     traverseVueTemplateAst(template.ast, {
       PropsExpression(node) {
-        babelExtractPhrases(HASHES, node.exp.loc.source, relativeFile, options);
+        // Complex props might cause unrelated errors in Babel
+        try {
+          babelExtractPhrases(HASHES, node.exp.loc.source, relativeFile, options);
+        // eslint-disable-next-line no-empty
+        } catch (e) {}
       },
       Expression(node) {
         babelExtractPhrases(HASHES, node.content.loc.source, relativeFile, options);
