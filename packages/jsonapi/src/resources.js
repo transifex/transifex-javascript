@@ -1,16 +1,6 @@
 import _ from 'lodash'; /* eslint-disable-line max-classes-per-file */
 
-import { /* eslint-disable-line import/no-cycle */
-  hasData,
-  hasLinks,
-  isList,
-  isNull,
-  isObject,
-  isPluralFetched,
-  isResource,
-  isResourceIdentifier,
-  isSingularFetched,
-} from './utils';
+import * as utils from './utils'; /* eslint-disable-line import/no-cycle */
 import Collection from './collections'; /* eslint-disable-line import/no-cycle */
 
 /**
@@ -87,38 +77,41 @@ export default class Resource {
     const actualRelationships = relationships;
 
     Object.entries(props).forEach(([key, value]) => {
+      // Lets try to determine if the value "looks like" a relationship
       if (
-        // Parent: { type: 'parents', id: '1' }
-        isResourceIdentifier(value)
+        // Looks like: parent: new Parent({ id: '1' })
+        utils.isResource(value)
 
-        // Parent: new Parent({ id: '1' })
-        || isResource(value)
+        // Looks like: parent: { type: 'parents', id: '1' }
+        || utils.isResourceIdentifier(value)
 
-        || (isObject(value) && (
+        || (_.isPlainObject(value) && (
 
-          // Parent: { links: { related: 'related' } }
-          hasLinks(value)
+          // Looks like: parent: { links: { related: 'related' } }
+          utils.hasLinks(value)
 
-          || (hasData(value) && (
+          || (utils.hasData(value) && (
 
-            // Parent: { data: { type: 'parents', id: '1' } }
-            isResourceIdentifier(value.data)
+            // Looks like: parent: { data: { type: 'parents', id: '1' } }
+            utils.isResourceIdentifier(value.data)
 
-            // Parent: { data: new Parent({ id: '1' }) }
-            || isResource(value.data)
+            // Looks like: parent: { data: new Parent({ id: '1' }) }
+            || utils.isResource(value.data)
 
-            // Children: { data: [{ type: 'children', id: '1' },
-            //                    New Child({ id: '1' })] }
-            || _.every(value.data, (item) => (
-              isResourceIdentifier(item) || isResource(item)
-            ))
-          ))
+            // Looks like: children: { data: [{ type: 'children', id: '1' },
+            //                                New Child({ id: '1' })] }
+            || (
+              _.isArray(value.data)
+              && value.data.length > 0
+              && _.every(value.data, (item) => (
+                utils.isResourceIdentifier(item) || utils.isResource(item)
+              ))
+            )))
         ))
 
-        // Children: [{ type: 'children', id: '1' }, new Child({ id: '1' })]
-        || (isList(value) && value.length > 0 && _.every(value, (item) => (
-          isResourceIdentifier(item)
-          || isResource(item)
+        // Looks like: children: [{ type: 'children', id: '1' }, new Child({ id: '1' })]
+        || (_.isArray(value) && value.length > 0 && _.every(value, (item) => (
+          utils.isResourceIdentifier(item) || utils.isResource(item)
         )))
       ) {
         actualRelationships[key] = value;
@@ -152,6 +145,11 @@ export default class Resource {
 
   _setRelated(relationshipName, value, includedMap = null) {
     let actualValue = value;
+
+    if (utils.isCollection(actualValue)) {
+      actualValue = actualValue.data;
+    }
+
     let actualIncludedMap = includedMap;
     if (!actualIncludedMap) {
       actualIncludedMap = {};
@@ -160,19 +158,23 @@ export default class Resource {
       this.relationships[relationshipName] = null;
       this.related[relationshipName] = null;
     } else if (
-      isList(actualValue)
-      || (isObject(actualValue) && isList(actualValue.data))
-      || (isObject(actualValue) && hasLinks(actualValue) && !hasData(actualValue))
+      _.isArray(actualValue)
+      || (_.isPlainObject(actualValue) && _.isArray(actualValue.data))
+      || (
+        _.isPlainObject(actualValue)
+        && utils.hasLinks(actualValue)
+        && !utils.hasData(actualValue)
+      )
     ) {
       this.relationships[relationshipName] = {};
       const relationship = this.relationships[relationshipName];
-      if (isObject(actualValue) && hasLinks(actualValue)) {
+      if (_.isPlainObject(actualValue) && utils.hasLinks(actualValue)) {
         relationship.links = actualValue.links;
       }
-      if (hasData(actualValue)) {
+      if (utils.hasData(actualValue)) {
         actualValue = actualValue.data;
       }
-      if (isList(actualValue)) {
+      if (_.isArray(actualValue)) {
         const datas = [];
         const resources = [];
         actualValue.forEach((item) => {
@@ -215,8 +217,8 @@ export default class Resource {
       let resource;
       let data;
       let links = null;
-      if (isObject(actualValue)) {
-        if (hasData(actualValue)) {
+      if (_.isPlainObject(actualValue)) {
+        if (utils.hasData(actualValue)) {
           data = actualValue.data;
           if ('links' in actualValue) {
             links = actualValue.links;
@@ -225,7 +227,7 @@ export default class Resource {
           data = actualValue;
         }
         resource = this.constructor.API.new(data);
-      } else if (isResource(actualValue)) {
+      } else if (utils.isResource(actualValue)) {
         resource = actualValue;
         data = resource.asResourceIdentifier();
       } else {
@@ -380,11 +382,13 @@ export default class Resource {
       );
     }
     const relationship = this.relationships[relationshipName];
-    if (isNull(relationship)) {
+    if (!relationship) {
       return null;
     }
     const related = this.related[relationshipName];
-    if ((isSingularFetched(related) || isPluralFetched(related)) && !force) {
+    if (
+      (utils.isSingularFetched(related) || utils.isPluralFetched(related)) && !force
+    ) {
       return related;
     }
     if (_.isObject(relationship.data)) {
@@ -451,7 +455,7 @@ export default class Resource {
 
   async _saveExisting(fields = []) {
     if (fields.length === 0) {
-      Object.keys(this.attribute).forEach((field) => {
+      Object.keys(this.attributes).forEach((field) => {
         fields.push(field);
       });
       Object.keys(this.related).forEach((field) => {
@@ -506,9 +510,21 @@ export default class Resource {
         if (!('relationships' in result)) {
           result.relationships = {};
         }
-        result.relationships[field] = this.constructor.API.asResource(
-          this.relationships[field],
-        ).asRelationship();
+        if (
+          'data' in this.relationships[field]
+          && _.isArray(this.relationships[field].data)
+        ) {
+          result.relationships[field] = { data: [] };
+          this.relationships[field].data.forEach((item) => {
+            result.relationships[field].data.push(
+              this.constructor.API.asResource(item).asResourceIdentifier(),
+            );
+          });
+        } else {
+          result.relationships[field] = this.constructor.API.asResource(
+            this.relationships[field],
+          ).asRelationship();
+        }
       } else {
         throw new Error(`Unknown field '${field}'`);
       }
@@ -517,23 +533,29 @@ export default class Resource {
   }
 
   _postSave(response) {
+    if (response.status === 204) { return; }
     const { data } = response.data;
     const related = { ...this.related };
     Object.entries(related).forEach(([relationshipName, relatedInstance]) => {
-      if (data.relationships[relationshipName] === null) {
+      const relationship = (data.relationships || {})[relationshipName];
+
+      if (!relationship) {
         related[relationshipName] = null;
-      } else {
+      } else if (utils.hasData(relationship) && !_.isArray(relationship.data)) {
         const oldId = relatedInstance.id;
-        const newId = data.relationships[relationshipName].data.id;
+        const newId = relationship.data.id;
         if (oldId !== newId) {
           if (newId) {
-            related[relationshipName] = this.constructor.API.new(
-              data.relationships[relationshipName],
-            );
+            related[relationshipName] = this.constructor.API.new(relationship);
           } else {
             delete related[relationshipName];
           }
         }
+      } else if (utils.hasData(relationship) && _.isArray(relationship.data)) {
+        related[relationshipName] = [];
+        relationship.data.forEach((item) => {
+          related[relationshipName].push(this.constructor.API.new(item));
+        });
       }
     });
     const relationships = data.relationships || {};
@@ -789,7 +811,7 @@ export default class Resource {
   static async bulkDelete(args) {
     const data = [];
     args.forEach((arg) => {
-      if (isResource(arg)) {
+      if (utils.isResource(arg)) {
         data.push(arg.asResourceIdentifier());
       } else if (_.isPlainObject(arg)) {
         data.push(this.API.asResource(arg).asResourceIdentifier());
