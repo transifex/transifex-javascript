@@ -309,8 +309,8 @@ describe('extractPhrases with source keys', () => {
           string: 'This is a second pipe text',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
-        '\n      This is a\n      third pipe text\n      ': {
-          string: '\n      This is a\n      third pipe text\n      ',
+        '\n      This is a\n      second pipe text\n      ': {
+          string: '\n      This is a\n      second pipe text\n      ',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
         'text.pipe_text_fourth': {
@@ -325,9 +325,19 @@ describe('extractPhrases with source keys', () => {
           string: 'This is a sixth pipe text, no one should do this',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
+        'text.pipe_text_third': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [],
+          },
+          string: 'This is a third pipe text',
+        },
         'text.pipe_text_seventh': {
           string: 'This is a seventh pipe test for additional white spaces',
-          meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
+          meta: { context: [], tags: ['tagA', 'tagB'], occurrences: ['angular-template.html'] },
         },
         'Used in a {binding}': {
           string: 'Used in a {binding}',
@@ -340,6 +350,54 @@ describe('extractPhrases with source keys', () => {
         'content.is-text': {
           string: 'This is a text with a context, and it should be recognized as one',
           meta: { context: ['is-text'], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'some-key': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [
+              't1',
+              't2',
+            ],
+          },
+          string: '{var1}',
+        },
+        'some-key-two': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [
+              't3',
+              't4',
+            ],
+          },
+          string: '{var2}',
+        },
+        'some-key-three': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [],
+          },
+          string: '{var3}',
+        },
+        'some-key-four': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [
+              'some tags',
+            ],
+          },
+          string: '{var4}',
         },
       });
   });

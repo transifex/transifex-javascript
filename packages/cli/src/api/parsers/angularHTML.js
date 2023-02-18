@@ -24,17 +24,33 @@ const pipeBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate\s*?:?\s*?({[\s\S]*?})
  *
  * According to Mozilla a bit better than eval().
  *
- * @param {str} obj
+ * @param {str} str
  * @returns {*}
  */
-function looseJsonParse(obj) {
+function looseJsonParse(str) {
   let parsed;
 
   try {
     // eslint-disable-next-line no-new-func
-    parsed = Function(`"use strict";return (${obj})`)();
+    parsed = Function(`"use strict";return (${str})`)();
   } catch (err) {
-    parsed = {};
+    // When JSON string evaluation fails
+    // we try to generate a dictionary with the key/value pairs
+    // in order to obtain the valid parameters and discard the
+    // parameters that are not valid (e.g. ReferenceError)
+    const keyValuePairRegex = /(\w+):\s*(?:"([^"]*)"|(\S+))/g;
+    const paramsDict = {};
+    let match;
+
+    // eslint-disable-next-line no-cond-assign
+    while (match = keyValuePairRegex.exec(str)) {
+      // eslint-disable-next-line prefer-destructuring
+      if (match[1] && match[2]) paramsDict[match[1]] = match[2];
+    }
+    const paramsDictStr = JSON.stringify(paramsDict);
+
+    // eslint-disable-next-line no-new-func
+    parsed = Function(`"use strict";return (${paramsDictStr})`)();
   }
 
   return parsed;

@@ -26,7 +26,7 @@
 
   <p class="using-pipe">
     <!-- Note: Object is in JSON to make it parse, Angular will interpolate correctly -->
-    {{ 'This is a pipe text' | translate:{ key: "text.pipe_text" } }}
+    {{ 'This is a pipe text' | translate:{ _key: "text.pipe_text" } }}
   </p>
 
   <p class="using-pipe-second">
@@ -34,38 +34,48 @@
     {{
       '
       This is a
-      third pipe text
+      second pipe text
       ' | translate:{}
     }}
   </p>
 
   <p class="using-pipe-third">
-    {{ "This is a fourth pipe text" | translate:{ key: "text.pipe_text_fourth" } }}
+    {{ "This is a third pipe text" | translate:{ key: "text.pipe_text_third" } }}
   </p>
 
-  <p class="using-pipe-third">
+  <p class="using-pipe-fourth">
+    {{ "This is a fourth pipe text" | translate:{ _key: "text.pipe_text_fourth" } }}
+  </p>
+
+  <p class="using-pipe-fifth">
     {{ "It’s {weekday} today, and it is a fine day to try out Native!" | translate:{
-      key: "text.fifth"
+      _key: "text.fifth"
     }}}
   </p>
 
-  <p class="using-pipe-third">
+  <p class="using-pipe-sixth">
     {{'This is a sixth pipe text, no one should do this'|translate:{
-      key
-      :
-      "text.pipe_text_sixth"
+      _key: "text.pipe_text_sixth"
     }}}
   </p>
 
-  <p class="using-pipe-third">
-    {{ "This is a seventh pipe test for additional white spaces" |   translate:   { key: "text.pipe_text_seventh" } }}
+  <p class="using-pipe-seventh">
+    {{ "This is a seventh pipe test for additional white spaces" |   translate:   { _key: "text.pipe_text_seventh", _tags: 'tagA,tagB' } }}
   </p>
 
   <p [matTooltip]="'Used in a {binding}' | translate">
     Inside a p
   </p>
 
-  <p [matTooltip]="'Used in a second binding'|translate:{key: 'text.pipe_binding', _secondParam: true, _thirdParams:false }">
+  <p class="using-pipe-with-tags-valid">{{ "{var1}" | translate: { _key: "some-key", _tags: "t1,t2", var1: "test 1" } }}</p>
+
+  <p class="using-pipe-with-tags-valid">{{ "{var2}" | translate: { _key: "some-key-two", _tags: "t3,t4", var2: _myvariable } }}</p>
+
+  <p class="using-pipe-with-tags-invalid">{{ "{var3}" | translate: { _key: "some-key-three", _tags: variableWithTags, var3: "valid value" } }}</p>
+
+  <p class="using-pipe-with-tags-valid-complex">{{ "{var4}" | translate:{ _key: "some-key-four", _tags: "some tags", var4: someDate | date: "dd.MM.yyyy" } }}</p>
+
+  <p [matTooltip]="'Used in a second binding'|translate:{_key: 'text.pipe_binding', _secondParam: true, _thirdParams:false }">
     Inside a p
   </p>
 
