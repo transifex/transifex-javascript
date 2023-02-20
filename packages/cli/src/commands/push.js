@@ -78,7 +78,7 @@ class PushCommand extends Command {
     };
 
     _.each(allFiles, (file) => {
-      const relativeFile = file.replace(pwd, '');
+      const relativeFile = path.relative(process.cwd(), file);
       bar.increment({ file: relativeFile.gray });
       try {
         const data = extractPhrases(file, relativeFile, extractOptions);

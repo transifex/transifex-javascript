@@ -18,7 +18,7 @@ describe('push command', () => {
       expect(ctx.stdout).to.contain('5d47152bcd597dd6adbff4884374aaad: Text 2');
       expect(ctx.stdout).to.contain('3cd62915590816fdbf53852e44ee675a: Text 3');
       expect(ctx.stdout).to.contain('33f5afa925f1464280d72d6d9086057c: Text 4');
-      expect(ctx.stdout).to.contain('occurrences: ["/test/fixtures/simple.js"]');
+      expect(ctx.stdout).to.contain('occurrences: ["test/fixtures/simple.js"]');
     });
 
   test
@@ -29,7 +29,7 @@ describe('push command', () => {
       expect(ctx.stdout).to.contain('Text 2');
       expect(ctx.stdout).to.contain('Text 3');
       expect(ctx.stdout).to.contain('Text 4');
-      expect(ctx.stdout).to.contain('occurrences: ["/test/fixtures/simple.js"]');
+      expect(ctx.stdout).to.contain('occurrences: ["test/fixtures/simple.js"]');
     });
 
   test
