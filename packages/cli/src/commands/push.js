@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 const { Command, Flags } = require('@oclif/core');
-const shelljs = require('shelljs');
 const { glob } = require('glob');
 const { CliUx } = require('@oclif/core');
 const { extractPhrases } = require('../api/extract');
@@ -32,7 +31,7 @@ function isFolder(path) {
 class PushCommand extends Command {
   async run() {
     const { args, flags } = await this.parse(PushCommand);
-    const pwd = `${shelljs.pwd()}`;
+    const pwd = path.resolve(process.cwd());
     let filePattern = path.isAbsolute(args.pattern)
       ? args.pattern
       : path.join(pwd, args.pattern);
@@ -78,7 +77,7 @@ class PushCommand extends Command {
     };
 
     _.each(allFiles, (file) => {
-      const relativeFile = file.replace(pwd, '');
+      const relativeFile = path.relative(pwd, file);
       bar.increment({ file: relativeFile.gray });
       try {
         const data = extractPhrases(file, relativeFile, extractOptions);
