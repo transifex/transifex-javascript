@@ -35,8 +35,7 @@
     "ejs": "^3.1.8",
     "glob": "^8.0.3",
     "lodash": "^4.17.21",
-    "pug": "^3.0.2",
-    "shelljs": "^0.8.5"
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.26.10",
