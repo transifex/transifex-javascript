@@ -1,13 +1,12 @@
 declare module '@transifex/native' {
   export interface ITranslateParams {
+    [key: string]: unknown;
     _charlimit?: number;
     _comment?: string;
     _context?: string;
     _escapeVars?: boolean;
-    _inline?: boolean;
     _key?: string;
     _tags?: string;
-    sanitize?: boolean;
   }
 
   export interface ITranslationServiceConfig {
