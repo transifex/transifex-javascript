@@ -9,7 +9,7 @@ declare module '@transifex/native' {
     _tags?: string;
   }
 
-  export interface ITranslationServiceConfig {
+  export interface ITranslationConfig {
     cache?: IMemoryCache;
     cdsHost?: string;
     currentLocale?: string;
@@ -53,7 +53,7 @@ declare module '@transifex/native' {
     handle(error: Error, sourceString: string, localeCode: string, params: ITranslateParams): string;
   }
 
-  export class TxNative implements ITranslationServiceConfig {
+  export class TxNative implements ITranslationConfig {
     cache: IMemoryCache;
     cdsHost: string;
     childInstances: TxNative[];
@@ -81,7 +81,7 @@ declare module '@transifex/native' {
 
     getLocales(config?: { refresh?: boolean }): Promise<string[]>;
 
-    init(config: ITranslationServiceConfig): void;
+    init(config: ITranslationConfig): void;
 
     invalidateCDS(config?: { purge?: boolean }): Promise<{ count: number; status: number; token: number }>;
 
@@ -165,7 +165,7 @@ declare module '@transifex/native' {
     localeCode: string;
   }
 
-  export function createNativeInstance(initOptions: ITranslationServiceConfig): TxNative;
+  export function createNativeInstance(initOptions: ITranslationConfig): TxNative;
 
   export function escape(unsafe: string): string;
 
