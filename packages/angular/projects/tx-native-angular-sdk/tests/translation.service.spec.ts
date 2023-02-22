@@ -1,21 +1,23 @@
 import { not } from '@angular/compiler/src/output/output_ast';
 import { TestBed } from '@angular/core/testing';
-import { tx } from '@transifex/native';
+import { tx, ILanguage, ITranslationConfig } from '@transifex/native';
 
 import { TranslationService } from '../src/lib/translation.service';
-import { ILanguage, ITranslationServiceConfig } from '../src/public-api';
+import { ITranslationServiceConfig } from '../src/public-api';
 
 describe('TranslationService', () => {
   let service: TranslationService;
   const txConfig: ITranslationServiceConfig = {
     token: '',
-    cache: () => { },
     cdsHost: '',
-    errorPolicy: undefined,
     filterTags: '',
     filterStatus: '',
-    missingPolicy: undefined,
-    stringRenderer: undefined,
+  };
+  const txTranslationConfig: ITranslationConfig = {
+    token: '',
+    cdsHost: '',
+    filterTags: '',
+    filterStatus: '',
   };
   const translationParams = {
     _key: '',
@@ -28,8 +30,8 @@ describe('TranslationService', () => {
     sanitize: false,
   };
   const languages: ILanguage[] = [
-    { code: 'en', name: 'English', localized_name: 'English' },
-    { code: 'el', name: 'Greek', localized_name: 'Ελληνικά' },
+    { code: 'en', name: 'English', localized_name: 'English', rtl: false },
+    { code: 'el', name: 'Greek', localized_name: 'Ελληνικά', rtl: false },
   ];
 
   beforeEach(() => {
@@ -60,7 +62,7 @@ describe('TranslationService', () => {
     // assert
     expect(service).toBeTruthy();
     expect(tx.init).toHaveBeenCalledWith(
-      { ...txConfig },
+      { ...txTranslationConfig },
     );
   });
 
@@ -136,7 +138,7 @@ describe('TranslationService', () => {
 
   it('should get languages', async () => {
     // setup
-    spyOn(tx, 'getLanguages').and.returnValue(Promise.resolve(languages));
+    spyOn(tx, 'getLanguages').and.resolveTo(languages);
 
     // act
     const result = await service.getLanguages();
@@ -148,7 +150,7 @@ describe('TranslationService', () => {
 
   it('should add a controlled instance successfully', async () => {
     // setup
-    spyOn(tx, 'controllerOf').and.returnValue({});
+    spyOn(tx, 'controllerOf').and.resolveTo();
 
     const instanceConfig = {
       token: 'token',
@@ -166,7 +168,7 @@ describe('TranslationService', () => {
 
   it('should add a not controlled instance successfully', async () => {
     // setup
-    spyOn(tx, 'controllerOf').and.returnValue({});
+    spyOn(tx, 'controllerOf').and.resolveTo();
 
     const instanceConfig = {
       token: 'token',
@@ -184,7 +186,7 @@ describe('TranslationService', () => {
 
   it('should not add a malformed instance (alias)', async () => {
     // setup
-    spyOn(tx, 'controllerOf').and.returnValue({});
+    spyOn(tx, 'controllerOf').and.resolveTo();
 
     const instanceConfig = {
       token: 'token',
@@ -200,7 +202,7 @@ describe('TranslationService', () => {
 
   it('should not add a malformed instance (token)', async () => {
     // setup
-    spyOn(tx, 'controllerOf').and.returnValue({});
+    spyOn(tx, 'controllerOf').and.resolveTo();
 
     const instanceConfig = {
       token: '',
@@ -222,7 +224,7 @@ describe('TranslationService', () => {
       controlled: false,
     };
     await service.addInstance(instanceConfig);
-    spyOn(tx, 'controllerOf').and.returnValue({});
+    spyOn(tx, 'controllerOf').and.resolveTo();
 
     // act
     const result = await service.addInstance(instanceConfig);
@@ -252,9 +254,7 @@ describe('TranslationService', () => {
 
   it('should fetch translations on demand without custom instance', async () => {
     // setup
-    spyOn(tx, 'fetchTranslations').and.returnValue(
-      Promise.resolve({}),
-    );
+    spyOn(tx, 'fetchTranslations').and.resolveTo();
     spyOn(service, 'getInstance').and.returnValue(
       {
         currentLocale: 'en',
@@ -276,9 +276,7 @@ describe('TranslationService', () => {
   it('should fetch translations on demand without custom instance no fetched tags',
     async () => {
       // setup
-      spyOn(tx, 'fetchTranslations').and.returnValue(
-        Promise.resolve({}),
-      );
+      spyOn(tx, 'fetchTranslations').and.resolveTo();
       spyOn(service, 'getInstance').and.returnValue(
         {
           currentLocale: 'en',
@@ -299,9 +297,7 @@ describe('TranslationService', () => {
 
   it('should fetch translations on demand with custom instance', async () => {
     // setup
-    spyOn(tx, 'fetchTranslations').and.returnValue(
-      Promise.resolve({}),
-    );
+    spyOn(tx, 'fetchTranslations').and.resolveTo();
     spyOn(service, 'getInstance').and.returnValue(
       {
         currentLocale: 'en',
@@ -323,9 +319,7 @@ describe('TranslationService', () => {
 
   it('should not fetch translations on demand if no instance', async () => {
     // setup
-    spyOn(tx, 'fetchTranslations').and.returnValue(
-      Promise.resolve({}),
-    );
+    spyOn(tx, 'fetchTranslations').and.resolveTo();
 
     // act
     await service.fetchTranslations('tag1');

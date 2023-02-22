@@ -15,6 +15,7 @@ export interface ILanguage {
   code: string;
   name: string;
   localized_name: string;
+  rtl?: boolean;
 }
 
 export interface ITranslateParams {
