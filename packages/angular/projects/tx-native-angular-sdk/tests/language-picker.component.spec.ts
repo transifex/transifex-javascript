@@ -22,8 +22,8 @@ describe('LanguagePickerComponent', () => {
     sanitize: false,
   };
   const languages: ILanguage[] = [
-    { code: 'en', name: 'English', localized_name: 'English' },
-    { code: 'el', name: 'Greek', localized_name: 'Ελληνικά' },
+    { code: 'en', name: 'English', localized_name: 'English', rtl: false },
+    { code: 'el', name: 'Greek', localized_name: 'Ελληνικά', rtl: false },
   ];
 
   beforeEach(async () => {
@@ -48,7 +48,7 @@ describe('LanguagePickerComponent', () => {
 
   it('should get languages', async () => {
     // setup
-    spyOn(service, 'getLanguages').and.returnValue(Promise.resolve(languages));
+    spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
     await component.getLanguages();
@@ -60,7 +60,7 @@ describe('LanguagePickerComponent', () => {
 
   it('should show a select component with languages', async () => {
     // setup
-    spyOn(service, 'getLanguages').and.returnValue(Promise.resolve(languages));
+    spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
     await component.ngOnInit();
@@ -76,7 +76,7 @@ describe('LanguagePickerComponent', () => {
 
   it('should detect language change', async () => {
     // setup
-    spyOn(service, 'getLanguages').and.returnValue(Promise.resolve(languages));
+    spyOn(service, 'getLanguages').and.resolveTo(languages);
     spyOn(service, 'setCurrentLocale').and.returnValue(Promise.resolve());
     spyOn(component, 'onChange').and.callThrough();
 
@@ -104,7 +104,7 @@ describe('LanguagePickerComponent', () => {
     component.instance = instance;
     const instanceReadySpy = spyOnProperty(component, 'instanceReady', 'get')
       .and.returnValue(of(true));
-    spyOn(service, 'getLanguages').and.returnValue(Promise.resolve(languages));
+    spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
     await instance.ngOnInit();
