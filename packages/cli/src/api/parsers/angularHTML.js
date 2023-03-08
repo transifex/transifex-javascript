@@ -17,7 +17,12 @@ const pipeRegexp = /{{\s*?['|"]([\s\S]+?)['|"]\s*?\|\s*?translate\s*?:?\s*?({[\s
 /**
   * Regexp to find use of TranslatePipe in Attributes;
   */
-const pipeBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate\s*?:?\s*?({[\s\S]*?})?/i;
+const pipeBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate\s*:\s*({[\s\S]*?})?\s*?/i;
+
+/**
+  * Regexp to find use of TranslatePipe without parameters in Attributes;
+  */
+const pipeSimpleBindingRegexp = /'([\s\S]+?)'\s*?\|\s*?translate/i;
 
 /**
  * Loosely parses string (from HTML) to an object.
@@ -102,7 +107,11 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
     const textStr = _.trim(String(text));
 
     if (textStr.length) {
-      const result = textStr.match(pipeBindingRegexp);
+      let result = textStr.match(pipeBindingRegexp);
+
+      if (!result) {
+        result = textStr.match(pipeSimpleBindingRegexp);
+      }
 
       if (result) {
         const string = result[1];
