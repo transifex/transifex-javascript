@@ -328,6 +328,18 @@ describe('extractPhrases with hashed keys', () => {
           string: 'This is a second pipe text',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
         },
+        'my-str-key': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [
+              'my-str-tag',
+            ],
+          },
+          string: 'My str',
+        },
         '867b7cc4643da9b4c97ababa43c50c23': {
           string: 'Used in a {binding}',
           meta: { context: [], tags: [], occurrences: ['angular-template.html'] },
@@ -369,6 +381,19 @@ describe('extractPhrases with hashed keys', () => {
         'content.is-text': {
           string: 'This is a text with a context, and it should be recognized as one',
           meta: { context: ['is-text'], tags: [], occurrences: ['angular-template.html'] },
+        },
+        'password.key': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [
+              'tagAa',
+              'tagBa',
+            ],
+          },
+          string: 'Password',
         },
         'some-key': {
           meta: {

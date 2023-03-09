@@ -83,4 +83,19 @@
     key="content.is-text"
     context="is-text">
   </T>
+
+  <input placeholder="'Password' | translate:{ _key: 'password.key', _tags: 'tagAa,tagBa' }" />
+
+  <mat-tab
+      label="{{
+        'My str'
+          | translate
+            : {
+                _key: 'my-str-key',
+                _tags: 'my-str-tag'
+              }
+      }}"
+    >
+    Content 1
+  </mat-tab>
 </div>
