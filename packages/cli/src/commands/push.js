@@ -168,6 +168,8 @@ class PushCommand extends Command {
           token: projectToken,
           secret: projectSecret,
           purge: flags.purge,
+          do_not_keep_translations: flags['do-not-keep-translations'],
+          override_tags: flags['override-tags'],
           dry_run: flags['dry-run'],
         });
 
@@ -317,6 +319,14 @@ PushCommand.flags = {
   'cds-host': Flags.string({
     description: 'CDS host URL',
     default: '',
+  }),
+  'do-not-keep-translations': Flags.boolean({
+    description: 'remove translations when source strings change',
+    default: false,
+  }),
+  'override-tags': Flags.boolean({
+    description: 'override tags when pushing content',
+    default: false,
   }),
   parser: Flags.string({
     description: 'file parser to use',
