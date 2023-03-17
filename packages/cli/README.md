@@ -103,7 +103,7 @@ detect and push source content to Transifex
 ```
 USAGE
   $ txjs-cli push [PATTERN] [--dry-run] [--fake] [-v] [--purge] [--no-wait] [--token <value>] [--secret <value>] [--append-tags <value>] [--with-tags-only <value>] [--without-tags-only <value>]
-    [--cds-host <value>] [--parser auto|i18next|txnativejson] [--key-generator source|hash]
+    [--cds-host <value>] [--do-not-keep-translations] [--override-tags] [--parser auto|i18next|txnativejson] [--key-generator source|hash]
 
 ARGUMENTS
   PATTERN  [default: **/*.{js,jsx,ts,tsx,html,vue,pug,ejs}] file pattern to scan for strings
@@ -112,11 +112,13 @@ FLAGS
   -v, --verbose                verbose output
   --append-tags=<value>        append tags to strings
   --cds-host=<value>           CDS host URL
+  --do-not-keep-translations   remove translations when source strings change
   --dry-run                    dry run, do not apply changes in Transifex
   --fake                       do not push content to remote server
   --key-generator=<option>     [default: source] use hashed or source based keys
                                <options: source|hash>
   --no-wait                    disable polling for upload results
+  --override-tags              override tags when pushing content
   --parser=<option>            [default: auto] file parser to use
                                <options: auto|i18next|txnativejson>
   --purge                      purge content on Transifex
