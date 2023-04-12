@@ -91,7 +91,7 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Component destruction
    */
   ngOnDestroy() {
-    if (this.onLocaleChange  !== undefined) {
+    if (this.onLocaleChange !== undefined) {
       this.onLocaleChange.unsubscribe();
       this.onLocaleChange = undefined;
     }
