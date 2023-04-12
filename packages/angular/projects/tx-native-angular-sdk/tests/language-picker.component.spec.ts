@@ -11,16 +11,6 @@ describe('LanguagePickerComponent', () => {
   let service: TranslationService;
   let instance: TXInstanceComponent;
 
-  const translationParams = {
-    _key: '',
-    _context: '',
-    _comment: '',
-    _charlimit: 0,
-    _tags: '',
-    _escapeVars: false,
-    _inline: false,
-    sanitize: false,
-  };
   const languages: ILanguage[] = [
     { code: 'en', name: 'English', localized_name: 'English', rtl: false },
     { code: 'el', name: 'Greek', localized_name: 'Ελληνικά', rtl: false },
@@ -28,10 +18,11 @@ describe('LanguagePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LanguagePickerComponent, TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      declarations: [ LanguagePickerComponent, TXInstanceComponent ],
+      providers: [ TXInstanceComponent ],
     })
       .compileComponents();
+
     service = TestBed.inject(TranslationService);
     instance = TestBed.inject(TXInstanceComponent);
   });
@@ -63,38 +54,43 @@ describe('LanguagePickerComponent', () => {
     spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
-    await component.ngOnInit();
+    await component.getLanguages();
     fixture.detectChanges();
 
     // assert
-    const compiled = fixture.debugElement.nativeElement;
-    const selectOptions = (compiled as HTMLDivElement).querySelector('select');
-    expect((compiled as HTMLDivElement).innerHTML)
-      .toContain('<select');
+    const compiled: HTMLElement = fixture.debugElement.nativeElement;
+    const selectOptions = compiled.querySelector('select');
+    expect(compiled.innerHTML).toContain('<select');
     expect(selectOptions?.length).toBe(2);
   });
 
   it('should detect language change', async () => {
     // setup
     spyOn(service, 'getLanguages').and.resolveTo(languages);
-    spyOn(service, 'setCurrentLocale').and.returnValue(Promise.resolve());
+    spyOn(service, 'setCurrentLocale').and.resolveTo();
     spyOn(component, 'onChange').and.callThrough();
 
     // act
-    await component.ngOnInit();
+    await component.getLanguages();
     fixture.detectChanges();
 
     // assert
-    const select: HTMLSelectElement = fixture.debugElement.query(
-      By.css('.tx-language-picker'),
-    ).nativeElement;
-    select.value = select.options[1].value;
+    const select: HTMLSelectElement = fixture.debugElement.query(By.css('.tx-language-picker')).nativeElement;
+    const optValue = select.options[1]?.value;
+    if (optValue === undefined) {
+      throw new Error('select.options[1]?.value is undefined');
+    }
+    select.value = optValue;
     select.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
-    const text = select.options[select.selectedIndex].label;
+    const optLabel = select.options[select.selectedIndex]?.label;
+    if (optLabel === undefined) {
+      throw new Error('select.options[select.selectedIndex]?.label is undefined');
+    }
+    const text = optLabel;
     expect(text).toBe('Ελληνικά');
-    expect(await component.onChange).toHaveBeenCalled();
+    expect(component.onChange).toHaveBeenCalled();
   });
 
   it('should get languages of an alternative instance', async () => {
@@ -102,13 +98,12 @@ describe('LanguagePickerComponent', () => {
     instance.alias = 'test';
     instance.token = 'test';
     component.instance = instance;
-    const instanceReadySpy = spyOnProperty(component, 'instanceReady', 'get')
-      .and.returnValue(of(true));
+    spyOnProperty(component, 'instanceReady', 'get').and.returnValue(of(true));
     spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
     await instance.ngOnInit();
-    await component.ngOnInit();
+    component.ngOnInit();
 
     // assert
     expect(component.languages).toEqual(languages);

@@ -17,10 +17,19 @@
       },
       "rules": {
         "@angular-eslint/component-selector": [
+          "off", // We are not following the angular styleguide to match other implementations
+          {
+            "prefix": "tx",
+            "style": "kebab-case",
+            "type": "element"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
           "error",
           {
-            "type": "element",
-            "prefix": "tx"
+            "prefix": "tx",
+            "style": "camelCase",
+            "type": "attribute"
           }
         ]
       }

@@ -1,5 +1,6 @@
 {
   "root": true,
+  "reportUnusedDisableDirectives": true,
   "ignorePatterns": [
     "projects/**/*"
   ],
@@ -10,24 +11,57 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
+          "tsconfig.json"
         ],
-        "createDefaultProgram": true
+        "createDefaultProgram": true,
+        "warnOnUnsupportedTypeScriptVersion": true
       },
+      "plugins": [
+        "eslint-plugin-import",
+        "eslint-plugin-prefer-arrow",
+        "eslint-plugin-promise",
+        "eslint-plugin-rxjs",
+        "eslint-plugin-rxjs-angular",
+        "eslint-plugin-tsdoc",
+        "eslint-plugin-unicorn"
+      ],
       "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:import/recommended",
+        "plugin:promise/recommended",
+        "plugin:unicorn/recommended",
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "airbnb-typescript/base"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/typescript",
+        "plugin:rxjs/recommended"
       ],
       "rules": {
-        "import/export": 0,
-        "import/prefer-default-export": 0,
-        "import/no-extraneous-dependencies": 0,
-        "@typescript-eslint/no-unused-vars": 0,
-        "class-methods-use-this": 0,
-        "@typescript-eslint/member-ordering": 0
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "varsIgnorePattern": "^_",
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "class-methods-use-this": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": ["**/*.spec.ts"],
+            "packageDir": "./" // Needed for angular library support
+          }
+        ],
+        "tsdoc/syntax": "warn",
+        "unicorn/filename-case": "off", // We are naming files with capitals
+        // I think some of these are silly. `e` is bad, but `err` and `exc` are decent. `user of users` is confusing, `usr of users` is safer.
+        "unicorn/prevent-abbreviations": "off"
+      },
+      "settings": {
+        "import/resolver": {
+          "typescript": {
+            "alwaysTryTypes": true // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+          }
+        }
       }
     },
     {

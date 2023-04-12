@@ -5,30 +5,28 @@ import { TXInstanceComponent } from './instance.component';
 import { ILanguage } from './interfaces';
 import { TranslationService } from './translation.service';
 
+/**
+ * A language picker component with the available languages already populated
+ */
 @Component({
   selector: 'tx-language-picker',
   template: `
     <select [class]="className" (change)="onChange($event)" class="tx-language-picker">
-      <option *ngFor="let language of languages"
+      <option
+        *ngFor="let language of languages"
         [selected]="language.code === currentLocale"
-        [value]="language.code">
-      {{ language.localized_name || language.name }}
+        [value]="language.code"
+      >
+        {{ language.localized_name || language.name }}
       </option>
     </select>
   `,
   styles: [],
 })
-
-/**
- * A language picker component with the available languages
- * already populated
- */
 export class LanguagePickerComponent implements OnInit, OnDestroy {
-  @Input()
-    className = '';
+  @Input() className = '';
 
-  @Output()
-    localeChanged: EventEmitter<string> = new EventEmitter<string>();
+  @Output() localeChanged: EventEmitter<string> = new EventEmitter<string>();
 
   languages: ILanguage[] = [];
 
@@ -50,31 +48,24 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
   // Subscription to instance ready event to refresh languages
   instanceIsReadySubscription!: Subscription;
 
-  /**
-   * Constructor
-   *
-   * @param translationService
-   */
-  constructor(public translationService: TranslationService,
-    public instance: TXInstanceComponent) {
+  constructor(
+    public translationService: TranslationService,
+    public instance: TXInstanceComponent,
+  ) {
     this.getLanguages.bind(this);
 
-    // When there is an alternative instance, listen to its readiness
-    // and retrieve the languages again
-    this.instanceIsReadySubscription =
-      this.instanceReady.subscribe(
-        async (ready) => {
-          if (ready) {
-            this.languages = [];
-            await this.getLanguages();
-          }
-        },
-      );
+    // When there is an alternative instance, listen to its readiness and retrieve the languages again
+    // eslint-disable-next-line rxjs/no-async-subscribe
+    this.instanceIsReadySubscription = this.instanceReady.subscribe(async (ready) => {
+      if (ready) {
+        this.languages = [];
+        await this.getLanguages();
+      }
+    });
   }
 
   ngOnInit(): void {
-    // Do not retrieve languages in the initialization
-    // if alternative instace found, will fetch languages
+    // Do not retrieve languages in the initialization if alternative instance found, will fetch languages
     // when the instance is ready using a subscription
     if (this.instance && this.instance.alias) {
       return;
@@ -84,30 +75,22 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
 
   /**
    * Retrieves the available languages
-   *
-   * @param translationService
    */
   async getLanguages() {
-    this.languages =
-      await this.translationService.getLanguages(this.activeInstance);
+    this.languages = await this.translationService.getLanguages(this.activeInstance);
   }
 
   /**
    * Handles language selection changes
-   *
-   * @param event
    */
   async onChange(event: Event) {
     const locale: string = (event.target as HTMLSelectElement).value;
-    await this.translationService.setCurrentLocale(locale,
-      this.activeInstance);
+    await this.translationService.setCurrentLocale(locale, this.activeInstance);
     this.localeChanged.emit(locale);
   }
 
   /**
    * Returns the current locale from the active instance
-   *
-   * @param translationService
    */
   getCurrentLocale() {
     return this.translationService.getCurrentLocale(this.activeInstance);

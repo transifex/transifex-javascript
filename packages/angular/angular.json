@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -19,9 +22,9 @@
             "production": {
               "tsConfig": "projects/tx-native-angular-sdk/tsconfig.lib.prod.json"
             },
-              "development": {}
+            "development": {}
           },
-            "defaultConfiguration": "production"
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -45,6 +48,5 @@
         }
       }
     }
-  },
-  "defaultProject": "@transifex/angular"
+  }
 }
