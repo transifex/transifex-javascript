@@ -10,7 +10,6 @@ import { TranslatePipe } from './translate.pipe';
 import { TXInstanceComponent } from './instance.component';
 import { LoadTranslationsDirective } from './load-translations.directive';
 
-
 @NgModule({
   declarations: [
     TComponent,
@@ -21,7 +20,7 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     TXInstanceComponent,
     LoadTranslationsDirective,
   ],
-  imports: [CommonModule],
+  imports: [ CommonModule ],
   exports: [
     TComponent,
     UTComponent,
@@ -31,9 +30,7 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     TXInstanceComponent,
     LoadTranslationsDirective,
   ],
-  providers: [
-    TXInstanceComponent,
-  ],
+  providers: [ TXInstanceComponent ],
 })
 export class TxNativeModule {
   /**
@@ -42,9 +39,7 @@ export class TxNativeModule {
   static forRoot(): ModuleWithProviders<TxNativeModule> {
     return {
       ngModule: TxNativeModule,
-      providers: [
-        TranslationService,
-      ],
+      providers: [ TranslationService ],
     };
   }
 }

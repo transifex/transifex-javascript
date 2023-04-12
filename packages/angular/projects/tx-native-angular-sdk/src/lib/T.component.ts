@@ -1,10 +1,13 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { TXInstanceComponent } from './instance.component';
 import { ITranslateParams } from './interfaces';
 import { TranslationService } from './translation.service';
 
+/**
+ * A translation component
+ */
 @Component({
   selector: 'T',
   template: `
@@ -13,54 +16,28 @@ import { TranslationService } from './translation.service';
   `,
   styles: [],
 })
-
-/**
- * A translation component
- *
- * @param {string} str
- * @param {string=} key
- * @param {string=} context
- * @param {string=} comment
- * @param {number=} charlimit
- * @param {string=} tags
- * @param {boolean=} escapeVars
- * @param {boolean=} inline
- * @param {boolean=} sanitize
- * @param {Object=} vars
- */
 export class TComponent implements OnInit, OnDestroy, OnChanges {
-  @Input()
-    str = '';
+  @Input() str = '';
 
-  @Input()
-    key?: string = '';
+  @Input() key?: string = '';
 
-  @Input()
-    context?: string = '';
+  @Input() context?: string = '';
 
-  @Input()
-    comment?: string = '';
+  @Input() comment?: string = '';
 
-  @Input()
-    charlimit?: number = 0;
+  @Input() charlimit?: number = 0;
 
-  @Input()
-    tags?: string = '';
+  @Input() tags?: string = '';
 
-  @Input()
-    escapeVars?: boolean = false;
+  @Input() escapeVars?: boolean = false;
 
-  @Input()
-    inline?: boolean = false;
+  @Input() inline?: boolean = false;
 
-  @Input()
-    sanitize?: boolean = false;
+  @Input() sanitize?: boolean = false;
 
-  @Input()
-  get vars(): Record<string, unknown> {
+  @Input() get vars(): Record<string, unknown> {
     return this.actualVars;
   }
-
   set vars(v: Record<string, unknown>) {
     this.actualVars = { ...v };
   }
@@ -91,25 +68,16 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
 
   private actualVars: Record<string, unknown> = {};
 
-  /**
-   * Constructor
-   *
-   * @param translationService
-   * @param instance
-   */
-  constructor(protected translationService: TranslationService,
-    protected instance: TXInstanceComponent) {
-    this.onLocaleChange = this.localeChanged.subscribe(
-      () => {
-        this.translate();
-      },
-    );
-    this.onTranslationsFetch =
-      this.translationService.translationsFetched.subscribe(
-        () => {
-          this.translate();
-        },
-      );
+  constructor(
+    protected translationService: TranslationService,
+    protected instance: TXInstanceComponent,
+  ) {
+    this.onLocaleChange = this.localeChanged.subscribe(() => {
+      this.translate();
+    });
+    this.onTranslationsFetch = this.translationService.translationsFetched.subscribe(() => {
+      this.translate();
+    });
   }
 
   /**
@@ -123,11 +91,11 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Component destruction
    */
   ngOnDestroy() {
-    if (typeof this.onLocaleChange !== 'undefined') {
+    if (this.onLocaleChange  !== undefined) {
       this.onLocaleChange.unsubscribe();
       this.onLocaleChange = undefined;
     }
-    if (typeof this.onTranslationsFetch !== 'undefined') {
+    if (this.onTranslationsFetch !== undefined) {
       this.onTranslationsFetch.unsubscribe();
       this.onTranslationsFetch = undefined;
     }
@@ -135,10 +103,8 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
 
   /**
    * Input parameters change detector
-   *
-   * @param changes
    */
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.translate();
   }
 
@@ -146,7 +112,10 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Translate a string using the translation service
    */
   translate() {
-    this.translatedStr = this.translationService.translate(this.str,
-      { ...this.translateParams, ...this.vars }, this.instance.alias || '');
+    this.translatedStr = this.translationService.translate(
+      this.str,
+      { ...this.translateParams, ...this.vars },
+      this.instance.alias || '',
+    );
   }
 }

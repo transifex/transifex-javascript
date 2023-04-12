@@ -1,19 +1,12 @@
-import { Directive, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Directive, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { TranslationService } from './translation.service';
 
-@Directive({
-  // eslint-disable-next-line @angular-eslint/directive-selector
-  selector: '[txLoadTranslations]',
-})
-
 /**
  * Directive for fetching translations in batches
- *
- * @param {string=} tags
- * @param {string=} instanceAlias
  */
+@Directive({ selector: '[txLoadTranslations]' })
 export class LoadTranslationsDirective implements OnChanges, OnDestroy {
   @Input('txLoadTranslations') tags = '';
 
@@ -21,22 +14,17 @@ export class LoadTranslationsDirective implements OnChanges, OnDestroy {
 
   onLocaleChange: Subscription | undefined;
 
-  /**
-   * Constructor
-   *
-   * @param translationService
-   */
   constructor(private translationService: TranslationService) {
-    this.onLocaleChange = this.translationService.localeChanged.subscribe(
-      async (locale: string) => {
-        await this.updateTranslation();
-      });
+    // eslint-disable-next-line rxjs/no-async-subscribe
+    this.onLocaleChange = this.translationService.localeChanged.subscribe(async () => {
+      await this.updateTranslation();
+    });
   }
 
   /**
    * On changes detected retrieve again the translations
    */
-  async ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges() {
     await this.updateTranslation();
   }
 
@@ -44,17 +32,14 @@ export class LoadTranslationsDirective implements OnChanges, OnDestroy {
    * Retrieve the translations tagged with given tags
    */
   async updateTranslation() {
-    await this.translationService.fetchTranslations(
-      this.tags,
-      this.instanceAlias,
-    );
+    await this.translationService.fetchTranslations(this.tags, this.instanceAlias);
   }
 
   /**
    * Clean any existing subscription to change events
    */
   ngOnDestroy() {
-    if (typeof this.onLocaleChange !== 'undefined') {
+    if (this.onLocaleChange !== undefined) {
       this.onLocaleChange.unsubscribe();
       this.onLocaleChange = undefined;
     }

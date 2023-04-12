@@ -4,17 +4,16 @@ import { ITXInstanceConfiguration } from './interfaces';
 import { TranslationService } from './translation.service';
 
 /**
- * Decorator for using transparently the translation service as a property
+ * Decorator for transparently using the translation service as a property
  */
-export const T = (str: string, params?: Record<string, unknown>,
-  instanceConfig?: ITXInstanceConfiguration) => (target: any, key: string) => {
-  const injector = Injector.create(
-    {
-      providers: [
-        { provide: TranslationService, useClass: TranslationService },
-      ],
-    },
-  );
+export const T = (
+  str: string,
+  params?: Record<string, unknown>,
+  instanceConfig?: ITXInstanceConfiguration,
+) => (target: object, key: string) => {
+  const injector = Injector.create({
+    providers: [ { provide: TranslationService, useClass: TranslationService } ],
+  });
   const translationService = injector.get(TranslationService);
 
   Object.defineProperty(target, key, {
@@ -23,8 +22,11 @@ export const T = (str: string, params?: Record<string, unknown>,
       if (instanceConfig) {
         translationService.addInstance(instanceConfig);
       }
-      return translationService.translate(str, { ...params },
-        instanceConfig && instanceConfig.alias || '');
+      return translationService.translate(
+        str,
+        { ...params },
+        (instanceConfig && instanceConfig.alias) || '',
+      );
     },
   });
 };

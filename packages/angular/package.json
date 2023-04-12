@@ -1,6 +1,7 @@
 {
   "name": "@transifex/angular-projects",
   "version": "5.2.0",
+  "private": true,
   "description": "i18n Angular framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -12,63 +13,81 @@
     "translation",
     "angular"
   ],
-  "author": "Transifex",
   "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/angular",
-  "repository": "git://github.com/transifex/transifex-javascript.git",
-  "license": "Apache-2.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --configuration production",
-    "test": "ng test",
-    "lint": "ng lint",
-    "publish-npm": "cd dist/tx-native-angular-sdk && npm publish"
+  "bugs": {
+    "url": "https://github.com/transifex/transifex-javascript/issues"
   },
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transifex/transifex-javascript.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Transifex",
+  "contributors": [
+    {
+      "name": "J Rob Gant",
+      "email": "rgant@alum.wpi.edu",
+      "url": "https://rob.gant.ninja/"
+    }
+  ],
+  "scripts": {
+    "build": "ng build --configuration production",
+    "lint": "ng lint",
+    "ng": "ng",
+    "publish-npm": "cd dist/tx-native-angular-sdk && npm publish",
+    "start": "ng serve",
+    "test": "ng test"
+  },
   "dependencies": {
-    "@angular/animations": "~13.0.2",
-    "@angular/common": "~13.0.2",
-    "@angular/compiler": "~13.0.2",
-    "@angular/core": "~13.0.2",
-    "@angular/forms": "~13.0.2",
-    "@angular/platform-browser": "~13.0.2",
-    "@angular/platform-browser-dynamic": "~13.0.2",
-    "@angular/router": "~13.0.2",
+    "@angular/animations": "^14.3.0",
+    "@angular/common": "^14.3.0",
+    "@angular/compiler": "^14.3.0",
+    "@angular/core": "^14.3.0",
+    "@angular/forms": "^14.3.0",
+    "@angular/platform-browser": "^14.3.0",
+    "@angular/platform-browser-dynamic": "^14.3.0",
+    "@angular/router": "^14.3.0",
     "@transifex/native": "^5.2.0",
-    "rxjs": "~6.6.0",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.11.4"
+    "rxjs": "~7.5.7",
+    "tslib": "^2.5.0",
+    "zone.js": "~0.11.8"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1300.3",
-    "@angular-devkit/build-angular": "~13.0.3",
-    "@angular-eslint/builder": "^13.0.1",
-    "@angular-eslint/eslint-plugin": "^13.0.1",
-    "@angular-eslint/eslint-plugin-template": "^13.0.1",
-    "@angular-eslint/schematics": "13.0.1",
-    "@angular-eslint/template-parser": "^13.0.1",
-    "@angular/cli": "~13.0.3",
-    "@angular/compiler-cli": "~13.0.2",
-    "@types/jasmine": "^3.10.2",
-    "@types/node": "^12.20.6",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
-    "codelyzer": "^6.0.0",
-    "eslint": "^8.2.0",
-    "eslint-config-airbnb-typescript": "^16.0.0",
+    "@angular-devkit/architect": "^0.1402.11",
+    "@angular-devkit/build-angular": "^14.2.11",
+    "@angular-eslint/builder": "^14.4.0",
+    "@angular-eslint/eslint-plugin": "^14.4.0",
+    "@angular-eslint/eslint-plugin-template": "^14.4.0",
+    "@angular-eslint/schematics": "14.4.0",
+    "@angular-eslint/template-parser": "^14.4.0",
+    "@angular/cli": "^14.2.11",
+    "@angular/compiler-cli": "^14.3.0",
+    "@types/jasmine": "~4.0.0",
+    "@types/node": "^16.18.23",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "eslint": "^8.23.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsdoc": "^37.0.3",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "jasmine-core": "^3.10.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-rxjs": "^5.0.3",
+    "eslint-plugin-rxjs-angular": "^2.0.0",
+    "eslint-plugin-tsdoc": "^0.2.17",
+    "eslint-plugin-unicorn": "^46.0.0",
+    "jasmine-core": "~4.3.0",
     "jasmine-spec-reporter": "^7.0.0",
-    "karma": "~6.3.9",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.0.3",
-    "karma-jasmine": "~4.0.0",
-    "ng-packagr": "^13.0.6",
-    "protractor": "~7.0.0",
+    "karma": "~6.4.1",
+    "karma-chrome-launcher": "~3.1.1",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "ng-packagr": "^14.2.2",
     "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
-    "typescript": "~4.4.4"
+    "typescript": "~4.7.4"
+  },
+  "engines": {
+    "node": "v16.19.0",
+    "npm": "8.19.3"
   }
 }

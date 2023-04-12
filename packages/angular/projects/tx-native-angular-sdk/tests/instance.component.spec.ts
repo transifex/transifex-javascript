@@ -1,24 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReplaySubject } from 'rxjs';
+import { tx } from '@transifex/native';
 
 import { TranslationService, TXInstanceComponent } from '../src/public-api';
 
-
 describe('TXInstanceComponent', () => {
-  let localeChangedSubject: ReplaySubject<string>;
-
   let component: TXInstanceComponent;
   let fixture: ComponentFixture<TXInstanceComponent>;
   let service: TranslationService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      declarations: [ TXInstanceComponent ],
+      providers: [ TXInstanceComponent ],
     })
       .compileComponents();
-
-    localeChangedSubject = new ReplaySubject<string>(0);
 
     service = TestBed.inject(TranslationService);
   });
@@ -37,8 +32,8 @@ describe('TXInstanceComponent', () => {
     // setup
     component.token = 'token';
     component.alias = 'alias';
-    spyOn(service, 'addInstance').and.returnValue(Promise.resolve(true));
-    spyOn(service, 'getInstance').and.returnValue({});
+    spyOn(service, 'addInstance').and.resolveTo(true);
+    spyOn(service, 'getInstance').and.returnValue(tx);
 
     // act
     await component.ngOnInit();
@@ -49,30 +44,25 @@ describe('TXInstanceComponent', () => {
     expect(service).toBeTruthy();
     expect(service.addInstance).toHaveBeenCalled();
     expect(service.getInstance).toHaveBeenCalled();
-    component.instanceIsReady.subscribe(
-      (value) => expect(value).toBe(true),
-    );
+    component.instanceIsReady.subscribe((value) => expect(value).toBe(true));
   });
 
-  it('should create the component and fail to create the instance',
-    async () => {
+  it('should create the component and fail to create the instance', async () => {
     // setup
-      component.token = 'token';
-      component.alias = 'alias';
-      spyOn(service, 'addInstance').and.returnValue(Promise.resolve(false));
-      spyOn(service, 'getInstance').and.returnValue(undefined);
+    component.token = 'token';
+    component.alias = 'alias';
+    spyOn(service, 'addInstance').and.resolveTo(false);
+    spyOn(service, 'getInstance');
 
-      // act
-      await component.ngOnInit();
-      fixture.detectChanges();
+    // act
+    await component.ngOnInit();
+    fixture.detectChanges();
 
-      // assert
-      expect(component).toBeTruthy();
-      expect(service).toBeTruthy();
-      expect(service.addInstance).toHaveBeenCalled();
-      expect(service.getInstance).toHaveBeenCalled();
-      component.instanceIsReady.subscribe(
-        (value) => expect(value).toBe(false),
-      );
-    });
+    // assert
+    expect(component).toBeTruthy();
+    expect(service).toBeTruthy();
+    expect(service.addInstance).toHaveBeenCalled();
+    expect(service.getInstance).toHaveBeenCalled();
+    component.instanceIsReady.subscribe((value) => expect(value).toBe(false));
+  });
 });

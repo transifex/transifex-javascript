@@ -10,23 +10,19 @@ class CustomService {
 describe('TxNativeModule', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TxNativeModule],
+      imports: [ TxNativeModule ],
     });
   });
 
-  it('should not provide \'CustomService\' service', () => {
-    expect(
-      () => TestBed.inject(CustomService),
-    ).toThrowError(/No provider for/);
+  it("should not provide 'CustomService' service", () => {
+    expect(() => TestBed.inject(CustomService)).toThrowError(/No provider for/);
   });
 });
 
 describe('TxNativeModule.forRoot()', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TxNativeModule.forRoot(),
-      ],
+      imports: [ TxNativeModule.forRoot() ],
     });
   });
 
@@ -35,13 +31,10 @@ describe('TxNativeModule.forRoot()', () => {
     expect(TestBed.inject(TranslationService)).toBeTruthy();
   });
 
-  it('should provide a single instance for \'TranslationService\'',
-    () => {
-      const translationService: TranslationService = TestBed.inject(
-        TranslationService,
-      );
+  it("should provide a single instance for 'TranslationService'", () => {
+    const translationService: TranslationService = TestBed.inject(TranslationService);
 
-      // assert
-      expect(translationService).toBeDefined();
-    });
+    // assert
+    expect(translationService).toBeDefined();
+  });
 });
