@@ -22,11 +22,7 @@ export const T = (
       if (instanceConfig) {
         translationService.addInstance(instanceConfig);
       }
-      return translationService.translate(
-        str,
-        { ...params },
-        (instanceConfig && instanceConfig.alias) || '',
-      );
+      return translationService.translate(str, { ...params }, instanceConfig?.alias ?? '');
     },
   });
 };

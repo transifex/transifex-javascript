@@ -12,9 +12,9 @@ import { TranslationService } from './translation.service';
   template: '<ng-content></ng-content>',
 })
 export class TXInstanceComponent implements OnInit {
-  @Input() alias!: string;
+  @Input() alias = '';
 
-  @Input() token!: string;
+  @Input() token = '';
 
   @Input() controlled = true;
 
