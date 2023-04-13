@@ -33,11 +33,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
    * Updates the translation in case of locale changed
    */
   updateTranslation(str: string, params: Record<string, unknown>): void {
-    this.translation = this.translationService.translate(
-      str,
-      params,
-      this.instance && this.instance.alias ? this.instance.alias : '',
-    );
+    this.translation = this.translationService.translate(str, params, this.instance.alias);
     this.lastStr = str;
     this.lastParams = params;
     this.ref.markForCheck();
@@ -70,11 +66,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
       });
     }
 
-    this.translation = this.translationService.translate(
-      str,
-      params,
-      this.instance && this.instance.alias ? this.instance.alias : '',
-    );
+    this.translation = this.translationService.translate(str, params, this.instance.alias);
 
     return this.translation;
   }

@@ -67,7 +67,7 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Do not retrieve languages in the initialization if alternative instance found, will fetch languages
     // when the instance is ready using a subscription
-    if (this.instance && this.instance.alias) {
+    if (this.instance.alias) {
       return;
     }
     this.getLanguages();
