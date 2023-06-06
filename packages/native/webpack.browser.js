@@ -6,6 +6,7 @@ module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './src/index.js',
   output: {
+    globalObject: 'this',
     path: path.resolve(__dirname, 'dist'),
     filename: 'browser.native.js',
     library: 'Transifex',
