@@ -5,6 +5,7 @@ module.exports = [
     mode: 'production',
     entry: './src/index.js',
     output: {
+      globalObject: 'this',
       path: path.resolve(__dirname, 'dist'),
       filename: 'node.jsonapi.js',
       library: 'jsonapi',
@@ -17,6 +18,7 @@ module.exports = [
     mode: 'production',
     entry: './src/index.js',
     output: {
+      globalObject: 'this',
       path: path.resolve(__dirname, 'dist'),
       filename: 'browser.jsonapi.js',
       library: 'jsonapi',
