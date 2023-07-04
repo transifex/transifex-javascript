@@ -317,6 +317,9 @@ params: Object({
   // Replace the existing string tags with the tags of this request
   overrideTags: Boolean,
 
+  // Replace the existing string occurrences with the occurrences of this request
+  overrideOccurrences: Boolean,
+
   // If true, when wait for processing to be complete before
   // resolving this promise
   noWait: Boolean,

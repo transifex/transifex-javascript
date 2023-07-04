@@ -170,6 +170,7 @@ class PushCommand extends Command {
           purge: flags.purge,
           do_not_keep_translations: flags['do-not-keep-translations'],
           override_tags: flags['override-tags'],
+          override_occurrences: flags['override-occurrences'],
           dry_run: flags['dry-run'],
         });
 
@@ -326,6 +327,10 @@ PushCommand.flags = {
   }),
   'override-tags': Flags.boolean({
     description: 'override tags when pushing content',
+    default: false,
+  }),
+  'override-occurrences': Flags.boolean({
+    description: 'override occurrences when pushing content',
     default: false,
   }),
   parser: Flags.string({
