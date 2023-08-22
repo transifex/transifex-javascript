@@ -1,7 +1,6 @@
 {
   "name": "@transifex/angular-projects",
-  "version": "5.2.0",
-  "private": true,
+  "version": "5.4.0",
   "description": "i18n Angular framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -39,18 +38,18 @@
     "test": "ng test"
   },
   "dependencies": {
-    "@angular/animations": "^14.3.0",
-    "@angular/common": "^14.3.0",
-    "@angular/compiler": "^14.3.0",
-    "@angular/core": "^14.3.0",
-    "@angular/forms": "^14.3.0",
-    "@angular/platform-browser": "^14.3.0",
-    "@angular/platform-browser-dynamic": "^14.3.0",
-    "@angular/router": "^14.3.0",
-    "@transifex/native": "^5.2.0",
-    "rxjs": "~7.5.7",
-    "tslib": "^2.5.0",
-    "zone.js": "~0.11.8"
+    "@angular/animations": "~13.0.2",
+    "@angular/common": "~13.0.2",
+    "@angular/compiler": "~13.0.2",
+    "@angular/core": "~13.0.2",
+    "@angular/forms": "~13.0.2",
+    "@angular/platform-browser": "~13.0.2",
+    "@angular/platform-browser-dynamic": "~13.0.2",
+    "@angular/router": "~13.0.2",
+    "@transifex/native": "^5.4.0",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.1402.11",

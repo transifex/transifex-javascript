@@ -98,7 +98,7 @@ declare module '@transifex/native' {
         };
         string: string;
       }>,
-      config?: { noWait: boolean; overrideTags: boolean; purge: boolean }
+      config?: { noWait: boolean; overrideTags: boolean; overrideOccurrences: boolean; purge: boolean }
     ): Promise<{
       created: number;
       deleted: number;

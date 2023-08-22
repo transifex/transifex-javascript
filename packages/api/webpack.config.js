@@ -5,6 +5,7 @@ module.exports = [
     mode: 'production',
     entry: './src/transifexApi.js',
     output: {
+      globalObject: 'this',
       path: path.resolve(__dirname, 'dist'),
       filename: 'node.transifexApi.js',
       library: 'transifexApi',
@@ -17,6 +18,7 @@ module.exports = [
     mode: 'production',
     entry: './src/transifexApi.js',
     output: {
+      globalObject: 'this',
       path: path.resolve(__dirname, 'dist'),
       filename: 'browser.transifexApi.js',
       library: 'transifexApi',
