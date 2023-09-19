@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import {of} from 'rxjs';
 
-import { LanguagePickerComponent } from '../src/lib/language-picker.component';
-import { ILanguage, TranslationService, TXInstanceComponent } from '../src/public-api';
+import {LanguagePickerComponent} from '../src/lib/language-picker.component';
+import {ILanguage, TranslationService, TXInstanceComponent} from '../src/public-api';
 
 describe('LanguagePickerComponent', () => {
   let component: LanguagePickerComponent;
@@ -11,16 +11,6 @@ describe('LanguagePickerComponent', () => {
   let service: TranslationService;
   let instance: TXInstanceComponent;
 
-  const translationParams = {
-    _key: '',
-    _context: '',
-    _comment: '',
-    _charlimit: 0,
-    _tags: '',
-    _escapeVars: false,
-    _inline: false,
-    sanitize: false,
-  };
   const languages: ILanguage[] = [
     { code: 'en', name: 'English', localized_name: 'English', rtl: false },
     { code: 'el', name: 'Greek', localized_name: 'Ελληνικά', rtl: false },
@@ -51,7 +41,7 @@ describe('LanguagePickerComponent', () => {
     spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
-    await component.getLanguages();
+    await component.ngOnInit();
 
     // assert
     expect(service.getLanguages).toHaveBeenCalled();
@@ -81,20 +71,25 @@ describe('LanguagePickerComponent', () => {
     spyOn(component, 'onChange').and.callThrough();
 
     // act
-    await component.ngOnInit();
+    await component.getLanguages();
     fixture.detectChanges();
 
     // assert
-    const select: HTMLSelectElement = fixture.debugElement.query(
-      By.css('.tx-language-picker'),
-    ).nativeElement;
-    select.value = select.options[1].value;
+    const select: HTMLSelectElement = fixture.debugElement.query(By.css('.tx-language-picker')).nativeElement;
+    const optValue = select.options[1]?.value;
+    if (optValue === undefined) {
+      throw new Error('select.options[1]?.value is undefined');
+    }
+    select.value = optValue;
     select.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
-    const text = select.options[select.selectedIndex].label;
-    expect(text).toBe('Ελληνικά');
-    expect(await component.onChange).toHaveBeenCalled();
+    const optLabel = select.options[select.selectedIndex]?.label;
+    if (optLabel === undefined) {
+      throw new Error('select.options[select.selectedIndex]?.label is undefined');
+    }
+    expect(optLabel).toBe('Ελληνικά');
+    expect(component.onChange).toHaveBeenCalled();
   });
 
   it('should get languages of an alternative instance', async () => {
@@ -102,13 +97,12 @@ describe('LanguagePickerComponent', () => {
     instance.alias = 'test';
     instance.token = 'test';
     component.instance = instance;
-    const instanceReadySpy = spyOnProperty(component, 'instanceReady', 'get')
-      .and.returnValue(of(true));
+    spyOnProperty(instance, 'instanceIsReady').and.returnValue(of(true));
     spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
     await instance.ngOnInit();
-    await component.ngOnInit();
+    component.ngOnInit();
 
     // assert
     expect(component.languages).toEqual(languages);

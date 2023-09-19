@@ -1,6 +1,5 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { tx } from '@transifex/native';
 
 import { TComponent } from '../src/lib/T.component';
@@ -9,14 +8,12 @@ import { SafeHtmlPipe, TranslationService, TXInstanceComponent } from '../src/pu
 
 describe('TComponent', () => {
   let localeChangedSubject: ReplaySubject<string>;
-  let translationsFetchedSubject: ReplaySubject<boolean>;
 
   let component: TComponent;
   let fixture: ComponentFixture<TComponent>;
   let service: TranslationService;
   let instance: TXInstanceComponent;
   let localeChangedSpy: jasmine.Spy<jasmine.Func>;
-  let translationsFetchedSpy: jasmine.Spy<jasmine.Func>;
 
   const translationParams = {
     _key: '',
@@ -34,10 +31,9 @@ describe('TComponent', () => {
       declarations: [TComponent, SafeHtmlPipe, TXInstanceComponent],
       providers: [TXInstanceComponent],
     })
-      .compileComponents();
+        .compileComponents();
 
     localeChangedSubject = new ReplaySubject<string>(0);
-    translationsFetchedSubject = new ReplaySubject<boolean>(0);
 
     service = TestBed.inject(TranslationService);
     instance = TestBed.inject(TXInstanceComponent);
@@ -162,9 +158,7 @@ describe('TComponent', () => {
     // act
     service.translate('test', { ...translationParams });
     component.str = 'other-value';
-    component.ngOnChanges({
-      str: new SimpleChange(null, component.str, true),
-    });
+    component.ngOnChanges()
     fixture.detectChanges();
 
     // assert
@@ -205,7 +199,7 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     component.context = 'late';
-    component.ngOnChanges({});
+    component.ngOnChanges();
     fixture.detectChanges();
 
     // assert

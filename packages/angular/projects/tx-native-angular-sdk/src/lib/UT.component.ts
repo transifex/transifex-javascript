@@ -14,27 +14,11 @@ import { TranslationService } from './translation.service';
   encapsulation: ViewEncapsulation.None,
 })
 
-/**
- * A translation component with escaped variables
- *
- * @param {string} str
- * @param {string=} key
- * @param {string=} context
- * @param {string=} comment
- * @param {number=} charlimit
- * @param {string=} tags
- * @param {boolean=} escapeVars
- * @param {boolean=} inline
- * @param {Object=} vars
- */
 export class UTComponent extends TComponent {
-  /**
-   * Constructor
-   *
-   * @param translationService
-   */
-  constructor(translationService: TranslationService,
-    protected instance: TXInstanceComponent) {
+  constructor(
+      translationService: TranslationService,
+      protected override instance: TXInstanceComponent,
+  ) {
     super(translationService, instance);
     this.escapeVars = true;
   }
