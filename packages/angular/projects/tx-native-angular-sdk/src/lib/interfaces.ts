@@ -1,44 +1,18 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-export interface ITranslationServiceConfig {
-  token: string;
-  cdsHost?: string;
-  filterTags?: string;
-  filterStatus?: string;
-  cache?: () => void;
-  missingPolicy?: IPolicy;
-  errorPolicy?: IPolicy;
-  stringRenderer?: IStringRenderer;
+import type { ITranslationConfig, ITranslateParams as ITranslateParamsNative } from '@transifex/native';
+
+export type { ILanguage } from '@transifex/native';
+
+export interface ITranslationServiceConfig extends ITranslationConfig {
   instanceAlias?: string;
 }
 
-export interface ILanguage {
-  code: string;
-  name: string;
-  localized_name: string;
-  rtl?: boolean;
-}
-
-export interface ITranslateParams {
-  _context?: string;
-  _comment?: string;
-  _charlimit?: number;
-  _tags?: string;
-  _key?: string;
-  _escapeVars?: boolean;
+export interface ITranslateParams extends ITranslateParamsNative {
   _inline?: boolean;
   sanitize?: boolean;
 }
 
-export interface IPolicy {
-  handle(sourceString: string, localeCode: string): string;
-}
-
-export interface IStringRenderer {
-  render(sourceString: string, localeCode: string, params: ITranslateParams): string;
-}
-
 export interface ITXInstanceConfiguration {
-  token: string;
   alias: string;
   controlled: boolean;
+  token: string;
 }

@@ -1,77 +1,55 @@
-/* eslint-disable prefer-arrow/prefer-arrow-functions */
-import { Component, OnInit } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
 
 import { T } from '../src/lib/T.decorator';
 
-
 describe('T Decorator', () => {
-  const instanceConfig = {
-    token: 'token',
-    alias: 'alias',
-    controlled: false,
-  };
-
   @Component({
-    selector: 'test-cmp',
-    template: '<div>{{testProperty}}</div>',
-    styles: [],
+    template: '<div>{{ testProperty }}</div>',
   })
-  class TestComponent implements OnInit {
-    @T('not-trans-dec', { _key: 'test' })
-      testProperty: any;
-
-    ngOnInit() {
-    }
+  class TestComponent {
+    @T('not-trans-dec', { _key: 'test' }) testProperty!: string;
   }
 
   @Component({
-    selector: 'test-cmp',
-    template: '<div>{{testProperty}}</div>',
-    styles: [],
+    template: '<div>{{ testProperty }}</div>',
   })
-  class TestWithInstanceComponent implements OnInit {
-    @T('not-trans-dec', { _key: 'test' }, instanceConfig)
-      testProperty: any;
-
-    ngOnInit() {
-    }
+  class TestWithInstanceComponent {
+    @T('not-trans-dec', { _key: 'test' }, {alias: 'alias', controlled: true, token: ''} ) testProperty!: string;
   }
 
-  let component: TestComponent;
-  let fixture: ComponentFixture<TestComponent>;
-
-  let componentWithInstance: TestWithInstanceComponent;
-  let fixtureWithInstance: ComponentFixture<TestWithInstanceComponent>;
+  beforeEach(() => {
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+  });
 
   beforeEach(() => {
     spyOn(tx, 'translate').and.returnValue('ok-translated-dec');
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-
-    fixtureWithInstance = TestBed.createComponent(TestWithInstanceComponent);
-    componentWithInstance = fixtureWithInstance.componentInstance;
-    fixtureWithInstance.detectChanges();
-  });
-
   it('should test the decorator T', () => {
-    const compiled = fixture.debugElement.nativeElement;
+    const fixture = TestBed.createComponent(TestComponent);
+    const component = fixture.componentInstance;
+
+    fixture.detectChanges();
     expect(tx.translate).toHaveBeenCalled();
-    expect((compiled as HTMLDivElement).innerHTML)
-      .toContain('ok-translated-dec');
+    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', { _key: 'test' });
+    expect(component.testProperty).toBe('ok-translated-dec');
+
+    const compiled: HTMLElement = fixture.debugElement.nativeElement;
+    expect(compiled.innerHTML).toContain('ok-translated-dec');
   });
 
   it('should test the decorator T with an instance', () => {
-    const compiled = fixtureWithInstance.debugElement.nativeElement;
+    const fixtureWithInstance = TestBed.createComponent(TestWithInstanceComponent);
+    const component = fixtureWithInstance.componentInstance;
+
+    fixtureWithInstance.detectChanges();
     expect(tx.translate).toHaveBeenCalled();
-    setTimeout(function () {
-      expect((compiled as HTMLDivElement).innerHTML)
-        .toContain('ok-translated-dec');
-    }, 1000);
+    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', { _key: 'test' });
+    expect(component.testProperty).toBe('ok-translated-dec');
+
+    const compiled: HTMLElement = fixtureWithInstance.debugElement.nativeElement;
+    expect(compiled.innerHTML).toContain('ok-translated-dec');
   });
 });

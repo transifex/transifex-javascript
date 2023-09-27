@@ -23,18 +23,17 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
   /**
    * Constructor
    */
-  constructor(protected translationService: TranslationService,
-    private instance: TXInstanceComponent,
-    private ref: ChangeDetectorRef) {}
+  constructor(
+      protected translationService: TranslationService,
+      private instance: TXInstanceComponent,
+      private ref: ChangeDetectorRef,
+  ) {}
 
   /**
    * Updates the translation in case of locale changed
    */
   updateTranslation(str: string, params: Record<string, unknown>): void {
-    this.translation = this.translationService.translate(str, params,
-      this.instance && this.instance.alias
-        ? this.instance.alias
-        : '');
+    this.translation = this.translationService.translate(str, params, this.instance.alias);
     this.lastStr = str;
     this.lastParams = params;
     this.ref.markForCheck();
@@ -56,24 +55,18 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 
     // subscribe to localeChanged, in case the language changes
     if (!this.onLocaleChange) {
-      this.onLocaleChange = this.translationService.localeChanged.subscribe((locale: string) => {
+      this.onLocaleChange = this.translationService.localeChanged.subscribe(() => {
         this.updateTranslation(str, params);
       });
     }
 
     if (!this.onTranslationsFetch) {
-      this.onTranslationsFetch =
-      this.translationService.translationsFetched.subscribe(
-        () => {
-          this.updateTranslation(str, params);
-        },
-      );
+      this.onTranslationsFetch = this.translationService.translationsFetched.subscribe(() => {
+        this.updateTranslation(str, params);
+      });
     }
 
-    this.translation = this.translationService.translate(str, params,
-      this.instance && this.instance.alias
-        ? this.instance.alias
-        : '');
+    this.translation = this.translationService.translate(str, params, this.instance.alias);
 
     return this.translation;
   }
@@ -82,11 +75,11 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
    * Clean any existing subscription to change events
    */
   private dispose(): void {
-    if (typeof this.onLocaleChange !== 'undefined') {
+    if (this.onLocaleChange !== undefined) {
       this.onLocaleChange.unsubscribe();
       this.onLocaleChange = undefined;
     }
-    if (typeof this.onTranslationsFetch !== 'undefined') {
+    if (this.onTranslationsFetch !== undefined) {
       this.onTranslationsFetch.unsubscribe();
       this.onTranslationsFetch = undefined;
     }

@@ -1,10 +1,13 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { TXInstanceComponent } from './instance.component';
 import { ITranslateParams } from './interfaces';
 import { TranslationService } from './translation.service';
 
+/**
+ * A translation component
+ **/
 @Component({
   selector: 'T',
   template: `
@@ -14,20 +17,7 @@ import { TranslationService } from './translation.service';
   styles: [],
 })
 
-/**
- * A translation component
- *
- * @param {string} str
- * @param {string=} key
- * @param {string=} context
- * @param {string=} comment
- * @param {number=} charlimit
- * @param {string=} tags
- * @param {boolean=} escapeVars
- * @param {boolean=} inline
- * @param {boolean=} sanitize
- * @param {Object=} vars
- */
+
 export class TComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
     str = '';
@@ -91,12 +81,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
 
   private actualVars: Record<string, unknown> = {};
 
-  /**
-   * Constructor
-   *
-   * @param translationService
-   * @param instance
-   */
   constructor(protected translationService: TranslationService,
     protected instance: TXInstanceComponent) {
     this.onLocaleChange = this.localeChanged.subscribe(
@@ -123,11 +107,12 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
    * Component destruction
    */
   ngOnDestroy() {
-    if (typeof this.onLocaleChange !== 'undefined') {
+    if (this.onLocaleChange !== undefined) {
       this.onLocaleChange.unsubscribe();
       this.onLocaleChange = undefined;
     }
-    if (typeof this.onTranslationsFetch !== 'undefined') {
+
+    if (this.onTranslationsFetch !== undefined) {
       this.onTranslationsFetch.unsubscribe();
       this.onTranslationsFetch = undefined;
     }
@@ -135,10 +120,8 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
 
   /**
    * Input parameters change detector
-   *
-   * @param changes
    */
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.translate();
   }
 

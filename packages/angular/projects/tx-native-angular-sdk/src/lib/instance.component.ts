@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-useless-constructor */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { TranslationService } from './translation.service';
+import {TxNative} from "@transifex/native";
 
 @Component({
   selector: 'tx-instance',
@@ -11,26 +11,14 @@ import { TranslationService } from './translation.service';
   `,
 })
 
-/**
- * A TX Native instance selector component
- *
- * @param {string} alias
- * @param {string} token
- * @param {boolean} controlled
- * @param {EventEmitter} instanceReady
- */
 export class TXInstanceComponent implements OnInit {
-  @Input()
-    alias!: string;
+  @Input() alias = '';
 
-  @Input()
-    token!: string;
+  @Input() token = '';
 
-  @Input()
-    controlled = true;
+  @Input() controlled = true;
 
-  @Output()
-    instanceReady: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() instanceReady: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // Observables for detecting instance readiness
   get instanceIsReady(): Observable<boolean> {
@@ -40,16 +28,11 @@ export class TXInstanceComponent implements OnInit {
   private instanceReadySubject = new ReplaySubject<boolean>(0);
 
   // The instance
-  private instance: any;
+  private instance?: TxNative;
 
-  /**
-   * Constructor
-   *
-   * @param translationService
-   */
   constructor(private translationService: TranslationService) {}
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void>  {
     if (!this.token || !this.alias) {
       this.instanceReady.emit(false);
       this.instanceReadySubject.next(false);
