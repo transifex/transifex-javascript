@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { tx, ILanguage, ITranslationConfig, TxNative } from '@transifex/native';
+import { ILanguage, ITranslationConfig, TxNative, tx } from '@transifex/native';
 
-import { TranslationService } from '../src/lib/translation.service';
-import { ITranslationServiceConfig } from '../src/public-api';
+import { TranslationService } from '../lib/translation.service';
+import { ITranslationServiceConfig } from '../public-api';
 
 describe('TranslationService', () => {
   let service: TranslationService;
@@ -66,11 +66,15 @@ describe('TranslationService', () => {
     spyOn(tx, 'translate').and.returnValue('translated');
 
     // act
-    const result = service.translate('not-translated', { ...translationParams });
+    const result = service.translate('not-translated', {
+      ...translationParams,
+    });
 
     // assert
     expect(result).toBe('translated');
-    expect(tx.translate).toHaveBeenCalledWith('not-translated', { ...translationParams });
+    expect(tx.translate).toHaveBeenCalledWith('not-translated', {
+      ...translationParams,
+    });
   });
 
   it('should translate with key', () => {
@@ -78,11 +82,17 @@ describe('TranslationService', () => {
     spyOn(tx, 'translate').and.returnValue('translated');
 
     // act
-    const result = service.translate('not-translated', { ...translationParams, _key: 'key-string' });
+    const result = service.translate('not-translated', {
+      ...translationParams,
+      _key: 'key-string',
+    });
 
     // assert
     expect(result).toBe('translated');
-    expect(tx.translate).toHaveBeenCalledWith('not-translated', { ...translationParams, _key: 'key-string' });
+    expect(tx.translate).toHaveBeenCalledWith('not-translated', {
+      ...translationParams,
+      _key: 'key-string',
+    });
   });
 
   it('should translate and escape', () => {
@@ -90,11 +100,17 @@ describe('TranslationService', () => {
     spyOn(tx, 'translate').and.returnValue('<b>Hola {username}</b>');
 
     // act
-    const result = service.translate('<b>Hello {username}</b>', { ...translationParams, _escapeVars: true });
+    const result = service.translate('<b>Hello {username}</b>', {
+      ...translationParams,
+      _escapeVars: true,
+    });
 
     // assert
     expect(result).toBe('<b>Hola {username}</b>');
-    expect(tx.translate).toHaveBeenCalledWith('<b>Hello {username}</b>', { ...translationParams, _escapeVars: true });
+    expect(tx.translate).toHaveBeenCalledWith('<b>Hello {username}</b>', {
+      ...translationParams,
+      _escapeVars: true,
+    });
   });
 
   it('should set current locale', async () => {
@@ -179,7 +195,9 @@ describe('TranslationService', () => {
     };
 
     // act/assert
-    await expectAsync(service.addInstance(instanceConfig)).toBeResolvedTo(false);
+    await expectAsync(service.addInstance(instanceConfig)).toBeResolvedTo(
+      false
+    );
     expect(tx.controllerOf).not.toHaveBeenCalled();
   });
 
@@ -194,7 +212,9 @@ describe('TranslationService', () => {
     };
 
     // act/assert
-    await expectAsync(service.addInstance(instanceConfig)).toBeResolvedTo(false);
+    await expectAsync(service.addInstance(instanceConfig)).toBeResolvedTo(
+      false
+    );
     expect(tx.controllerOf).not.toHaveBeenCalled();
   });
 
@@ -247,7 +267,9 @@ describe('TranslationService', () => {
     await service.fetchTranslations('tag1');
 
     // assert
-    expect(tx.fetchTranslations).toHaveBeenCalledWith('en', { filterTags: 'tag1' });
+    expect(tx.fetchTranslations).toHaveBeenCalledWith('en', {
+      filterTags: 'tag1',
+    });
   });
 
   it('should fetch translations on demand without custom instance no fetched tags', async () => {
@@ -263,7 +285,9 @@ describe('TranslationService', () => {
     await service.fetchTranslations('tag1');
 
     // assert
-    expect(tx.fetchTranslations).toHaveBeenCalledWith('en', { filterTags: 'tag1' });
+    expect(tx.fetchTranslations).toHaveBeenCalledWith('en', {
+      filterTags: 'tag1',
+    });
   });
 
   it('should fetch translations on demand with custom instance', async () => {
@@ -280,7 +304,9 @@ describe('TranslationService', () => {
 
     // assert
     expect(service.getInstance).toHaveBeenCalledWith('my-instance');
-    expect(tx.fetchTranslations).toHaveBeenCalledWith('en', { filterTags: 'tag1' });
+    expect(tx.fetchTranslations).toHaveBeenCalledWith('en', {
+      filterTags: 'tag1',
+    });
   });
 
   it('should not fetch translations on demand if no instance', async () => {

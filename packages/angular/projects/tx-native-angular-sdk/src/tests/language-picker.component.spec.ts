@@ -1,9 +1,13 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {of} from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
-import {LanguagePickerComponent} from '../src/lib/language-picker.component';
-import {ILanguage, TranslationService, TXInstanceComponent} from '../src/public-api';
+import { LanguagePickerComponent } from '../lib/language-picker.component';
+import {
+  ILanguage,
+  TranslationService,
+  TXInstanceComponent,
+} from '../public-api';
 
 describe('LanguagePickerComponent', () => {
   let component: LanguagePickerComponent;
@@ -20,8 +24,7 @@ describe('LanguagePickerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [LanguagePickerComponent, TXInstanceComponent],
       providers: [TXInstanceComponent],
-    })
-      .compileComponents();
+    }).compileComponents();
     service = TestBed.inject(TranslationService);
     instance = TestBed.inject(TXInstanceComponent);
   });
@@ -59,8 +62,7 @@ describe('LanguagePickerComponent', () => {
     // assert
     const compiled = fixture.debugElement.nativeElement;
     const selectOptions = (compiled as HTMLDivElement).querySelector('select');
-    expect((compiled as HTMLDivElement).innerHTML)
-      .toContain('<select');
+    expect((compiled as HTMLDivElement).innerHTML).toContain('<select');
     expect(selectOptions?.length).toBe(2);
   });
 
@@ -75,7 +77,9 @@ describe('LanguagePickerComponent', () => {
     fixture.detectChanges();
 
     // assert
-    const select: HTMLSelectElement = fixture.debugElement.query(By.css('.tx-language-picker')).nativeElement;
+    const select: HTMLSelectElement = fixture.debugElement.query(
+      By.css('.tx-language-picker')
+    ).nativeElement;
     const optValue = select.options[1]?.value;
     if (optValue === undefined) {
       throw new Error('select.options[1]?.value is undefined');
@@ -86,7 +90,9 @@ describe('LanguagePickerComponent', () => {
 
     const optLabel = select.options[select.selectedIndex]?.label;
     if (optLabel === undefined) {
-      throw new Error('select.options[select.selectedIndex]?.label is undefined');
+      throw new Error(
+        'select.options[select.selectedIndex]?.label is undefined'
+      );
     }
     expect(optLabel).toBe('Ελληνικά');
     expect(component.onChange).toHaveBeenCalled();

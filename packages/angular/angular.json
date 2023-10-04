@@ -26,7 +26,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/tx-native-angular-sdk/test.ts",
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/tx-native-angular-sdk/tsconfig.spec.json",
             "karmaConfig": "projects/tx-native-angular-sdk/karma.conf.js",
             "codeCoverage": true
@@ -46,5 +46,12 @@
       }
     }
   },
-  "defaultProject": "@transifex/angular"
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
+  }
 }
