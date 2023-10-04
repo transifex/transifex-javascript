@@ -47,19 +47,20 @@
         "import/no-extraneous-dependencies": [
           "error",
           {
-            "devDependencies": ["**/*.spec.ts"],
-            "packageDir": "./" // Needed for angular library support
+            "devDependencies": [
+              "**/*.spec.ts"
+            ],
+            "packageDir": "./"
           }
         ],
         "tsdoc/syntax": "warn",
-        "unicorn/filename-case": "off", // We are naming files with capitals
-        // I think some of these are silly. `e` is bad, but `err` and `exc` are decent. `user of users` is confusing, `usr of users` is safer.
+        "unicorn/filename-case": "off",
         "unicorn/prevent-abbreviations": "off"
       },
       "settings": {
         "import/resolver": {
           "typescript": {
-            "alwaysTryTypes": true // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+            "alwaysTryTypes": true
           }
         }
       }

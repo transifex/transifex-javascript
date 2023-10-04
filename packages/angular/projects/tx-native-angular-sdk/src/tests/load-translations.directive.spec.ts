@@ -1,16 +1,13 @@
-import {Component, DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ReplaySubject } from 'rxjs';
 
-import { LoadTranslationsDirective, TranslationService } from '../src/public-api';
-
+import { LoadTranslationsDirective, TranslationService } from '../public-api';
 
 describe('LoadTranslationsDirective', () => {
   @Component({
-    template: `
-      <div [txLoadTranslations]="'tag1'"></div>
-    `,
+    template: ` <div [txLoadTranslations]="'tag1'"></div> `,
   })
   class TestComponent {}
 
@@ -31,14 +28,15 @@ describe('LoadTranslationsDirective', () => {
     service = TestBed.inject(TranslationService);
 
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
-    spyOnProperty(service, 'localeChanged', 'get').and.
-      returnValue(localeChangedSubject);
+    spyOnProperty(service, 'localeChanged', 'get').and.returnValue(
+      localeChangedSubject
+    );
     spyOn(service, 'setCurrentLocale').and.callFake(async (locale) => {
       localeChangedSubject.next(locale);
     });
 
     directives = fixture.debugElement.queryAll(
-      By.directive(LoadTranslationsDirective),
+      By.directive(LoadTranslationsDirective)
     );
     fixture.detectChanges();
   });

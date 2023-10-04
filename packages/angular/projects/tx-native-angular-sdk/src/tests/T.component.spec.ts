@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReplaySubject } from 'rxjs';
 import { tx } from '@transifex/native';
+import { ReplaySubject } from 'rxjs';
 
-import { TComponent } from '../src/lib/T.component';
-import { SafeHtmlPipe, TranslationService, TXInstanceComponent } from '../src/public-api';
-
+import { TComponent } from '../lib/T.component';
+import {
+  SafeHtmlPipe,
+  TranslationService,
+  TXInstanceComponent,
+} from '../public-api';
 
 describe('TComponent', () => {
   let localeChangedSubject: ReplaySubject<string>;
@@ -30,8 +33,7 @@ describe('TComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TComponent, SafeHtmlPipe, TXInstanceComponent],
       providers: [TXInstanceComponent],
-    })
-        .compileComponents();
+    }).compileComponents();
 
     localeChangedSubject = new ReplaySubject<string>(0);
 
@@ -39,7 +41,11 @@ describe('TComponent', () => {
     instance = TestBed.inject(TXInstanceComponent);
 
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
-    localeChangedSpy = spyOnProperty(service, 'localeChanged', 'get').and.returnValue(localeChangedSubject);
+    localeChangedSpy = spyOnProperty(
+      service,
+      'localeChanged',
+      'get'
+    ).and.returnValue(localeChangedSubject);
     spyOn(service, 'setCurrentLocale').and.callFake(async (locale) => {
       localeChangedSubject.next(locale);
     });
@@ -54,8 +60,11 @@ describe('TComponent', () => {
   it('should create the component', async () => {
     // setup
     spyOn(component, 'translate');
-    localeChangedSpy = spyOnProperty(component, 'localeChanged', 'get')
-      .and.returnValue(localeChangedSubject);
+    localeChangedSpy = spyOnProperty(
+      component,
+      'localeChanged',
+      'get'
+    ).and.returnValue(localeChangedSubject);
 
     // act
     component.ngOnInit();
@@ -82,8 +91,11 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -98,8 +110,11 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -114,8 +129,11 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams, _key: 'key-not-translated' }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams, _key: 'key-not-translated' },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -130,8 +148,9 @@ describe('TComponent', () => {
 
     // assert
     const compiled = fixture.debugElement.nativeElement;
-    expect((compiled as HTMLDivElement).innerHTML)
-      .toContain('&lt;a&gt;translated&lt;/a&gt;');
+    expect((compiled as HTMLDivElement).innerHTML).toContain(
+      '&lt;a&gt;translated&lt;/a&gt;'
+    );
   });
 
   it('should translate and sanitize the string', () => {
@@ -146,8 +165,9 @@ describe('TComponent', () => {
 
     // assert
     const compiled = fixture.debugElement.nativeElement;
-    expect((compiled as HTMLDivElement).innerHTML)
-      .toContain('<span><a>translated</a></span>');
+    expect((compiled as HTMLDivElement).innerHTML).toContain(
+      '<span><a>translated</a></span>'
+    );
   });
 
   it('should detect input parameters change and translate', () => {
@@ -158,14 +178,15 @@ describe('TComponent', () => {
     // act
     service.translate('test', { ...translationParams });
     component.str = 'other-value';
-    component.ngOnChanges()
+    component.ngOnChanges();
     fixture.detectChanges();
 
     // assert
     expect(service.translate).toHaveBeenCalled();
     const compiled = fixture.debugElement.nativeElement;
-    expect((compiled as HTMLDivElement).innerHTML)
-      .toContain('&lt;a&gt;translated&lt;/a&gt;');
+    expect((compiled as HTMLDivElement).innerHTML).toContain(
+      '&lt;a&gt;translated&lt;/a&gt;'
+    );
   });
 
   it('should detect localeChange and translate', async () => {
@@ -183,8 +204,11 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams, _key: 'key-not-translated' }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams, _key: 'key-not-translated' },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated-again');
   });
 
@@ -203,11 +227,15 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated', {
-      ...translationParams,
-      _key: 'key-not-translated',
-      _context: 'late',
-    }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      {
+        ...translationParams,
+        _key: 'key-not-translated',
+        _context: 'late',
+      },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -223,8 +251,11 @@ describe('TComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams }, 'instance-alias');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams },
+      'instance-alias'
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -245,24 +276,26 @@ describe('TComponent', () => {
     expect(service.translate).toHaveBeenCalled();
   });
 
-  it('should detect translationsFetched using alternative instance',
-    async () => {
-      // setup
-      instance.token = 'instance-token';
-      instance.alias = 'instance-alias';
-      spyOn(service, 'translate').and.returnValue('translated');
+  it('should detect translationsFetched using alternative instance', async () => {
+    // setup
+    instance.token = 'instance-token';
+    instance.alias = 'instance-alias';
+    spyOn(service, 'translate').and.returnValue('translated');
 
-      // act
-      component.str = 'not-translated';
-      component.ngOnInit();
-      fixture.detectChanges();
+    // act
+    component.str = 'not-translated';
+    component.ngOnInit();
+    fixture.detectChanges();
 
-      // change
-      await service.fetchTranslations('tag1');
-      fixture.detectChanges();
+    // change
+    await service.fetchTranslations('tag1');
+    fixture.detectChanges();
 
-      // assert
-      expect(service.translate).toHaveBeenCalledWith('not-translated',
-        { ...translationParams }, 'instance-alias');
-    });
+    // assert
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams },
+      'instance-alias'
+    );
+  });
 });

@@ -2,9 +2,9 @@ import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
 import { ReplaySubject } from 'rxjs';
-import { TranslatePipe } from '../src/lib/translate.pipe';
-import { TranslationService } from '../src/lib/translation.service';
-import { TXInstanceComponent } from '../src/public-api';
+import { TranslatePipe } from '../lib/translate.pipe';
+import { TranslationService } from '../lib/translation.service';
+import { TXInstanceComponent } from '../public-api';
 
 describe('TranslatePipe', () => {
   let localeChangedSubject: ReplaySubject<string>;
@@ -26,13 +26,16 @@ describe('TranslatePipe', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ TXInstanceComponent ],
+      declarations: [TXInstanceComponent],
       providers: [
         TranslationService,
         TXInstanceComponent,
         {
           provide: ChangeDetectorRef,
-          useValue: jasmine.createSpyObj<ChangeDetectorRef>('ChangeDetectorRef', [ 'markForCheck' ]),
+          useValue: jasmine.createSpyObj<ChangeDetectorRef>(
+            'ChangeDetectorRef',
+            ['markForCheck']
+          ),
         },
       ],
     });
@@ -45,7 +48,9 @@ describe('TranslatePipe', () => {
     localeChangedSubject = new ReplaySubject<string>(0);
 
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
-    spyOnProperty(service, 'localeChanged', 'get').and.returnValue(localeChangedSubject);
+    spyOnProperty(service, 'localeChanged', 'get').and.returnValue(
+      localeChangedSubject
+    );
     spyOn(service, 'setCurrentLocale').and.callFake(async (locale) => {
       localeChangedSubject.next(locale);
     });
@@ -91,13 +96,16 @@ describe('TranslatePipe', () => {
     spyOn(service, 'translate').and.returnValue('translated');
 
     // act
-    const translatedStr = translatePipe.transform('not-translated', translationParams);
+    const translatedStr = translatePipe.transform(
+      'not-translated',
+      translationParams
+    );
 
     // assert
     expect(service.translate).toHaveBeenCalledWith(
-        'not-translated',
-        { ...translationParams },
-        '',
+      'not-translated',
+      { ...translationParams },
+      ''
     );
     expect(translatedStr).toEqual('translated');
   });
@@ -113,7 +121,11 @@ describe('TranslatePipe', () => {
     const translatedStr = translatePipe.transform('not-translated');
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated', {}, 'alias');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      {},
+      'alias'
+    );
     expect(translatedStr).toEqual('translated');
   });
 

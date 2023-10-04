@@ -17,7 +17,7 @@
       },
       "rules": {
         "@angular-eslint/component-selector": [
-          "off", // We are not following the angular styleguide to match other implementations
+          "off",
           {
             "prefix": "tx",
             "style": "kebab-case",

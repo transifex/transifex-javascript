@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
 
-import { T } from '../src/lib/T.decorator';
+import { T } from '../lib/T.decorator';
 
 describe('T Decorator', () => {
   @Component({
@@ -16,7 +16,12 @@ describe('T Decorator', () => {
     template: '<div>{{ testProperty }}</div>',
   })
   class TestWithInstanceComponent {
-    @T('not-trans-dec', { _key: 'test' }, {alias: 'alias', controlled: true, token: ''} ) testProperty!: string;
+    @T(
+      'not-trans-dec',
+      { _key: 'test' },
+      { alias: 'alias', controlled: true, token: '' }
+    )
+    testProperty!: string;
   }
 
   beforeEach(() => {
@@ -33,7 +38,9 @@ describe('T Decorator', () => {
 
     fixture.detectChanges();
     expect(tx.translate).toHaveBeenCalled();
-    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', { _key: 'test' });
+    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', {
+      _key: 'test',
+    });
     expect(component.testProperty).toBe('ok-translated-dec');
 
     const compiled: HTMLElement = fixture.debugElement.nativeElement;
@@ -41,15 +48,20 @@ describe('T Decorator', () => {
   });
 
   it('should test the decorator T with an instance', () => {
-    const fixtureWithInstance = TestBed.createComponent(TestWithInstanceComponent);
+    const fixtureWithInstance = TestBed.createComponent(
+      TestWithInstanceComponent
+    );
     const component = fixtureWithInstance.componentInstance;
 
     fixtureWithInstance.detectChanges();
     expect(tx.translate).toHaveBeenCalled();
-    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', { _key: 'test' });
+    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', {
+      _key: 'test',
+    });
     expect(component.testProperty).toBe('ok-translated-dec');
 
-    const compiled: HTMLElement = fixtureWithInstance.debugElement.nativeElement;
+    const compiled: HTMLElement =
+      fixtureWithInstance.debugElement.nativeElement;
     expect(compiled.innerHTML).toContain('ok-translated-dec');
   });
 });
