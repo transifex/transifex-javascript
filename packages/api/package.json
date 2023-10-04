@@ -1,6 +1,6 @@
 {
   "name": "@transifex/api",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Transifex API SDK",
   "keywords": [
     "transifex",
@@ -31,7 +31,7 @@
     "@babel/cli": "^7.17.10",
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
-    "@transifex/jsonapi": "^6.0.0",
+    "@transifex/jsonapi": "^6.0.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.5",
     "eslint": "^7.32.0",

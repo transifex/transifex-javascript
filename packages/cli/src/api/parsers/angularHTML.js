@@ -150,7 +150,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
   }
 
   const data = fs.readFileSync(filename, 'utf8');
-  const { rootNodes, errors } = ngHtmlParser.parse(data);
+  const { rootNodes, errors } = ngHtmlParser.parse(data, { canSelfClose: true });
   if (errors.length) return;
 
   parseTemplateNode(rootNodes);
