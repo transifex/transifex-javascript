@@ -1,0 +1,39 @@
+name: Angular update
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  update-angular:
+    name: Update Angular
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        - angular-version:
+            - 14.x.x
+            - 15.x.x
+            - 16.x.x
+
+      steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Angular 14
+        if: matrix.angular-version == '14.x.x'
+        steps:
+          - name: Run Angular 14
+            run: npm run ng update @angular/cli@14 @angular/core@14
+
+      - name: Angular 15
+        if: matrix.angular-version == '15.x.x'
+        steps:
+          - name: Run Angular 15 steps
+            run: npm run ng update @angular/cli@15 @angular/core@15
+
+      - name: Angular 16
+        if: matrix.angular-version == '16.x.x'
+        steps:
+          - name: Run Angular 16 steps
+            run: npm run ng update @angular/cli@16 @angular/core@16
