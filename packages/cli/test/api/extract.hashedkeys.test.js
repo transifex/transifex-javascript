@@ -443,6 +443,16 @@ describe('extractPhrases with hashed keys', () => {
           },
           string: '{var4}',
         },
+        'text.inside-self-closing-tag': {
+          meta: {
+            context: [],
+            occurrences: [
+              'angular-template.html',
+            ],
+            tags: [],
+          },
+          string: 'This is some text inside a self-closing tag',
+        },
       });
   });
 
