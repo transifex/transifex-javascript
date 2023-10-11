@@ -16,24 +16,40 @@ jobs:
             - 15.x.x
             - 16.x.x
 
+        - node-version:
+          - 14.20.x
+          - 16.14.x
+          - 18.10.x
+
       steps:
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up Node.js
+      - run: nvm use ${{ matrix.node-version }}
 
       - name: Angular 14
         if: matrix.angular-version == '14.x.x'
         steps:
           - name: Run Angular 14
-            run: npm run ng update @angular/cli@14 @angular/core@14
+          - run: npm run install @angular/cli@14 @angular/core@14
+          - run: npm run test
+          - run: npm run build
 
       - name: Angular 15
         if: matrix.angular-version == '15.x.x'
         steps:
           - name: Run Angular 15 steps
-            run: npm run ng update @angular/cli@15 @angular/core@15
+          - run: npm run ng update @angular/cli@15 @angular/core@15
+          - run: npm run test
+          - run: npm run build
 
       - name: Angular 16
         if: matrix.angular-version == '16.x.x'
         steps:
           - name: Run Angular 16 steps
-            run: npm run ng update @angular/cli@16 @angular/core@16
+          - run: npm run ng update @angular/cli@16 @angular/core@16
+          - run: npm run test
+          - run: npm run build
