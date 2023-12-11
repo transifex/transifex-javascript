@@ -18,9 +18,13 @@ export default class MessageFormatRenderer {
     const locale = ((localeCode || '').split('_'))[0];
     if (!MF[locale]) {
       try {
-        MF[locale] = new MessageFormat(locale);
+        MF[locale] = new MessageFormat(locale, {
+          strictPluralKeys: false,
+        });
       } catch (err) {
-        MF[locale] = new MessageFormat();
+        MF[locale] = new MessageFormat('*', {
+          strictPluralKeys: false,
+        });
       }
     }
     const msg = MF[locale].compile(sourceString);
