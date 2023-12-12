@@ -139,6 +139,12 @@ function extractVuePhrases(HASHES, source, relativeFile, options) {
       id: 'sfc-compiler',
       source: vueContent.descriptor.template.content,
     });
+    
+    // Get the vue setup Content from the file and extract hashes/phrases with Babel
+    if (vueContent.descriptor.scriptSetup && vueContent.descriptor.scriptSetup.content) {
+      const script = vueContent.descriptor.scriptSetup.content;
+      babelExtractPhrases(HASHES, script, relativeFile, options);
+    }
 
     traverseVueTemplateAst(template.ast, {
       PropsExpression(node) {
