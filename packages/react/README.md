@@ -172,6 +172,23 @@ function Capitalized() {
 }
 ```
 
+Optionally `useT` can take as param a custom Native Instance:
+
+```javascript
+import { useT } from '@transifex/react';
+import { createNativeInstance } from '@transifex/native';
+
+const customTX = createNativeInstance({
+  token: 'token',
+  secret: 'secret',
+});
+
+function Component() {
+  const t = useT(customTX);
+  // ...
+}
+```
+
 ## `useLanguages` hook
 
 Returns a state variable that will eventually hold the supported languages of
@@ -195,6 +212,23 @@ function LanguageList () {
 }
 ```
 
+Optionally `useLanguages` can take as param a custom Native Instance:
+
+```javascript
+import { useT } from '@transifex/react';
+import { createNativeInstance } from '@transifex/native';
+
+const customTX = createNativeInstance({
+  token: 'token',
+  secret: 'secret',
+});
+
+function Component() {
+  const languages = useLanguages(customTX);
+  // ...
+}
+```
+
 ## `useLocale` hook
 
 Returns a state variable with the currently selected locale.
@@ -208,6 +242,23 @@ function DisplayLocale () {
   return (
     <p>Currently selected locale is {locale}</p>
   );
+}
+```
+
+Optionally `useLocale` can take as param a custom Native Instance:
+
+```javascript
+import { useT } from '@transifex/react';
+import { createNativeInstance } from '@transifex/native';
+
+const customTX = createNativeInstance({
+  token: 'token',
+  secret: 'secret',
+});
+
+function Component() {
+  const locale = useLocale(customTX);
+  // ...
 }
 ```
 
@@ -341,6 +392,23 @@ function Inner({ ready }) {
   return <T
     _str="This will be translated when the inner component is rendered"
     _tags="inner" />;
+}
+```
+
+Optionally `useTranslations` can take as a second param a custom Native Instance:
+
+```javascript
+import { useT } from '@transifex/react';
+import { createNativeInstance } from '@transifex/native';
+
+const customTX = createNativeInstance({
+  token: 'token',
+  secret: 'secret',
+});
+
+function Component() {
+  const { ready } = useTranslations('inner', customTX);
+  // ...
 }
 ```
 

@@ -19,10 +19,10 @@ import { TXNativeContext } from '../context/TXNativeContext';
  *   );
  * } */
 
-export default function useLanguages() {
+export default function useLanguages(txInstance) {
   // Check for a different tx initialization
   const context = useContext(TXNativeContext);
-  const instance = context.instance || tx;
+  const instance = txInstance || context.instance || tx;
 
   const [languages, setLanguages] = useState([]);
   useEffect(() => {

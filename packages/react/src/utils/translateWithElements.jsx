@@ -14,11 +14,16 @@ import { t } from '@transifex/native';
   * an array of React elements, each within its unique `key` property and, if
   * there are more than one, will be returned as `<>{result}</>`. */
 
-function translateWithElements(_str, props, context) {
+function translateWithElements(_str, props, tx) {
   let _t = t;
-  if (context && context.instance) {
-    const _tx = context.instance;
-    _t = _tx.t;
+
+  if (tx) {
+    // backwards compatible check, in case tx is a provider context
+    if (tx.instance && tx.instance.t) {
+      _t = tx.instance.t;
+    } else if (tx.t) {
+      _t = tx.t;
+    }
   }
 
   const actualProps = {};

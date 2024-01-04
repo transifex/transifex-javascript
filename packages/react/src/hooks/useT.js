@@ -26,10 +26,10 @@ import { TXNativeContext } from '../context/TXNativeContext';
  *   return <span>{translation.toUpperCase()}</span>;
  * } */
 
-export default function useT() {
+export default function useT(txInstance) {
   // Check for a different tx initialization
   const context = useContext(TXNativeContext);
-  const instance = context.instance || tx;
+  const instance = txInstance || context.instance || tx;
 
   const [counter, setCounter] = useState(0);
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function useT() {
   }, [setCounter, instance]);
 
   return useCallback(
-    (_str, props) => translateWithElements(_str, props, context),
-    [context, counter],
+    (_str, props) => translateWithElements(_str, props, instance),
+    [instance, counter],
   );
 }
