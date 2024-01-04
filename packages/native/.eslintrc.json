@@ -1,6 +1,7 @@
 {
   "extends": ["airbnb-base"],
   "rules": {
+    "no-await-in-loop": "off",
     "import/no-extraneous-dependencies": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": "off"
