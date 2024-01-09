@@ -7,7 +7,7 @@ interface StringDict {
 }
 
 declare class JsonApiResource {
-  constructor({
+  constructor(params: {
     id: string,
     attributes: AnyDict,
     relationships: AnyDict,
@@ -19,7 +19,7 @@ declare class JsonApiResource {
   static get(arg:string | AnyDict): Promise<JsonApiResource>;
   fetch(relationshipName: string, force: boolean): Promise<JsonApiResource | Collection>;
   save(arg: AnyDict | string[]): Promise<void>;
-  static create({
+  static create(params: {
     id: string,
     attributes: AnyDict,
     relationships: AnyDict,
@@ -59,8 +59,8 @@ type AuthFunction = () => string;
 type AuthArgument = string | AuthFunction;
 
 export declare class TransifexApi {
-  constructor({ host: string, auth: AuthArgument });
-  setup({ host: string, auth: AuthArgument }): void;
+  constructor(params: { host?: string, auth: AuthArgument });
+  setup(params: { host?: string, auth: AuthArgument }): void;
 
   Organization: typeof JsonApiResource;
   User: typeof JsonApiResource;
