@@ -33,6 +33,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
+  "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "devDependencies": {
     "@babel/core": "^7.23.5",
     "@babel/plugin-transform-runtime": "^7.23.4",
@@ -54,7 +55,7 @@
   },
   "dependencies": {
     "@messageformat/core": "^3.3.0",
-    "axios": "^1.6.2",
+    "cross-fetch": "^4.0.0",
     "md5": "^2.3.0"
   }
 }
