@@ -23,7 +23,7 @@ describe('T', () => {
   });
 
   it('rerenders on prop change', () => {
-    const MyComp = () => {
+    function MyComp() {
       const [word, setWord] = useState('');
       return (
         <>
@@ -31,7 +31,7 @@ describe('T', () => {
           <p><T _str="hello {word}" word={word} /></p>
         </>
       );
-    };
+    }
     render(<MyComp />);
     fireEvent.change(
       screen.getByRole('textbox'),

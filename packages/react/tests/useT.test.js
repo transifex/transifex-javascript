@@ -39,7 +39,7 @@ describe('useT', () => {
   });
 
   it('rerenders on prop change', () => {
-    const MyComp = () => {
+    function MyComp() {
       const [word, setWord] = useState('');
       const t = useT();
       const message = t('hello {word}', { word });
@@ -49,7 +49,7 @@ describe('useT', () => {
           <p>{message}</p>
         </>
       );
-    };
+    }
     render(<MyComp />);
     fireEvent.change(
       screen.getByRole('textbox'),
@@ -59,7 +59,7 @@ describe('useT', () => {
   });
 
   it('renders react elements', () => {
-    const MyComp = () => {
+    function MyComp() {
       const [word, setWord] = useState('');
       const t = useT();
       const message = t('hello {w}', { w: <b>world</b> });
@@ -69,7 +69,7 @@ describe('useT', () => {
           <p>{message}</p>
         </>
       );
-    };
+    }
     render(<MyComp />);
     expect(screen.getByText('world')).toBeTruthy();
     act(() => {
@@ -81,15 +81,13 @@ describe('useT', () => {
     const instance = createNativeInstance();
     instance.translateLocale = () => 'hello from custom instance';
 
-    const MyComp = () => {
+    function MyComp() {
       const t = useT(instance);
       const message = t('hello');
       return (
-        <>
-          <p>{message}</p>
-        </>
+        <p>{message}</p>
       );
-    };
+    }
     render(<MyComp />);
     expect(screen.getByText('hello from custom instance')).toBeTruthy();
   });
@@ -98,15 +96,13 @@ describe('useT', () => {
     const instance = createNativeInstance();
     instance.translateLocale = () => 'hello from provider';
 
-    const MyComp = () => {
+    function MyComp() {
       const t = useT();
       const message = t('hello');
       return (
-        <>
-          <p>{message}</p>
-        </>
+        <p>{message}</p>
       );
-    };
+    }
     render(
       <TXProvider instance={instance}>
         <MyComp />

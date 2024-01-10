@@ -207,7 +207,9 @@ export default class Resource {
           )
         ) {
           this.related[relationshipName] = Collection.fromData(
-            this.constructor.API, resources, url,
+            this.constructor.API,
+            resources,
+            url,
           );
         }
       }

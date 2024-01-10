@@ -21,16 +21,23 @@ describe('isPluralized', () => {
 
 describe('explodePlurals', () => {
   it('should handle simple cases', () => {
-    testExplode('hello world',
-      [null, { other: 'hello world' }]);
-    testExplode('{cnt, plural, one {hello world} other {hello worlds}}',
-      ['cnt', { one: 'hello world', other: 'hello worlds' }]);
-    testExplode('{cnt, plural, =1 {hello world} =5 {hello worlds}}',
-      ['cnt', { one: 'hello world', other: 'hello worlds' }]);
-    testExplode('{cnt, plural, one {hello world} =5 {hello worlds}}',
-      ['cnt', { one: 'hello world', other: 'hello worlds' }]);
-    testExplode('{cnt, plural, =1 {hello world} other {hello worlds}}',
-      ['cnt', { one: 'hello world', other: 'hello worlds' }]);
+    testExplode('hello world', [null, { other: 'hello world' }]);
+    testExplode(
+      '{cnt, plural, one {hello world} other {hello worlds}}',
+      ['cnt', { one: 'hello world', other: 'hello worlds' }],
+    );
+    testExplode(
+      '{cnt, plural, =1 {hello world} =5 {hello worlds}}',
+      ['cnt', { one: 'hello world', other: 'hello worlds' }],
+    );
+    testExplode(
+      '{cnt, plural, one {hello world} =5 {hello worlds}}',
+      ['cnt', { one: 'hello world', other: 'hello worlds' }],
+    );
+    testExplode(
+      '{cnt, plural, =1 {hello world} other {hello worlds}}',
+      ['cnt', { one: 'hello world', other: 'hello worlds' }],
+    );
   });
 
   it('should not explode with leading/tailing spaces', () => {
@@ -61,10 +68,8 @@ describe('explodePlurals', () => {
     testExplode('{cnt, plural}', [null, { other: '{cnt, plural}' }]);
     testExplode('{cnt, plural, }', [null, { other: '{cnt, plural, }' }]);
     testExplode('{cnt, plural, one}', [null, { other: '{cnt, plural, one}' }]);
-    testExplode('{cnt, plural, one {}',
-      [null, { other: '{cnt, plural, one {}' }]);
-    testExplode('{cnt, plural, one hello world}',
-      [null, { other: '{cnt, plural, one hello world}' }]);
+    testExplode('{cnt, plural, one {}', [null, { other: '{cnt, plural, one {}' }]);
+    testExplode('{cnt, plural, one hello world}', [null, { other: '{cnt, plural, one hello world}' }]);
   });
 
   it('should fail if variable, plural keyword or rules are wrong', () => {
@@ -108,13 +113,17 @@ describe('explodePlurals', () => {
   });
 
   it('should handle nested brackets', () => {
-    testExplode('{cnt, plural, one {hello {world}} other {hello worlds}}',
-      ['cnt', { one: 'hello {world}', other: 'hello worlds' }]);
+    testExplode(
+      '{cnt, plural, one {hello {world}} other {hello worlds}}',
+      ['cnt', { one: 'hello {world}', other: 'hello worlds' }],
+    );
   });
 
   it("should fail when minimum plural rules don't exist", () => {
-    testExplode('{cnt, plural, one {hello world}}',
-      [null, { other: '{cnt, plural, one {hello world}}' }]);
+    testExplode(
+      '{cnt, plural, one {hello world}}',
+      [null, { other: '{cnt, plural, one {hello world}}' }],
+    );
     testExplode(
       '{cnt, plural, few {hello world} other {hello worlds}}',
       [null, { other: '{cnt, plural, few {hello world} other {hello worlds}}' }],
@@ -122,21 +131,31 @@ describe('explodePlurals', () => {
   });
 
   it('should propertly escape stuff with apostrophes', () => {
-    testExplode("{cnt, plural, one {hello '{'world'}'} other {hello worlds}}",
-      ['cnt', { one: "hello '{'world'}'", other: 'hello worlds' }]);
-    testExplode("{cnt, plural, one {hello '{world}'} other {hello worlds}}",
-      ['cnt', { one: "hello '{world}'", other: 'hello worlds' }]);
-    testExplode("{cnt, plural, one {hello ''{world}''} other {hello worlds}}",
-      ['cnt', { one: "hello ''{world}''", other: 'hello worlds' }]);
-    testExplode("{cnt, plural, one {hello '{'world} other {hello worlds}}",
-      ['cnt', { one: "hello '{'world", other: 'hello worlds' }]);
+    testExplode(
+      "{cnt, plural, one {hello '{'world'}'} other {hello worlds}}",
+      ['cnt', { one: "hello '{'world'}'", other: 'hello worlds' }],
+    );
+    testExplode(
+      "{cnt, plural, one {hello '{world}'} other {hello worlds}}",
+      ['cnt', { one: "hello '{world}'", other: 'hello worlds' }],
+    );
+    testExplode(
+      "{cnt, plural, one {hello ''{world}''} other {hello worlds}}",
+      ['cnt', { one: "hello ''{world}''", other: 'hello worlds' }],
+    );
+    testExplode(
+      "{cnt, plural, one {hello '{'world} other {hello worlds}}",
+      ['cnt', { one: "hello '{'world", other: 'hello worlds' }],
+    );
     testExplode(
       "{cnt, plural, one {hello '{{'world} other {hello worlds}}",
       ['cnt',
         { one: "hello '{{'world", other: 'hello worlds' }],
     );
-    testExplode("{cnt, plural, one {hello 'world} other {hello worlds}}",
-      ['cnt', { one: "hello 'world", other: 'hello worlds' }]);
+    testExplode(
+      "{cnt, plural, one {hello 'world} other {hello worlds}}",
+      ['cnt', { one: "hello 'world", other: 'hello worlds' }],
+    );
   });
 });
 

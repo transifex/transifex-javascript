@@ -157,8 +157,12 @@ export default class TxNative {
       if (!isString(translation)) translation = `${translation}`;
       return translation;
     } catch (err) {
-      return this.errorPolicy.handle(err,
-        `${sourceString}`, locale, params);
+      return this.errorPolicy.handle(
+        err,
+        `${sourceString}`,
+        locale,
+        params,
+      );
     }
   }
 
