@@ -5,7 +5,7 @@
     "no-plusplus": "off",
     "no-underscore-dangle": "off"
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 12,
     "sourceType": "module"

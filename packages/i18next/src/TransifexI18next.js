@@ -17,8 +17,10 @@ export default class TransifexI18next {
 
   read(language, namespace, callback) {
     this.tx.fetchTranslations(language).then(() => {
-      callback(null,
-        this._convertPlurals(this.tx.cache.getTranslations(language)));
+      callback(
+        null,
+        this._convertPlurals(this.tx.cache.getTranslations(language)),
+      );
     }).catch((err) => {
       callback(err, null);
     });
