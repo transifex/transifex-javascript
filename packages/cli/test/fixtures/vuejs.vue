@@ -35,12 +35,23 @@
       />
   </div>
 </template>
+
 <script>
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
     setup() {
-        t('Text 6')
+        t('Text in script')
+    },
+})
+</script>
+
+<script setup>
+import { defineComponent } from '@vue/composition-api'
+
+export default defineComponent({
+    setup() {
+        t('Text in script setup')
     },
 })
 </script>
