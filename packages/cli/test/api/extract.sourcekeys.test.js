@@ -484,10 +484,6 @@ describe('extractPhrases with source keys', () => {
           string: 'Text 5',
           meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
         },
-        'Text 6': {
-          string: 'Text 6',
-          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
-        },
         'Text 7': {
           meta: {
             context: [],
@@ -527,6 +523,14 @@ describe('extractPhrases with source keys', () => {
             tags: [],
           },
           string: 'Text 9 with siblings',
+        },
+        'Text in script': {
+          string: 'Text in script',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        'Text in script setup': {
+          string: 'Text in script setup',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
         },
       });
   });
