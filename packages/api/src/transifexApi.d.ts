@@ -41,6 +41,19 @@ declare class JsonApiResource {
   static allPages(): Iterable<Collection>;
 }
 
+declare class JsonApiResourceDownload extends JsonApiResource {
+  static download(params: AnyDict): Promise<any>;
+}
+
+declare class JsonApiResourceUpload extends JsonApiResource {
+  static upload(params: AnyDict): Promise<any>;
+}
+
+declare class JsonApiResourceResource extends JsonApiResource {
+  purge(): Promise<number>;
+  downloadSource(params?: AnyDict): Promise<any>;
+}
+
 declare class Collection {
   fetch(): Promise<void>;
   getNext(): Promise<Collection>;
@@ -67,26 +80,26 @@ export declare class TransifexApi {
   Language: typeof JsonApiResource;
   Project: typeof JsonApiResource;
   ProjectWebhook: typeof JsonApiResource;
-  Resource: typeof JsonApiResource;
+  Resource: typeof JsonApiResourceResource;
   ResourceString: typeof JsonApiResource;
-  ResourceStringsAsyncDownload: typeof JsonApiResource;
-  ResourceStringsAsyncUpload: typeof JsonApiResource;
+  ResourceStringsAsyncDownload: typeof JsonApiResourceDownload;
+  ResourceStringsAsyncUpload: typeof JsonApiResourceUpload;
   ResourceStringComment: typeof JsonApiResource;
   I18nFormat: typeof JsonApiResource;
   ContextScreenshotMap: typeof JsonApiResource;
   ContextScreenshot: typeof JsonApiResource;
-  OrganizationActivityReportsAsyncDownload: typeof JsonApiResource;
-  ProjectActivityReportsAsyncDownload: typeof JsonApiResource;
-  ResourceActivityReportsAsyncDownload: typeof JsonApiResource;
-  TeamActivityReportsAsyncDownload: typeof JsonApiResource;
+  OrganizationActivityReportsAsyncDownload: typeof JsonApiResourceDownload;
+  ProjectActivityReportsAsyncDownload: typeof JsonApiResourceDownload;
+  ResourceActivityReportsAsyncDownload: typeof JsonApiResourceDownload;
+  TeamActivityReportsAsyncDownload: typeof JsonApiResourceDownload;
   ResourceLanguageStats: typeof JsonApiResource;
   ResourceTranslation: typeof JsonApiResource;
-  ResourceTranslationsAsyncDownload: typeof JsonApiResource;
-  ResourceTranslationsAsyncUpload: typeof JsonApiResource;
+  ResourceTranslationsAsyncDownload: typeof JsonApiResourceDownload;
+  ResourceTranslationsAsyncUpload: typeof JsonApiResourceUpload;
   TeamMembership: typeof JsonApiResource;
   Team: typeof JsonApiResource;
-  TmxAsyncDownload: typeof JsonApiResource;
-  TmxAsyncUpload: typeof JsonApiResource;
+  TmxAsyncDownload: typeof JsonApiResourceDownload;
+  TmxAsyncUpload: typeof JsonApiResourceUpload;
   ResourceStringsRevision: typeof JsonApiResource;
 
   organizations: typeof JsonApiResource;
@@ -94,26 +107,26 @@ export declare class TransifexApi {
   languages: typeof JsonApiResource;
   projects: typeof JsonApiResource;
   project_webhooks: typeof JsonApiResource;
-  resources: typeof JsonApiResource;
+  resources: typeof JsonApiResourceResource;
   resource_strings: typeof JsonApiResource;
-  resource_strings_async_downloads: typeof JsonApiResource;
-  resource_strings_async_uploads: typeof JsonApiResource;
+  resource_strings_async_downloads: typeof JsonApiResourceDownload;
+  resource_strings_async_uploads: typeof JsonApiResourceUpload;
   resource_string_comments: typeof JsonApiResource;
   i18n_formats: typeof JsonApiResource;
   context_screenshot_maps: typeof JsonApiResource;
   context_screenshots: typeof JsonApiResource;
-  organization_activity_reports_async_downloads: typeof JsonApiResource;
-  project_activity_reports_async_downloads: typeof JsonApiResource;
-  resource_activity_reports_async_downloads: typeof JsonApiResource;
-  team_activity_reports_async_downloads: typeof JsonApiResource;
+  organization_activity_reports_async_downloads: typeof JsonApiResourceDownload;
+  project_activity_reports_async_downloads: typeof JsonApiResourceDownload;
+  resource_activity_reports_async_downloads: typeof JsonApiResourceDownload;
+  team_activity_reports_async_downloads: typeof JsonApiResourceDownload;
   resource_language_stats: typeof JsonApiResource;
   resource_translations: typeof JsonApiResource;
-  resource_translations_async_downloads: typeof JsonApiResource;
-  resource_translations_async_uploads: typeof JsonApiResource;
+  resource_translations_async_downloads: typeof JsonApiResourceDownload;
+  resource_translations_async_uploads: typeof JsonApiResourceUpload;
   team_memberships: typeof JsonApiResource;
   teams: typeof JsonApiResource;
-  tmx_async_downloads: typeof JsonApiResource;
-  tmx_async_uploads: typeof JsonApiResource;
+  tmx_async_downloads: typeof JsonApiResourceDownload;
+  tmx_async_uploads: typeof JsonApiResourceUpload;
   resource_strings_revisions: typeof JsonApiResource;
 }
 
