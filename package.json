@@ -7,6 +7,7 @@
     "lint": "lerna run lint",
     "test": "lerna run test",
     "build": "lerna run build",
+    "clean": "lerna clean",
     "release": "del-cli packages/**/package-lock.json && lerna version --force-publish",
     "publish-npm": "lerna run publish-npm"
   },

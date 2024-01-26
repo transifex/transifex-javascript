@@ -56,7 +56,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "@transifex/native": "^6.0.0",
+    "@transifex/native": "^6.0.0 || ^7.0.0",
     "vue": "^3.0.0"
   },
   "devDependencies": {
