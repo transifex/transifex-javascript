@@ -1,6 +1,6 @@
 {
   "name": "@transifex/dom",
-  "version": "6.0.2",
+  "version": "7.0.0",
   "description": "i18n DOM library using Transifex Native",
   "keywords": [
     "transifex",
