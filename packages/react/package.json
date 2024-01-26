@@ -38,7 +38,7 @@
     "node": ">=16.0.0"
   },
   "peerDependencies": {
-    "@transifex/native": "^6.0.0",
+    "@transifex/native": "^6.0.0 || ^7.0.0",
     "prop-types": "^15.0.0",
     "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
   },
