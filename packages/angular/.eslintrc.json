@@ -54,7 +54,8 @@
         "tsdoc/syntax": "warn",
         "unicorn/filename-case": "off", // We are naming files with capitals
         // I think some of these are silly. `e` is bad, but `err` and `exc` are decent. `user of users` is confusing, `usr of users` is safer.
-        "unicorn/prevent-abbreviations": "off"
+        "unicorn/prevent-abbreviations": "off",
+        "import/no-unresolved": "off"
       },
       "settings": {
         "import/resolver": {
