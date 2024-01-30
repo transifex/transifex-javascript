@@ -40,7 +40,8 @@ export function SET_FRAGMENT({ item, text, document }) {
   }
   // add it to element
   (item.snodeBefore || item.snodeAfter).parentNode.insertBefore(
-    frag, item.snodeAfter,
+    frag,
+    item.snodeAfter,
   );
 }
 

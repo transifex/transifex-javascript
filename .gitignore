@@ -1,10 +1,10 @@
 node_modules
 packages/*/package-lock.json
-package-lock.json
 coverage
 dist
 bundle
 test_dist
+lerna-debug.log
 .DS_store
 .nyc_output
 .idea

@@ -115,6 +115,8 @@ declare module '@transifex/native' {
     translate(sourceString: string, params?: ITranslateParams): string;
 
     translateLocale(localeCode: string, sourceString: string, params?: ITranslateParams): string;
+
+    t(sourceString: string, params?: ITranslateParams): string;
   }
 
   export class MessageFormatRenderer implements IMessageFormatRenderer {
@@ -165,7 +167,7 @@ declare module '@transifex/native' {
     localeCode: string;
   }
 
-  export function createNativeInstance(initOptions: ITranslationConfig): TxNative;
+  export function createNativeInstance(initOptions?: ITranslationConfig): TxNative;
 
   export function escape(unsafe: string): string;
 

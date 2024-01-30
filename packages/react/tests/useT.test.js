@@ -6,8 +6,8 @@ import {
   render, screen, cleanup, fireEvent, act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { sendEvent, LOCALE_CHANGED } from '@transifex/native';
-import { useT } from '../src';
+import { sendEvent, LOCALE_CHANGED, createNativeInstance } from '@transifex/native';
+import { TXProvider, useT } from '../src';
 
 describe('useT', () => {
   afterEach(() => {
@@ -39,7 +39,7 @@ describe('useT', () => {
   });
 
   it('rerenders on prop change', () => {
-    const MyComp = () => {
+    function MyComp() {
       const [word, setWord] = useState('');
       const t = useT();
       const message = t('hello {word}', { word });
@@ -49,7 +49,7 @@ describe('useT', () => {
           <p>{message}</p>
         </>
       );
-    };
+    }
     render(<MyComp />);
     fireEvent.change(
       screen.getByRole('textbox'),
@@ -59,7 +59,7 @@ describe('useT', () => {
   });
 
   it('renders react elements', () => {
-    const MyComp = () => {
+    function MyComp() {
       const [word, setWord] = useState('');
       const t = useT();
       const message = t('hello {w}', { w: <b>world</b> });
@@ -69,11 +69,45 @@ describe('useT', () => {
           <p>{message}</p>
         </>
       );
-    };
+    }
     render(<MyComp />);
     expect(screen.getByText('world')).toBeTruthy();
     act(() => {
       sendEvent(LOCALE_CHANGED);
     });
+  });
+
+  it('renders with custom instance', () => {
+    const instance = createNativeInstance();
+    instance.translateLocale = () => 'hello from custom instance';
+
+    function MyComp() {
+      const t = useT(instance);
+      const message = t('hello');
+      return (
+        <p>{message}</p>
+      );
+    }
+    render(<MyComp />);
+    expect(screen.getByText('hello from custom instance')).toBeTruthy();
+  });
+
+  it('renders with provider', () => {
+    const instance = createNativeInstance();
+    instance.translateLocale = () => 'hello from provider';
+
+    function MyComp() {
+      const t = useT();
+      const message = t('hello');
+      return (
+        <p>{message}</p>
+      );
+    }
+    render(
+      <TXProvider instance={instance}>
+        <MyComp />
+      </TXProvider>,
+    );
+    expect(screen.getByText('hello from provider')).toBeTruthy();
   });
 });

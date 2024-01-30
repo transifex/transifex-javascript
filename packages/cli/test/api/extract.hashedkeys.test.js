@@ -543,8 +543,12 @@ describe('extractPhrases with hashed keys', () => {
           string: 'Text 5',
           meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
         },
-        '39bcf931264f8a4de0d4c993ba8e7094': {
-          string: 'Text 6',
+        d42dd30c271a7dc6ecfaddd2cee7e457: {
+          string: 'Text in script',
+          meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
+        },
+        '2d97d5484416727f585501ee9f842ab1': {
+          string: 'Text in script setup',
           meta: { context: [], tags: [], occurrences: ['vuejs.vue'] },
         },
       });

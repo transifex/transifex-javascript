@@ -19,10 +19,10 @@ import { TXNativeContext } from '../context/TXNativeContext';
  *   );
  * }
  */
-export default function useLocale() {
+export default function useLocale(txInstance) {
   // Check for a different tx initialization
   const context = useContext(TXNativeContext);
-  const instance = context.instance || tx;
+  const instance = txInstance || context.instance || tx;
 
   const [locale, setLocale] = useState(instance.getCurrentLocale());
 

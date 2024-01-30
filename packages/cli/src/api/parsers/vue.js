@@ -125,9 +125,16 @@ function vueElementVisitor(HASHES, relativeFile, options) {
 function extractVuePhrases(HASHES, source, relativeFile, options) {
   // Use the vue-template-compiler API to parse content
   const vueContent = vueTemplateCompiler.parse(source);
+
   // Get the JS Content from the file and extract hashes/phrases with Babel
   if (vueContent.descriptor.script && vueContent.descriptor.script.content) {
     const script = vueContent.descriptor.script.content;
+    babelExtractPhrases(HASHES, script, relativeFile, options);
+  }
+
+  // Also detect Vue3 script setup
+  if (vueContent.descriptor.scriptSetup && vueContent.descriptor.scriptSetup.content) {
+    const script = vueContent.descriptor.scriptSetup.content;
     babelExtractPhrases(HASHES, script, relativeFile, options);
   }
 

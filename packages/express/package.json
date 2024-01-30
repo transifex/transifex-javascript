@@ -1,6 +1,6 @@
 {
   "name": "@transifex/express",
-  "version": "6.0.1",
+  "version": "7.0.1",
   "description": "i18n express framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -30,19 +30,19 @@
     "url": "https://github.com/transifex/transifex-javascript/issues"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "devDependencies": {
-    "@transifex/native": "^6.0.1",
-    "eslint": "^8.10.0",
+    "@transifex/native": "^7.0.1",
+    "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4",
-    "jest": "^28.0.3"
+    "eslint-plugin-import": "^2.29.1",
+    "jest": "^29.7.0"
   },
   "dependencies": {
     "type-is": "^1.6.18"
   },
   "peerDependencies": {
-    "@transifex/native": "^6.0.0"
+    "@transifex/native": "^7.0.0"
   }
 }

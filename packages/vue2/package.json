@@ -1,6 +1,6 @@
 {
   "name": "@transifex/vue2",
-  "version": "6.0.1",
+  "version": "7.0.1",
   "description": "Vue i18n framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -24,7 +24,7 @@
     "url": "https://github.com/transifex/transifex-javascript/issues"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "main": "dist/index.js",
   "source": "src/index.js",
@@ -37,26 +37,26 @@
     "publish-npm": "npm publish"
   },
   "peerDependencies": {
-    "@transifex/native": "^6.0.0",
+    "@transifex/native": "^7.0.0",
     "vue": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/vue": "^5.8.2",
-    "@transifex/native": "^6.0.1",
-    "@vue/compiler-sfc": "^3.2.33",
+    "@babel/core": "^7.23.7",
+    "@babel/preset-env": "^7.23.8",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/vue": "^5.9.0",
+    "@transifex/native": "^7.0.1",
+    "@vue/compiler-sfc": "^3.4.7",
     "@vue/vue2-jest": "^27.0.0",
     "babel-jest": "^27.5.1",
-    "eslint": "^8.6.0",
+    "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.29.1",
     "jest": "^27.5.1",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.71.1",
+    "rollup": "^2.79.1",
     "rollup-plugin-vue2": "^0.8.1",
-    "vue": "^2.6.11"
+    "vue": "^2.7.16"
   },
   "jest": {
     "moduleFileExtensions": [

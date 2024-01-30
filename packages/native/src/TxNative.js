@@ -1,6 +1,6 @@
 /* globals __VERSION__, __PLATFORM__ */
 
-import axios from 'axios';
+import fetch from 'cross-fetch';
 
 import MemoryCache from './cache/MemoryCache';
 import SourceErrorPolicy from './policies/SourceErrorPolicy';
@@ -157,8 +157,12 @@ export default class TxNative {
       if (!isString(translation)) translation = `${translation}`;
       return translation;
     } catch (err) {
-      return this.errorPolicy.handle(err,
-        `${sourceString}`, locale, params);
+      return this.errorPolicy.handle(
+        err,
+        `${sourceString}`,
+        locale,
+        params,
+      );
     }
   }
 
@@ -204,7 +208,6 @@ export default class TxNative {
       let lastResponseStatus = 202;
       const tsNow = Date.now();
       while (lastResponseStatus === 202) {
-        /* eslint-disable no-await-in-loop */
         let url = `${this.cdsHost}/content/${localeCode}`;
         const getOptions = [];
         if (filterTags) {
@@ -216,13 +219,19 @@ export default class TxNative {
         if (getOptions.length) {
           url = `${url}?${getOptions.join('&')}`;
         }
-        response = await axios.get(url, {
+        response = await fetch(url, {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${this.token}`,
             'Accept-version': 'v2',
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
+          signal: this.fetchTimeout > 0 ? AbortSignal.timeout(this.fetchTimeout) : undefined,
         });
+        if (!response.ok) {
+          throw (await this._fetchError(response));
+        }
+
         lastResponseStatus = response.status;
         if (this.fetchTimeout > 0 && (Date.now() - tsNow) >= this.fetchTimeout) {
           throw handleError(new Error('Fetch translations timeout'));
@@ -230,10 +239,9 @@ export default class TxNative {
         if (lastResponseStatus === 202 && this.fetchInterval > 0) {
           await sleep(this.fetchInterval);
         }
-        /* eslint-enable no-await-in-loop */
       }
 
-      const { data } = response;
+      const data = await response.json();
       if (data && data.data) {
         const hashmap = {};
         Object.keys(data.data).forEach((key) => {
@@ -266,8 +274,8 @@ export default class TxNative {
     if (!this.secret) throw new Error('secret is not defined');
 
     const action = params.purge ? 'purge' : 'invalidate';
-    const res = await axios.post(`${this.cdsHost}/${action}`, {
-    }, {
+    const response = await fetch(`${this.cdsHost}/${action}`, {
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${this.token}:${this.secret}`,
         'Accept-version': 'v2',
@@ -275,7 +283,11 @@ export default class TxNative {
         'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
       },
     });
-    return res.data;
+    if (!response.ok) {
+      throw (await this._fetchError(response));
+    }
+    const data = await response.json();
+    return data;
   }
 
   /**
@@ -323,18 +335,25 @@ export default class TxNative {
       'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
     };
 
-    const res = await axios.post(`${this.cdsHost}/content`, {
-      data: payload,
-      meta: {
-        purge: !!params.purge,
-        override_tags: !!params.overrideTags,
-        override_occurrences: !!params.overrideOccurrences,
-      },
-    }, {
+    const response = await fetch(`${this.cdsHost}/content`, {
+      method: 'POST',
       headers,
+      body: JSON.stringify({
+        data: payload,
+        meta: {
+          purge: !!params.purge,
+          override_tags: !!params.overrideTags,
+          override_occurrences: !!params.overrideOccurrences,
+        },
+      }),
     });
+    if (!response.ok) {
+      throw (await this._fetchError(response));
+    }
 
-    const jobUrl = `${this.cdsHost}${res.data.data.links.job}`;
+    const postResData = await response.json();
+
+    const jobUrl = `${this.cdsHost}${postResData.data.links.job}`;
 
     if (params.noWait) {
       return {
@@ -347,13 +366,16 @@ export default class TxNative {
     };
 
     do {
-      // eslint-disable-next-line no-await-in-loop
       await sleep(1500);
-      // eslint-disable-next-line no-await-in-loop
-      const pollRes = await axios.get(jobUrl, {
+      const pollRes = await fetch(jobUrl, {
+        method: 'GET',
         headers,
       });
-      const { data } = pollRes.data;
+      if (!pollRes.ok) {
+        throw (await this._fetchError(pollRes));
+      }
+      const pollResData = await pollRes.json();
+      const { data } = pollResData;
       pollStatus = {
         ...(data.details || {}),
         errors: data.errors || [],
@@ -395,14 +417,18 @@ export default class TxNative {
       let lastResponseStatus = 202;
       const tsNow = Date.now();
       while (lastResponseStatus === 202) {
-        /* eslint-disable no-await-in-loop */
-        response = await axios.get(`${this.cdsHost}/languages`, {
+        response = await fetch(`${this.cdsHost}/languages`, {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${this.token}`,
             'Accept-version': 'v2',
             'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
           },
+          signal: this.fetchTimeout > 0 ? AbortSignal.timeout(this.fetchTimeout) : undefined,
         });
+        if (!response.ok) {
+          throw (await this._fetchError(response));
+        }
         lastResponseStatus = response.status;
         if (this.fetchTimeout > 0 && (Date.now() - tsNow) >= this.fetchTimeout) {
           throw handleError(new Error('Get locales timeout'));
@@ -410,10 +436,9 @@ export default class TxNative {
         if (lastResponseStatus === 202 && this.fetchInterval > 0) {
           await sleep(this.fetchInterval);
         }
-        /* eslint-enable no-await-in-loop */
       }
 
-      const { data } = response;
+      const data = await response.json();
       if (data && data.data) {
         this.languages = data.data;
         this.locales = this.languages.map((entry) => entry.code);
@@ -536,7 +561,6 @@ export default class TxNative {
           // Fetch translations for additional instance without blocking
           // anything else in case of missing language
           try {
-            // eslint-disable-next-line no-await-in-loop
             await instances[i].fetchTranslations(localeCode);
           } catch (e) {
             // no-op
@@ -552,5 +576,21 @@ export default class TxNative {
         sendEvent(LOCALE_CHANGED, localeCode, instance);
       }
     });
+  }
+
+  /**
+   * Return a new fetch error
+   *
+   * @param {*} response
+   * @memberof TxNative
+   */
+  // eslint-disable-next-line class-methods-use-this
+  async _fetchError(response) {
+    try {
+      const text = await response.text();
+      return new Error(`HTTP ${response.status}: ${text}`);
+    } catch (err) {
+      return new Error(`HTTP error ${response.status}`);
+    }
   }
 }
