@@ -46,7 +46,7 @@
     "eslint-plugin-import": "^2.29.1",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "nock": "^13.4.0",
+    "nock": "13.5.0",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.21",
     "webpack": "^5.89.0",
