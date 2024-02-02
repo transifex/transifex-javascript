@@ -67,7 +67,8 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
 
 # Requirements
 
-Angular 14 or 15 is required. If you are using Angular 12 or 13, please use the `5.x.x` version of
+Angular 16 is required. If you are using Angular 14 or 15, please use the `6.x.x` version of
+Transifex Native related packages. If you are using Angular 12 or 13, please use the `5.x.x` version of
 Transifex Native related packages. If you are using Angular 11, please use the `1.x.x` version of
 Transifex Native related packages. Other Angular versions are not officially supported at the moment.
 
