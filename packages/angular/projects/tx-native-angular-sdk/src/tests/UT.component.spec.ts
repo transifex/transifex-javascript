@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { UTComponent } from '../src/lib/UT.component';
-import { SafeHtmlPipe, TranslationService, TXInstanceComponent } from '../src/public-api';
+import { UTComponent } from '../lib/UT.component';
+import {
+  SafeHtmlPipe,
+  TranslationService,
+  TXInstanceComponent,
+} from '../public-api';
 
 describe('UTComponent', () => {
   let component: UTComponent;
@@ -23,8 +27,7 @@ describe('UTComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UTComponent, SafeHtmlPipe, TXInstanceComponent],
       providers: [TXInstanceComponent],
-    })
-      .compileComponents();
+    }).compileComponents();
     service = TestBed.inject(TranslationService);
     spyOn(service, 'setCurrentLocale');
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
@@ -39,8 +42,11 @@ describe('UTComponent', () => {
   it('should create the component', () => {
     // setup
     spyOn(component, 'translate');
-    const localeChangedSpy = spyOnProperty(component, 'localeChanged', 'get')
-      .and.returnValue(of('el'));
+    const localeChangedSpy = spyOnProperty(
+      component,
+      'localeChanged',
+      'get'
+    ).and.returnValue(of('el'));
 
     // act
     component.ngOnInit();
@@ -65,8 +71,11 @@ describe('UTComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
@@ -81,45 +90,54 @@ describe('UTComponent', () => {
     fixture.detectChanges();
 
     // assert
-    expect(service.translate).toHaveBeenCalledWith('not-translated',
-      { ...translationParams, _key: 'key-not-translated' }, '');
+    expect(service.translate).toHaveBeenCalledWith(
+      'not-translated',
+      { ...translationParams, _key: 'key-not-translated' },
+      ''
+    );
     expect(component.translatedStr).toEqual('translated');
   });
 
-  it('should translate and sanitize the string using div as wrapper',
-    () => {
-      // setup
-      spyOn(service, 'translate').and.returnValue('<a>translated</a>');
+  it('should translate and sanitize the string using div as wrapper', () => {
+    // setup
+    spyOn(service, 'translate').and.returnValue('<a>translated</a>');
 
-      // act
-      component.str = '<a>not-translated</a>';
-      component.ngOnInit();
-      fixture.detectChanges();
+    // act
+    component.str = '<a>not-translated</a>';
+    component.ngOnInit();
+    fixture.detectChanges();
 
-      // assert
-      expect(service.translate).toHaveBeenCalledWith('<a>not-translated</a>',
-        { ...translationParams, _inline: false }, '');
-      const compiled = fixture.debugElement.nativeElement;
-      expect((compiled as HTMLDivElement).innerHTML)
-        .toContain('<div><a>translated</a></div>');
-    });
+    // assert
+    expect(service.translate).toHaveBeenCalledWith(
+      '<a>not-translated</a>',
+      { ...translationParams, _inline: false },
+      ''
+    );
+    const compiled = fixture.debugElement.nativeElement;
+    expect((compiled as HTMLDivElement).innerHTML).toContain(
+      '<div><a>translated</a></div>'
+    );
+  });
 
-  it('should translate and sanitize the string using span as wrapper',
-    () => {
-      // setup
-      spyOn(service, 'translate').and.returnValue('<a>translated</a>');
+  it('should translate and sanitize the string using span as wrapper', () => {
+    // setup
+    spyOn(service, 'translate').and.returnValue('<a>translated</a>');
 
-      // act
-      component.str = '<a>not-translated</a>';
-      component.inline = true;
-      component.ngOnInit();
-      fixture.detectChanges();
+    // act
+    component.str = '<a>not-translated</a>';
+    component.inline = true;
+    component.ngOnInit();
+    fixture.detectChanges();
 
-      // assert
-      expect(service.translate).toHaveBeenCalledWith('<a>not-translated</a>',
-        { ...translationParams, _inline: true }, '');
-      const compiled = fixture.debugElement.nativeElement;
-      expect((compiled as HTMLDivElement).innerHTML)
-        .toContain('<span><a>translated</a></span>');
-    });
+    // assert
+    expect(service.translate).toHaveBeenCalledWith(
+      '<a>not-translated</a>',
+      { ...translationParams, _inline: true },
+      ''
+    );
+    const compiled = fixture.debugElement.nativeElement;
+    expect((compiled as HTMLDivElement).innerHTML).toContain(
+      '<span><a>translated</a></span>'
+    );
+  });
 });

@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.spec.json",
+  "compilerOptions": {
+    "types": ["jasmine"],
+    "typeRoots": ["../../../../node_modules/@types"]
+  },
+  "include": ["**/*.spec.ts"]
+}
