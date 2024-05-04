@@ -18,7 +18,7 @@ import useT from '../hooks/useT';
  * `div` or a `span`.
  * */
 
-export default function UT({ _str, _inline, ...props }) {
+export default function UT({ _str, _inline = false, ...props }) {
   const translation = useT()(
     _str,
     { _inline, _escapeVars: true, ...props },
@@ -27,10 +27,6 @@ export default function UT({ _str, _inline, ...props }) {
   const parent = _inline ? 'span' : 'div';
   return React.createElement(parent, parentProps);
 }
-
-UT.defaultProps = {
-  _inline: false,
-};
 
 UT.propTypes = {
   _str: PropTypes.string.isRequired,

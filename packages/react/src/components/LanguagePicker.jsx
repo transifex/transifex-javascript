@@ -10,7 +10,7 @@ import useTX from '../hooks/useTX';
   *
   * - className: the CSS class to use on the <select> tag */
 
-export default function LanguagePicker({ className }) {
+export default function LanguagePicker({ className = '' }) {
   const languages = useLanguages();
   const locale = useLocale();
   const tx = useTX();
@@ -30,8 +30,4 @@ export default function LanguagePicker({ className }) {
 
 LanguagePicker.propTypes = {
   className: PropTypes.string,
-};
-
-LanguagePicker.defaultProps = {
-  className: '',
 };
