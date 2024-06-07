@@ -25,6 +25,4 @@ export default function T({ _str, ...props }) {
   return useT()(_str, props);
 }
 
-T.defaultProps = {};
-
 T.propTypes = { _str: PropTypes.string.isRequired };
