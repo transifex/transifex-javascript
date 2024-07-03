@@ -1,7 +1,7 @@
 {
   "name": "@transifex/cli",
   "description": "i18n CLI tool for Transifex Native",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "author": "Transifex",
   "keywords": [
     "transifex",
@@ -28,7 +28,7 @@
     "@babel/traverse": "^7.23.7",
     "@colors/colors": "^1.6.0",
     "@oclif/core": "^1.26.2",
-    "@transifex/native": "^7.1.1",
+    "@transifex/native": "^7.1.2",
     "@vue/compiler-sfc": "^3.4.7",
     "angular-html-parser": "^1.8.0",
     "axios": "^1.6.5",

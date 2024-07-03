@@ -1,6 +1,6 @@
 {
   "name": "@transifex/react",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "i18n React framework using Transifex Native",
   "keywords": [
     "transifex",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
-    "@transifex/native": "^7.1.1",
+    "@transifex/native": "^7.1.2",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-react": "^7.33.2",
