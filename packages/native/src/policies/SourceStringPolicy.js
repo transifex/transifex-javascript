@@ -7,7 +7,7 @@
  * @class SourceStringPolicy
  */
 export default class SourceStringPolicy {
-  handle(sourceString, localeCode) {
+  handle(sourceString, localeCode, params) {
     return sourceString;
   }
 }

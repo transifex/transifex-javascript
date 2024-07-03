@@ -151,7 +151,7 @@ export default class TxNative {
       }
 
       if (isMissing && locale) {
-        translation = this.missingPolicy.handle(translation, locale);
+        translation = this.missingPolicy.handle(translation, locale, params);
       }
 
       if (!isString(translation)) translation = `${translation}`;

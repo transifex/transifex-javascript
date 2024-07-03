@@ -46,7 +46,7 @@ declare module '@transifex/native' {
   }
 
   interface ITranslationPolicy {
-    handle(sourceString: string, localeCode: string): string;
+    handle(sourceString: string, localeCode: string, params: ITranslateParams): string;
   }
 
   interface IErrorPolicy {
@@ -124,7 +124,7 @@ declare module '@transifex/native' {
   }
 
   export class PseudoTranslationPolicy implements ITranslationPolicy {
-    handle(sourceString: string, _localeCode: string): string;
+    handle(sourceString: string, _localeCode: string, _params: ITranslateParams): string;
   }
 
   export class SourceErrorPolicy implements IErrorPolicy {
@@ -132,7 +132,7 @@ declare module '@transifex/native' {
   }
 
   export class SourceStringPolicy implements ITranslationPolicy {
-    handle(sourceString: string, _localeCode: string): string;
+    handle(sourceString: string, _localeCode: string, _params: ITranslateParams): string;
   }
 
   export class ThrowErrorPolicy implements IErrorPolicy {
