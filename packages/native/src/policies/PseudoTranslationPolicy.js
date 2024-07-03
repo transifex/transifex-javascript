@@ -62,7 +62,7 @@ const MAP = {
  * @class PseudoTranslationPolicy
  */
 export default class PseudoTranslationPolicy {
-  handle(sourceString, localeCode) {
+  handle(sourceString, localeCode, params) {
     return sourceString
       .split(/__txnative__/)
       .map((group) => {
