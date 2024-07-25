@@ -138,7 +138,7 @@ If you do this, the string that will be sent to Transifex for translation will
 look like this:
 
 ```
-A <1> button </1> and a <2> bold </2> walk into a bar
+A <1>button</1> and a <2>bold</2> walk into a bar
 ```
 
 As long as the translation respects the numbered tags, the T-component will

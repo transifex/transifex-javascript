@@ -158,12 +158,12 @@ describe('extractPhrases with hashed keys', () => {
           string: 'Text 5',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '404d0c0fef510bc89da7bc58ef160ccc': {
-          string: 'Text <1> 6 </1>',
+        '121b687b8625b4e58ba7f36dca77ad7f': {
+          string: 'Text <1>6</1>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        '4f5fe2d7356c474bd2f4c03176c6bc45': {
-          string: 'Text <1> <2> 7 </2> </1>',
+        '3ed8a3c47f6a32ece9c9ae0c2a060d45': {
+          string: 'Text <1><2>7</2></1>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
         '1ecaf4c087b894bf86987fc2972ddba7': {

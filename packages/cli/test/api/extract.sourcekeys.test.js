@@ -151,12 +151,12 @@ describe('extractPhrases with source keys', () => {
           string: 'Text 5',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        'Text <1> 6 </1>': {
-          string: 'Text <1> 6 </1>',
+        'Text <1>6</1>': {
+          string: 'Text <1>6</1>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
-        'Text <1> <2> 7 </2> </1>': {
-          string: 'Text <1> <2> 7 </2> </1>',
+        'Text <1><2>7</2></1>': {
+          string: 'Text <1><2>7</2></1>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
         'Text 8::foo': {

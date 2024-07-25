@@ -73,13 +73,25 @@ function toStr(children, counter = 0) {
       }
     } else if (child.type === 'JSXText') {
       // Child is not a React element, append as-is
-      const chunk = child.value.trim().replace(/\s+/g, ' ');
+      let chunk = child.value;
+
+      // Try to mimic how JSX is parsed in runtime React
+      const [startMatch] = /^[\s\n]*/.exec(child.value);
+      if (startMatch.includes('\n')) {
+        chunk = chunk.substring(startMatch.length);
+      }
+
+      const [endMatch] = /[\s\n]*$/.exec(child.value);
+      if (endMatch.includes('\n')) {
+        chunk = chunk.substring(0, chunk.length - endMatch.length);
+      }
+
       if (chunk) { result.push(chunk); }
     } else if (
       child.type === 'JSXExpressionContainer'
       && child.expression.type === 'StringLiteral'
     ) {
-      const chunk = child.expression.value.trim();
+      const chunk = child.expression.value;
       if (chunk) { result.push(chunk); }
     } else {
       return [[], 0];
@@ -195,7 +207,7 @@ function babelExtractPhrases(HASHES, source, relativeFile, options) {
 
       if (!string && elem.name.name === 'T' && node.children && node.children.length) {
         const [result] = toStr(node.children);
-        string = result.join(' ').trim();
+        string = result.join('');
       }
 
       if (!string) return;

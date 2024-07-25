@@ -49,7 +49,7 @@ export default function T({ _str, children, ...props }) {
   if (!children) { return t(_str, props); }
 
   const [templateArray, propsContainer] = toStr(children);
-  const templateString = templateArray.join(' ').trim();
+  const templateString = templateArray.join('');
   const translation = t(templateString, props);
 
   const result = toElement(translation, propsContainer);
