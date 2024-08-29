@@ -53,8 +53,8 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@messageformat/core": "^3.3.0",
     "cross-fetch": "^4.0.0",
+    "intl-messageformat": "^10.5.14",
     "md5": "^2.3.0"
   }
 }
