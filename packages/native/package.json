@@ -1,6 +1,6 @@
 {
   "name": "@wordsmith/native",
-  "version": "7.1.3",
+  "version": "0.1.0",
   "description": "i18n framework using Wordsmith Native",
   "keywords": [
     "wordsmith",

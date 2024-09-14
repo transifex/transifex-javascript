@@ -1,6 +1,6 @@
 {
   "name": "@wordsmith/jsonapi",
-  "version": "7.1.3",
+  "version": "0.1.0",
   "description": "{json:api} SDK library",
   "keywords": [
     "jsonapi",

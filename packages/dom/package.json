@@ -1,6 +1,6 @@
 {
   "name": "@wordsmith/dom",
-  "version": "7.1.3",
+  "version": "0.1.0",
   "description": "i18n DOM library using Wordsmith Native",
   "keywords": [
     "wordsmith",
