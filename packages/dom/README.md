@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.wordsmith.com">
+  <a href="https://www.wordsmith.is">
     <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
@@ -11,8 +11,8 @@
   <a href="https://www.npmjs.com/package/@wordsmith/dom">
     <img src="https://img.shields.io/npm/v/@wordsmith/dom.svg">
   </a>
-  <a href="https://developers.wordsmith.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
+  <a href="https://developers.wordsmith.is/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.is-blue">
   </a>
 </p>
 
@@ -27,7 +27,7 @@ Taking as input a `document` object it:
 Related packages:
 * [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
 
-Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.is/docs/native).
 
 # Quick starting guide
 

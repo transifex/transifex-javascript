@@ -1,6 +1,6 @@
 # Wordsmith Javascript Toolkit
 
-Wordsmith Javascript Toolkit is a collection of tools to easily localize your Javascript applications using [Wordsmith Native](https://www.wordsmith.com/native/).
+Wordsmith Javascript Toolkit is a collection of tools to easily localize your Javascript applications using [Wordsmith Native](https://www.wordsmith.is/native/).
 The toolkit features fetching translations over the air (OTA) to your apps.
 
 This project adheres to the Contributor Covenant [code of conduct](/CODE_OF_CONDUCT.md). To contribute to Wordsmith Javascript Toolkit, please check out the [contribution guidelines](/CONTRIBUTING.md).
@@ -50,7 +50,7 @@ Wordsmith Native support for localizing generic HTML (both server or client side
 
 ## Wordsmith API SDK
 
-A javascript SDK for the [Wordsmith API v3](https://developers.wordsmith.com/reference).
+A javascript SDK for the [Wordsmith API v3](https://developers.wordsmith.is/reference).
 [Read more](https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/api)
 
 ### {json:api} SDK library

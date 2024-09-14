@@ -18,7 +18,7 @@ Please read this project's [Code of Conduct](/CODE_OF_CONDUCT.md) for the detail
 
 # I just have a question
 
-If you are not looking to contribute, but rather have a question about this project, you can visit the [Wordsmith Community](https://community.wordsmith.com/c/wordsmith-native) and ask there directly.
+If you are not looking to contribute, but rather have a question about this project, you can visit the [Wordsmith Community](https://community.wordsmith.is/c/wordsmith-native) and ask there directly.
 
 # How to Contribute
 
@@ -53,7 +53,7 @@ When creating an improvement issue, make sure you include the following:
 
 ### Contributor License Agreement
 
-Before contributing with suggested changes, you must sign our [Contributor License Agreement](https://developers.wordsmith.com/docs/contributing).
+Before contributing with suggested changes, you must sign our [Contributor License Agreement](https://developers.wordsmith.is/docs/contributing).
 
 If you want to submit a patch that either fixes a bug or introduces a new feature, you need to have the following in mind:
 * The Pull Request (PR) handles one thing, i.e. fixes a certain bug or introduces a specific new functionality, instead of combining many at once.

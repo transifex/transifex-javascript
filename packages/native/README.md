@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.wordsmith.com">
+  <a href="https://www.wordsmith.is">
     <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
@@ -11,14 +11,14 @@
   <a href="https://www.npmjs.com/package/@wordsmith/native">
     <img src="https://img.shields.io/npm/v/@wordsmith/native.svg">
   </a>
-  <a href="https://developers.wordsmith.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
+  <a href="https://developers.wordsmith.is/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.is-blue">
   </a>
 </p>
 
 # Wordsmith Native SDK: JavaScript i18n
 
-A general purpose Javascript library for localizing web apps using [Wordsmith Native](https://www.wordsmith.com/native/).
+A general purpose Javascript library for localizing web apps using [Wordsmith Native](https://www.wordsmith.is/native/).
 
 Requires a Wordsmith Native Project Token.
 
@@ -28,11 +28,11 @@ Related packages:
 * [@wordsmith/react](https://www.npmjs.com/package/@wordsmith/react)
 * [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.is/docs/native).
 
 # How it works
 
-**Step1**: Create a Wordsmith Native project in [Wordsmith](https://www.wordsmith.com).
+**Step1**: Create a Wordsmith Native project in [Wordsmith](https://www.wordsmith.is).
 
 **Step2**: Grab credentials.
 

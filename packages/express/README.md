@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.wordsmith.com">
+  <a href="https://www.wordsmith.is">
     <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
@@ -11,20 +11,20 @@
   <a href="https://www.npmjs.com/package/@wordsmith/express">
     <img src="https://img.shields.io/npm/v/@wordsmith/express.svg">
   </a>
-  <a href="https://developers.wordsmith.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
+  <a href="https://developers.wordsmith.is/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.is-blue">
   </a>
 </p>
 
 # Wordsmith Native SDK: Express i18n middleware
 
-Express middleware for server side localization using [Wordsmith Native](https://www.wordsmith.com/native/).
+Express middleware for server side localization using [Wordsmith Native](https://www.wordsmith.is/native/).
 
 Related packages:
 - [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
 - [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.is/docs/native).
 
 ## Quick start
 

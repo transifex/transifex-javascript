@@ -2,10 +2,10 @@
 
 ![example workflow](https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg)
 [![npm version](https://img.shields.io/npm/v/@wordsmith/api.svg)](https://www.npmjs.com/package/@wordsmith/api)
-[![documentation](https://img.shields.io/badge/docs-wordsmith.com-blue)](https://developers.wordsmith.com/reference/api-javascript-sdk)
+[![documentation](https://img.shields.io/badge/docs-wordsmith.is-blue)](https://developers.wordsmith.is/reference/api-javascript-sdk)
 
 
-A javascript SDK for the [Wordsmith API (v3)](https://developers.wordsmith.com/reference)
+A javascript SDK for the [Wordsmith API (v3)](https://developers.wordsmith.is/reference)
 
 ## Intro
 
@@ -24,7 +24,7 @@ wordsmithApi.setup({ auth: "..." });
 ```
 
 The `auth` argument should be an API token. You can generate one at
-https://www.wordsmith.com/user/settings/api/.
+https://www.wordsmith.is/user/settings/api/.
 
 ## Finding things
 
@@ -92,7 +92,7 @@ await projects.fetch();
 ```
 
 However, if you look at how a project is represented in the
-[API docs](https://developers.wordsmith.com/reference/get_projects-project-id),
+[API docs](https://developers.wordsmith.is/reference/get_projects-project-id),
 Organization objects have a `projects` relationship with a `related` link, so
 you can achieve the same thing with:
 
@@ -102,7 +102,7 @@ await projects.fetch();
 ```
 
 If you look into the
-[API docs](https://developers.wordsmith.com/reference/get_projects),
+[API docs](https://developers.wordsmith.is/reference/get_projects),
 you can see that a `slug` filter is also supported, so to find a specific
 project, you can do:
 
@@ -191,7 +191,7 @@ await project.change('team', team_2);
 ```
 
 This will send a PATCH request to
-[`/projects/XXX/relationships/team`](https://developers.wordsmith.com/reference/patch_projects-project-id-relationships-team)
+[`/projects/XXX/relationships/team`](https://developers.wordsmith.is/reference/patch_projects-project-id-relationships-team)
 to perform the change. Again, you should consult the API documentation to see
 which relationships can be changed and with which methods (in this case -
 changing a project's team - both methods are available).

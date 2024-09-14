@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.wordsmith.com">
+  <a href="https://www.wordsmith.is">
     <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
@@ -11,20 +11,20 @@
   <a href="https://www.npmjs.com/package/@wordsmith/cli">
     <img src="https://img.shields.io/npm/v/@wordsmith/cli.svg">
   </a>
-  <a href="https://developers.wordsmith.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
+  <a href="https://developers.wordsmith.is/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.is-blue">
   </a>
 </p>
 
 # Wordsmith Native SDK: JavaScript i18n CLI tool
 
-A command line tool that parses `.js`, `.ts`, `.jsx`, `.tsx` and `.html` source files, extracts phrases marked for localization by [Wordsmith Native](https://www.wordsmith.com/native/) and pushes them to [Wordsmith](https:/www.wordsmith.com) for translation.
+A command line tool that parses `.js`, `.ts`, `.jsx`, `.tsx` and `.html` source files, extracts phrases marked for localization by [Wordsmith Native](https://www.wordsmith.is/native/) and pushes them to [Wordsmith](https:/www.wordsmith.is) for translation.
 
 Related packages:
 * [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
 * [@wordsmith/react](https://www.npmjs.com/package/@wordsmith/react)
 
-Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.is/docs/native).
 
 ![cli](https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/cli.gif)
 
