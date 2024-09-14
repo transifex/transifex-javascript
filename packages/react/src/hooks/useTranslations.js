@@ -7,11 +7,11 @@ import {
   TRANSLATIONS_FETCHED,
   LOCALE_CHANGED,
 } from '@wordsmith/native';
-import { TXNativeContext } from '../context/TXNativeContext';
+import { WSNativeContext } from '../context/WSNativeContext';
 
 export default function useTranslations(filterTags, wsInstance) {
   // Check for a different ws initialization
-  const context = useContext(TXNativeContext);
+  const context = useContext(WSNativeContext);
   const instance = wsInstance || context.instance || ws;
 
   const [ready, setReady] = useState(

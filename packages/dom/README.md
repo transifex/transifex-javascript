@@ -177,7 +177,7 @@ const wsdom = new WsNativeDOM();
 // A JSDOM instance to emulate DOM in NodeJS
 const jsdom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 
-// Connect JSDOM instance with TXNativeDOM
+// Connect JSDOM instance with WSNativeDOM
 wsdom.attachDOM(jsdom.window.document);
 
 // Get translatable strings
@@ -205,7 +205,7 @@ const wsdom = new WsNativeDOM();
 // A JSDOM instance to emulate DOM in NodeJS
 const jsdom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 
-// Connect JSDOM instance with TXNativeDOM
+// Connect JSDOM instance with WSNativeDOM
 wsdom.attachDOM(jsdom.window.document);
 
 // Get translations

@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { sendEvent, LOCALE_CHANGED, createNativeInstance } from '@wordsmith/native';
-import { TXProvider, useT } from '../src';
+import { WSProvider, useT } from '../src';
 
 describe('useT', () => {
   afterEach(() => {
@@ -104,9 +104,9 @@ describe('useT', () => {
       );
     }
     render(
-      <TXProvider instance={instance}>
+      <WSProvider instance={instance}>
         <MyComp />
-      </TXProvider>,
+      </WSProvider>,
     );
     expect(screen.getByText('hello from provider')).toBeTruthy();
   });

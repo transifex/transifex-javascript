@@ -412,12 +412,12 @@ function Component() {
 }
 ```
 
-## `TXProvider` provider
+## `WSProvider` provider
 If you need to use more than one Wordsmith Native instances - like for example if you have a component library - you can use this provider to pass the desired instance to the children components.
 
 ```js
 import { ws, createNativeInstance } from '@wordsmith/native';
-import { TXProvider, LanguagePicker, T } from '@wordsmith/react';
+import { WSProvider, LanguagePicker, T } from '@wordsmith/react';
 
 const myOtherTXInstance = createNativeInstance();
 myOtherTXInstance.init({ token: 'othertoken' })
@@ -434,9 +434,9 @@ export default function App() {
   return (
     <>
       <LanguagePicker />
-      <TXProvider instance={myOtherTXInstance}>
+      <WSProvider instance={myOtherTXInstance}>
         <T _str="Hello {username}" username="John" />
-      </TXProvider>
+      </WSProvider>
       <T _str="Hello World" />
     </>
   );

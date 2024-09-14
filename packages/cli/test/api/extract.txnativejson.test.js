@@ -3,7 +3,7 @@
 const { expect } = require('chai');
 const { extractPhrases } = require('../../src/api/extract');
 
-describe('extractPhrases with TXNativeJSON parser', () => {
+describe('extractPhrases with WSNativeJSON parser', () => {
   it('works with json', async () => {
     expect(await extractPhrases('test/fixtures/wsnative.json', 'wsnative.json', { parser: 'wsnativejson' }))
       .to.deep.equal({

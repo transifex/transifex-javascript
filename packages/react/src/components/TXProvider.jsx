@@ -1,10 +1,10 @@
 import React from 'react';
-import { TXNativeContext } from '../context/TXNativeContext';
+import { WSNativeContext } from '../context/WSNativeContext';
 
-export default function TXProvider({ instance, children }) {
+export default function WSProvider({ instance, children }) {
   return (
-    <TXNativeContext.Provider value={{instance}}>
+    <WSNativeContext.Provider value={{instance}}>
       {children}
-    </TXNativeContext.Provider>
+    </WSNativeContext.Provider>
   );
 }

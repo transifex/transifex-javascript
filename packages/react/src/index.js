@@ -8,4 +8,4 @@ export { default as useTranslations } from './hooks/useTranslations';
 export { default as LanguagePicker } from './components/LanguagePicker';
 export { default as T } from './components/T';
 export { default as UT } from './components/UT';
-export { default as TXProvider } from './components/TXProvider';
+export { default as WSProvider } from './components/WSProvider';

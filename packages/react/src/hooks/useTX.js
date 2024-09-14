@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ws } from '@wordsmith/native';
-import { TXNativeContext } from '../context/TXNativeContext';
+import { WSNativeContext } from '../context/WSNativeContext';
 
 /* Return a state variable with the currently selected TX Native instance.
  *
@@ -19,6 +19,6 @@ import { TXNativeContext } from '../context/TXNativeContext';
  */
 export default function useTX() {
   // Check for a different ws initialization
-  const context = useContext(TXNativeContext);
+  const context = useContext(WSNativeContext);
   return context.instance || ws;
 }

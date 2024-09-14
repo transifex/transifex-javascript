@@ -10,7 +10,7 @@ const { parseHTMLTemplateFile } = require('./parsers/angularHTML');
 const { babelExtractPhrases } = require('./parsers/babel');
 const { extractVuePhrases } = require('./parsers/vue');
 const { extractI18NextPhrases } = require('./parsers/i18next');
-const { extractTXNativeJSONPhrases } = require('./parsers/wsnativejson');
+const { extractWSNativeJSONPhrases } = require('./parsers/wsnativejson');
 
 /**
  * Parse file and extract phrases using AST
@@ -37,7 +37,7 @@ function extractPhrases(file, relativeFile, options = {}) {
 
   // Wordsmith Native JSON
   if (options.parser === 'wsnativejson') {
-    extractTXNativeJSONPhrases(HASHES, source, relativeFile, options);
+    extractWSNativeJSONPhrases(HASHES, source, relativeFile, options);
     return HASHES;
   }
 

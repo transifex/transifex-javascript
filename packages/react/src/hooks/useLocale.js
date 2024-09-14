@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import {
   ws, onEvent, offEvent, LOCALE_CHANGED,
 } from '@wordsmith/native';
-import { TXNativeContext } from '../context/TXNativeContext';
+import { WSNativeContext } from '../context/WSNativeContext';
 
 /* Return a state variable with the currently selected locale, e.g. 'en'
  *
@@ -21,7 +21,7 @@ import { TXNativeContext } from '../context/TXNativeContext';
  */
 export default function useLocale(wsInstance) {
   // Check for a different ws initialization
-  const context = useContext(TXNativeContext);
+  const context = useContext(WSNativeContext);
   const instance = wsInstance || context.instance || ws;
 
   const [locale, setLocale] = useState(instance.getCurrentLocale());

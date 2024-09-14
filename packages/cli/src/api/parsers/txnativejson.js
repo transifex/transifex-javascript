@@ -13,7 +13,7 @@ const { mergePayload } = require('../merge');
  * @param {String[]} options.filterWithoutTags
  * @param {Boolean} options.useHashedKeys
  */
-function extractTXNativeJSONPhrases(HASHES, source, relativeFile, options) {
+function extractWSNativeJSONPhrases(HASHES, source, relativeFile, options) {
   let json = {};
   try {
     json = JSON.parse(source);
@@ -37,5 +37,5 @@ function extractTXNativeJSONPhrases(HASHES, source, relativeFile, options) {
 }
 
 module.exports = {
-  extractTXNativeJSONPhrases,
+  extractWSNativeJSONPhrases,
 };

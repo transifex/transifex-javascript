@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { ws } from '@wordsmith/native';
-import { TXNativeContext } from '../context/TXNativeContext';
+import { WSNativeContext } from '../context/WSNativeContext';
 
 /* Return a state variable that will soon be populated with the available
  * languages
@@ -21,7 +21,7 @@ import { TXNativeContext } from '../context/TXNativeContext';
 
 export default function useLanguages(wsInstance) {
   // Check for a different ws initialization
-  const context = useContext(TXNativeContext);
+  const context = useContext(WSNativeContext);
   const instance = wsInstance || context.instance || ws;
 
   const [languages, setLanguages] = useState([]);

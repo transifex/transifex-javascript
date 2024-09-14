@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 
 import { ws, createNativeInstance } from '@wordsmith/native';
-import { useLanguages, TXProvider } from '../src';
+import { useLanguages, WSProvider } from '../src';
 
 let oldGetLanguages;
 beforeEach(() => {
@@ -59,9 +59,9 @@ test('fetches languages on provider', async () => {
   ];
 
   render(
-    <TXProvider instance={instance}>
+    <WSProvider instance={instance}>
       <LanguageList />
-    </TXProvider>,
+    </WSProvider>,
   );
   await waitFor(() => screen.getByText('foo: Bar'));
   expect(screen.queryByText('foo: Bar')).toBeTruthy();

@@ -35,7 +35,7 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
     return this.getCurrentLocale();
   }
 
-  // Current language picker TXNative instance
+  // Current language picker WSNative instance
   get activeInstance(): string {
     return this.instance.alias || '';
   }

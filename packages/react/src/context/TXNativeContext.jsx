@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-export const TXNativeContext = createContext({
+export const WSNativeContext = createContext({
   instance: null,
 });

@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 
 import { ws, createNativeInstance } from '@wordsmith/native';
-import { useTX, TXProvider } from '../src';
+import { useTX, WSProvider } from '../src';
 
 test('uses default ws instance', async () => {
   function Display() {
@@ -39,9 +39,9 @@ test('uses provider ws instance', async () => {
   ws.name = 'bar';
 
   render(
-    <TXProvider instance={instance}>
+    <WSProvider instance={instance}>
       <Display />
-    </TXProvider>,
+    </WSProvider>,
   );
   expect(screen.queryByText('TX Instance is foo')).toBeTruthy();
   delete ws.name;

@@ -7,4 +7,4 @@ export const useLocale : WordsmithReact.useLocale;
 export const useT : WordsmithReact.useT;
 export const useTranslations : WordsmithReact.useTranslations;
 export const useTX : WordsmithReact.useTX;
-export const TXProvider : WordsmithReact.TXProvider;
+export const WSProvider : WordsmithReact.WSProvider;

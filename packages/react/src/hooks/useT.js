@@ -9,7 +9,7 @@ import {
   TRANSLATIONS_FETCHED,
 } from '@wordsmith/native';
 import translateWithElements from '../utils/translateWithElements';
-import { TXNativeContext } from '../context/TXNativeContext';
+import { WSNativeContext } from '../context/WSNativeContext';
 
 /* Return a reference of the 'translateWithElements' function. Also forces the
  * component to re-render in case the language changes.
@@ -28,7 +28,7 @@ import { TXNativeContext } from '../context/TXNativeContext';
 
 export default function useT(wsInstance) {
   // Check for a different ws initialization
-  const context = useContext(TXNativeContext);
+  const context = useContext(WSNativeContext);
   const instance = wsInstance || context.instance || ws;
 
   const [counter, setCounter] = useState(0);
