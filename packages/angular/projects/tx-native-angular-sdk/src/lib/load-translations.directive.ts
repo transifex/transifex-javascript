@@ -6,9 +6,9 @@ import { TranslationService } from './translation.service';
 /**
  * Directive for fetching translations in batches
  */
-@Directive({ selector: '[txLoadTranslations]' })
+@Directive({ selector: '[wsLoadTranslations]' })
 export class LoadTranslationsDirective implements OnChanges, OnDestroy {
-  @Input('txLoadTranslations') tags = '';
+  @Input('wsLoadTranslations') tags = '';
 
   @Input() instanceAlias = '';
 

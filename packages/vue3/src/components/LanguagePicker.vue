@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 
 export default {
   name: 'LanguagePicker',
@@ -24,10 +24,10 @@ export default {
   },
   methods: {
     async getLanguages() {
-      this.languages = await tx.getLanguages();
+      this.languages = await ws.getLanguages();
     },
     onChange(e) {
-      tx.setCurrentLocale(e.target.value);
+      ws.setCurrentLocale(e.target.value);
     },
   },
   mounted() {
@@ -35,8 +35,8 @@ export default {
   },
   data() {
     return {
-      selected: tx.getCurrentLocale(),
-      languages: tx.languages,
+      selected: ws.getCurrentLocale(),
+      languages: ws.languages,
     };
   },
 };

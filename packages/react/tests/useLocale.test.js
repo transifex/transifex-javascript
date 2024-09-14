@@ -6,18 +6,18 @@ import {
   render, screen, cleanup,
 } from '@testing-library/react';
 
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 import { useLocale } from '../src';
 
 let oldGetCurrentLocale;
 beforeEach(() => {
   // Start mocking
-  oldGetCurrentLocale = tx.getCurrentLocale;
-  tx.getCurrentLocale = () => 'en';
+  oldGetCurrentLocale = ws.getCurrentLocale;
+  ws.getCurrentLocale = () => 'en';
 });
 afterEach(() => {
   // Reset mocking
-  tx.getCurrentLocale = oldGetCurrentLocale;
+  ws.getCurrentLocale = oldGetCurrentLocale;
   cleanup();
 });
 

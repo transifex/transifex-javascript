@@ -6,7 +6,7 @@ import {
   render, screen, cleanup, fireEvent, act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { sendEvent, LOCALE_CHANGED, createNativeInstance } from '@transifex/native';
+import { sendEvent, LOCALE_CHANGED, createNativeInstance } from '@wordsmith/native';
 import { TXProvider, useT } from '../src';
 
 describe('useT', () => {

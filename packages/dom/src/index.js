@@ -1,4 +1,4 @@
-import _TxNativeDOM from './TxNativeDOM';
+import _WsNativeDOM from './WsNativeDOM';
 
-export const TxNativeDOM = _TxNativeDOM;
+export const WsNativeDOM = _WsNativeDOM;
 export * from './utils';

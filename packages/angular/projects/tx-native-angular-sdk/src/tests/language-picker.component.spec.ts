@@ -78,7 +78,7 @@ describe('LanguagePickerComponent', () => {
 
     // assert
     const select: HTMLSelectElement = fixture.debugElement.query(
-      By.css('.tx-language-picker')
+      By.css('.ws-language-picker')
     ).nativeElement;
     const optValue = select.options[1]?.value;
     if (optValue === undefined) {

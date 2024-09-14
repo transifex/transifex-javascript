@@ -22,7 +22,7 @@ async function invalidateCDS(params) {
       Authorization: `Bearer ${params.token}:${params.secret}`,
       'Accept-version': 'v2',
       'Content-Type': 'application/json;charset=utf-8',
-      'X-NATIVE-SDK': `txjs/cli/${version}`,
+      'X-NATIVE-SDK': `wsjs/cli/${version}`,
     },
   });
   return res.data;

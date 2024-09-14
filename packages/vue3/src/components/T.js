@@ -1,13 +1,13 @@
 import {
-  onEvent, offEvent, LOCALE_CHANGED, tx, t,
-} from '@transifex/native';
+  onEvent, offEvent, LOCALE_CHANGED, ws, t,
+} from '@wordsmith/native';
 import { Text, h } from 'vue';
 
 export default {
   name: 'T',
   data() {
     return {
-      lang: tx.getCurrentLocale(),
+      lang: ws.getCurrentLocale(),
     };
   },
   mounted() {

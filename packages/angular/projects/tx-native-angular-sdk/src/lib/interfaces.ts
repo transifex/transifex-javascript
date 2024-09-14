@@ -1,6 +1,6 @@
-import type { ITranslationConfig, ITranslateParams as ITranslateParamsNative } from '@transifex/native';
+import type { ITranslationConfig, ITranslateParams as ITranslateParamsNative } from '@wordsmith/native';
 
-export type { ILanguage } from '@transifex/native';
+export type { ILanguage } from '@wordsmith/native';
 
 export interface ITranslationServiceConfig extends ITranslationConfig {
   instanceAlias?: string;

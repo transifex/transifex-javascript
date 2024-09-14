@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { TranslationService } from './translation.service';
-import {TxNative} from "@transifex/native";
+import {WsNative} from "@wordsmith/native";
 
 @Component({
-  selector: 'tx-instance',
+  selector: 'ws-instance',
   template: `
     <ng-content></ng-content>
   `,
@@ -28,7 +28,7 @@ export class TXInstanceComponent implements OnInit {
   private instanceReadySubject = new ReplaySubject<boolean>(0);
 
   // The instance
-  private instance?: TxNative;
+  private instance?: WsNative;
 
   constructor(private translationService: TranslationService) {}
 

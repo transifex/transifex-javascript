@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 import { ReplaySubject } from 'rxjs';
 
 import { TComponent } from '../lib/T.component';
@@ -173,7 +173,7 @@ describe('TComponent', () => {
   it('should detect input parameters change and translate', () => {
     // setup
     spyOn(service, 'translate').and.returnValue('<a>translated</a>');
-    spyOn(tx, 'translate');
+    spyOn(ws, 'translate');
 
     // act
     service.translate('test', { ...translationParams });

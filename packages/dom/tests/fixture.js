@@ -1,6 +1,6 @@
 export const validSegments = [
   { body: '<div>translate</div>', segment: 'translate' },
-  { body: '<div tx-content="notranslate_urls">translate2</div>', segment: 'translate2' },
+  { body: '<div ws-content="notranslate_urls">translate2</div>', segment: 'translate2' },
   // block elements
   {
     body: '<p>paragraph with <span>inline element</span></p>',
@@ -17,12 +17,12 @@ export const validSegments = [
   { body: '<h1>h1 tag</h1>', segment: 'h1 tag' },
   { body: '<H1>H1 tag</H1>', segment: 'H1 tag' },
   // translatable urls
-  { body: '<div tx-content="translate_urls"><img src="#mock_img_src"/></div>', segment: '#mock_img_src' },
-  { body: '<div tx-content="translate_urls"><a href="/uploads/"></a></div>', segment: '/uploads/' },
-  { body: '<img tx-content="translate_urls" src="#mock_img_src2"/>', segment: '#mock_img_src2' },
-  { body: '<div tx-content="translate_urls"><a><img srcset="#mock_img_srcset1"/></a></div>', segment: '#mock_img_srcset1' },
+  { body: '<div ws-content="translate_urls"><img src="#mock_img_src"/></div>', segment: '#mock_img_src' },
+  { body: '<div ws-content="translate_urls"><a href="/uploads/"></a></div>', segment: '/uploads/' },
+  { body: '<img ws-content="translate_urls" src="#mock_img_src2"/>', segment: '#mock_img_src2' },
+  { body: '<div ws-content="translate_urls"><a><img srcset="#mock_img_srcset1"/></a></div>', segment: '#mock_img_srcset1' },
   { body: '<input type="image" src=" alt="input image alt">', segment: 'input image alt' },
-  { body: '<input tx-content="translate_urls" type="image" src="input-image-src" alt="input image alt">', segment: 'input-image-src' },
+  { body: '<input ws-content="translate_urls" type="image" src="input-image-src" alt="input image alt">', segment: 'input-image-src' },
   // inputs
   { body: '<input type="button" value="button value"></input>', segment: 'button value' },
   { body: '<input type="reset" value="reset value"></input>', segment: 'reset value' },
@@ -35,8 +35,8 @@ export const validSegments = [
   { body: '<div><noscript></noscript>fragment2<img></div>', segment: 'fragment2<img>' },
   { body: '<div><noscript></noscript><img>fragment3</div>', segment: '<img>fragment3' },
   // custom attributes
-  { body: '<div data-foo=\'custom attribute\' tx-attrs=\'data-foo\'></div>', segment: 'custom attribute' },
-  { body: '<div data-foo="double quote custom attribute" tx-attrs="data-foo"></div>', segment: 'double quote custom attribute' },
+  { body: '<div data-foo=\'custom attribute\' ws-attrs=\'data-foo\'></div>', segment: 'custom attribute' },
+  { body: '<div data-foo="double quote custom attribute" ws-attrs="data-foo"></div>', segment: 'double quote custom attribute' },
   // head tags
   { head: '<title>head title</title>', segment: 'head title' },
   { head: '<title>company, location | head & title – 10% Off</title>', segment: 'company, location | head & title – 10% Off' },
@@ -85,8 +85,8 @@ export const skippedSegments = [
     segment: 'facebook_container',
   },
   {
-    body: '<div class="txlive-meta">txlive-meta</div>',
-    segment: 'txlive-meta',
+    body: '<div class="wslive-meta">wslive-meta</div>',
+    segment: 'wslive-meta',
   },
   {
     body: '<div class="twitter_container">twitter_container</div>',
@@ -137,7 +137,7 @@ export const variableSegments = [
     segment: 'This is a <a href="{var0}">url as variable</a>',
   },
   {
-    body: '<div>This is a <span tx-content="exclude">foo</span> inline exclude</div>',
+    body: '<div>This is a <span ws-content="exclude">foo</span> inline exclude</div>',
     segment: 'This is a {var0} inline exclude',
   },
   {
@@ -148,11 +148,11 @@ export const variableSegments = [
 
 export const nestedSegments = [
   {
-    body: '<div tx-content="exclude"><p>First text</p><p tx-content="include">nested exclusion</p><p>third text</p></div>',
+    body: '<div ws-content="exclude"><p>First text</p><p ws-content="include">nested exclusion</p><p>third text</p></div>',
     segment: 'nested exclusion',
   },
   {
-    body: '<div tx-content="block"><h1>A header</h1><p>A paragraph</p></div>',
+    body: '<div ws-content="block"><h1>A header</h1><p>A paragraph</p></div>',
     segment: '<h1>A header</h1><p>A paragraph</p>',
   },
 ];

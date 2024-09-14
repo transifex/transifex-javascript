@@ -1,6 +1,6 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 import { ReplaySubject } from 'rxjs';
 import { TranslatePipe } from '../lib/translate.pipe';
 import { TranslationService } from '../lib/translation.service';
@@ -55,8 +55,8 @@ describe('TranslatePipe', () => {
       localeChangedSubject.next(locale);
     });
 
-    spyOn(tx, 'init');
-    spyOn(tx, 'setCurrentLocale');
+    spyOn(ws, 'init');
+    spyOn(ws, 'setCurrentLocale');
 
     await service.init({ token: 'test' });
     await service.setCurrentLocale('el');

@@ -1,4 +1,4 @@
-import { t } from '@transifex/native';
+import { t } from '@wordsmith/native';
 
 class TestClass1 {
   //Property initializer syntax

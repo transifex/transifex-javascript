@@ -1,30 +1,30 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/express">
-    <img src="https://img.shields.io/npm/v/@transifex/express.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/express">
+    <img src="https://img.shields.io/npm/v/@wordsmith/express.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: Express i18n middleware
+# Wordsmith Native SDK: Express i18n middleware
 
-Express middleware for server side localization using [Transifex Native](https://www.transifex.com/native/).
+Express middleware for server side localization using [Wordsmith Native](https://www.wordsmith.com/native/).
 
 Related packages:
-- [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-- [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+- [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
+- [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
 ## Quick start
 
@@ -34,10 +34,10 @@ Install the necessary express packages:
 npm install --save express cookie-parser body-parser ...
 ```
 
-And the Transifex Native integration:
+And the Wordsmith Native integration:
 
 ```shell
-npm install --save @transifex/native @transifex/express
+npm install --save @wordsmith/native @wordsmith/express
 ```
 
 Create an express app and attach the necessary middleware:
@@ -52,52 +52,52 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 ```
 
-Import the Transifex Native libraries and set up:
+Import the Wordsmith Native libraries and set up:
 
 ```javascript
-const { TxExpress } = require('@transifex/express');
+const { TxExpress } = require('@wordsmith/express');
 
-const txExpress = new TxExpress({ token: '...' });
-app.use(txExpress.middleware());
-app.post('/i18n', txExpress.setLocale());
+const wsExpress = new TxExpress({ token: '...' });
+app.use(wsExpress.middleware());
+app.post('/i18n', wsExpress.setLocale());
 ```
 
 > All options passed to the `TxExpress`'s constructor that are not handled by it
-> will be passed on to `tx.init` internally. If you have already initialized the
-> `tx` object, you do not have to supply these options.
+> will be passed on to `ws.init` internally. If you have already initialized the
+> `ws` object, you do not have to supply these options.
 >
 > ```javascript
-> const txExpress = new TxExpress({
+> const wsExpress = new TxExpress({
 >   // TxExpress options
 >   daemon: true,
 >   ttl: 2 * 60,
 >
->   // tx options
+>   // ws options
 >   token: '...',
 >   filterTags: 'mytags',
 > });
 >
 > // is equivalent to
 >
-> const { tx } from '@transifex/native';
-> tx.init({ token: '...', filterTags: 'mytags' })
-> const txExpress = new TxExpress({ daemon: true, ttl: 2 * 60 });
+> const { ws } from '@wordsmith/native';
+> ws.init({ token: '...', filterTags: 'mytags' })
+> const wsExpress = new TxExpress({ daemon: true, ttl: 2 * 60 });
 > ```
 
 Finally, fetch available languages and translations and start the server:
 
 ```javascript
-txExpress.fetch().then(() => {
+wsExpress.fetch().then(() => {
   app.listen(3000, () => {
     console.log('App listening on port 3000');
   });
 });
 ```
 
-### `txExpress.middleware()` middleware
+### `wsExpress.middleware()` middleware
 
 ```javascript
-app.use(txExpress.middleware());
+app.use(wsExpress.middleware());
 ```
 
 The middleware will make sure that you have a `req.t` function to translate the
@@ -109,7 +109,7 @@ app.get('/', (req, res) => {
 });
 ```
 
-The `t`-function has the same interface as `@transifex/native`'s `t`-function.
+The `t`-function has the same interface as `@wordsmith/native`'s `t`-function.
 So, you can pass all extra arguments, like this:
 
 ```javascript
@@ -119,10 +119,10 @@ app.get('/', (req, res) => {
 ```
 
 The middleware will also make sure that any templates that are rendered by
-Express will have a `t`-function and a `tx` object in their context. The
+Express will have a `t`-function and a `ws` object in their context. The
 `t`-function will take care of translation (in the same way as `req.t` does)
-and the `tx` object holds a list of available languages and the currently
-selected language code (`tx.languages` and `tx.currentLocale` respectively).
+and the `ws` object holds a list of available languages and the currently
+selected language code (`ws.languages` and `ws.currentLocale` respectively).
 Using this, you can do:
 
 ```javascript
@@ -142,19 +142,19 @@ html
   body
     form(method='POST' action='/i18n')
       select(name='locale')
-        each locale in tx.languages
+        each locale in ws.languages
           option(
             value=locale.code
-            selected=locale.code === tx.currentLocale
+            selected=locale.code === ws.currentLocale
           )= locale.name
       input(type='submit' value="Change language")
     p= t('Hello World!')
 ```
 
 This will render a language-select dropdown (with the list of languages
-dynamically fetched by Transifex Native) and a translated string.
+dynamically fetched by Wordsmith Native) and a translated string.
 
-This (having `t` and `tx` available in the template's context) works regardless
+This (having `t` and `ws` available in the template's context) works regardless
 of which template engine is being used.
 
 ### Escaping strings
@@ -205,13 +205,13 @@ p !{ut('hello <world>')}
 p!= ut('hello <world>')
 ```
 
-### `txExpress.setLocale()` handler
+### `wsExpress.setLocale()` handler
 
 ```javascript
-app.post('/i18n', txExpress.setLocale());
+app.post('/i18n', wsExpress.setLocale());
 ```
 
-The `txExpress.setLocale()` endpoint handler (mapped to `/i18n` in the example)
+The `wsExpress.setLocale()` endpoint handler (mapped to `/i18n` in the example)
 is used by the user to change their selected language. The form to make this
 happen could look like this:
 
@@ -247,9 +247,9 @@ available modes:
 This saves the selected language on a cookie named after the value of 'options.name'.
 
 ```javascript
-const { TxExpress, CookieMode } = require('@transifex/express');
-const txExpress = new TxExpress({
-  mode: CookieMode({ name: 'my-tx-cookie' }),
+const { TxExpress, CookieMode } = require('@wordsmith/express');
+const wsExpress = new TxExpress({
+  mode: CookieMode({ name: 'my-ws-cookie' }),
 });
 ```
 
@@ -264,14 +264,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-const { TxExpress, CookieMode } = require('@transifex/express');
-const txExpress = new TxExpress({
+const { TxExpress, CookieMode } = require('@wordsmith/express');
+const wsExpress = new TxExpress({
   token: '...',
-  mode: CookieMode({ name: 'my-tx-cookie' }),
+  mode: CookieMode({ name: 'my-ws-cookie' }),
 });
 
-app.use(txExpress.middleware());
-app.post('/i18n', txExpress.setLocale());
+app.use(wsExpress.middleware());
+app.post('/i18n', wsExpress.setLocale());
 app.get('/', (req, res) => { res.send(req.t('Hello world!')); });
 ```
 
@@ -283,9 +283,9 @@ This saves the selected language on a signed cookie named after the value of
 'options.name'.
 
 ```javascript
-const { TxExpress, SignedCookieMode } = require('@transifex/express');
-const txExpress = new TxExpress({
-  mode: SignedCookieMode({ name: 'my-tx-cookie' }),
+const { TxExpress, SignedCookieMode } = require('@wordsmith/express');
+const wsExpress = new TxExpress({
+  mode: SignedCookieMode({ name: 'my-ws-cookie' }),
 });
 ```
 
@@ -300,14 +300,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser('mysecret'));
 
-const { TxExpress, SignedCookieMode } = require('@transifex/express');
-const txExpress = new TxExpress({
+const { TxExpress, SignedCookieMode } = require('@wordsmith/express');
+const wsExpress = new TxExpress({
   token: '...',
-  mode: SignedCookieMode({ name: 'my-tx-cookie' }),
+  mode: SignedCookieMode({ name: 'my-ws-cookie' }),
 });
 
-app.use(txExpress.middleware());
-app.post('/i18n', txExpress.setLocale());
+app.use(wsExpress.middleware());
+app.post('/i18n', wsExpress.setLocale());
 app.get('/', (req, res) => { res.send(req.t('Hello world!')); });
 ```
 
@@ -319,9 +319,9 @@ This saves the selected language on a session variable named after the value of
 'options.name'.
 
 ```javascript
-const { TxExpress, SessionMode } = require('@transifex/express');
-const txExpress = new TxExpress({
-  mode: SessionMode({ name: 'my-tx-cookie' }),
+const { TxExpress, SessionMode } = require('@wordsmith/express');
+const wsExpress = new TxExpress({
+  mode: SessionMode({ name: 'my-ws-cookie' }),
 });
 ```
 
@@ -341,15 +341,15 @@ app.use(session({ secret: 'mysecret', ... }));
 // or
 app.use(cookieSession({ keys: ['mysecret'], ... }));
 
-const { TxExpress, SessionMode } = require('@transifex/express');
+const { TxExpress, SessionMode } = require('@wordsmith/express');
 
-const txExpress = new TxExpress({
+const wsExpress = new TxExpress({
   token: '...',
-  mode: SessionMode({ name: 'my-tx-cookie' }),
+  mode: SessionMode({ name: 'my-ws-cookie' }),
 });
 
-app.use(txExpress.middleware());
-app.post('/i18n', txExpress.setLocale());
+app.use(wsExpress.middleware());
+app.post('/i18n', wsExpress.setLocale());
 app.get('/', (req, res) => { res.send(req.t('Hello world!')); });
 ```
 
@@ -370,19 +370,19 @@ const myMode = {
   },
 };
 
-const txExpress = new TxExpress({ mode: myMode });
+const wsExpress = new TxExpress({ mode: myMode });
 ```
 
-## Extracting strings with `txjs-cli`
+## Extracting strings with `wsjs-cli`
 
-The `txjs-cli` program from the `@transifex/cli` package will manage to extract
+The `wsjs-cli` program from the `@wordsmith/cli` package will manage to extract
 invocations of the `req.t` function in your source code, as well as invocations
 of the `t` function in '.pug' and '.ejs' templates.
 
 ```shell
-➜  npm install @transifex/cli
+➜  npm install @wordsmith/cli
 
-➜  npx txjs-cli push views -v
+➜  npx wsjs-cli push views -v
 
     Parsing all files to detect translatable content...
     ✓ Processed 2 file(s) and found 2 translatable phrases.
@@ -394,19 +394,19 @@ of the `t` function in '.pug' and '.ejs' templates.
       └─ This string originated from a PUG file
         └─ occurrences: ["/views/index.pug"]
 
-    Uploading content to Transifex... Success
-    ✓ Successfully pushed strings to Transifex:
+    Uploading content to Wordsmith... Success
+    ✓ Successfully pushed strings to Wordsmith:
       Created strings: 2
 ```
 
-It is easy to enhance support for express template engines in `txjs-cli`,
+It is easy to enhance support for express template engines in `wsjs-cli`,
 especially if the template engine in question works by converting a template to
 javascript code that can be then fed to the normal extraction process. In fact,
 this in the only piece of code that was needed in order to extend support to
 .pug and .ejs templates:
 
 ```javascript
-// transifex-javascript/packages/cli/src/api/extract.js
+// wordsmith-javascript/packages/cli/src/api/extract.js
 
 function extractPhrases(file, relativeFile, options = {}) {
 
@@ -426,7 +426,7 @@ function extractPhrases(file, relativeFile, options = {}) {
 }
 ```
 
-So, if your template engine of choice is not supported by `txjs-cli` yet,
+So, if your template engine of choice is not supported by `wsjs-cli` yet,
 please consider contributing a pull request 😉.
 
 ## API
@@ -449,7 +449,7 @@ new TxExpress({
   // header fail to produce a result, default: 'en'
   sourceLocale: String,
 
-  // If the server should periodically refetch translations from Transifex,
+  // If the server should periodically refetch translations from Wordsmith,
   // default: true
   daemon: Boolean,
 

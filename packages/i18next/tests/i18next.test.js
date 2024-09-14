@@ -3,22 +3,22 @@
 import { expect } from 'chai';
 import i18next from 'i18next';
 import nock from 'nock';
-import { TransifexI18next } from '../src/index';
+import { WordsmithI18next } from '../src/index';
 
-describe('TransifexI18next', () => {
+describe('WordsmithI18next', () => {
   it('works', async () => {
-    const backend = new TransifexI18next(null, {
+    const backend = new WordsmithI18next(null, {
       token: 'abcd',
     });
 
-    nock(backend.tx.cdsHost)
+    nock(backend.ws.cdsHost)
       .get('/content/en')
       .reply(200, {
         data: {
           'key1.inner': {
             string: 'Hello world',
           },
-          key2_txplural: {
+          key2_wsplural: {
             string: '{count, plural, one {{{count}} apple} other {{{count}} apples}}',
           },
         },

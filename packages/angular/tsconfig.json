@@ -33,9 +33,9 @@
       "../node_modules/@types"
     ],
     "paths": {
-      "tx-native-angular-sdk": [
-        "dist/tx-native-angular-sdk/tx-native-angular-sdk",
-        "dist/tx-native-angular-sdk"
+      "ws-native-angular-sdk": [
+        "dist/ws-native-angular-sdk/ws-native-angular-sdk",
+        "dist/ws-native-angular-sdk"
       ]
     },
     "useDefineForClassFields": false

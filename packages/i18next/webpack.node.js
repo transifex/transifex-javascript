@@ -9,7 +9,7 @@ module.exports = {
     globalObject: 'this',
     path: path.resolve(__dirname, 'dist'),
     filename: 'node.i18next.js',
-    library: 'transifexI18next',
+    library: 'wordsmithI18next',
     libraryTarget: 'umd',
   },
   target: 'node',

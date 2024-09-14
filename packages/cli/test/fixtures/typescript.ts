@@ -1,4 +1,4 @@
-import { t } from '@transifex/native';
+import { t } from '@wordsmith/native';
 
 interface Item {
   name: string;

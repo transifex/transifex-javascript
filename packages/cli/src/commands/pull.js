@@ -11,7 +11,7 @@ class PullCommand extends Command {
   async run() {
     const { flags } = await this.parse(PullCommand);
 
-    let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.transifex.net';
+    let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.wordsmith.net';
     let projectToken = process.env.TRANSIFEX_TOKEN;
     let projectSecret = process.env.TRANSIFEX_SECRET;
 
@@ -71,7 +71,7 @@ class PullCommand extends Command {
   }
 }
 
-PullCommand.description = `Pull content from Transifex for offline caching
+PullCommand.description = `Pull content from Wordsmith for offline caching
 Get content as JSON files, to be used by mobile Javascript SDKs for
 offline support or warming up the cache with initial translations.
 
@@ -80,23 +80,23 @@ unless the "-f foldername" parameter is provided. In that case
 the JSON files will be downloaded to that folder with the <locale>.json format.
 
 To pull content some environment variables must be set:
-TRANSIFEX_TOKEN=<Transifex Native Project Token>
-TRANSIFEX_SECRET=<Transifex Native Project Secret>
+TRANSIFEX_TOKEN=<Wordsmith Native Project Token>
+TRANSIFEX_SECRET=<Wordsmith Native Project Secret>
 (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
 
 or passed as --token=<TOKEN> --secret=<SECRET> parameters
 
-Default CDS Host is https://cds.svc.transifex.net
+Default CDS Host is https://cds.svc.wordsmith.net
 
 Examples:
-txjs-cli pull
-txjs-cli pull --pretty
-txjs-cli pull -f languages/
-txjs-cli pull --locale=fr -f .
-txjs-cli pull --filter-tags="foo,bar"
-txjs-cli pull --filter-status="reviewed"
-txjs-cli pull --token=mytoken --secret=mysecret
-TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli pull
+wsjs-cli pull
+wsjs-cli pull --pretty
+wsjs-cli pull -f languages/
+wsjs-cli pull --locale=fr -f .
+wsjs-cli pull --filter-tags="foo,bar"
+wsjs-cli pull --filter-status="reviewed"
+wsjs-cli pull --token=mytoken --secret=mysecret
+TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret wsjs-cli pull
 `;
 
 PullCommand.args = [];

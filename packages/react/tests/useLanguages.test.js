@@ -6,20 +6,20 @@ import {
   render, screen, cleanup, waitFor,
 } from '@testing-library/react';
 
-import { tx, createNativeInstance } from '@transifex/native';
+import { ws, createNativeInstance } from '@wordsmith/native';
 import { useLanguages, TXProvider } from '../src';
 
 let oldGetLanguages;
 beforeEach(() => {
   // Start mocking
-  oldGetLanguages = tx.getLanguages;
-  tx.getLanguages = async () => [
+  oldGetLanguages = ws.getLanguages;
+  ws.getLanguages = async () => [
     { code: 'el', name: 'Greek' }, { code: 'fr', name: 'French' },
   ];
 });
 afterEach(() => {
   // Reset mocking
-  tx.getLanguages = oldGetLanguages;
+  ws.getLanguages = oldGetLanguages;
   cleanup();
 });
 

@@ -1,51 +1,51 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/angular">
-    <img src="https://img.shields.io/npm/v/@transifex/angular.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/angular">
+    <img src="https://img.shields.io/npm/v/@wordsmith/angular.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: Angular i18n
+# Wordsmith Native SDK: Angular i18n
 
 Angular library for localizing Angular application using
-[Transifex Native](https://www.transifex.com/native/).
+[Wordsmith Native](https://www.wordsmith.com/native/).
 
 Related packages:
-- [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-- [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+- [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
+- [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
 # How it works
 
-**Step1**: Create a Transifex Native project in [Transifex](https://www.transifex.com).
+**Step1**: Create a Wordsmith Native project in [Wordsmith](https://www.wordsmith.com).
 
 **Step2**: Grab credentials.
 
 **Step3**: Internationalize the code using the SDK.
 
-**Step4**: Push source phrases using the `@transifex/cli` tool.
+**Step4**: Push source phrases using the `@wordsmith/cli` tool.
 
 **Step5**: Translate the app using over-the-air updates.
 
 No translation files required.
 
-![native](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/native.gif)
+![native](https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/native.gif)
 
 ## Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 
 
@@ -60,24 +60,24 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [@T Decorator](#@t-decorator)
   * [translate Pipe](#translate-pipe)
   * [Language Picker Component](#language-picker-component)
-  * [TX Instance Component](#tx-instance-component)
-  * [txLoadTranslations Directive](#txloadtranslations-directive)
+  * [TX Instance Component](#ws-instance-component)
+  * [wsLoadTranslations Directive](#wsloadtranslations-directive)
 * [License](#license)
 
 
 # Requirements
 
 Angular 16 is required. If you are using Angular 14 or 15, please use the `6.x.x` version of
-Transifex Native related packages. If you are using Angular 12 or 13, please use the `5.x.x` version of
-Transifex Native related packages. If you are using Angular 11, please use the `1.x.x` version of
-Transifex Native related packages. Other Angular versions are not officially supported at the moment.
+Wordsmith Native related packages. If you are using Angular 12 or 13, please use the `5.x.x` version of
+Wordsmith Native related packages. If you are using Angular 11, please use the `1.x.x` version of
+Wordsmith Native related packages. Other Angular versions are not officially supported at the moment.
 
 # Installation
 
 Install the library and its dependencies using:
 
 ```sh
-npm install @transifex/native @transifex/angular --save
+npm install @wordsmith/native @wordsmith/angular --save
 ```
 
 # Usage
@@ -103,7 +103,7 @@ the library in the angular application bootstrap, in two locations:
     BrowserModule,
 
     // TX Native module declaration
-    TxNativeModule.forRoot(),
+    WsNativeModule.forRoot(),
   ],
   providers: [,
   ],
@@ -115,7 +115,7 @@ the library in the angular application bootstrap, in two locations:
 
 ```typescript
 import { Component } from '@angular/core';
-import { TranslationService } from '@transifex/angular';
+import { TranslationService } from '@wordsmith/angular';
 
 @Component({
   selector: 'app-root',
@@ -198,7 +198,7 @@ The same block without the `sanitize` option would be like this, for Greek:
 The main thing to keep in mind is that the `str` property to the T component
 must **always** be a valid ICU message format template.
 
-If it is nested into a ```tx-instance``` tag, then the ```T component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#tx-instance-component) section for more information about additional instances.
+If it is nested into a ```ws-instance``` tag, then the ```T component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#ws-instance-component) section for more information about additional instances.
 
 
 ## `UT` Component
@@ -206,7 +206,7 @@ If it is nested into a ```tx-instance``` tag, then the ```T component``` will us
 ```html
   <p>
     <UT
-      str="Copyright {year} by Transifex."
+      str="Copyright {year} by Wordsmith."
       key="text.copyright"
       [inline]=false
       comment="This is the current year"
@@ -226,7 +226,7 @@ Available optional props:
 |------------|---------|---------------------------------------------|
 | inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
 
-If it is nested into a ```tx-instance``` tag, then the ```UT component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#tx-instance-component) section for more information about additional instances.
+If it is nested into a ```ws-instance``` tag, then the ```UT component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#ws-instance-component) section for more information about additional instances.
 
 ## `TranslationService` service
 
@@ -236,7 +236,7 @@ In your bootstrap entry point in the Angular application, you should initialize 
 
 ```typescript
 import { Component } from '@angular/core';
-import { TranslationService } from '@transifex/angular';
+import { TranslationService } from '@wordsmith/angular';
 
 @Component({
   selector: 'app-root',
@@ -272,7 +272,7 @@ ITXInstanceConfiguration {
 }
 ```
 
-See the section [TX Instance Component](#tx-instance-component) for more details.
+See the section [TX Instance Component](#ws-instance-component) for more details.
 
 The additional instances can be added and retrieved using exposed methods ```addInstance``` and ```getInstance```.
 
@@ -308,10 +308,10 @@ export interface ITranslationServiceConfig {
 }
 ```
 - `cache`, `missingPolicy`, `errorPolicy` and `stringRenderer` are set by default by
-`@transifex/native` package but you can provide if you wish custom functions
-of your own, or use another policy provided by the `@transifex/native` package.
+`@wordsmith/native` package but you can provide if you wish custom functions
+of your own, or use another policy provided by the `@wordsmith/native` package.
 
-Please check the documentation related to this on`@transifex/native` package [here](https://github.com/transifex/transifex-javascript/tree/master/packages/native).
+Please check the documentation related to this on`@wordsmith/native` package [here](https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/native).
 
 <sup>(2)</sup> Translation params
 
@@ -345,7 +345,7 @@ An example of use is the following:
 ```typescript
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { T, TranslationService } from '@transifex/angular';
+import { T, TranslationService } from '@wordsmith/angular';
 
 @Component({
   selector: 'app-login',
@@ -387,7 +387,7 @@ and the use of the properties in the template:
 ```
 An instance configuration can be passed to the decorator in order to use an alternative instance instead of the main TX Native one.
 
-See [TX Instance Component](#tx-instance-component) for more information.
+See [TX Instance Component](#ws-instance-component) for more information.
 
 Example of alternative instance:
 
@@ -416,7 +416,7 @@ you cannot translate strings with embedded HTML.
 These examples will work:
 
 ```html
-  {{ 'Copyright {year} by Transifex' | translate:{ _key: 'text.copyright' } }}
+  {{ 'Copyright {year} by Wordsmith' | translate:{ _key: 'text.copyright' } }}
 
   <p [matTooltip]="'A paragraph' | translate">A paragraph</p>
 ```
@@ -427,7 +427,7 @@ this example will not work, as it has HTML embedded:
   {{ 'A string with <b>HTML embedded</b>' | translate }}
 ```
 
-If it is nested into a ```tx-instance``` tag, then the pipe will use the new instance to fetch the translation. Check the [TX Instance Component](#tx-instance-component) section for more information about additional instances.
+If it is nested into a ```ws-instance``` tag, then the pipe will use the new instance to fetch the translation. Check the [TX Instance Component](#ws-instance-component) section for more information about additional instances.
 
 ## Language Picker Component
 
@@ -435,14 +435,14 @@ Renders a `<select>` tag that displays supported languages and switches the
 application's selected language on change.
 Uses `Translation Service` internally.
 
-The html selector is `tx-language-picker`.
+The html selector is `ws-language-picker`.
 
 This is an example of use for the language picker component:
 
 ```html
-<tx-language-picker
+<ws-language-picker
   className="placeBottomLeft"
-  (localeChanged)="onLocaleChanged($event)"></tx-language-picker>
+  (localeChanged)="onLocaleChanged($event)"></ws-language-picker>
 ```
 
 and the event for locale changed inside the component could be:
@@ -450,7 +450,7 @@ and the event for locale changed inside the component could be:
 ```typescript
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { T, TranslationService } from '@transifex/angular';
+import { T, TranslationService } from '@wordsmith/angular';
 
 @Component({
   selector: 'app-login',
@@ -484,7 +484,7 @@ Creates a new TX Native instance with the given configuration and adds it to the
 
 Uses `Translation Service` internally to add the instance.
 
-The html selector is `tx-instance`.
+The html selector is `ws-instance`.
 
 This is an example of use for the instance component:
 
@@ -497,14 +497,14 @@ this.instanceConfig = {
 ```
 
 ```html
-<tx-instance
+<ws-instance
   [token]="instanceConfig?.token"
   [alias]="instanceConfig?.alias"
   [controlled]="instanceConfig?.controlled"
   (instanceReady)="onInstanceReady($event)"
 >
   <T str="My brand new string"></T>
-</tx-instance>
+</ws-instance>
 ```
 
 Accepts properties:
@@ -523,14 +523,14 @@ Exposes:
 
 - `instanceIsReady`: observable for listening the readiness of the new instance.
 
-## `txLoadTranslations` Directive
+## `wsLoadTranslations` Directive
 
 This directive can be used within any html or angular tag in order to force a group of translations to be fetched, using a list of tags to retrieve the translations that match.
 
 This is an example of use:
 
 ```html
-  <p class="small-text" [txLoadTranslations]="'menu'">
+  <p class="small-text" [wsLoadTranslations]="'menu'">
     <a href="#/home">
       <UT str="home" key="text.home" inline=true></UT>
     </a>
@@ -552,4 +552,4 @@ This way we can fetch the translations related with the part of the component's 
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.

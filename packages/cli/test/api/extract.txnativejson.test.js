@@ -5,7 +5,7 @@ const { extractPhrases } = require('../../src/api/extract');
 
 describe('extractPhrases with TXNativeJSON parser', () => {
   it('works with json', async () => {
-    expect(await extractPhrases('test/fixtures/txnative.json', 'txnative.json', { parser: 'txnativejson' }))
+    expect(await extractPhrases('test/fixtures/wsnative.json', 'wsnative.json', { parser: 'wsnativejson' }))
       .to.deep.equal({
         key1: {
           string: 'str1',

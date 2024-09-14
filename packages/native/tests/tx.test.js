@@ -4,16 +4,16 @@ import { expect } from 'chai';
 import nock from 'nock';
 import { generateKey, createNativeInstance } from '../src/index';
 
-describe('tx instance', () => {
+describe('ws instance', () => {
   let t;
-  let tx;
+  let ws;
 
   beforeEach(() => {
-    tx = createNativeInstance({
+    ws = createNativeInstance({
       fetchTimeout: 0,
       fetchInterval: 0,
     });
-    t = tx.translate.bind(tx);
+    t = ws.translate.bind(ws);
   });
 
   afterEach(() => {
@@ -21,11 +21,11 @@ describe('tx instance', () => {
   });
 
   it('getLocales fetches locales', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/languages')
       .reply(200, {
         data: [
@@ -38,16 +38,16 @@ describe('tx instance', () => {
         ],
       });
 
-    const locales = await tx.getLocales({ refresh: true });
+    const locales = await ws.getLocales({ refresh: true });
     expect(locales).to.deep.equal(['el']);
   });
 
   it('getLanguages fetches languages', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/languages')
       .reply(200, {
         data: [
@@ -60,7 +60,7 @@ describe('tx instance', () => {
         ],
       });
 
-    const langs = await tx.getLanguages({ refresh: true });
+    const langs = await ws.getLanguages({ refresh: true });
     expect(langs).to.deep.equal([{
       name: 'German',
       code: 'de',
@@ -70,11 +70,11 @@ describe('tx instance', () => {
   });
 
   it('setCurrentLocale translates strings', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/content/el_GR')
       .reply(200, {
         data: {
@@ -85,72 +85,72 @@ describe('tx instance', () => {
         },
       });
 
-    await tx.setCurrentLocale('el_GR');
-    expect(tx.getCurrentLocale()).to.equal('el_GR');
+    await ws.setCurrentLocale('el_GR');
+    expect(ws.getCurrentLocale()).to.equal('el_GR');
     expect(t('Hello')).to.deep.equal('Γειά');
     expect(t('World')).to.deep.equal('World');
 
     // restore to source
-    await tx.setCurrentLocale('');
+    await ws.setCurrentLocale('');
     expect(t('Hello')).to.deep.equal('Hello');
   });
 
   it('setCurrentLocale throws when remote translations are unavailable', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/content/el_GR2')
       .reply(500);
 
     let threw = false;
     try {
-      await tx.setCurrentLocale('el_GR2');
+      await ws.setCurrentLocale('el_GR2');
     } catch (err) {
       threw = true;
     }
     expect(threw).to.equal(true);
-    expect(tx.getCurrentLocale()).to.equal('');
+    expect(ws.getCurrentLocale()).to.equal('');
   });
 
   it('setCurrentLocale throws when remote translations are invalid', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/content/el_GR2')
       .reply(200, {});
 
     let threw = false;
     try {
-      await tx.setCurrentLocale('el_GR2');
+      await ws.setCurrentLocale('el_GR2');
     } catch (err) {
       threw = true;
     }
     expect(threw).to.equal(true);
-    expect(tx.getCurrentLocale()).to.equal('');
+    expect(ws.getCurrentLocale()).to.equal('');
   });
 
   it('setCurrentLocale skips when locale is already set', async () => {
-    const current = tx.getCurrentLocale();
-    await tx.setCurrentLocale(current);
-    expect(tx.getCurrentLocale()).to.equal(current);
+    const current = ws.getCurrentLocale();
+    await ws.setCurrentLocale(current);
+    expect(ws.getCurrentLocale()).to.equal(current);
   });
 
   it('getLocales throws when remote does not respond', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/languages')
       .reply(500);
 
     let threw = false;
     try {
-      await tx.getLocales({ refresh: true });
+      await ws.getLocales({ refresh: true });
     } catch (err) {
       threw = true;
     }
@@ -158,17 +158,17 @@ describe('tx instance', () => {
   });
 
   it('getLocales throws when remote response is wrong', async () => {
-    tx.init({
+    ws.init({
       token: 'abcd',
     });
 
-    nock(tx.cdsHost)
+    nock(ws.cdsHost)
       .get('/languages')
       .reply(200, {});
 
     let threw = false;
     try {
-      await tx.getLocales({ refresh: true });
+      await ws.getLocales({ refresh: true });
     } catch (err) {
       threw = true;
     }
@@ -176,70 +176,70 @@ describe('tx instance', () => {
   });
 
   it('getLocales returns empty array when token is not set', async () => {
-    tx.init({
+    ws.init({
       token: '',
     });
-    const locales = await tx.getLocales({ refresh: true });
+    const locales = await ws.getLocales({ refresh: true });
     expect(locales).to.deep.equal([]);
   });
 
   it('fetchTranslations does not refresh when cache has content', async () => {
-    tx.cache.update('el_CACHED', { foo: 'bar' });
-    await tx.fetchTranslations('el_CACHED');
-    expect(tx.cache.getTranslations('el_CACHED')).to.deep.equal({
+    ws.cache.update('el_CACHED', { foo: 'bar' });
+    await ws.fetchTranslations('el_CACHED');
+    expect(ws.cache.getTranslations('el_CACHED')).to.deep.equal({
       foo: 'bar',
     });
   });
 
   it('fetchTranslations respects filterTags', async () => {
-    const scope = nock(tx.cdsHost)
+    const scope = nock(ws.cdsHost)
       .get('/content/lang?filter[tags]=tag1,tag2')
       .reply(200, {
         data: {},
       });
 
-    tx.init({
+    ws.init({
       token: '',
       filterTags: 'tag1,tag2',
     });
-    await tx.fetchTranslations('lang');
+    await ws.fetchTranslations('lang');
     expect(scope.isDone()).to.equal(true);
   });
 
   it('fetchTranslations respects filterStatus', async () => {
-    const scope = nock(tx.cdsHost)
+    const scope = nock(ws.cdsHost)
       .get('/content/lang?filter[status]=reviewed')
       .reply(200, {
         data: {},
       });
 
-    tx.init({
+    ws.init({
       token: '',
       filterStatus: 'reviewed',
     });
-    await tx.fetchTranslations('lang');
+    await ws.fetchTranslations('lang');
     expect(scope.isDone()).to.equal(true);
   });
 
   it('fetchTranslations respects both filterTags & filterStatus', async () => {
-    const scope = nock(tx.cdsHost)
+    const scope = nock(ws.cdsHost)
       .get('/content/lang?filter[tags]=tag1,tag2&filter[status]=reviewed')
       .reply(200, {
         data: {},
       });
 
-    tx.init({
+    ws.init({
       token: '',
       filterTags: 'tag1,tag2',
       filterStatus: 'reviewed',
     });
-    await tx.fetchTranslations('lang');
+    await ws.fetchTranslations('lang');
     expect(scope.isDone()).to.equal(true);
   });
 
   it('retries fetching languages', async () => {
-    tx.init({ token: 'abcd' });
-    nock(tx.cdsHost)
+    ws.init({ token: 'abcd' });
+    nock(ws.cdsHost)
       .get('/languages')
       .twice()
       .reply(202)
@@ -252,13 +252,13 @@ describe('tx instance', () => {
           rtl: false,
         }],
       });
-    const locales = await tx.getLocales({ refresh: true });
+    const locales = await ws.getLocales({ refresh: true });
     expect(locales).to.deep.equal(['el']);
   });
 
   it('retries fetching languages with timeout', async () => {
-    tx.init({ token: 'abcd', fetchTimeout: 50 });
-    nock(tx.cdsHost)
+    ws.init({ token: 'abcd', fetchTimeout: 50 });
+    nock(ws.cdsHost)
       .get('/languages')
       .delayConnection(60)
       .reply(202)
@@ -274,7 +274,7 @@ describe('tx instance', () => {
 
     let hasError = false;
     try {
-      await tx.getLocales({ refresh: true });
+      await ws.getLocales({ refresh: true });
     } catch (err) {
       hasError = true;
     }
@@ -282,8 +282,8 @@ describe('tx instance', () => {
   });
 
   it('retries fetching languages with interval', async () => {
-    tx.init({ token: 'abcd', fetchInterval: 50 });
-    nock(tx.cdsHost)
+    ws.init({ token: 'abcd', fetchInterval: 50 });
+    nock(ws.cdsHost)
       .get('/languages')
       .reply(202)
       .get('/languages')
@@ -297,25 +297,25 @@ describe('tx instance', () => {
       });
 
     const ts = Date.now();
-    await tx.getLocales({ refresh: true });
+    await ws.getLocales({ refresh: true });
     expect(Date.now() - ts).to.be.greaterThan(50);
   });
 
   it('retries fetching translations', async () => {
-    tx.init({ token: 'abcd' });
-    nock(tx.cdsHost)
+    ws.init({ token: 'abcd' });
+    nock(ws.cdsHost)
       .get('/content/el')
       .twice()
       .reply(202)
       .get('/content/el')
       .reply(200, { data: { source: { string: 'translation' } } });
-    await tx.fetchTranslations('el');
-    expect(tx.cache.get('source', 'el')).to.equal('translation');
+    await ws.fetchTranslations('el');
+    expect(ws.cache.get('source', 'el')).to.equal('translation');
   });
 
   it('retries fetching translations with timeout', async () => {
-    tx.init({ token: 'abcd', fetchTimeout: 50 });
-    nock(tx.cdsHost)
+    ws.init({ token: 'abcd', fetchTimeout: 50 });
+    nock(ws.cdsHost)
       .get('/content/el_timeout')
       .delayConnection(60)
       .reply(202)
@@ -324,7 +324,7 @@ describe('tx instance', () => {
 
     let hasError = false;
     try {
-      await tx.fetchTranslations('el_timeout');
+      await ws.fetchTranslations('el_timeout');
     } catch (err) {
       hasError = true;
     }
@@ -332,15 +332,15 @@ describe('tx instance', () => {
   });
 
   it('retries fetching translations with interval delays', async () => {
-    tx.init({ token: 'abcd', fetchInterval: 50 });
-    nock(tx.cdsHost)
+    ws.init({ token: 'abcd', fetchInterval: 50 });
+    nock(ws.cdsHost)
       .get('/content/el_interval')
       .reply(202)
       .get('/content/el_interval')
       .reply(200, { data: { source: { string: 'translation' } } });
 
     const ts = Date.now();
-    await tx.fetchTranslations('el_interval');
+    await ws.fetchTranslations('el_interval');
     expect(Date.now() - ts).to.be.greaterThan(50);
   });
 });

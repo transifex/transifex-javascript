@@ -1,37 +1,37 @@
-# Transifex API JavaScript SDK
+# Wordsmith API JavaScript SDK
 
-![example workflow](https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg)
-[![npm version](https://img.shields.io/npm/v/@transifex/api.svg)](https://www.npmjs.com/package/@transifex/api)
-[![documentation](https://img.shields.io/badge/docs-transifex.com-blue)](https://developers.transifex.com/reference/api-javascript-sdk)
+![example workflow](https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg)
+[![npm version](https://img.shields.io/npm/v/@wordsmith/api.svg)](https://www.npmjs.com/package/@wordsmith/api)
+[![documentation](https://img.shields.io/badge/docs-wordsmith.com-blue)](https://developers.wordsmith.com/reference/api-javascript-sdk)
 
 
-A javascript SDK for the [Transifex API (v3)](https://developers.transifex.com/reference)
+A javascript SDK for the [Wordsmith API (v3)](https://developers.wordsmith.com/reference)
 
 ## Intro
 
 This SDK is based on the
-[`@transifex/jsonapi`](https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi)
+[`@wordsmith/jsonapi`](https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/jsonapi)
 SDK library. Most of the functionality is implemented there. If you want to get
 a better understanding of the capabilities of this SDK, we suggest reading
-`@transifex/jsonapi`'s documentation.
+`@wordsmith/jsonapi`'s documentation.
 
 ## Setting up
 
 ```javascript
-import { transifexApi } from '@transifex/api';
+import { wordsmithApi } from '@wordsmith/api';
 
-transifexApi.setup({ auth: "..." });
+wordsmithApi.setup({ auth: "..." });
 ```
 
 The `auth` argument should be an API token. You can generate one at
-https://www.transifex.com/user/settings/api/.
+https://www.wordsmith.com/user/settings/api/.
 
 ## Finding things
 
 To get a list of the organizations your user account has access to, run:
 
 ```javascript
-const organizations = transifexApi.Organization.list();
+const organizations = wordsmithApi.Organization.list();
 await organizations.fetch();
 console.log(organizations.data);
 ```
@@ -40,25 +40,25 @@ If you have access to many organizations and the first response comes
 paginated, you can get a list of all organizations with:
 
 ```javascript
-for await (const organization of transifexApi.Organization.all()) {
+for await (const organization of wordsmithApi.Organization.all()) {
   console.log({ organization });
 }
 ```
 
 It is highly unlikely that you will have access to so many organizations for
 the initial response to be paginated but the `list` and `all` methods are
-common to all Transifex API resource types so you might as well get used to
+common to all Wordsmith API resource types so you might as well get used to
 them. If the list fits into one response, using `all` instead of `list` doesn't
 have any penalties.
 
 If you want to find a specific organization, you can use the 'slug' filter:
 
 ```javascript
-const organizations = transifexApi.Organization.filter({ slug: 'my_org' });
+const organizations = wordsmithApi.Organization.filter({ slug: 'my_org' });
 await organizations.fetch();
 const organization = organizations.data[0];
 // or
-const organization = await transifexApi.Organization.get({ slug: 'my_org' });
+const organization = await wordsmithApi.Organization.get({ slug: 'my_org' });
 ```
 
 _(`get` does the same thing as `filter(...)[0]` but raises an exception if the
@@ -69,7 +69,7 @@ organization), you can search against all of them:
 
 ```javascript
 let organization;
-for await (const o of transifexApi.Organization.all()) {
+for await (const o of wordsmithApi.Organization.all()) {
   if (o.get('name') === 'My Org') {
     organization = o;
     break;
@@ -87,12 +87,12 @@ console.log(organization.get('name'));
 To get a list of projects, do:
 
 ```javascript
-const projects = transifexApi.Project.filter({ organization });
+const projects = wordsmithApi.Project.filter({ organization });
 await projects.fetch();
 ```
 
 However, if you look at how a project is represented in the
-[API docs](https://developers.transifex.com/reference/get_projects-project-id),
+[API docs](https://developers.wordsmith.com/reference/get_projects-project-id),
 Organization objects have a `projects` relationship with a `related` link, so
 you can achieve the same thing with:
 
@@ -102,7 +102,7 @@ await projects.fetch();
 ```
 
 If you look into the
-[API docs](https://developers.transifex.com/reference/get_projects),
+[API docs](https://developers.wordsmith.com/reference/get_projects),
 you can see that a `slug` filter is also supported, so to find a specific
 project, you can do:
 
@@ -127,10 +127,10 @@ items for strings that haven't been translated yet, setting their `strings`
 field will post a translation):
 
 ```javascript
-const language = await transifexApi.Language.get({ code: 'el' });
+const language = await wordsmithApi.Language.get({ code: 'el' });
 const resources = await project.fetch('resources');
 const resource = await resources.get({ slug: 'my_resource' });
-const translations = transifexApi.ResourceTranslation
+const translations = wordsmithApi.ResourceTranslation
   .filter({ resource, language })
   .include('resource_string');
 await translations.fetch();
@@ -167,9 +167,9 @@ await translation.save({ strings: { other: source_string + ' in greeek!!!' } });
 Lets use projects, teams and project languages as examples:
 
 ```javascript
-const project = await transifexApi.Project.get({ organization: ..., slug: '...' });
+const project = await wordsmithApi.Project.get({ organization: ..., slug: '...' });
 const team_1 = await project.fetch('team');
-const team_2 = await transifexApi.Team.get({ slug: '...' });
+const team_2 = await wordsmithApi.Team.get({ slug: '...' });
 ```
 
 If we want to change the project's team from `team_1` to `team_2`, we have 2
@@ -191,7 +191,7 @@ await project.change('team', team_2);
 ```
 
 This will send a PATCH request to
-[`/projects/XXX/relationships/team`](https://developers.transifex.com/reference/patch_projects-project-id-relationships-team)
+[`/projects/XXX/relationships/team`](https://developers.wordsmith.com/reference/patch_projects-project-id-relationships-team)
 to perform the change. Again, you should consult the API documentation to see
 which relationships can be changed and with which methods (in this case -
 changing a project's team - both methods are available).
@@ -203,7 +203,7 @@ relationship", like a project's target languages, you can use the `reset`,
 
 ```javascript
 const languageDict = {};
-for await (const language of transifexApi.Language.all()) {
+for await (const language of wordsmithApi.Language.all()) {
   languageDict[language.get('code')] = language;
 }
 const [language_a, language_b, language_c] = [languageDict.a, languageDict.b, languageDict.c];
@@ -233,15 +233,15 @@ The following examples should be self-explanatory.
 To create something:
 
 ```javascript
-const organizations = transifexApi.Organization.list();
+const organizations = wordsmithApi.Organization.list();
 await organizations.fetch();
 const organization = organizations.data[0];
 
-const languages = transifexApi.Organization.list();
+const languages = wordsmithApi.Organization.list();
 await languages.fetch();
 const language = languages.data[0];
 
-const project = await transifexApi.Project.create({
+const project = await wordsmithApi.Project.create({
   name: 'New Project',
   slug: 'new_project',
   private: true,
@@ -261,14 +261,14 @@ await project.delete();
 
 ## File uploads and downloads
 
-There is code in `@transifex/api` that automates several {json:api}
+There is code in `@wordsmith/api` that automates several {json:api}
 interactions behind the scenes in order to help with file uploads and downloads.
 
 In order to upload a source file to a resource, you can do:
 
 ```
 const content = JSON.stringify({ key: 'A value' });
-await transifexApi.ResourceStringsAsyncUpload.upload({
+await wordsmithApi.ResourceStringsAsyncUpload.upload({
   resource,
   content,
 });
@@ -278,8 +278,8 @@ In order to upload a translation file to a resource, you can do:
 
 ```
 const content = JSON.stringify({ key: 'A value in French' });
-const language = await transifexApi.Language.get({ code: 'fr' });
-await transifexApi.ResourceTranslationsAsyncUpload.upload({
+const language = await wordsmithApi.Language.get({ code: 'fr' });
+await wordsmithApi.ResourceTranslationsAsyncUpload.upload({
   resource,
   language,
   content,
@@ -289,7 +289,7 @@ await transifexApi.ResourceTranslationsAsyncUpload.upload({
 To upload binary files, convert file content to `base64` encoding:
 
 ```
-await transifexApi.ResourceTranslationsAsyncUpload.upload({
+await wordsmithApi.ResourceTranslationsAsyncUpload.upload({
   resource,
   language,
   content, // base64 encoded string
@@ -300,8 +300,8 @@ await transifexApi.ResourceTranslationsAsyncUpload.upload({
 In order to download a translated language file, you can do:
 
 ```
-const language = await transifexApi.Language.get({ code: 'fr' });
-const url = await transifexApi.ResourceTranslationsAsyncDownload.download({
+const language = await wordsmithApi.Language.get({ code: 'fr' });
+const url = await wordsmithApi.ResourceTranslationsAsyncDownload.download({
   resource,
   language,
 });
@@ -309,4 +309,4 @@ const response = await axios.get(url);
 console.log(response.data);
 ```
 
-As always, in order to see how file uploads and downloads work in the Transifex API, you should check out the API documentation.
+As always, in order to see how file uploads and downloads work in the Wordsmith API, you should check out the API documentation.

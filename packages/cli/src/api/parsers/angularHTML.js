@@ -154,12 +154,12 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
   if (errors.length) return;
 
   parseTemplateNode(rootNodes);
-  _.each(TXComponents, (txcmp) => {
+  _.each(TXComponents, (wscmp) => {
     let string = '';
     let key = '';
     const params = {};
-    if (txcmp.attrs) {
-      _.each(txcmp.attrs, (attribute) => {
+    if (wscmp.attrs) {
+      _.each(wscmp.attrs, (attribute) => {
         if (attribute.name === 'str') {
           string = attribute.value;
         } else if (attribute.name === 'key') {
@@ -182,14 +182,14 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
     }
   });
 
-  _.each(TXTemplateStrings, (txStr) => {
+  _.each(TXTemplateStrings, (wsStr) => {
     let key = '';
 
-    if (txStr.params.key) {
-      key = txStr.params.key;
+    if (wsStr.params.key) {
+      key = wsStr.params.key;
     }
 
-    const partial = createPayload(txStr.string, txStr.params, relativeFile, options);
+    const partial = createPayload(wsStr.string, wsStr.params, relativeFile, options);
     if (!isPayloadValid(partial, options)) return;
 
     mergePayload(HASHES, {

@@ -1,4 +1,4 @@
-import { T, UT, useT } from '@transifex/react';
+import { T, UT, useT } from '@wordsmith/react';
 
 function foo() {
   const t = useT();

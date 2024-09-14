@@ -1,51 +1,51 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/react">
-    <img src="https://img.shields.io/npm/v/@transifex/react.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/react">
+    <img src="https://img.shields.io/npm/v/@wordsmith/react.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: React i18n
+# Wordsmith Native SDK: React i18n
 
 React component for localizing React application using
-[Transifex Native](https://www.transifex.com/native/).
+[Wordsmith Native](https://www.wordsmith.com/native/).
 
 Related packages:
-- [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-- [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+- [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
+- [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
 # How it works
 
-**Step1**: Create a Transifex Native project in [Transifex](https://www.transifex.com).
+**Step1**: Create a Wordsmith Native project in [Wordsmith](https://www.wordsmith.com).
 
 **Step2**: Grab credentials.
 
 **Step3**: Internationalize the code using the SDK.
 
-**Step4**: Push source phrases using the `@transifex/cli` tool.
+**Step4**: Push source phrases using the `@wordsmith/cli` tool.
 
 **Step5**: Translate the app using over-the-air updates.
 
 No translation files required.
 
-![native](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/native.gif)
+![native](https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/native.gif)
 
 # Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 
 # Install
@@ -53,7 +53,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
 Install the library and its dependencies using:
 
 ```sh
-npm install @transifex/native @transifex/react --save
+npm install @wordsmith/native @wordsmith/react --save
 ```
 
 # Usage
@@ -63,7 +63,7 @@ npm install @transifex/native @transifex/react --save
 ```javascript
 import React from 'react';
 
-import { T } from '@transifex/react';
+import { T } from '@wordsmith/react';
 
 function Example() {
   return (
@@ -124,7 +124,7 @@ must **always** be a valid ICU messageformat template.
 ```javascript
 import React from 'react';
 
-import { UT } from '@transifex/react';
+import { UT } from '@wordsmith/react';
 
 function Example () {
   return (
@@ -163,7 +163,7 @@ manipulation.
 ```javascript
 import React from 'react';
 
-import { useT } from '@transifex/react';
+import { useT } from '@wordsmith/react';
 
 function Capitalized() {
   const t = useT();
@@ -175,8 +175,8 @@ function Capitalized() {
 Optionally `useT` can take as param a custom Native Instance:
 
 ```javascript
-import { useT } from '@transifex/react';
-import { createNativeInstance } from '@transifex/native';
+import { useT } from '@wordsmith/react';
+import { createNativeInstance } from '@wordsmith/native';
 
 const customTX = createNativeInstance({
   token: 'token',
@@ -196,7 +196,7 @@ the application. Makes an asynchronous call to the CDS.
 
 ```jsx
 import React from 'react';
-import { useLanguages } from '@transifex/react';
+import { useLanguages } from '@wordsmith/react';
 
 function LanguageList () {
   const languages = useLanguages();
@@ -215,8 +215,8 @@ function LanguageList () {
 Optionally `useLanguages` can take as param a custom Native Instance:
 
 ```javascript
-import { useT } from '@transifex/react';
-import { createNativeInstance } from '@transifex/native';
+import { useT } from '@wordsmith/react';
+import { createNativeInstance } from '@wordsmith/native';
 
 const customTX = createNativeInstance({
   token: 'token',
@@ -235,7 +235,7 @@ Returns a state variable with the currently selected locale.
 
 ```jsx
 import React from 'react';
-import { useLocale } from '@transifex/react';
+import { useLocale } from '@wordsmith/react';
 
 function DisplayLocale () {
   const locale = useLocale();
@@ -248,8 +248,8 @@ function DisplayLocale () {
 Optionally `useLocale` can take as param a custom Native Instance:
 
 ```javascript
-import { useT } from '@transifex/react';
-import { createNativeInstance } from '@transifex/native';
+import { useT } from '@wordsmith/react';
+import { createNativeInstance } from '@wordsmith/native';
 
 const customTX = createNativeInstance({
   token: 'token',
@@ -268,12 +268,12 @@ Returns a state variable with the Native instance.
 
 ```jsx
 import React from 'react';
-import { useTX } from '@transifex/react';
+import { useTX } from '@wordsmith/react';
 
 function SetLocale () {
-  const tx = useTX();
+  const ws = useTX();
   return (
-    <button onClick={() => tx.setCurrentLocale('el')}>
+    <button onClick={() => ws.setCurrentLocale('el')}>
       Set to Greek
     </button>
   );
@@ -288,7 +288,7 @@ Uses `useLanguages` and `useLocale` internally.
 
 ```jsx
 import React from 'react';
-import { T, LanguagePicker } from '@transifex/react';
+import { T, LanguagePicker } from '@wordsmith/react';
 
 function App () {
   return (
@@ -309,8 +309,8 @@ your own language picker using `useLanguages`:
 
 ```jsx
 import React from 'react';
-import { tx } from '@transifex/native';
-import { useLanguages, useLocale } from '@transifex/react';
+import { ws } from '@wordsmith/native';
+import { useLanguages, useLocale } from '@wordsmith/react';
 
 function MyLanguagePicker () {
   const languages = useLanguages();
@@ -319,7 +319,7 @@ function MyLanguagePicker () {
   return (
     <>
       {languages.map(({ code, name }) => (
-        <button key={code} onClick={() => tx.setCurrentLocale(code)}>
+        <button key={code} onClick={() => ws.setCurrentLocale(code)}>
           {name} {locale === code ? '(selected)' : ''}
         </button>
       ))}
@@ -335,7 +335,7 @@ component first renders. This way, you can pull translations from the CDS in
 batches and only when needed:
 
 ```jsx
-tx.init({ token: ..., filterTags: 'home' });
+ws.init({ token: ..., filterTags: 'home' });
 
 export default function App() {
   return (
@@ -375,7 +375,7 @@ translations themselves. This will make the translations available sooner for
 child components that may potentially need them:
 
 ```jsx
-tx.init({ token: ..., filterTags: 'home' });
+ws.init({ token: ..., filterTags: 'home' });
 
 export default function App() {
   const { ready: innerReady } = useTranslations('inner');
@@ -398,8 +398,8 @@ function Inner({ ready }) {
 Optionally `useTranslations` can take as a second param a custom Native Instance:
 
 ```javascript
-import { useT } from '@transifex/react';
-import { createNativeInstance } from '@transifex/native';
+import { useT } from '@wordsmith/react';
+import { createNativeInstance } from '@wordsmith/native';
 
 const customTX = createNativeInstance({
   token: 'token',
@@ -413,22 +413,22 @@ function Component() {
 ```
 
 ## `TXProvider` provider
-If you need to use more than one Transifex Native instances - like for example if you have a component library - you can use this provider to pass the desired instance to the children components.
+If you need to use more than one Wordsmith Native instances - like for example if you have a component library - you can use this provider to pass the desired instance to the children components.
 
 ```js
-import { tx, createNativeInstance } from '@transifex/native';
-import { TXProvider, LanguagePicker, T } from '@transifex/react';
+import { ws, createNativeInstance } from '@wordsmith/native';
+import { TXProvider, LanguagePicker, T } from '@wordsmith/react';
 
 const myOtherTXInstance = createNativeInstance();
 myOtherTXInstance.init({ token: 'othertoken' })
 
-tx.init({
+ws.init({
   token: 'token',
 });
 
-// Make tx aware of the other instances so they can be synced when changing
+// Make ws aware of the other instances so they can be synced when changing
 // language
-tx.controllerOf(myOtherTXInstance);
+ws.controllerOf(myOtherTXInstance);
 
 export default function App() {
   return (
@@ -445,4 +445,4 @@ export default function App() {
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.

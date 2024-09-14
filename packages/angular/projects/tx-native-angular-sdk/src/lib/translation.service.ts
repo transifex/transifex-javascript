@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { createNativeInstance, tx, TxNative } from '@transifex/native';
+import { createNativeInstance, ws, WsNative } from '@wordsmith/native';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { ILanguage, ITranslationServiceConfig, ITXInstanceConfiguration } from './interfaces';
 
 /**
- * Service which wraps the Transifex Native library for using inside components
+ * Service which wraps the Wordsmith Native library for using inside components
  */
 @Injectable({ providedIn: 'root' }) // Singleton Injection
 export class TranslationService {
@@ -20,7 +20,7 @@ export class TranslationService {
   }
 
   // A dictionary with additional TX Native instances for translation
-  private additionalInstances: { [id: string]: TxNative } = {};
+  private additionalInstances: { [id: string]: WsNative } = {};
 
   // A subject for managing locale changes
   private localeChangedSubject = new ReplaySubject<string>(0);
@@ -88,13 +88,13 @@ export class TranslationService {
     }
 
     try {
-      const txInstance = createNativeInstance({ token: config.token });
+      const wsInstance = createNativeInstance({ token: config.token });
 
       if (config.controlled) {
-        await tx.controllerOf(txInstance);
+        await ws.controllerOf(wsInstance);
       }
 
-      this.additionalInstances[config.alias] = txInstance;
+      this.additionalInstances[config.alias] = wsInstance;
       return true;
     } catch {
       return false;
@@ -104,8 +104,8 @@ export class TranslationService {
   /**
    * Retrieves the instance that matches the given alias or the default one if the alias does not match
    */
-  public getInstance(instanceAlias?: string): TxNative {
-    return instanceAlias ? this.additionalInstances[instanceAlias] ?? tx : tx;
+  public getInstance(instanceAlias?: string): WsNative {
+    return instanceAlias ? this.additionalInstances[instanceAlias] ?? ws : ws;
   }
 
   /**

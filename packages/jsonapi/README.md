@@ -3,13 +3,13 @@
 This is a library that allows you to create SDKs for APIs that conform to the
 [{json:api}](https://jsonapi.org/) specification. The design of this library,
 as well as the structure of this README file, follow the principles of
-[an equivalent library that was written for Python](https://github.com/transifex/transifex-python/tree/devel/transifex/api)
+[an equivalent library that was written for Python](https://github.com/wordsmith/wordsmith-python/tree/devel/wordsmith/api)
 as much as possible.
 
 ## Setting up
 
 ```sh
-npm install --save @transifex/jsonapi
+npm install --save @wordsmith/jsonapi
 ```
 
 Using  this library means creating your own API SDK for a remote service. In
@@ -17,7 +17,7 @@ order to do that, you need to first define an *API connection type*. This is
 done by subclassing `JsonApi`:
 
 ```javascript
-import { JsonApi } from '@transifex/jsonapi';
+import { JsonApi } from '@wordsmith/jsonapi';
 
 class FamilyApi extends JsonApi {
   static HOST = 'https://api.families.com';
@@ -29,7 +29,7 @@ Next, you have to define some *API resource types* and register them to the
 with the connection type's `register` method:
 
 ```javascript
-import { Resource } from '@transifex/jsonapi';
+import { Resource } from '@wordsmith/jsonapi';
 
 class Parent extends Resource {
   static TYPE = 'parents';
@@ -127,41 +127,41 @@ familyApi.setup(props);
 
 This way, you can implement your SDK in a way that offers the option to users
 to either use a _global API connection instance_ or multiple instances. In
-fact, this is exactly how `@transifex/api` has been set up:
+fact, this is exactly how `@wordsmith/api` has been set up:
 
 ```javascript
-// @transifex/api/src/index.js
+// @wordsmith/api/src/index.js
 
-import { JsonApi, Resource } from '@transifex/jsonapi';
+import { JsonApi, Resource } from '@wordsmith/jsonapi';
 
-export class TransifexApi extends JsonApi {
-  static HOST = 'https://rest.api.transifex.com';
+export class WordsmithApi extends JsonApi {
+  static HOST = 'https://rest.api.wordsmith.com';
 }
 
 class Organization extends Resource {
   static TYPE = "organizations";
 }
-TransifexApi.register(Organization, 'Organization');
+WordsmithApi.register(Organization, 'Organization');
 
-export const transifexApi = TransifexApi();
+export const wordsmithApi = WordsmithApi();
 ```
 
 ```javascript
 // app.js (uses the global API connection instance)
 
-import { transifexApi } from '@transifex/api';
+import { wordsmithApi } from '@wordsmith/api';
 
-transifexApi.setup({ auth: 'MYTOKEN' });
-const organization = await transifexApi.Organization.get("1");
+wordsmithApi.setup({ auth: 'MYTOKEN' });
+const organization = await wordsmithApi.Organization.get("1");
 ```
 
 ```javascript
 // app.js (uses multiple custom API connection instances)
 
-import { TransifexApi } from '@transifex/api';
+import { WordsmithApi } from '@wordsmith/api';
 
-const api1 = new TransifexApi({ auth: 'APITOKEN1' });
-const api2 = new TransifexApi({ auth: 'APITOKEN2' });
+const api1 = new WordsmithApi({ auth: 'APITOKEN1' });
+const api2 = new WordsmithApi({ auth: 'APITOKEN2' });
 
 const organization1 = await api1.Organization.get('1');
 const organization2 = await api2.Organization.get('2');
@@ -262,7 +262,7 @@ child = await familyApi.Child.get(child.id);
 #### Intro
 
 We need to talk a bit about how {json:api} represents relationships and how the
-`transifex.api.jsonapi` library interprets them. Depending on the value of a
+`wordsmith.api.jsonapi` library interprets them. Depending on the value of a
 field of `relationships`, we consider the following possibilities. A
 relationship can either be:
 

@@ -22,7 +22,7 @@ describe('Missing policy', () => {
 
     it('ignores react interpolation properties', () => {
       const policy = new PseudoTranslationPolicy();
-      expect(policy.handle('Hello __txnative__50__txnative__ world')).to.equal('Ħḗḗŀŀǿǿ __txnative__50__txnative__ ẇǿǿřŀḓ');
+      expect(policy.handle('Hello __wsnative__50__wsnative__ world')).to.equal('Ħḗḗŀŀǿǿ __wsnative__50__wsnative__ ẇǿǿřŀḓ');
     });
   });
 });

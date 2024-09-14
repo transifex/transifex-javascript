@@ -66,7 +66,7 @@ export function isString(obj) {
 }
 
 /**
- * Convert a locale to Transifex locale format, e.g
+ * Convert a locale to Wordsmith locale format, e.g
  * pt-br -> pt_BR
  *
  * @export

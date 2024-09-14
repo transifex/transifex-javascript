@@ -1,12 +1,12 @@
 import {
-  onEvent, LOCALE_CHANGED, t, tx,
-} from '@transifex/native';
+  onEvent, LOCALE_CHANGED, t, ws,
+} from '@wordsmith/native';
 import T from './components/T';
 import UT from './components/UT';
 
 export default {
   install(Vue) {
-    const data = { locale: tx.getCurrentLocale() };
+    const data = { locale: ws.getCurrentLocale() };
     const vm = new Vue({ data });
     onEvent(LOCALE_CHANGED, (l) => {
       vm.$set(vm, 'locale', l);

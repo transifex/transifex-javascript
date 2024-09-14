@@ -1,11 +1,11 @@
-import { tx, t, createInstance } from '@transifex/native';
+import { ws, t, createInstance } from '@wordsmith/native';
 
 const Instance = createInstance();
 
 // valid
 t('Text 1');
 t('Text 2');
-tx.translate('Text 3');
+ws.translate('Text 3');
 Instance.translate('Text 4');
 
 const text = 'foo';

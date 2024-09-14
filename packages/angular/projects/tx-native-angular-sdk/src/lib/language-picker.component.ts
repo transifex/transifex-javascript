@@ -9,9 +9,9 @@ import { TranslationService } from './translation.service';
  * A language picker component with the available languages already populated
  */
 @Component({
-  selector: 'tx-language-picker',
+  selector: 'ws-language-picker',
   template: `
-    <select [class]="className" (change)="onChange($event)" class="tx-language-picker">
+    <select [class]="className" (change)="onChange($event)" class="ws-language-picker">
       <option
           *ngFor="let language of languages"
           [selected]="language.code === currentLocale"

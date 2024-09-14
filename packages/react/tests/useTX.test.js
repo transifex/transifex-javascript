@@ -6,10 +6,10 @@ import {
   render, screen,
 } from '@testing-library/react';
 
-import { tx, createNativeInstance } from '@transifex/native';
+import { ws, createNativeInstance } from '@wordsmith/native';
 import { useTX, TXProvider } from '../src';
 
-test('uses default tx instance', async () => {
+test('uses default ws instance', async () => {
   function Display() {
     const inst = useTX();
     return (
@@ -18,13 +18,13 @@ test('uses default tx instance', async () => {
       </>
     );
   }
-  tx.name = 'foo';
+  ws.name = 'foo';
   render(<Display />);
   expect(screen.queryByText('TX Instance is foo')).toBeTruthy();
-  delete tx.name;
+  delete ws.name;
 });
 
-test('uses provider tx instance', async () => {
+test('uses provider ws instance', async () => {
   function Display() {
     const inst = useTX();
     return (
@@ -36,7 +36,7 @@ test('uses provider tx instance', async () => {
 
   const instance = createNativeInstance();
   instance.name = 'foo';
-  tx.name = 'bar';
+  ws.name = 'bar';
 
   render(
     <TXProvider instance={instance}>
@@ -44,5 +44,5 @@ test('uses provider tx instance', async () => {
     </TXProvider>,
   );
   expect(screen.queryByText('TX Instance is foo')).toBeTruthy();
-  delete tx.name;
+  delete ws.name;
 });

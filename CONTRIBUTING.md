@@ -1,4 +1,4 @@
-# Contributing to Transifex Javascript Toolkit
+# Contributing to Wordsmith Javascript Toolkit
 
 :tada: Thank you for your interest in contributing to this project! :tada:
 
@@ -18,7 +18,7 @@ Please read this project's [Code of Conduct](/CODE_OF_CONDUCT.md) for the detail
 
 # I just have a question
 
-If you are not looking to contribute, but rather have a question about this project, you can visit the [Transifex Community](https://community.transifex.com/c/transifex-native) and ask there directly.
+If you are not looking to contribute, but rather have a question about this project, you can visit the [Wordsmith Community](https://community.wordsmith.com/c/wordsmith-native) and ask there directly.
 
 # How to Contribute
 
@@ -26,7 +26,7 @@ There are several ways to contribute to this project and they are all equally we
 
 ## Reporting Bugs
 
-Bugs in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new issue, make sure you check the [list of exiting issues](https://github.com/transifex/transifex-javascript/issues), as it might already be there.
+Bugs in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new issue, make sure you check the [list of exiting issues](https://github.com/wordsmith/wordsmith-javascript/issues), as it might already be there.
 
 When creating an issue, make sure you include the following:
 * A clear and descriptive title.
@@ -35,11 +35,11 @@ When creating an issue, make sure you include the following:
 * The behavior you expected instead and the reason for this.
 * Any material that would better showcase the issue, such as screenshots or animated GIFs.
 * The version(s) of this library you have seen this erroneous behavior in
-* Make sure you DO NOT INCLUDE any sensitive information, such as a token, a secret or a private URL to a Transifex project or resource
+* Make sure you DO NOT INCLUDE any sensitive information, such as a token, a secret or a private URL to a Wordsmith project or resource
 
 ## Suggesting Improvements
 
-Improvement suggestions in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new suggestion, make sure you check the [list of exiting issues](https://github.com/transifex/transifex-javascript/issues), as it might already be there.
+Improvement suggestions in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new suggestion, make sure you check the [list of exiting issues](https://github.com/wordsmith/wordsmith-javascript/issues), as it might already be there.
 
 When creating an improvement issue, make sure you include the following:
 * A clear and descriptive title.
@@ -47,13 +47,13 @@ When creating an improvement issue, make sure you include the following:
 * The current behavior/functionality, what you would prefer to see instead and why.
 * An explanation on why this improvement would benefit most users of this library and not just your use case
 * Any material that could better showcase the current and the expected behavior, such as screenshots or animated GIFs.
-* Make sure you DO NOT INCLUDE any sensitive information, such as a token, a secret or a private URL to a Transifex project or resource
+* Make sure you DO NOT INCLUDE any sensitive information, such as a token, a secret or a private URL to a Wordsmith project or resource
 
 ## Creating Patches
 
 ### Contributor License Agreement
 
-Before contributing with suggested changes, you must sign our [Contributor License Agreement](https://developers.transifex.com/docs/contributing).
+Before contributing with suggested changes, you must sign our [Contributor License Agreement](https://developers.wordsmith.com/docs/contributing).
 
 If you want to submit a patch that either fixes a bug or introduces a new feature, you need to have the following in mind:
 * The Pull Request (PR) handles one thing, i.e. fixes a certain bug or introduces a specific new functionality, instead of combining many at once.

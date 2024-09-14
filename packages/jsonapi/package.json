@@ -1,5 +1,5 @@
 {
-  "name": "@transifex/jsonapi",
+  "name": "@wordsmith/jsonapi",
   "version": "7.1.3",
   "description": "{json:api} SDK library",
   "keywords": [
@@ -8,15 +8,15 @@
     "api",
     "client"
   ],
-  "author": "Transifex",
-  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/jsonapi",
+  "author": "Wordsmith",
+  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/jsonapi",
   "license": "Apache-2.0",
   "main": "dist/node.jsonapi.js",
   "browser": "dist/browser.jsonapi.js",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
   "scripts": {
     "build": "webpack",
     "lint": "eslint src/ tests/",
@@ -24,7 +24,7 @@
     "test": "jest"
   },
   "bugs": {
-    "url": "https://github.com/transifex/transifex-javascript/issues"
+    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
   },
   "engines": {
     "node": ">=16.0.0"

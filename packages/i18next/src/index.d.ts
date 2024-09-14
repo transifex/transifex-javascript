@@ -1,3 +1,3 @@
-declare module '@transifex/i18next' {
-  export const TransifexI18next: any;
+declare module '@wordsmith/i18next' {
+  export const WordsmithI18next: any;
 }

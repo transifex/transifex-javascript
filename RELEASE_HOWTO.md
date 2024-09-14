@@ -19,7 +19,7 @@ master and tag the release**, e.g. `v0.10.0`.
 
 > Note: Lerna does not update npm `peerDependencies`, so make sure that
 > your packages are updated before releasing, for example check
-> `packages/react/package.json` for a peer dependency at `@transifex/native`
+> `packages/react/package.json` for a peer dependency at `@wordsmith/native`
 
 ## Step 2: Create a github release
 

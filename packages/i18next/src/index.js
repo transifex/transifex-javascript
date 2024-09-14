@@ -1,4 +1,4 @@
-import _TransifexI18next from './TransifexI18next';
+import _WordsmithI18next from './WordsmithI18next';
 
 // eslint-disable-next-line import/prefer-default-export
-export const TransifexI18next = _TransifexI18next;
+export const WordsmithI18next = _WordsmithI18next;

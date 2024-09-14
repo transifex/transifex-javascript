@@ -1,4 +1,4 @@
-const { t } = require('@transifex/native');
+const { t } = require('@wordsmith/native');
 
 function log() {}
 

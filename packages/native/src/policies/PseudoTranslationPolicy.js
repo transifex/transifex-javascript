@@ -64,7 +64,7 @@ const MAP = {
 export default class PseudoTranslationPolicy {
   handle(sourceString, localeCode, params) {
     return sourceString
-      .split(/__txnative__/)
+      .split(/__wsnative__/)
       .map((group) => {
         let pseudoString = '';
         for (let i = 0; i < group.length; i += 1) {
@@ -82,6 +82,6 @@ export default class PseudoTranslationPolicy {
         }
         return pseudoString;
       })
-      .join('__txnative__');
+      .join('__wsnative__');
   }
 }

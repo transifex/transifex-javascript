@@ -1,4 +1,4 @@
-import { tx, t } from '@transifex/native';
+import { ws, t } from '@wordsmith/native';
 
 function log() {}
 
@@ -10,6 +10,6 @@ export default function foo() {
     _comment: 'comment',
   }));
   log(t('Text 2'));
-  log(tx.translate('Text 3'));
-  log(tx.translate('Text 4'));
+  log(ws.translate('Text 3'));
+  log(ws.translate('Text 4'));
 }

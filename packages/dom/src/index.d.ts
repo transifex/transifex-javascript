@@ -1,3 +1,3 @@
-declare module '@transifex/dom' {
-  export const TxNativeDOM: any;
+declare module '@wordsmith/dom' {
+  export const WsNativeDOM: any;
 }

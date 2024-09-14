@@ -1,7 +1,7 @@
-const { tx, escape } = require('@transifex/native');
+const { ws, escape } = require('@wordsmith/native');
 const typeis = require('type-is');
 
-function CookieMode({ name = 'tx-locale', cookieOptions } = {}) {
+function CookieMode({ name = 'ws-locale', cookieOptions } = {}) {
   return {
     setLocale(req, res, locale) {
       res.cookie(name, locale, cookieOptions);
@@ -12,7 +12,7 @@ function CookieMode({ name = 'tx-locale', cookieOptions } = {}) {
   };
 }
 
-function SignedCookieMode({ name = 'tx-locale', cookieOptions } = {}) {
+function SignedCookieMode({ name = 'ws-locale', cookieOptions } = {}) {
   return {
     setLocale(req, res, locale) {
       res.cookie(name, locale, { ...cookieOptions, signed: true });
@@ -23,7 +23,7 @@ function SignedCookieMode({ name = 'tx-locale', cookieOptions } = {}) {
   };
 }
 
-function SessionMode({ name = 'tx-locale' } = {}) {
+function SessionMode({ name = 'ws-locale' } = {}) {
   return {
     setLocale(req, res, locale) {
       req.session[name] = locale;
@@ -55,10 +55,10 @@ class TxExpress {
     daemon,
     ttl,
     logging,
-    ...txOptions
+    ...wsOptions
   } = {}) {
-    if (txOptions) {
-      tx.init(txOptions);
+    if (wsOptions) {
+      ws.init(wsOptions);
     }
     if (mode) {
       this.mode = mode;
@@ -92,7 +92,7 @@ class TxExpress {
         // The header looks like: 'da, en-gb;q=0.8, en;'
         // Locales without a 'q' value will be considered first, the rest will
         // be sorted based on their q value. After sorting, we will use the
-        // first locale that is supported by Transifex Native.
+        // first locale that is supported by Wordsmith Native.
         const locales = req.headers['accept-language']
           .split(',')
           .map((section) => section.trim())
@@ -109,7 +109,7 @@ class TxExpress {
 
         for (let i = 0; i < finalLocales.length; i++) {
           const current = finalLocales[i];
-          if (tx.locales.indexOf(current) !== -1) {
+          if (ws.locales.indexOf(current) !== -1) {
             locale = current;
             break;
           }
@@ -118,7 +118,7 @@ class TxExpress {
 
       if (!locale) { locale = this.sourceLocale; }
 
-      const ut = (...args) => tx.translateLocale(locale, ...args);
+      const ut = (...args) => ws.translateLocale(locale, ...args);
       const t = (...args) => escape(ut(...args));
 
       req.ut = ut;
@@ -130,7 +130,7 @@ class TxExpress {
         Object.assign(actualLocals, {
           ut,
           t,
-          tx: { languages: tx.languages, currentLocale: locale },
+          ws: { languages: ws.languages, currentLocale: locale },
         });
         return oldRender(view, actualLocals, ...args);
       };
@@ -154,18 +154,18 @@ class TxExpress {
 
   async fetch() {
     const _fetch = async () => {
-      await tx.getLocales();
-      for (let i = 0; i < tx.locales.length; i++) {
-        const locale = tx.locales[i];
+      await ws.getLocales();
+      for (let i = 0; i < ws.locales.length; i++) {
+        const locale = ws.locales[i];
         /* eslint-disable no-await-in-loop */
-        await tx.fetchTranslations(locale);
+        await ws.fetchTranslations(locale);
         /* eslint-enable */
       }
     };
 
-    this.logging('Transifex Native: fetching translations');
+    this.logging('Wordsmith Native: fetching translations');
     await _fetch();
-    this.logging('Transifex Native: done');
+    this.logging('Wordsmith Native: done');
     if (this.daemon) {
       setInterval(_fetch, this.ttl * 1000);
     }

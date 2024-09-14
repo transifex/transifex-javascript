@@ -1,28 +1,28 @@
 /* eslint-disable no-underscore-dangle */
 import React, { Fragment } from 'react';
-import { t } from '@transifex/native';
+import { t } from '@wordsmith/native';
 
 /*  Wrapper of `t`-function that can accept React elements as properties. This
   * works by going through the properties looking for React elements and
   * replacing them with placeholder text that looks like
-  * "__txnative__X__txnative__" where `X` will help us identify the element in
+  * "__wsnative__X__wsnative__" where `X` will help us identify the element in
   * order to put it back later. The source template and the modified props are
   * then passed to the regular `t` function. The translation will come back
-  * with the "__txnative__X__txnative__" embedded, as if they were regular
+  * with the "__wsnative__X__wsnative__" embedded, as if they were regular
   * string properties. At this point we replace these with the React elements
   * that were extracted from the original properties. The final result will be
   * an array of React elements, each within its unique `key` property and, if
   * there are more than one, will be returned as `<>{result}</>`. */
 
-function translateWithElements(_str, props, tx) {
+function translateWithElements(_str, props, ws) {
   let _t = t;
 
-  if (tx) {
-    // backwards compatible check, in case tx is a provider context
-    if (tx.instance && tx.instance.t) {
-      _t = tx.instance.t;
-    } else if (tx.t) {
-      _t = tx.t;
+  if (ws) {
+    // backwards compatible check, in case ws is a provider context
+    if (ws.instance && ws.instance.t) {
+      _t = ws.instance.t;
+    } else if (ws.t) {
+      _t = ws.t;
     }
   }
 
@@ -31,7 +31,7 @@ function translateWithElements(_str, props, tx) {
   if (props) {
     Object.entries(props).forEach(([key, value]) => {
       if (React.isValidElement(value)) {
-        actualProps[key] = `__txnative__${reactElements.length}__txnative__`;
+        actualProps[key] = `__wsnative__${reactElements.length}__wsnative__`;
         reactElements.push(value);
       } else {
         actualProps[key] = value;
@@ -42,7 +42,7 @@ function translateWithElements(_str, props, tx) {
   const result = [];
   let lastEnd = 0;
   let lastKey = 0;
-  const regexp = RegExp('__txnative__(\\d+)__txnative__', 'g');
+  const regexp = RegExp('__wsnative__(\\d+)__wsnative__', 'g');
   let match = regexp.exec(translation);
   while (match !== null) {
     const chunk = translation.slice(lastEnd, match.index);

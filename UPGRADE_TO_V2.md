@@ -1,6 +1,6 @@
 # Upgrade to v2
 
-Transifex Native 2.x.x is the next major release after 1.x.x,
+Wordsmith Native 2.x.x is the next major release after 1.x.x,
 containing the following **breaking changes**:
 
 # NodeJS 12 is the minimum supported version
@@ -10,7 +10,7 @@ against node >= 12.x.x
 
 # Angular 12 is the minimum supported version
 
-@transifex/angular has been tested to work with Angular 12 & 13. If you are working
+@wordsmith/angular has been tested to work with Angular 12 & 13. If you are working
 on an Angular 11 project please use the 1.x.x version.
 
 # Default key generation
@@ -36,7 +36,7 @@ Use of source based keys, makes it easier to be managed by humans.
 
 `Hello World -> Hello World`
 
-# Key discovery in @transifex/native
+# Key discovery in @wordsmith/native
 
 During runtime, `t` function (or `T` React component etc), will follow a new pattern for key discovery. For example:
 
@@ -45,17 +45,17 @@ During runtime, `t` function (or `T` React component etc), will follow a new pat
 - Look for `hash("Hello World")` in the translated content (backwards compatibility)
 - Trigger missing policy and/or display the source string
 
-# @transifex/cli push command
+# @wordsmith/cli push command
 
 Push command in CLI, will now push source based keys by default. This can be controled using the `--key-generator` flag.
 
 For example:
 
-`txjs-cli push src/ --key-generator=hash` (1.x.x mode)
+`wsjs-cli push src/ --key-generator=hash` (1.x.x mode)
 
-`txjs-cli push src/ --key-generator=source` (2.x.x, the default)
+`wsjs-cli push src/ --key-generator=source` (2.x.x, the default)
 
-# @transifex/react useT hook
+# @wordsmith/react useT hook
 
 Behaviour of `useT` React hook has changed. It now returns a `t` function.
 
@@ -85,17 +85,17 @@ export function MyView() {
 
 # Content migration
 
-Content pushed in Transifex contains hashed based content. Here is a strategy on how to migrate the content after the upgrade:
+Content pushed in Wordsmith contains hashed based content. Here is a strategy on how to migrate the content after the upgrade:
 
 Step 1: Push content again using source based keys and tag them as `v2`:
 
 ```
-txjs-cli push --append-tags=v2
+wsjs-cli push --append-tags=v2
 ```
 
-Step 2: Let Translation Memory fill-up the translations in Transifex.
+Step 2: Let Translation Memory fill-up the translations in Wordsmith.
 
-Step 3: Go to Transifex Editor and edit source language.
+Step 3: Go to Wordsmith Editor and edit source language.
 
 Step 4: Filter strings that DO NOT contain the `v2` tag.
 
@@ -107,6 +107,6 @@ Code wise, only the use of `useT` in the React SDK has changed and requires code
 
 To maintain backwards compatibity, simply use the
 
-```txjs-cli push --key-generator=hash```
+```wsjs-cli push --key-generator=hash```
 
 flag when pushing source content and you should be good to go.

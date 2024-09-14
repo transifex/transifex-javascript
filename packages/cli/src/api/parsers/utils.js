@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 const _ = require('lodash');
-const { generateKey, generateHashedKey } = require('@transifex/native');
+const { generateKey, generateHashedKey } = require('@wordsmith/native');
 const { stringToArray, mergeArrays } = require('../utils');
 /**
  * Find value bound to some identifier with passed name.
@@ -104,12 +104,12 @@ function isPayloadValid(payload, options = {}) {
 }
 
 /**
-   * Check if callee is a valid Transifex Native function
+   * Check if callee is a valid Wordsmith Native function
    *
    * @param {*} node
    * @returns {Boolean}
    */
-function isTransifexCall(node) {
+function isWordsmithCall(node) {
   const { callee } = node;
   if (!callee) return false;
 
@@ -163,6 +163,6 @@ module.exports = {
   findIdentifierValue,
   findDeclaredValue,
   isPayloadValid,
-  isTransifexCall,
+  isWordsmithCall,
   createPayload,
 };

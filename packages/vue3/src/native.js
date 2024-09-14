@@ -1,13 +1,13 @@
 import {
-  onEvent, LOCALE_CHANGED, t, tx,
-} from '@transifex/native';
+  onEvent, LOCALE_CHANGED, t, ws,
+} from '@wordsmith/native';
 import { ref } from 'vue';
 import T from './components/T';
 import UT from './components/UT';
 
 export default {
   install(app) {
-    const locale = ref(tx.getCurrentLocale());
+    const locale = ref(ws.getCurrentLocale());
 
     onEvent(LOCALE_CHANGED, (l) => {
       locale.value = l;

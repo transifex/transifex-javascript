@@ -1,4 +1,4 @@
-import TxNative from './TxNative';
+import WsNative from './WsNative';
 
 import _PseudoTranslationPolicy from './policies/PseudoTranslationPolicy';
 import _SourceStringPolicy from './policies/SourceStringPolicy';
@@ -8,7 +8,7 @@ import _ThrowErrorPolicy from './policies/ThrowErrorPolicy';
 import _MessageFormatRenderer from './renderers/MessageFormatRenderer';
 
 function _createNativeInstance(initOptions) {
-  const instance = new TxNative();
+  const instance = new WsNative();
   instance.t = instance.translate.bind(instance);
   if (initOptions) {
     instance.init(initOptions);
@@ -27,5 +27,5 @@ export const ThrowErrorPolicy = _ThrowErrorPolicy;
 export const MessageFormatRenderer = _MessageFormatRenderer;
 export const createNativeInstance = _createNativeInstance;
 
-export const tx = new TxNative();
-export const t = tx.translate.bind(tx);
+export const ws = new WsNative();
+export const t = ws.translate.bind(ws);

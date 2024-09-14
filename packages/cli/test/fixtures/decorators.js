@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { T } from '@transifex/react'
-import { t } from '@transifex/native'
+import { T } from '@wordsmith/react'
+import { t } from '@wordsmith/native'
 import Controller from './Controller';
 
 @Controller

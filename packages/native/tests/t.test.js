@@ -8,11 +8,11 @@ import { generateKey } from '../src/utils';
 
 describe('t function', () => {
   let t;
-  let tx;
+  let ws;
 
   beforeEach(() => {
-    tx = createNativeInstance();
-    t = tx.translate.bind(tx);
+    ws = createNativeInstance();
+    t = ws.translate.bind(ws);
   });
 
   it('translates string', () => {
@@ -47,13 +47,13 @@ describe('t function', () => {
   });
 
   it('uses error policy', () => {
-    tx.init({
+    ws.init({
       errorPolicy: new ThrowErrorPolicy(),
     });
     expect(() => t('Hello {username}'))
       .to.throw();
 
-    tx.init({
+    ws.init({
       errorPolicy: new SourceErrorPolicy(),
     });
     expect(t('Hello {username}'))
@@ -61,25 +61,25 @@ describe('t function', () => {
   });
 
   it('handles plurals', () => {
-    const prevLocale = tx.currentLocale;
+    const prevLocale = ws.currentLocale;
     // Using JSON to deepcopy the cache because we don't have lodash available
     const prevTranslationsByLocale = JSON.parse(JSON.stringify(
-      tx.cache.translationsByLocale,
+      ws.cache.translationsByLocale,
     ));
 
     const sourceString = '{cnt, plural, one {you have # message} other {you have # messages}}';
     const key = generateKey(sourceString);
-    tx.cache.update(
+    ws.cache.update(
       'el',
       { [key]: '{???, plural, one {έχετε # μήνυμα} other {έχετε # μηνύματα}}' },
     );
-    tx.currentLocale = 'el';
+    ws.currentLocale = 'el';
     expect(t(sourceString, { cnt: 1 })).to.equal('έχετε 1 μήνυμα');
     expect(t(sourceString, { cnt: 2 })).to.equal('έχετε 2 μηνύματα');
 
-    // Restore the 'tx' object
-    tx.currentLocale = prevLocale;
-    tx.cache.translationsByLocale = prevTranslationsByLocale;
+    // Restore the 'ws' object
+    ws.currentLocale = prevLocale;
+    ws.cache.translationsByLocale = prevTranslationsByLocale;
   });
 
   it('always returns a string', () => {

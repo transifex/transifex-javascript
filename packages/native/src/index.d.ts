@@ -1,4 +1,4 @@
-declare module '@transifex/native' {
+declare module '@wordsmith/native' {
   export interface ITranslateParams {
     [key: string]: unknown;
     _charlimit?: number;
@@ -53,10 +53,10 @@ declare module '@transifex/native' {
     handle(error: Error, sourceString: string, localeCode: string, params: ITranslateParams): string;
   }
 
-  export class TxNative implements ITranslationConfig {
+  export class WsNative implements ITranslationConfig {
     cache: IMemoryCache;
     cdsHost: string;
-    childInstances: TxNative[];
+    childInstances: WsNative[];
     currentLocale: string;
     errorPolicy: IErrorPolicy;
     fetchedTags?: Record<string, string[]>;
@@ -71,7 +71,7 @@ declare module '@transifex/native' {
     stringRenderer: IMessageFormatRenderer;
     token: string;
 
-    controllerOf(instance: TxNative): Promise<TxNative>;
+    controllerOf(instance: WsNative): Promise<WsNative>;
 
     fetchTranslations(localeCode: string, config?: { filterTags?: string; refresh?: boolean }): Promise<void>;
 
@@ -167,7 +167,7 @@ declare module '@transifex/native' {
     localeCode: string;
   }
 
-  export function createNativeInstance(initOptions?: ITranslationConfig): TxNative;
+  export function createNativeInstance(initOptions?: ITranslationConfig): WsNative;
 
   export function escape(unsafe: string): string;
 
@@ -185,15 +185,15 @@ declare module '@transifex/native' {
 
   export function normalizeLocale(locale: string): string;
 
-  export function offEvent(eventType: EventTypes, fn: (payload: EventPayload | null, caller: TxNative) => void): void;
+  export function offEvent(eventType: EventTypes, fn: (payload: EventPayload | null, caller: WsNative) => void): void;
 
-  export function onEvent(eventType: EventTypes, fn: (payload: EventPayload | null, caller: TxNative) => void): void;
+  export function onEvent(eventType: EventTypes, fn: (payload: EventPayload | null, caller: WsNative) => void): void;
 
-  export function sendEvent(eventType: EventTypes, payload: EventPayload | null, caller: TxNative): void;
+  export function sendEvent(eventType: EventTypes, payload: EventPayload | null, caller: WsNative): void;
 
   export function sleep(msec: number): Promise<void>;
 
   export function t(str: string, params?: ITranslateParams): string;
 
-  export const tx: TxNative;
+  export const ws: WsNative;
 }

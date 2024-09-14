@@ -1,5 +1,5 @@
 /*
- * Public API Surface of tx-native-angular-sdk
+ * Public API Surface of ws-native-angular-sdk
  */
 
 export * from './lib/interfaces';

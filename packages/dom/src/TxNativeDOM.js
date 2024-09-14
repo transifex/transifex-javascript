@@ -27,9 +27,9 @@ import {
   stripWhitespace,
 } from './utils';
 
-export default class TxNativeDOM {
+export default class WsNativeDOM {
   /**
-   * Creates an instance of TxNativeDOM.
+   * Creates an instance of WsNativeDOM.
    *
    * @param {*} [params={}]
    * @param {Function} params.variablesParser - custom variables parser
@@ -41,7 +41,7 @@ export default class TxNativeDOM {
    * @param {Array(String)} params.ignoreClass - list of custom HTML class names to ignore
    * ..["o-foo", "u-bar", ...]
    * @param {Boolean} params.ignoreDatabind
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   constructor(params = {}) {
     this.segments = {};
@@ -87,19 +87,19 @@ export default class TxNativeDOM {
    *
    * @param {*} document
    * @param {*} root (optional)
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   attachDOM(document, root) {
     if (!document) {
       throw new Error('Missing document from attachDOM');
     }
     this.document = document;
-    if (this.document.txSourceLocale === undefined) {
+    if (this.document.wsSourceLocale === undefined) {
       const htmlTag = this.document.getElementsByTagName('html')[0];
       if (htmlTag && htmlTag.getAttribute('lang')) {
-        this.document.txSourceLocale = htmlTag.getAttribute('lang');
+        this.document.wsSourceLocale = htmlTag.getAttribute('lang');
       } else {
-        this.document.txSourceLocale = '';
+        this.document.wsSourceLocale = '';
       }
     }
     if (root) {
@@ -130,7 +130,7 @@ export default class TxNativeDOM {
    * Clear DOM from metadata
    *
    * @param {*} node
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   detachDOM(node) {
     if (!node) return;
@@ -143,12 +143,12 @@ export default class TxNativeDOM {
 
     // remove flags
     try {
-      if (node.txbefore_detected) delete node.txbefore_detected;
-      if (node.txafter_detected) delete node.txafter_detected;
-      if (node.txblock_detected) delete node.txblock_detected;
-      if (node.txtext_detected) delete node.txtext_detected;
-      if (node.txattr_detected) delete node.txattr_detected;
-      if (node.txsegment) delete node.txsegment;
+      if (node.wsbefore_detected) delete node.wsbefore_detected;
+      if (node.wsafter_detected) delete node.wsafter_detected;
+      if (node.wsblock_detected) delete node.wsblock_detected;
+      if (node.wstext_detected) delete node.wstext_detected;
+      if (node.wsattr_detected) delete node.wsattr_detected;
+      if (node.wssegment) delete node.wssegment;
     } catch (err) { /* pass */ }
 
     // proceed to children
@@ -162,7 +162,7 @@ export default class TxNativeDOM {
   /**
    * Reset DOM to source language
    *
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   toSource() {
     const document = this.document;
@@ -183,8 +183,8 @@ export default class TxNativeDOM {
     // update html lang if exists
     const htmlTag = this.document.getElementsByTagName('html')[0];
     if (htmlTag) {
-      if (this.document.txSourceLocale) {
-        htmlTag.setAttribute('lang', this.document.txSourceLocale);
+      if (this.document.wsSourceLocale) {
+        htmlTag.setAttribute('lang', this.document.wsSourceLocale);
       } else {
         htmlTag.removeAttribute('lang');
       }
@@ -204,7 +204,7 @@ export default class TxNativeDOM {
    *
    * @param {String} locale
    * @param {Function} t
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   toLanguage(locale, t) {
     // standard segments
@@ -239,7 +239,7 @@ export default class TxNativeDOM {
   /**
    * Pseudo translate DOM
    *
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   pseudoTranslate() {
     this.toLanguage('pseudo', pseudo);
@@ -261,7 +261,7 @@ export default class TxNativeDOM {
    * @param {Array[String]} params.occurrences
    * @param {Array[String]} params.tags
    * @return {*} json
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   getStringsJSON(params = {}) {
     const data = {};
@@ -294,7 +294,7 @@ export default class TxNativeDOM {
    *
    * @param {String} string
    * @return {String}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _getKey(string) {
     return string;
@@ -305,7 +305,7 @@ export default class TxNativeDOM {
    *
    * @param {*} node
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _isBlockElement(node) {
     return node.nodeType === 1 && BLOCK_NODES[node.tagName] === true;
@@ -316,7 +316,7 @@ export default class TxNativeDOM {
    *
    * @param {*} node
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _isTextElement(node) {
     return node.nodeType === 3;
@@ -327,7 +327,7 @@ export default class TxNativeDOM {
    *
    * @param {*} node
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _hasDataBinding(node) {
     return (
@@ -346,7 +346,7 @@ export default class TxNativeDOM {
    *
    * @param {String} tagName
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _isSkipTag(tagName) {
     return tagName && this.skipTagsCustom[tagName];
@@ -357,7 +357,7 @@ export default class TxNativeDOM {
    *
    * @param {String} tagName
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _isSkipTagContent(tagName) {
     return tagName && SKIP_TAGS_CONTENT[tagName];
@@ -368,7 +368,7 @@ export default class TxNativeDOM {
    *
    * @param {String} className
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _isSkipClass(className) {
     if (!className || !isString(className)) return false;
@@ -388,11 +388,11 @@ export default class TxNativeDOM {
    *
    * @param {*} node
    * @return {Boolean}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _isSkipAttr(node) {
     if (!node.getAttribute) return false;
-    let contentAttr = node.getAttribute('tx-content');
+    let contentAttr = node.getAttribute('ws-content');
     if (contentAttr && contentAttr.length) {
       contentAttr = contentAttr.toLowerCase();
       if (/\bexclude\b/.test(contentAttr)) {
@@ -406,7 +406,7 @@ export default class TxNativeDOM {
    * Parse DOM node
    *
    * @param {*} { node, parentTags, options }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _parseDOM({ node, parentTags, options }) {
     if (!node || this._isSkipTag(node.tagName)) return;
@@ -420,7 +420,7 @@ export default class TxNativeDOM {
       // ELEMENT node type
       let tags = parentTags;
       // check for user defined tags
-      let tagAttr = node.getAttribute('tx-tags');
+      let tagAttr = node.getAttribute('ws-tags');
       if (tagAttr && tagAttr.length) {
         tags = parentTags.slice(0);
         // split by comma
@@ -433,8 +433,8 @@ export default class TxNativeDOM {
           }
         }
       }
-      // check for tx-content
-      let contentAttr = node.getAttribute('tx-content');
+      // check for ws-content
+      let contentAttr = node.getAttribute('ws-content');
       let isBlock = false;
       let _options = options;
 
@@ -545,11 +545,11 @@ export default class TxNativeDOM {
    * Parse text node
    *
    * @param {*} { node, tags }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _crawlText({ node, tags }) {
-    if (node.txtext_detected === true) return;
-    try { node.txtext_detected = true; } catch (err) { /* pass */ }
+    if (node.wstext_detected === true) return;
+    try { node.wstext_detected = true; } catch (err) { /* pass */ }
     const rawText = node.nodeValue;
     const text = stripWhitespace(rawText);
     // exclude empty elements
@@ -579,7 +579,7 @@ export default class TxNativeDOM {
         tail: rawText.indexOf(' ', rawText.length - 1) >= 0 ? ' ' : '',
       });
       try {
-        node.txsegment = segment;
+        node.wssegment = segment;
       } catch (err) {
         // pass
       }
@@ -590,11 +590,11 @@ export default class TxNativeDOM {
    * Parse block node
    *
    * @param {*} { node, tags, options }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _crawlBlock({ node, tags, options }) {
-    if (node.txblock_detected === true) return;
-    try { node.txblock_detected = true; } catch (err) { /* pass */ }
+    if (node.wsblock_detected === true) return;
+    try { node.wsblock_detected = true; } catch (err) { /* pass */ }
 
     if (this._isSkipTagContent(node.tagName)) return;
 
@@ -630,7 +630,7 @@ export default class TxNativeDOM {
       head: rawText.indexOf(' ') === 0 ? ' ' : '',
       tail: rawText.indexOf(' ', rawText.length - 1) >= 0 ? ' ' : '',
     });
-    try { node.txsegment = segment; } catch (err) { /* pass */ }
+    try { node.wssegment = segment; } catch (err) { /* pass */ }
   }
 
   /**
@@ -642,7 +642,7 @@ export default class TxNativeDOM {
    *     tags,
    *     options,
    *   }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _crawlFragment({
     snodeBefore,
@@ -651,12 +651,12 @@ export default class TxNativeDOM {
     options,
   }) {
     if ((!snodeBefore
-      || (snodeBefore && snodeBefore.txbefore_detected === true))
+      || (snodeBefore && snodeBefore.wsbefore_detected === true))
       && (!snodeAfter
-        || (snodeAfter && snodeAfter.txafter_detected === true))) return;
+        || (snodeAfter && snodeAfter.wsafter_detected === true))) return;
     try {
-      if (snodeBefore) snodeBefore.txbefore_detected = true;
-      if (snodeAfter) snodeAfter.txafter_detected = true;
+      if (snodeBefore) snodeBefore.wsbefore_detected = true;
+      if (snodeAfter) snodeAfter.wsafter_detected = true;
     } catch (err) { /* pass */ }
     const node = this.document.createElement('div');
     let next = snodeBefore
@@ -703,11 +703,11 @@ export default class TxNativeDOM {
    * Parse node attributes
    *
    * @param {*} { node, tags, options }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _parseAttr({ node, tags, options }) {
-    if (node.txattr_detected === true) return;
-    try { node.txattr_detected = true; } catch (err) { /* pass */ }
+    if (node.wsattr_detected === true) return;
+    try { node.wsattr_detected = true; } catch (err) { /* pass */ }
     const attrs = this._detectI18nAttr({ node, options });
     for (let i = 0; i < attrs.length; ++i) {
       this._crawlAttr({
@@ -720,7 +720,7 @@ export default class TxNativeDOM {
    * Parse node attributes
    *
    * @param {*} { node, attr, tags }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _crawlAttr({ node, attr, tags }) {
     const rawText = node.getAttribute(attr) || '';
@@ -751,7 +751,7 @@ export default class TxNativeDOM {
         head: rawText.indexOf(' ') === 0 ? ' ' : '',
         tail: rawText.indexOf(' ', rawText.length - 1) >= 0 ? ' ' : '',
       });
-      try { node.txsegment = segment; } catch (err) { /* pass */ }
+      try { node.wssegment = segment; } catch (err) { /* pass */ }
     }
   }
 
@@ -760,7 +760,7 @@ export default class TxNativeDOM {
    *
    * @param {*} { node, options }
    * @return {Array}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _detectI18nAttr({ node, options }) {
     const list = [];
@@ -836,7 +836,7 @@ export default class TxNativeDOM {
         break;
     }
     // check for user defined attributes to be translated
-    let customAttr = node.getAttribute('tx-attrs');
+    let customAttr = node.getAttribute('ws-attrs');
     if (customAttr && customAttr.length) {
       // split by comma
       customAttr = customAttr.split(',');
@@ -865,7 +865,7 @@ export default class TxNativeDOM {
    *
    * @param {*} { text, args, options }
    * @return {String}
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _parseVariables({ text, args, options }) {
     // parse custom variable expressions
@@ -925,7 +925,7 @@ export default class TxNativeDOM {
    * Parse arguments
    *
    * @param {*} { node, args }
-   * @memberof TxNativeDOM
+   * @memberof WsNativeDOM
    */
   _parseArgs({ node, args }) {
     if (node) do { // eslint-disable-line

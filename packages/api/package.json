@@ -1,24 +1,24 @@
 {
-  "name": "@transifex/api",
+  "name": "@wordsmith/api",
   "version": "7.1.3",
-  "description": "Transifex API SDK",
+  "description": "Wordsmith API SDK",
   "keywords": [
-    "transifex",
+    "wordsmith",
     "i18n",
     "l10n",
     "localization",
     "API",
     "SDK"
   ],
-  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/api",
+  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/api",
   "bugs": {
-    "url": "https://github.com/transifex/transifex-javascript/issues"
+    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
   },
   "license": "Apache-2.0",
-  "author": "Transifex",
-  "main": "dist/node.transifexApi.js",
-  "browser": "dist/browser.transifexApi.js",
-  "repository": "git://github.com/transifex/transifex-javascript.git",
+  "author": "Wordsmith",
+  "main": "dist/node.wordsmithApi.js",
+  "browser": "dist/browser.wordsmithApi.js",
+  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
   "scripts": {
     "build": "webpack",
     "lint": "eslint src",
@@ -32,7 +32,7 @@
     "@babel/core": "^7.23.7",
     "@babel/eslint-parser": "^7.23.3",
     "@babel/preset-env": "^7.23.8",
-    "@transifex/jsonapi": "^7.1.3",
+    "@wordsmith/jsonapi": "^7.1.3",
     "babel-loader": "^9.1.3",
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -46,5 +46,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "types": "src/transifexApi.d.ts"
+  "types": "src/wordsmithApi.d.ts"
 }

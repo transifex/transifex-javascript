@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TranslationService, TxNativeModule } from '../public-api';
+import { TranslationService, WsNativeModule } from '../public-api';
 
 class CustomService {
   testMethod(): string {
@@ -7,10 +7,10 @@ class CustomService {
   }
 }
 
-describe('TxNativeModule', () => {
+describe('WsNativeModule', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TxNativeModule],
+      imports: [WsNativeModule],
     });
   });
 
@@ -19,10 +19,10 @@ describe('TxNativeModule', () => {
   });
 });
 
-describe('TxNativeModule.forRoot()', () => {
+describe('WsNativeModule.forRoot()', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TxNativeModule.forRoot()],
+      imports: [WsNativeModule.forRoot()],
     });
   });
 

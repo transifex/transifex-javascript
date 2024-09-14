@@ -1,61 +1,61 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/dom">
-    <img src="https://img.shields.io/npm/v/@transifex/dom.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/dom">
+    <img src="https://img.shields.io/npm/v/@wordsmith/dom.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: i18n DOM library
+# Wordsmith Native SDK: i18n DOM library
 
 A utility library for managing the localization of generic HTML documents or fragments.
 Taking as input a `document` object it:
 - Applies string segmentation
-- Extracts strings to be pushed to a Transifex Native project
-- Can be combined with `@transifex/native` to localize HTML
+- Extracts strings to be pushed to a Wordsmith Native project
+- Can be combined with `@wordsmith/native` to localize HTML
 
 Related packages:
-* [@transifex/native](https://www.npmjs.com/package/@transifex/native)
+* [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
 # Quick starting guide
 
 Install the library using:
 
-```npm install @transifex/dom --save```
+```npm install @wordsmith/dom --save```
 
 ## Webpack
 
 ```js
-import { TxNativeDOM } from '@transifex/dom';
-const txdom = new TxNativeDOM();
+import { WsNativeDOM } from '@wordsmith/dom';
+const wsdom = new WsNativeDOM();
 ```
 
 ## Node.js
 
 ```js
-const { TxNativeDOM } = require('@transifex/dom');
-const txdom = new TxNativeDOM();
+const { WsNativeDOM } = require('@wordsmith/dom');
+const wsdom = new WsNativeDOM();
 ```
 
 ## Browser
 
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@transifex/dom/dist/browser.dom.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@wordsmith/dom/dist/browser.dom.min.js"></script>
 <script type="text/javascript">
-  const TxNativeDOM = TransifexDOM.TxNativeDOM;
-  const txdom = new TxNativeDOM();
+  const WsNativeDOM = WordsmithDOM.WsNativeDOM;
+  const wsdom = new WsNativeDOM();
 </script>
 ```
 
@@ -63,14 +63,14 @@ const txdom = new TxNativeDOM();
 
 ## Initialize
 
-By default, TxNativeDOM initializes with some sane defaults, that affect the
+By default, WsNativeDOM initializes with some sane defaults, that affect the
 way strings are detected in the HTML, such tags or classes to ignore, or which
 attributes to treat as text.
 
 The contructor supports some additional customization.
 
 ```js
-const txdom = new TxNativeDOM({
+const wsdom = new WsNativeDOM({
   // list of custom HTML tags to ignore
   ignoreTags: Array(String),
 
@@ -91,11 +91,11 @@ const txdom = new TxNativeDOM({
 Connect or disconnect a DOM with the library.
 
 ```js
-txdom.attachDOM(document); // attach the whole document
-txdom.attachDOM(document, root); // attach a specific node from the document
+wsdom.attachDOM(document); // attach the whole document
+wsdom.attachDOM(document, root); // attach a specific node from the document
 
-txdom.detachDOM(document); // detach the whole document
-txdom.detachDOM(root); // detach a specific node from the document
+wsdom.detachDOM(document); // detach the whole document
+wsdom.detachDOM(root); // detach a specific node from the document
 ```
 
 ## Translate DOM
@@ -107,10 +107,10 @@ let locale = 'fr';
 const t = (key) => {
   return 'translation';
 }
-txdom.toLanguage(locale, t);
+wsdom.toLanguage(locale, t);
 
 // revert to source
-txdom.toSource();
+wsdom.toSource();
 ```
 
 ## Pseudo translate DOM
@@ -119,24 +119,24 @@ For debugging purpose you may use the built-in pseudo translation mode.
 
 ```js
 // pseudo translate
-txdom.pseudoTranslate();
+wsdom.pseudoTranslate();
 
 // revert to source
-txdom.toSource();
+wsdom.toSource();
 ```
 
 ## Get source strings
 
-Get a list of detected strings for localization. The JSON format is compatible with Transifex Native.
+Get a list of detected strings for localization. The JSON format is compatible with Wordsmith Native.
 
 ```js
-txdom.getStringsJSON();
+wsdom.getStringsJSON();
 ```
 
 To append some tags to all exported strings do:
 
 ```js
-txdom.getStringsJSON({
+wsdom.getStringsJSON({
   tags: ['global-tag1', 'global-tag2'],
 });
 ```
@@ -144,14 +144,14 @@ txdom.getStringsJSON({
 To add occurence information to all exported strings do:
 
 ```js
-txdom.getStringsJSON({
+wsdom.getStringsJSON({
   occurrences: ['file.js', 'https://example.com/home'],
 });
 ```
 
 # Use cases
 
-Transifex Native DOM works in the browser using `window.document` DOM or within
+Wordsmith Native DOM works in the browser using `window.document` DOM or within
 NodeJS using a DOM emulator, such as [jsdom](https://www.npmjs.com/package/jsdom),
 [happy-dom](https://www.npmjs.com/package/happy-dom) and
 [linkedom](https://www.npmjs.com/package/linkedom).
@@ -162,58 +162,58 @@ The following examples are documented using `jsdom`, but a `document` node is al
 
 ```js
 const { JSDOM } = require('jsdom');
-const { createNativeInstance } = require('@transifex/native');
-const { TxNativeDOM } = require('@transifex/dom');
+const { createNativeInstance } = require('@wordsmith/native');
+const { WsNativeDOM } = require('@wordsmith/dom');
 
 // Create a Native instance for pushing content
-const tx = createNativeInstance({
+const ws = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
 // a DOM instance
-const txdom = new TxNativeDOM();
+const wsdom = new WsNativeDOM();
 
 // A JSDOM instance to emulate DOM in NodeJS
 const jsdom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 
 // Connect JSDOM instance with TXNativeDOM
-txdom.attachDOM(jsdom.window.document);
+wsdom.attachDOM(jsdom.window.document);
 
 // Get translatable strings
-const stringsJSON = txdom.getStringsJSON();
+const stringsJSON = wsdom.getStringsJSON();
 
-// Push them to Transifex for translation
-await tx.pushSource(stringsJSON);
+// Push them to Wordsmith for translation
+await ws.pushSource(stringsJSON);
 ```
 
 ## Translate HTML document
 
 ```js
 const { JSDOM } = require('jsdom');
-const { createNativeInstance } = require('@transifex/native');
-const { TxNativeDOM } = require('@transifex/dom');
+const { createNativeInstance } = require('@wordsmith/native');
+const { WsNativeDOM } = require('@wordsmith/dom');
 
 // Create a Native instance for pulling content
-const tx = createNativeInstance({
+const ws = createNativeInstance({
   token: 'token',
 });
 
 // a DOM instance
-const txdom = new TxNativeDOM();
+const wsdom = new WsNativeDOM();
 
 // A JSDOM instance to emulate DOM in NodeJS
 const jsdom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 
 // Connect JSDOM instance with TXNativeDOM
-txdom.attachDOM(jsdom.window.document);
+wsdom.attachDOM(jsdom.window.document);
 
 // Get translations
-await tx.setCurrentLocale('fr');
+await ws.setCurrentLocale('fr');
 
 // Translate DOM
-txdom.toLanguage(tx.getCurrentLocale(), (key) => {
-  return tx.cache.get(key, tx.getCurrentLocale());
+wsdom.toLanguage(ws.getCurrentLocale(), (key) => {
+  return ws.cache.get(key, ws.getCurrentLocale());
 });
 
 // Get back translated HTML
@@ -329,15 +329,15 @@ HTML:
   <meta name="keywords" content="tag1, tag2, tag3">
   <meta name="description" content="My page description">
   <meta name="title" content="My page title" >
-  <meta property="og:title" content="Localization Platform for Translating Digital Content | Transifex">
-  <meta property="og:description" content="Integrate with Transifex to manage the creation of multilingual websites and app content. Order translations, see translation progress, and tools like TM.">
+  <meta property="og:title" content="Localization Platform for Translating Digital Content | Wordsmith">
+  <meta property="og:description" content="Integrate with Wordsmith to manage the creation of multilingual websites and app content. Order translations, see translation progress, and tools like TM.">
 
 Segments:
   "tag1, tag2, tag3"
   "My page description"
   "My page title"
-  "Localization Platform for Translating Digital Content | Transifex"
-  "Integrate with Transifex to manage the creation of multilingual websites and app content. Order translations, see translation progress, and tools like TM."
+  "Localization Platform for Translating Digital Content | Wordsmith"
+  "Integrate with Wordsmith to manage the creation of multilingual websites and app content. Order translations, see translation progress, and tools like TM."
 ```
 
 ## Input elements of "image" type
@@ -370,7 +370,7 @@ For example:
 
 ## Marking attributes for translation
 
-Apart from the attributes that are automatically detected for translations, you can define custom attributes for translation using the `tx-attrs="attr1, attr2,..."` attribute.
+Apart from the attributes that are automatically detected for translations, you can define custom attributes for translation using the `ws-attrs="attr1, attr2,..."` attribute.
 
 Before:
 
@@ -386,7 +386,7 @@ After:
 ```html
 HTML:
   <span title="My title" data-content="My data"
-        tx-attrs="title, data-content">
+        ws-attrs="title, data-content">
 
 Segments:
   "My title"
@@ -395,14 +395,14 @@ Segments:
 
 # How to tag strings in the source language
 
-You can automatically tag source strings by using the `tx-tags="tag1, tag2,..."` attribute.
+You can automatically tag source strings by using the `ws-tags="tag1, tag2,..."` attribute.
 
 These tags propagate to child elements as well.
 
 For example:
 
 ```
-<div tx-tags="marketing">...</div>
+<div ws-tags="marketing">...</div>
 ```
 
 # How to handle inline block variables
@@ -426,7 +426,7 @@ When images `<img>` or links `<a>` appear within a segment, their URLs are handl
 
 ## Translating images
 
-To translate an image you should treat its URL as translatable text. To do so, use the special directive `tx-content="translate_urls"` to enable this functionality for a node and its children.
+To translate an image you should treat its URL as translatable text. To do so, use the special directive `ws-content="translate_urls"` to enable this functionality for a node and its children.
 
 Before:
 
@@ -444,7 +444,7 @@ After:
 
 ```html
 HTML:
-  <div tx-content="translate_urls">
+  <div ws-content="translate_urls">
     <img src="/uploads/smiley.jpg" alt="Smiley face" width="42" height="42">
   </div>
 
@@ -454,7 +454,7 @@ Segments:
 
 ## Translating links
 
-To translate a link you should treat each URL as translatable text. To do so, use the special directive `tx-content="translate_urls"` to enable this functionality for a node and its children.
+To translate a link you should treat each URL as translatable text. To do so, use the special directive `ws-content="translate_urls"` to enable this functionality for a node and its children.
 
 Before:
 
@@ -472,7 +472,7 @@ After:
 
 ```html
 HTML:
-  <div tx-content="translate_urls">
+  <div ws-content="translate_urls">
     Click to go to the <a href="/features">features</a> page
   </div>
 
@@ -480,7 +480,7 @@ Segments:
   "Click to go to the <a href="/features">features</a> page"
 ```
 
->Tip: To treat ALL URLs as translatable content within a page, add the `tx-content="translate_urls"` to the opening `BODY` tag.
+>Tip: To treat ALL URLs as translatable content within a page, add the `ws-content="translate_urls"` to the opening `BODY` tag.
 
 # How to define custom variables
 
@@ -489,7 +489,7 @@ If you want to use your own custom patterns and you are looking for a way to ign
 For example:
 
 ```js
-const txdom = new TxNativeDOM({
+const wsdom = new WsNativeDOM({
   variablesParser: (text, fn) => {
     // Example of replacing the value of an s-href attribute with a variable.
     // Input: Hello <a s-href="doc:example">Click here</a>
@@ -509,7 +509,7 @@ const txdom = new TxNativeDOM({
 
 # How to fine tune translatable content
 
-For even finer control over how strings are detected, use the `tx-content` HTML attribute, which can contain the following values:
+For even finer control over how strings are detected, use the `ws-content` HTML attribute, which can contain the following values:
 - `exclude` to mark a node and its children to be excluded from string detection
 - `include` to mark a node and its children within a exclude block to be included in string detection
 - `block` to mark a node and its children to be detected as a single string
@@ -538,9 +538,9 @@ After:
 
 ```html
 HTML:
-  <div tx-content="exclude">
+  <div ws-content="exclude">
     <p>First text</p>
-    <p tx-content="include">Second text</p>
+    <p ws-content="include">Second text</p>
     <p>Third text</p>
   </div>
 
@@ -568,7 +568,7 @@ After:
 
 ```html
 HTML:
-  <div tx-content="block">
+  <div ws-content="block">
     <h1>A header</h1>
     <p>A paragraph</p>
   </div>
@@ -582,4 +582,4 @@ Segments:
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.

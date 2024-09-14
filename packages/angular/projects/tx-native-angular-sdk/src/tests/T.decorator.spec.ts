@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 
 import { T } from '../lib/T.decorator';
 
@@ -29,7 +29,7 @@ describe('T Decorator', () => {
   });
 
   beforeEach(() => {
-    spyOn(tx, 'translate').and.returnValue('ok-translated-dec');
+    spyOn(ws, 'translate').and.returnValue('ok-translated-dec');
   });
 
   it('should test the decorator T', () => {
@@ -37,8 +37,8 @@ describe('T Decorator', () => {
     const component = fixture.componentInstance;
 
     fixture.detectChanges();
-    expect(tx.translate).toHaveBeenCalled();
-    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', {
+    expect(ws.translate).toHaveBeenCalled();
+    expect(ws.translate).toHaveBeenCalledWith('not-trans-dec', {
       _key: 'test',
     });
     expect(component.testProperty).toBe('ok-translated-dec');
@@ -54,8 +54,8 @@ describe('T Decorator', () => {
     const component = fixtureWithInstance.componentInstance;
 
     fixtureWithInstance.detectChanges();
-    expect(tx.translate).toHaveBeenCalled();
-    expect(tx.translate).toHaveBeenCalledWith('not-trans-dec', {
+    expect(ws.translate).toHaveBeenCalled();
+    expect(ws.translate).toHaveBeenCalledWith('not-trans-dec', {
       _key: 'test',
     });
     expect(component.testProperty).toBe('ok-translated-dec');

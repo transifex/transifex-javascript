@@ -1,81 +1,81 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/native">
-    <img src="https://img.shields.io/npm/v/@transifex/native.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/native">
+    <img src="https://img.shields.io/npm/v/@wordsmith/native.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: JavaScript i18n
+# Wordsmith Native SDK: JavaScript i18n
 
-A general purpose Javascript library for localizing web apps using [Transifex Native](https://www.transifex.com/native/).
+A general purpose Javascript library for localizing web apps using [Wordsmith Native](https://www.wordsmith.com/native/).
 
-Requires a Transifex Native Project Token.
+Requires a Wordsmith Native Project Token.
 
 Supported Node.js versions >= `14.x.x`
 
 Related packages:
-* [@transifex/react](https://www.npmjs.com/package/@transifex/react)
-* [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+* [@wordsmith/react](https://www.npmjs.com/package/@wordsmith/react)
+* [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
 # How it works
 
-**Step1**: Create a Transifex Native project in [Transifex](https://www.transifex.com).
+**Step1**: Create a Wordsmith Native project in [Wordsmith](https://www.wordsmith.com).
 
 **Step2**: Grab credentials.
 
 **Step3**: Internationalize the code using the SDK.
 
-**Step4**: Push source phrases using the `@transifex/cli` tool.
+**Step4**: Push source phrases using the `@wordsmith/cli` tool.
 
 **Step5**: Translate the app using over-the-air updates.
 
 No translation files required.
 
-![native](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/native.gif)
+![native](https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/native.gif)
 
 # Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 # Quick starting guide
 
 Install the library using:
 
-```npm install @transifex/native --save```
+```npm install @wordsmith/native --save```
 
 ## Webpack
 
 ```js
-import { tx, t } from '@transifex/native';
+import { ws, t } from '@wordsmith/native';
 
 // initialize
-tx.init({
+ws.init({
   token: '<PUBLIC PROJECT TOKEN>',
 });
 
 async function main() {
   // set target language, this will fetch translations Over The Air
-  await tx.setCurrentLocale('el');
+  await ws.setCurrentLocale('el');
 
   // translate something
   const message = t('Welcome {user}', {user: 'Joe'});
   console.log(message);
 
   // get supported languages in order to create a language picker
-  const languages = await tx.getLanguages();
+  const languages = await ws.getLanguages();
   console.log(languages);
   /*
   [{
@@ -95,10 +95,10 @@ main();
 ## Node.js
 
 ```js
-const { tx, t } = require('@transifex/native');
+const { ws, t } = require('@wordsmith/native');
 
 // initialize
-tx.init({
+ws.init({
   token: '<PUBLIC PROJECT TOKEN>',
 });
 
@@ -108,18 +108,18 @@ tx.init({
 ## Browser
 
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@transifex/native/dist/browser.native.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@wordsmith/native/dist/browser.native.min.js"></script>
 <script type="text/javascript">
-  const tx = Transifex.tx;
-  const t = Transifex.t;
+  const ws = Wordsmith.ws;
+  const t = Wordsmith.t;
 
   // initialize SDK
-  tx.init({
+  ws.init({
     token: '<PUBLIC PROJECT TOKEN>',
   });
 
   // get all languages
-  tx.setCurrentLocale('fr').then(function() {
+  ws.setCurrentLocale('fr').then(function() {
     // translate something
     const message = t('Welcome {user}', {user: 'Joe'});
     console.log(message);
@@ -132,11 +132,11 @@ tx.init({
 ## Initialize library
 
 ```js
-tx.init({
+ws.init({
   // Public project token, defaults to empty string
   token: String,
 
-  // CDS endpoint, defaults to https://cds.svc.transifex.net
+  // CDS endpoint, defaults to https://cds.svc.wordsmith.net
   cdsHost: String,
 
   // Fetch only strings that contain specific tags from CDS, e.g. "master,react"
@@ -172,7 +172,7 @@ tx.init({
 Fetches list of project languages from CDS, useful for creating a language picker.
 
 ```js
-tx.getLanguages(): Promise([
+ws.getLanguages(): Promise([
   {
     name: String,
     code: String,
@@ -183,7 +183,7 @@ tx.getLanguages(): Promise([
 ])
 
 // Example
-tx.getLanguages().
+ws.getLanguages().
   then(languages => console.log(languages)).
   catch(err => console.log(err))
 ```
@@ -191,7 +191,7 @@ tx.getLanguages().
 Get a list of available locales based on CDS.
 
 ```js
-tx.getLocales(): Promise(['code', 'code',...])
+ws.getLocales(): Promise(['code', 'code',...])
 ```
 
 ### Set current translation language
@@ -200,10 +200,10 @@ Fetches translations from the CDS and stores them in cache. When the
 promise returns, all content will be translated to that language.
 
 ```js
-tx.setCurrentLocale(localeCode): Promise
+ws.setCurrentLocale(localeCode): Promise
 
 // Example
-tx.setCurrentLocale('el').
+ws.setCurrentLocale('el').
   then(() => console.log('content loaded')).
   catch(err => console.log(err))
 ```
@@ -213,10 +213,10 @@ tx.setCurrentLocale('el').
 Returns the currently selected language code.
 
 ```js
-tx.getCurrentLocale(): String(localeCode)
+ws.getCurrentLocale(): String(localeCode)
 
 // Example
-console.log(tx.getCurrentLocale())
+console.log(ws.getCurrentLocale())
 ```
 
 ## Content translation
@@ -270,7 +270,7 @@ XSS attacks. The translation must be escaped based on two scenarios.
 ### Escaping text translations
 
 ```js
-import { t, escape } from '@transifex/native';
+import { t, escape } from '@wordsmith/native';
 
 const translation = escape(t('Hello {username}', { username }));
 // translation is safe to include in HTML
@@ -282,7 +282,7 @@ HTML source content cannot be globally escaped. In that case, we can just escape
 the ICU variables using the `_escapeVars` parameter.
 
 ```js
-import { t } from '@transifex/native';
+import { t } from '@wordsmith/native';
 
 const html = t('<b>Hello {username}</b>', {
   username: username,
@@ -296,7 +296,7 @@ For server side integrations you can also push source content programmatically
 without using the CLI.
 
 ```js
-tx.pushSource(payload, params): Promise
+ws.pushSource(payload, params): Promise
 payload: Object({
   key: {
    string: String,
@@ -329,14 +329,14 @@ params: Object({
 For example:
 
 ```js
-const { createNativeInstance } = require('@transifex/native');
+const { createNativeInstance } = require('@wordsmith/native');
 
-const tx = createNativeInstance({
+const ws = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
-await tx.pushSource({
+await ws.pushSource({
   'mykey': {
     string: 'My string',
     meta: {
@@ -355,7 +355,7 @@ await tx.pushSource({
 Server side integrations can also invalidate the CDS cache programmatically.
 
 ```js
-tx.invalidateCDS({
+ws.invalidateCDS({
   // if true, then purge the cache entirely (not recommended)
   purge: Boolean,
 }): Promise
@@ -364,14 +364,14 @@ tx.invalidateCDS({
 For example:
 
 ```js
-const { createNativeInstance } = require('@transifex/native');
+const { createNativeInstance } = require('@wordsmith/native');
 
-const tx = createNativeInstance({
+const ws = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
-await tx.invalidateCDS();
+await ws.invalidateCDS();
 ```
 
 ## Events
@@ -400,32 +400,32 @@ sendEvent(type, payload, caller)
 ## Using more than one TX Native instances
 
 ```js
-const { tx, t, createNativeInstance } = require('@transifex/native');
+const { ws, t, createNativeInstance } = require('@wordsmith/native');
 
 // Initiatate a secondary TX Instance
-const txOtherInstance = createNativeInstance();
-txOtherInstance.init({
+const wsOtherInstance = createNativeInstance();
+wsOtherInstance.init({
   token: '<PUBLIC PROJECT TOKEN 2>',
 })
 
 // initialize SDK
-tx.init({
+ws.init({
   token: '<PUBLIC PROJECT TOKEN>',
 });
 
-// Use tx as a controller of the other instance
-tx.controllerOf(txOtherInstance);
+// Use ws as a controller of the other instance
+ws.controllerOf(wsOtherInstance);
 
 // get all languages
-tx.setCurrentLocale('fr').then(function() {
+ws.setCurrentLocale('fr').then(function() {
   // translate something
   const message = t('Welcome {user}', {user: 'Joe'});
   console.log(message);
-  const message2 = txOtherInstance.t('Welcome {user}', {user: 'Joe'});
+  const message2 = wsOtherInstance.t('Welcome {user}', {user: 'Joe'});
   console.log(message2);
 });
 ```
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.

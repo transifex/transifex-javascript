@@ -7,7 +7,7 @@ import { LoadTranslationsDirective, TranslationService } from '../public-api';
 
 describe('LoadTranslationsDirective', () => {
   @Component({
-    template: ` <div [txLoadTranslations]="'tag1'"></div> `,
+    template: ` <div [wsLoadTranslations]="'tag1'"></div> `,
   })
   class TestComponent {}
 

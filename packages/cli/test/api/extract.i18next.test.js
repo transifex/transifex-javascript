@@ -39,7 +39,7 @@ describe('extractPhrases with i18next parser', () => {
           string: 'the female variant',
           meta: { context: [], tags: [], occurrences: ['v4.json'] },
         },
-        keyPluralSimple_txplural: {
+        keyPluralSimple_wsplural: {
           string: '{count, plural, one {the singular} other {the plural}}',
           meta: { context: [], tags: [], occurrences: ['v4.json'] },
         },
@@ -47,7 +47,7 @@ describe('extractPhrases with i18next parser', () => {
           string: 'the plural form 0',
           meta: { context: [], tags: [], occurrences: ['v4.json'] },
         },
-        keyPluralMultipleEgArabic_txplural: {
+        keyPluralMultipleEgArabic_wsplural: {
           string: '{count, plural, one {the plural form 1} two {the plural form 2} few {the plural form 3} many {the plural form 4} other {the plural form 5}}',
           meta: { context: [], tags: [], occurrences: ['v4.json'] },
         },

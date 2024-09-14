@@ -9,7 +9,7 @@ module.exports = {
     globalObject: 'this',
     path: path.resolve(__dirname, 'dist'),
     filename: 'browser.i18next.js',
-    library: 'TxNativeI18next',
+    library: 'WsNativeI18next',
     libraryTarget: 'umd',
   },
   target: 'web',

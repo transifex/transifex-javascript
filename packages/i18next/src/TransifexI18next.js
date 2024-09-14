@@ -1,6 +1,6 @@
-import { createNativeInstance, explodePlurals } from '@transifex/native';
+import { createNativeInstance, explodePlurals } from '@wordsmith/native';
 
-export default class TransifexI18next {
+export default class WordsmithI18next {
   constructor(options) {
     this.type = 'backend';
     this.options = options || {};
@@ -12,14 +12,14 @@ export default class TransifexI18next {
       ...(this.options || {}),
       ...(backendOptions || {}),
     };
-    this.tx = createNativeInstance(this.options);
+    this.ws = createNativeInstance(this.options);
   }
 
   read(language, namespace, callback) {
-    this.tx.fetchTranslations(language).then(() => {
+    this.ws.fetchTranslations(language).then(() => {
       callback(
         null,
-        this._convertPlurals(this.tx.cache.getTranslations(language)),
+        this._convertPlurals(this.ws.cache.getTranslations(language)),
       );
     }).catch((err) => {
       callback(err, null);
@@ -29,7 +29,7 @@ export default class TransifexI18next {
   readMulti(languages, namespaces, callback) {
     const promises = [];
     languages.forEach((language) => {
-      promises.push(this.tx.fetchTranslations(language));
+      promises.push(this.ws.fetchTranslations(language));
     });
 
     Promise.all(promises).then(() => {
@@ -37,7 +37,7 @@ export default class TransifexI18next {
       languages.forEach((language) => {
         data[language] = {
           translations:
-            this._convertPlurals(this.tx.cache.getTranslations(language)),
+            this._convertPlurals(this.ws.cache.getTranslations(language)),
         };
       });
     }).catch((err) => {
@@ -49,11 +49,11 @@ export default class TransifexI18next {
   _convertPlurals(translations) {
     const data = {};
     Object.keys(translations).forEach((key) => {
-      if (!key.endsWith('_txplural')) {
+      if (!key.endsWith('_wsplural')) {
         data[key] = translations[key];
         return;
       }
-      const baseKey = key.slice(0, -('_txplural'.length));
+      const baseKey = key.slice(0, -('_wsplural'.length));
       const plurals = explodePlurals(translations[key].replace('{???,', '{count,'))[1];
       Object.keys(plurals).forEach((plural) => {
         data[`${baseKey}_${plural}`] = plurals[plural];

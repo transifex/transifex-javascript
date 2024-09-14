@@ -3,12 +3,12 @@ const path = require('path');
 module.exports = [
   {
     mode: 'production',
-    entry: './src/transifexApi.js',
+    entry: './src/wordsmithApi.js',
     output: {
       globalObject: 'this',
       path: path.resolve(__dirname, 'dist'),
-      filename: 'node.transifexApi.js',
-      library: 'transifexApi',
+      filename: 'node.wordsmithApi.js',
+      library: 'wordsmithApi',
       libraryTarget: 'umd',
     },
     target: 'node',
@@ -16,12 +16,12 @@ module.exports = [
   },
   {
     mode: 'production',
-    entry: './src/transifexApi.js',
+    entry: './src/wordsmithApi.js',
     output: {
       globalObject: 'this',
       path: path.resolve(__dirname, 'dist'),
-      filename: 'browser.transifexApi.js',
-      library: 'transifexApi',
+      filename: 'browser.wordsmithApi.js',
+      library: 'wordsmithApi',
       libraryTarget: 'umd',
     },
     target: 'web',

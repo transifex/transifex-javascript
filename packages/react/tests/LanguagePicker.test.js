@@ -6,20 +6,20 @@ import {
   cleanup, render, screen, waitFor, fireEvent,
 } from '@testing-library/react';
 
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 import { LanguagePicker } from '../src';
 
 let oldGetLanguages;
 beforeEach(() => {
   // Start mocking
-  oldGetLanguages = tx.getLanguages;
-  tx.getLanguages = async () => [
+  oldGetLanguages = ws.getLanguages;
+  ws.getLanguages = async () => [
     { code: 'el', name: 'Greek' }, { code: 'fr', name: 'French' },
   ];
 });
 afterEach(() => {
   // Reset mocking
-  tx.getLanguages = oldGetLanguages;
+  ws.getLanguages = oldGetLanguages;
   cleanup();
 });
 
@@ -33,8 +33,8 @@ test('display language picker', async () => {
 test('change language', async () => {
   // Start mocking
   const args = [];
-  const oldSetCurrentLocale = tx.setCurrentLocale;
-  tx.setCurrentLocale = function setCurrentLocaleMock(code) {
+  const oldSetCurrentLocale = ws.setCurrentLocale;
+  ws.setCurrentLocale = function setCurrentLocaleMock(code) {
     args.push(code);
   };
 
@@ -44,5 +44,5 @@ test('change language', async () => {
   expect(args).toEqual(['el']);
 
   // Reset mocking
-  tx.setCurrentLocale = oldSetCurrentLocale;
+  ws.setCurrentLocale = oldSetCurrentLocale;
 });

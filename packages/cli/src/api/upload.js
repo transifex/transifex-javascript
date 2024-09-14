@@ -28,7 +28,7 @@ async function uploadPhrases(payload, params) {
       Authorization: `Bearer ${params.token}:${params.secret}`,
       'Accept-version': 'v2',
       'Content-Type': 'application/json;charset=utf-8',
-      'X-NATIVE-SDK': `txjs/cli/${version}`,
+      'X-NATIVE-SDK': `wsjs/cli/${version}`,
     },
   });
   return {
@@ -58,7 +58,7 @@ async function pollJob(params) {
       Authorization: `Bearer ${params.token}:${params.secret}`,
       'Accept-version': 'v2',
       'Content-Type': 'application/json;charset=utf-8',
-      'X-NATIVE-SDK': `txjs/cli/${version}`,
+      'X-NATIVE-SDK': `wsjs/cli/${version}`,
     },
   });
   const { data } = res.data;

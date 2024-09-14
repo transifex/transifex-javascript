@@ -8,6 +8,6 @@ export default [
       format: 'esm',
     },
     plugins: [VuePlugin()],
-    external: ['vue', '@transifex/native'],
+    external: ['vue', '@wordsmith/native'],
   },
 ];

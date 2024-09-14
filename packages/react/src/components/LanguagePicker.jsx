@@ -13,13 +13,13 @@ import useTX from '../hooks/useTX';
 export default function LanguagePicker({ className = '' }) {
   const languages = useLanguages();
   const locale = useLocale();
-  const tx = useTX();
+  const ws = useTX();
 
   return (
     <select
       className={className}
       value={locale}
-      onChange={(e) => tx.setCurrentLocale(e.target.value)}
+      onChange={(e) => ws.setCurrentLocale(e.target.value)}
     >
       {languages.map(({ name, code }) => (
         <option key={code} value={code}>{name}</option>

@@ -1,4 +1,4 @@
-const { tx, t } = require('@transifex/native');
+const { ws, t } = require('@wordsmith/native');
 
 function log() {}
 
@@ -10,8 +10,8 @@ function foo() {
     _comment: 'comment',
   }));
   log(t('Text 2'));
-  log(tx.translate('Text 3'));
-  log(tx.translate('Text 4'));
+  log(ws.translate('Text 3'));
+  log(ws.translate('Text 4'));
 }
 
 module.exports = foo;

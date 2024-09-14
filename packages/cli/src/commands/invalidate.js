@@ -9,7 +9,7 @@ class InvalidateCommand extends Command {
   async run() {
     const { flags } = await this.parse(InvalidateCommand);
 
-    let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.transifex.net';
+    let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.wordsmith.net';
     let projectToken = process.env.TRANSIFEX_TOKEN;
     let projectSecret = process.env.TRANSIFEX_SECRET;
 
@@ -51,26 +51,26 @@ Content for delivery is cached in CDS and refreshed automatically every hour.
 This command triggers a refresh of cached content on the fly.
 
 By default, invalidation does not remove existing cached content,
-but starts the process of updating with latest translations from Transifex.
+but starts the process of updating with latest translations from Wordsmith.
 
 Passing the --purge option, cached content will be forced to be deleted,
 however use that with caution, as it may introduce downtime of
 translation delivery to the apps until fresh content is cached in the CDS.
 
 To invalidate translations some environment variables must be set:
-TRANSIFEX_TOKEN=<Transifex Native Project Token>
-TRANSIFEX_SECRET=<Transifex Native Project Secret>
+TRANSIFEX_TOKEN=<Wordsmith Native Project Token>
+TRANSIFEX_SECRET=<Wordsmith Native Project Secret>
 (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
 
 or passed as --token=<TOKEN> --secret=<SECRET> parameters
 
-Default CDS Host is https://cds.svc.transifex.net
+Default CDS Host is https://cds.svc.wordsmith.net
 
 Examples:
-txjs-cli invalidate
-txjs-cli invalidate --purge
-txjs-cli invalidate --token=mytoken --secret=mysecret
-TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli invalidate
+wsjs-cli invalidate
+wsjs-cli invalidate --purge
+wsjs-cli invalidate --token=mytoken --secret=mysecret
+TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret wsjs-cli invalidate
 `;
 
 InvalidateCommand.args = [];

@@ -18,7 +18,7 @@ async function downloadLanguages({ cdsHost, token, secret }) {
         Authorization: `Bearer ${token}:${secret}`,
         'Accept-version': 'v2',
         'Content-Type': 'application/json;charset=utf-8',
-        'X-NATIVE-SDK': `txjs/cli/${version}`,
+        'X-NATIVE-SDK': `wsjs/cli/${version}`,
       },
     });
     lastResponseStatus = response.status;
@@ -64,7 +64,7 @@ async function downloadPhrases({
         Authorization: `Bearer ${token}:${secret}`,
         'Accept-version': 'v2',
         'Content-Type': 'application/json;charset=utf-8',
-        'X-NATIVE-SDK': `txjs/cli/${version}`,
+        'X-NATIVE-SDK': `wsjs/cli/${version}`,
       },
     });
     lastResponseStatus = response.status;

@@ -1,50 +1,50 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/cli">
-    <img src="https://img.shields.io/npm/v/@transifex/cli.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/cli">
+    <img src="https://img.shields.io/npm/v/@wordsmith/cli.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: JavaScript i18n CLI tool
+# Wordsmith Native SDK: JavaScript i18n CLI tool
 
-A command line tool that parses `.js`, `.ts`, `.jsx`, `.tsx` and `.html` source files, extracts phrases marked for localization by [Transifex Native](https://www.transifex.com/native/) and pushes them to [Transifex](https:/www.transifex.com) for translation.
+A command line tool that parses `.js`, `.ts`, `.jsx`, `.tsx` and `.html` source files, extracts phrases marked for localization by [Wordsmith Native](https://www.wordsmith.com/native/) and pushes them to [Wordsmith](https:/www.wordsmith.com) for translation.
 
 Related packages:
-* [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-* [@transifex/react](https://www.npmjs.com/package/@transifex/react)
+* [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
+* [@wordsmith/react](https://www.npmjs.com/package/@wordsmith/react)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
-![cli](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/cli.gif)
+![cli](https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/cli.gif)
 
 # Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 # Usage
 
 ## Global installation
 
 ```sh-session
-$ npm install -g @transifex/cli
+$ npm install -g @wordsmith/cli
 
-$ txjs-cli COMMAND
+$ wsjs-cli COMMAND
 running command...
 
-$ txjs-cli --help [COMMAND]
+$ wsjs-cli --help [COMMAND]
 USAGE
-  $ txjs-cli COMMAND
+  $ wsjs-cli COMMAND
 ...
 ```
 
@@ -53,9 +53,9 @@ USAGE
 Install to local repo using `npm`.
 
 ```sh-session
-$ npm install @transifex/cli --save
+$ npm install @wordsmith/cli --save
 
-$ ./node_modules/.bin/txjs-cli COMMAND
+$ ./node_modules/.bin/wsjs-cli COMMAND
 running command...
 ```
 
@@ -64,7 +64,7 @@ Add it as a script command in `package.json`.
 ```json
   ...
   "scripts": {
-    "push": "txjs-cli push src/",
+    "push": "wsjs-cli push src/",
     ...
   },
 ```
@@ -76,18 +76,18 @@ $ npm run push
 ```
 
 # Commands
-* [`txjs-cli help [COMMAND]`](#txjs-cli-help-command)
-* [`txjs-cli push [PATTERN]`](#txjs-cli-push-pattern)
-* [`txjs-cli pull [PATTERN]`](#txjs-cli-pull-pattern)
-* [`txjs-cli invalidate`](#txjs-cli-invalidate)
+* [`wsjs-cli help [COMMAND]`](#wsjs-cli-help-command)
+* [`wsjs-cli push [PATTERN]`](#wsjs-cli-push-pattern)
+* [`wsjs-cli pull [PATTERN]`](#wsjs-cli-pull-pattern)
+* [`wsjs-cli invalidate`](#wsjs-cli-invalidate)
 
-## `txjs-cli help [COMMAND]`
+## `wsjs-cli help [COMMAND]`
 
-Display help for txjs-cli
+Display help for wsjs-cli
 
 ```
 USAGE
-  $ txjs-cli help [COMMAND]
+  $ wsjs-cli help [COMMAND]
 
 ARGUMENTS
   COMMAND  command to show help for
@@ -96,14 +96,14 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-## `txjs-cli push [PATTERN]`
+## `wsjs-cli push [PATTERN]`
 
-detect and push source content to Transifex
+detect and push source content to Wordsmith
 
 ```
 USAGE
-  $ txjs-cli push [PATTERN] [--dry-run] [--fake] [-v] [--purge] [--no-wait] [--token <value>] [--secret <value>] [--append-tags <value>] [--with-tags-only <value>] [--without-tags-only <value>]
-    [--cds-host <value>] [--do-not-keep-translations] [--override-tags] [--override-occurrences] [--parser auto|i18next|txnativejson] [--key-generator source|hash]
+  $ wsjs-cli push [PATTERN] [--dry-run] [--fake] [-v] [--purge] [--no-wait] [--token <value>] [--secret <value>] [--append-tags <value>] [--with-tags-only <value>] [--without-tags-only <value>]
+    [--cds-host <value>] [--do-not-keep-translations] [--override-tags] [--override-occurrences] [--parser auto|i18next|wsnativejson] [--key-generator source|hash]
 
 ARGUMENTS
   PATTERN  [default: **/*.{js,jsx,ts,tsx,html,vue,pug,ejs}] file pattern to scan for strings
@@ -113,7 +113,7 @@ FLAGS
   --append-tags=<value>        append tags to strings
   --cds-host=<value>           CDS host URL
   --do-not-keep-translations   remove translations when source strings change
-  --dry-run                    dry run, do not apply changes in Transifex
+  --dry-run                    dry run, do not apply changes in Wordsmith
   --fake                       do not push content to remote server
   --key-generator=<option>     [default: source] use hashed or source based keys
                                <options: source|hash>
@@ -121,53 +121,53 @@ FLAGS
   --override-occurrences       override occurrences when pushing content
   --override-tags              override tags when pushing content
   --parser=<option>            [default: auto] file parser to use
-                               <options: auto|i18next|txnativejson>
-  --purge                      purge content on Transifex
+                               <options: auto|i18next|wsnativejson>
+  --purge                      purge content on Wordsmith
   --secret=<value>             native project secret
   --token=<value>              native project public token
   --with-tags-only=<value>     push strings with specific tags
   --without-tags-only=<value>  push strings without specific tags
 
 DESCRIPTION
-  Detect and push source content to Transifex
+  Detect and push source content to Wordsmith
   Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
-  translation by Transifex Native toolkit for Javascript and
-  upload them to Transifex for translation.
+  translation by Wordsmith Native toolkit for Javascript and
+  upload them to Wordsmith for translation.
 
   To push content some environment variables must be set:
-  TRANSIFEX_TOKEN=<Transifex Native Project Token>
-  TRANSIFEX_SECRET=<Transifex Native Project Secret>
+  TRANSIFEX_TOKEN=<Wordsmith Native Project Token>
+  TRANSIFEX_SECRET=<Wordsmith Native Project Secret>
   (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
 
   or passed as --token=<TOKEN> --secret=<SECRET> parameters
 
-  Default CDS Host is https://cds.svc.transifex.net
+  Default CDS Host is https://cds.svc.wordsmith.net
 
   Examples:
-  txjs-cli push -v
-  txjs-cli push src/
-  txjs-cli push /home/repo/src
-  txjs-cli push "*.js"
-  txjs-cli push --dry-run
-  txjs-cli push --fake -v
-  txjs-cli push --no-wait
-  txjs-cli push --key-generator=hash
-  txjs-cli push --append-tags="master,release:2.5"
-  txjs-cli push --with-tags-only="home,error"
-  txjs-cli push --without-tags-only="custom"
-  txjs-cli push --token=mytoken --secret=mysecret
-  txjs-cli push en.json --parser=i18next
-  txjs-cli push en.json --parser=txnativejson
-  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
+  wsjs-cli push -v
+  wsjs-cli push src/
+  wsjs-cli push /home/repo/src
+  wsjs-cli push "*.js"
+  wsjs-cli push --dry-run
+  wsjs-cli push --fake -v
+  wsjs-cli push --no-wait
+  wsjs-cli push --key-generator=hash
+  wsjs-cli push --append-tags="master,release:2.5"
+  wsjs-cli push --with-tags-only="home,error"
+  wsjs-cli push --without-tags-only="custom"
+  wsjs-cli push --token=mytoken --secret=mysecret
+  wsjs-cli push en.json --parser=i18next
+  wsjs-cli push en.json --parser=wsnativejson
+  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret wsjs-cli push
 ```
 
-## `txjs-cli pull [PATTERN]`
+## `wsjs-cli pull [PATTERN]`
 
-Pull content from Transifex for offline caching
+Pull content from Wordsmith for offline caching
 
 ```
 USAGE
-  $ txjs-cli pull [--token <value>] [--secret <value>] [-f <value>] [-l <value>] [--pretty] [--filter-tags <value>] [--filter-status reviewed|proofread|finalized] [--cds-host <value>]
+  $ wsjs-cli pull [--token <value>] [--secret <value>] [-f <value>] [-l <value>] [--pretty] [--filter-tags <value>] [--filter-status reviewed|proofread|finalized] [--cds-host <value>]
 
 FLAGS
   -f, --folder=<value>      output as files to folder
@@ -181,7 +181,7 @@ FLAGS
   --token=<value>           native project public token
 
 DESCRIPTION
-  Pull content from Transifex for offline caching
+  Pull content from Wordsmith for offline caching
   Get content as JSON files, to be used by mobile Javascript SDKs for
   offline support or warming up the cache with initial translations.
 
@@ -190,32 +190,32 @@ DESCRIPTION
   the JSON files will be downloaded to that folder with the <locale>.json format.
 
   To pull content some environment variables must be set:
-  TRANSIFEX_TOKEN=<Transifex Native Project Token>
-  TRANSIFEX_SECRET=<Transifex Native Project Secret>
+  TRANSIFEX_TOKEN=<Wordsmith Native Project Token>
+  TRANSIFEX_SECRET=<Wordsmith Native Project Secret>
   (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
 
   or passed as --token=<TOKEN> --secret=<SECRET> parameters
 
-  Default CDS Host is https://cds.svc.transifex.net
+  Default CDS Host is https://cds.svc.wordsmith.net
 
   Examples:
-  txjs-cli pull
-  txjs-cli pull --pretty
-  txjs-cli pull -f languages/
-  txjs-cli pull --locale=fr -f .
-  txjs-cli pull --filter-tags="foo,bar"
-  txjs-cli pull --filter-status="reviewed"
-  txjs-cli pull --token=mytoken --secret=mysecret
-  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli pull
+  wsjs-cli pull
+  wsjs-cli pull --pretty
+  wsjs-cli pull -f languages/
+  wsjs-cli pull --locale=fr -f .
+  wsjs-cli pull --filter-tags="foo,bar"
+  wsjs-cli pull --filter-status="reviewed"
+  wsjs-cli pull --token=mytoken --secret=mysecret
+  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret wsjs-cli pull
 ```
 
-## `txjs-cli invalidate`
+## `wsjs-cli invalidate`
 
 invalidate and refresh CDS cache
 
 ```
 USAGE
-  $ txjs-cli invalidate [--purge] [--token <value>] [--secret <value>] [--cds-host <value>]
+  $ wsjs-cli invalidate [--purge] [--token <value>] [--secret <value>] [--cds-host <value>]
 
 FLAGS
   --cds-host=<value>  CDS host URL
@@ -229,28 +229,28 @@ DESCRIPTION
   This command triggers a refresh of cached content on the fly.
 
   By default, invalidation does not remove existing cached content,
-  but starts the process of updating with latest translations from Transifex.
+  but starts the process of updating with latest translations from Wordsmith.
 
   Passing the --purge option, cached content will be forced to be deleted,
   however use that with caution, as it may introduce downtime of
   translation delivery to the apps until fresh content is cached in the CDS.
 
   To invalidate translations some environment variables must be set:
-  TRANSIFEX_TOKEN=<Transifex Native Project Token>
-  TRANSIFEX_SECRET=<Transifex Native Project Secret>
+  TRANSIFEX_TOKEN=<Wordsmith Native Project Token>
+  TRANSIFEX_SECRET=<Wordsmith Native Project Secret>
   (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
 
   or passed as --token=<TOKEN> --secret=<SECRET> parameters
 
-  Default CDS Host is https://cds.svc.transifex.net
+  Default CDS Host is https://cds.svc.wordsmith.net
 
   Examples:
-  txjs-cli invalidate
-  txjs-cli invalidate --purge
-  txjs-cli invalidate --token=mytoken --secret=mysecret
-  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli invalidate
+  wsjs-cli invalidate
+  wsjs-cli invalidate --purge
+  wsjs-cli invalidate --token=mytoken --secret=mysecret
+  TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret wsjs-cli invalidate
 ```
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.

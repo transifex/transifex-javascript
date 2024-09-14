@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import useT from '../hooks/useT';
 
-/* Main transifex-native component for react. It delegates the translation to
+/* Main wordsmith-native component for react. It delegates the translation to
  * the `useT` hook, which will force the component to rerender in the event of
  * a language change.
  *

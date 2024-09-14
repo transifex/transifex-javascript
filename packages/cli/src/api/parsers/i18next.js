@@ -1,4 +1,4 @@
-const { implodePlurals } = require('@transifex/native');
+const { implodePlurals } = require('@wordsmith/native');
 const _ = require('lodash');
 const { mergePayload } = require('../merge');
 const { createPayload, isPayloadValid } = require('./utils');
@@ -86,7 +86,7 @@ function extractI18NextPhrases(HASHES, source, relativeFile, options) {
     if (!isPayloadValid(partial, options)) return;
 
     mergePayload(HASHES, {
-      [`${key}_txplural`]: {
+      [`${key}_wsplural`]: {
         string: partial.string,
         meta: partial.meta,
       },

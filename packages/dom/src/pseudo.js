@@ -55,7 +55,7 @@ const MAP = {
 
 export default function pseudo(sourceString) {
   return sourceString
-    .split(/__txnative__/)
+    .split(/__wsnative__/)
     .map((group) => {
       let pseudoString = '';
       for (let i = 0; i < group.length; i += 1) {
@@ -73,5 +73,5 @@ export default function pseudo(sourceString) {
       }
       return pseudoString;
     })
-    .join('__txnative__');
+    .join('__wsnative__');
 }

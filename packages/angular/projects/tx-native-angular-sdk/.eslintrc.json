@@ -10,8 +10,8 @@
       ],
       "parserOptions": {
         "project": [
-          "projects/tx-native-angular-sdk/tsconfig.lib.json",
-          "projects/tx-native-angular-sdk/tsconfig.spec.json"
+          "projects/ws-native-angular-sdk/tsconfig.lib.json",
+          "projects/ws-native-angular-sdk/tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },
@@ -19,7 +19,7 @@
         "@angular-eslint/component-selector": [
           "off",
           {
-            "prefix": "tx",
+            "prefix": "ws",
             "style": "kebab-case",
             "type": "element"
           }
@@ -27,7 +27,7 @@
         "@angular-eslint/directive-selector": [
           "error",
           {
-            "prefix": "tx",
+            "prefix": "ws",
             "style": "camelCase",
             "type": "attribute"
           }

@@ -9,7 +9,7 @@ module.exports = {
     globalObject: 'this',
     path: path.resolve(__dirname, 'dist'),
     filename: 'node.dom.js',
-    library: 'transifexDOM',
+    library: 'wordsmithDOM',
     libraryTarget: 'umd',
   },
   target: 'node',

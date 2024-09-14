@@ -1,6 +1,6 @@
 import {
-  onEvent, offEvent, LOCALE_CHANGED, tx, t,
-} from '@transifex/native';
+  onEvent, offEvent, LOCALE_CHANGED, ws, t,
+} from '@wordsmith/native';
 import { h } from 'vue';
 
 export default {
@@ -9,7 +9,7 @@ export default {
   functional: true,
   data() {
     return {
-      lang: tx.getCurrentLocale(),
+      lang: ws.getCurrentLocale(),
     };
   },
   mounted() {

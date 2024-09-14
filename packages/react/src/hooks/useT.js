@@ -2,12 +2,12 @@ import {
   useEffect, useState, useContext, useCallback,
 } from 'react';
 import {
-  tx,
+  ws,
   onEvent,
   offEvent,
   LOCALE_CHANGED,
   TRANSLATIONS_FETCHED,
-} from '@transifex/native';
+} from '@wordsmith/native';
 import translateWithElements from '../utils/translateWithElements';
 import { TXNativeContext } from '../context/TXNativeContext';
 
@@ -26,10 +26,10 @@ import { TXNativeContext } from '../context/TXNativeContext';
  *   return <span>{translation.toUpperCase()}</span>;
  * } */
 
-export default function useT(txInstance) {
-  // Check for a different tx initialization
+export default function useT(wsInstance) {
+  // Check for a different ws initialization
   const context = useContext(TXNativeContext);
-  const instance = txInstance || context.instance || tx;
+  const instance = wsInstance || context.instance || ws;
 
   const [counter, setCounter] = useState(0);
   useEffect(() => {

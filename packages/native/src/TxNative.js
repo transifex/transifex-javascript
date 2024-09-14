@@ -22,11 +22,11 @@ import { isPluralized } from './plurals';
  * NativeCore and LangState classes.
  *
  * @export
- * @class TxNative
+ * @class WsNative
  */
-export default class TxNative {
+export default class WsNative {
   constructor() {
-    this.cdsHost = 'https://cds.svc.transifex.net';
+    this.cdsHost = 'https://cds.svc.wordsmith.net';
     this.token = '';
     this.secret = '';
     this.filterTags = '';
@@ -224,7 +224,7 @@ export default class TxNative {
           headers: {
             Authorization: `Bearer ${this.token}`,
             'Accept-version': 'v2',
-            'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
+            'X-NATIVE-SDK': `wsjs/${__PLATFORM__}/${__VERSION__}`,
           },
           signal: this.fetchTimeout > 0 ? AbortSignal.timeout(this.fetchTimeout) : undefined,
         });
@@ -280,7 +280,7 @@ export default class TxNative {
         Authorization: `Bearer ${this.token}:${this.secret}`,
         'Accept-version': 'v2',
         'Content-Type': 'application/json;charset=utf-8',
-        'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
+        'X-NATIVE-SDK': `wsjs/${__PLATFORM__}/${__VERSION__}`,
       },
     });
     if (!response.ok) {
@@ -332,7 +332,7 @@ export default class TxNative {
       Authorization: `Bearer ${this.token}:${this.secret}`,
       'Accept-version': 'v2',
       'Content-Type': 'application/json;charset=utf-8',
-      'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
+      'X-NATIVE-SDK': `wsjs/${__PLATFORM__}/${__VERSION__}`,
     };
 
     const response = await fetch(`${this.cdsHost}/content`, {
@@ -422,7 +422,7 @@ export default class TxNative {
           headers: {
             Authorization: `Bearer ${this.token}`,
             'Accept-version': 'v2',
-            'X-NATIVE-SDK': `txjs/${__PLATFORM__}/${__VERSION__}`,
+            'X-NATIVE-SDK': `wsjs/${__PLATFORM__}/${__VERSION__}`,
           },
           signal: this.fetchTimeout > 0 ? AbortSignal.timeout(this.fetchTimeout) : undefined,
         });
@@ -547,7 +547,7 @@ export default class TxNative {
    * child instance.
    *
    * @param {Array} instances
-   * @memberof TxNative
+   * @memberof WsNative
    */
   async _syncInstances(instances) {
     // update instance language
@@ -582,7 +582,7 @@ export default class TxNative {
    * Return a new fetch error
    *
    * @param {*} response
-   * @memberof TxNative
+   * @memberof WsNative
    */
   // eslint-disable-next-line class-methods-use-this
   async _fetchError(response) {

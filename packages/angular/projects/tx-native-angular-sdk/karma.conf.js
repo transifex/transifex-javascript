@@ -22,7 +22,7 @@ module.exports = function (config) {
       suppressAll: true
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, '../../coverage/tx-native-angular-sdk'),
+      dir: require('path').join(__dirname, '../../coverage/ws-native-angular-sdk'),
       subdir: '.',
       reporters: [
         { type: 'html' },

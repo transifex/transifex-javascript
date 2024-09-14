@@ -1,18 +1,18 @@
 import { useState, useEffect, useContext } from 'react';
 import {
-  tx,
+  ws,
   onEvent,
   offEvent,
   FETCHING_TRANSLATIONS,
   TRANSLATIONS_FETCHED,
   LOCALE_CHANGED,
-} from '@transifex/native';
+} from '@wordsmith/native';
 import { TXNativeContext } from '../context/TXNativeContext';
 
-export default function useTranslations(filterTags, txInstance) {
-  // Check for a different tx initialization
+export default function useTranslations(filterTags, wsInstance) {
+  // Check for a different ws initialization
   const context = useContext(TXNativeContext);
-  const instance = txInstance || context.instance || tx;
+  const instance = wsInstance || context.instance || ws;
 
   const [ready, setReady] = useState(
     (instance.fetchedTags[instance.currentLocale] || []).indexOf(filterTags) !== -1,

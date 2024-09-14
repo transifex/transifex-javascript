@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { tx } from '@transifex/native';
+import { ws } from '@wordsmith/native';
 
 import { TranslationService, TXInstanceComponent } from '../public-api';
 
@@ -32,7 +32,7 @@ describe('TXInstanceComponent', () => {
     component.token = 'token';
     component.alias = 'alias';
     spyOn(service, 'addInstance').and.resolveTo(true);
-    spyOn(service, 'getInstance').and.returnValue(tx);
+    spyOn(service, 'getInstance').and.returnValue(ws);
 
     // act
     await component.ngOnInit();

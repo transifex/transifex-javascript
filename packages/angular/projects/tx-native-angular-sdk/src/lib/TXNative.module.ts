@@ -35,13 +35,13 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     TXInstanceComponent,
   ],
 })
-export class TxNativeModule {
+export class WsNativeModule {
   /**
    * Use this method in your root module to provide the TranslationService
    */
-  static forRoot(): ModuleWithProviders<TxNativeModule> {
+  static forRoot(): ModuleWithProviders<WsNativeModule> {
     return {
-      ngModule: TxNativeModule,
+      ngModule: WsNativeModule,
       providers: [
         TranslationService,
       ],

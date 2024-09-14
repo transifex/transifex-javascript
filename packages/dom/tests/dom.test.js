@@ -3,7 +3,7 @@
 
 import { expect } from 'chai';
 import { parseHTML } from 'linkedom';
-import TxNativeDOM from '../src/TxNativeDOM';
+import WsNativeDOM from '../src/WsNativeDOM';
 import {
   bindings,
   nestedSegments,
@@ -32,27 +32,27 @@ function injectShadowDomSegments(document, segments) {
   }
 }
 
-function assertContainsSegments(txdom, segments) {
-  const strings = txdom.getStringsJSON();
+function assertContainsSegments(wsdom, segments) {
+  const strings = wsdom.getStringsJSON();
   for (let i = 0; i < segments.length; ++i) {
     const { segment } = segments[i];
-    const key = txdom._getKey(segment);
+    const key = wsdom._getKey(segment);
     expect(strings[key]).deep.contains({
       string: segment,
     });
   }
 }
 
-describe('TxNativeDOM', () => {
+describe('WsNativeDOM', () => {
   it('pseudo translates', () => {
     const html = '<html><head></head><body><p>Hello world</p></body></html>';
     const pseudo = '<html lang="pseudo"><head></head><body><p>Ħḗḗŀŀǿǿ ẇǿǿřŀḓ</p></body></html>';
     const { document } = parseHTML(html);
-    const txdom = new TxNativeDOM();
+    const wsdom = new WsNativeDOM();
 
-    txdom.attachDOM(document);
-    txdom.pseudoTranslate();
-    expect(txdom.document.documentElement.outerHTML).to.equal(pseudo);
+    wsdom.attachDOM(document);
+    wsdom.pseudoTranslate();
+    expect(wsdom.document.documentElement.outerHTML).to.equal(pseudo);
   });
 
   it('translates locale', () => {
@@ -62,24 +62,24 @@ describe('TxNativeDOM', () => {
       'Hello world': 'Γειά σου κόσμε',
     };
     const { document } = parseHTML(html);
-    const txdom = new TxNativeDOM();
+    const wsdom = new WsNativeDOM();
 
-    txdom.attachDOM(document);
-    txdom.toLanguage('el', (key) => translations[key]);
-    expect(txdom.document.documentElement.outerHTML).to.equal(translatedHTML);
+    wsdom.attachDOM(document);
+    wsdom.toLanguage('el', (key) => translations[key]);
+    expect(wsdom.document.documentElement.outerHTML).to.equal(translatedHTML);
 
     // revert to source
-    txdom.toSource();
-    expect(txdom.document.documentElement.outerHTML).to.equal(html);
+    wsdom.toSource();
+    expect(wsdom.document.documentElement.outerHTML).to.equal(html);
   });
 
   it('exports tags', () => {
-    const html = '<html><head></head><body><p tx-tags="tag1,tag2">Hello world</p></body></html>';
+    const html = '<html><head></head><body><p ws-tags="tag1,tag2">Hello world</p></body></html>';
     const { document } = parseHTML(html);
-    const txdom = new TxNativeDOM();
+    const wsdom = new WsNativeDOM();
 
-    txdom.attachDOM(document);
-    expect(txdom.getStringsJSON()).to.deep.equal({
+    wsdom.attachDOM(document);
+    expect(wsdom.getStringsJSON()).to.deep.equal({
       'Hello world': {
         string: 'Hello world',
         meta: {
@@ -88,7 +88,7 @@ describe('TxNativeDOM', () => {
       },
     });
 
-    expect(txdom.getStringsJSON({ tags: ['tag2', 'tag3'] })).to.deep.equal({
+    expect(wsdom.getStringsJSON({ tags: ['tag2', 'tag3'] })).to.deep.equal({
       'Hello world': {
         string: 'Hello world',
         meta: {
@@ -97,7 +97,7 @@ describe('TxNativeDOM', () => {
       },
     });
 
-    expect(txdom.getStringsJSON({ occurrences: ['o1'] })).to.deep.equal({
+    expect(wsdom.getStringsJSON({ occurrences: ['o1'] })).to.deep.equal({
       'Hello world': {
         string: 'Hello world',
         meta: {
@@ -111,12 +111,12 @@ describe('TxNativeDOM', () => {
 
 describe('Strings', () => {
   let document;
-  let txdom;
+  let wsdom;
 
   beforeEach(() => {
     const html = '<html><head></head><body></body></html>';
     document = parseHTML(html).document;
-    txdom = new TxNativeDOM({
+    wsdom = new WsNativeDOM({
       parseAttr: ['custom-attr'],
       ignoreTags: ['h3'],
       ignoreClass: ['skip-class'],
@@ -127,54 +127,54 @@ describe('Strings', () => {
 
   it('to be detected', () => {
     injectSegments(document, validSegments);
-    txdom.attachDOM(document);
-    assertContainsSegments(txdom, validSegments);
+    wsdom.attachDOM(document);
+    assertContainsSegments(wsdom, validSegments);
   });
 
   it('shadow dom to be detected', () => {
     injectSegments(document, shadowDomHostSegments);
     injectShadowDomSegments(document, shadowDomSegments);
-    txdom.attachDOM(document);
-    assertContainsSegments(txdom, shadowDomSegments);
+    wsdom.attachDOM(document);
+    assertContainsSegments(wsdom, shadowDomSegments);
   });
 
   it('to be ignored', () => {
     injectSegments(document, skippedSegments);
-    txdom.attachDOM(document);
+    wsdom.attachDOM(document);
 
-    const strings = txdom.getStringsJSON();
+    const strings = wsdom.getStringsJSON();
     for (let i = 0; i < skippedSegments.length; ++i) {
       const { segment } = skippedSegments[i];
-      const key = txdom._getKey(segment);
+      const key = wsdom._getKey(segment);
       expect(strings).to.not.have.key(key);
     }
   });
 
   it('with variables to be detected', () => {
     injectSegments(document, variableSegments);
-    txdom.attachDOM(document);
-    assertContainsSegments(txdom, variableSegments);
+    wsdom.attachDOM(document);
+    assertContainsSegments(wsdom, variableSegments);
   });
 
-  it('with tx-content=exclude works', () => {
+  it('with ws-content=exclude works', () => {
     injectSegments(document, nestedSegments);
-    txdom.attachDOM(document);
+    wsdom.attachDOM(document);
 
-    const strings = txdom.getStringsJSON();
+    const strings = wsdom.getStringsJSON();
     const { segment } = bindings.nestedExclusion;
-    const key = txdom._getKey(segment);
+    const key = wsdom._getKey(segment);
     expect(strings[key]).deep.contains({
       string: segment,
     });
   });
 
-  it('with tx-content=block works', () => {
+  it('with ws-content=block works', () => {
     injectSegments(document, nestedSegments);
-    txdom.attachDOM(document);
+    wsdom.attachDOM(document);
 
-    const strings = txdom.getStringsJSON();
+    const strings = wsdom.getStringsJSON();
     const { segment } = bindings.nestedBlock;
-    const key = txdom._getKey(segment);
+    const key = wsdom._getKey(segment);
     expect(strings[key]).deep.contains({
       string: segment,
     });

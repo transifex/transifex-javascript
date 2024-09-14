@@ -142,7 +142,7 @@ class PushCommand extends Command {
         process.exit();
       }
 
-      let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.transifex.net';
+      let cdsHost = process.env.TRANSIFEX_CDS_HOST || 'https://cds.svc.wordsmith.net';
       let projectToken = process.env.TRANSIFEX_TOKEN;
       let projectSecret = process.env.TRANSIFEX_SECRET;
 
@@ -157,8 +157,8 @@ class PushCommand extends Command {
       }
 
       const uploadMessage = flags['dry-run']
-        ? 'Uploading content to Transifex (dry run, no changes will be applied)'
-        : 'Uploading content to Transifex';
+        ? 'Uploading content to Wordsmith (dry run, no changes will be applied)'
+        : 'Uploading content to Wordsmith';
 
       this.log('');
       CliUx.ux.action.start(uploadMessage, '', { stdout: true });
@@ -206,7 +206,7 @@ class PushCommand extends Command {
 
         if (status === 'completed') {
           CliUx.ux.action.stop('Success'.green);
-          this.log(`${'✓'.green} Successfully pushed strings to Transifex:`);
+          this.log(`${'✓'.green} Successfully pushed strings to Wordsmith:`);
           if (res.created > 0) {
             this.log(`  Created strings: ${res.created.toString().green}`);
           }
@@ -236,36 +236,36 @@ class PushCommand extends Command {
   }
 }
 
-PushCommand.description = `Detect and push source content to Transifex
+PushCommand.description = `Detect and push source content to Wordsmith
 Parse .js, .ts, .jsx, .tsx and .html files and detect phrases marked for
-translation by Transifex Native toolkit for Javascript and
-upload them to Transifex for translation.
+translation by Wordsmith Native toolkit for Javascript and
+upload them to Wordsmith for translation.
 
 To push content some environment variables must be set:
-TRANSIFEX_TOKEN=<Transifex Native Project Token>
-TRANSIFEX_SECRET=<Transifex Native Project Secret>
+TRANSIFEX_TOKEN=<Wordsmith Native Project Token>
+TRANSIFEX_SECRET=<Wordsmith Native Project Secret>
 (optional) TRANSIFEX_CDS_HOST=<CDS HOST>
 
 or passed as --token=<TOKEN> --secret=<SECRET> parameters
 
-Default CDS Host is https://cds.svc.transifex.net
+Default CDS Host is https://cds.svc.wordsmith.net
 
 Examples:
-txjs-cli push -v
-txjs-cli push src/
-txjs-cli push /home/repo/src
-txjs-cli push "*.js"
-txjs-cli push --dry-run
-txjs-cli push --fake -v
-txjs-cli push --no-wait
-txjs-cli push --key-generator=hash
-txjs-cli push --append-tags="master,release:2.5"
-txjs-cli push --with-tags-only="home,error"
-txjs-cli push --without-tags-only="custom"
-txjs-cli push --token=mytoken --secret=mysecret
-txjs-cli push en.json --parser=i18next
-txjs-cli push en.json --parser=txnativejson
-TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret txjs-cli push
+wsjs-cli push -v
+wsjs-cli push src/
+wsjs-cli push /home/repo/src
+wsjs-cli push "*.js"
+wsjs-cli push --dry-run
+wsjs-cli push --fake -v
+wsjs-cli push --no-wait
+wsjs-cli push --key-generator=hash
+wsjs-cli push --append-tags="master,release:2.5"
+wsjs-cli push --with-tags-only="home,error"
+wsjs-cli push --without-tags-only="custom"
+wsjs-cli push --token=mytoken --secret=mysecret
+wsjs-cli push en.json --parser=i18next
+wsjs-cli push en.json --parser=wsnativejson
+TRANSIFEX_TOKEN=mytoken TRANSIFEX_SECRET=mysecret wsjs-cli push
 `;
 
 PushCommand.args = [{
@@ -277,7 +277,7 @@ PushCommand.args = [{
 
 PushCommand.flags = {
   'dry-run': Flags.boolean({
-    description: 'dry run, do not apply changes in Transifex',
+    description: 'dry run, do not apply changes in Wordsmith',
     default: false,
   }),
   fake: Flags.boolean({
@@ -290,7 +290,7 @@ PushCommand.flags = {
     default: false,
   }),
   purge: Flags.boolean({
-    description: 'purge content on Transifex',
+    description: 'purge content on Wordsmith',
     default: false,
   }),
   'no-wait': Flags.boolean({
@@ -336,7 +336,7 @@ PushCommand.flags = {
   parser: Flags.string({
     description: 'file parser to use',
     default: 'auto',
-    options: ['auto', 'i18next', 'txnativejson'],
+    options: ['auto', 'i18next', 'wsnativejson'],
   }),
   'key-generator': Flags.string({
     description: 'use hashed or source based keys',

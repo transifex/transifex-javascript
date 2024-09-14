@@ -3,21 +3,21 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "@transifex/angular": {
+    "@wordsmith/angular": {
       "projectType": "library",
-      "root": "projects/tx-native-angular-sdk",
-      "sourceRoot": "projects/tx-native-angular-sdk/src",
+      "root": "projects/ws-native-angular-sdk",
+      "sourceRoot": "projects/ws-native-angular-sdk/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/tx-native-angular-sdk/tsconfig.lib.json",
-            "project": "projects/tx-native-angular-sdk/ng-package.json"
+            "tsConfig": "projects/ws-native-angular-sdk/tsconfig.lib.json",
+            "project": "projects/ws-native-angular-sdk/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/tx-native-angular-sdk/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ws-native-angular-sdk/tsconfig.lib.prod.json"
             },
             "development": {}
           },
@@ -27,8 +27,8 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/tx-native-angular-sdk/tsconfig.spec.json",
-            "karmaConfig": "projects/tx-native-angular-sdk/karma.conf.js",
+            "tsConfig": "projects/ws-native-angular-sdk/tsconfig.spec.json",
+            "karmaConfig": "projects/ws-native-angular-sdk/karma.conf.js",
             "codeCoverage": true
           }
         },
@@ -36,10 +36,10 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/tx-native-angular-sdk/src/**/*.ts",
-              "projects/tx-native-angular-sdk/src/**/*.html",
-              "projects/tx-native-angular-sdk/tests/**/*.ts",
-              "projects/tx-native-angular-sdk/tests/**/*.html"
+              "projects/ws-native-angular-sdk/src/**/*.ts",
+              "projects/ws-native-angular-sdk/src/**/*.html",
+              "projects/ws-native-angular-sdk/tests/**/*.ts",
+              "projects/ws-native-angular-sdk/tests/**/*.html"
             ]
           }
         }

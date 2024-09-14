@@ -1,8 +1,8 @@
-# Transifex Native Angular Projects
+# Wordsmith Native Angular Projects
 
-## Transifex Native for Angular
+## Wordsmith Native for Angular
 
 Angular library for localizing Angular application using
-[Transifex Native](https://www.transifex.com/native/).
+[Wordsmith Native](https://www.wordsmith.com/native/).
 
-[Read more](https://github.com/transifex/transifex-javascript/tree/master/packages/angular/projects/tx-native-angular-sdk)
+[Read more](https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/angular/projects/ws-native-angular-sdk)

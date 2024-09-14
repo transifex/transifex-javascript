@@ -1,0 +1,8 @@
+modules = ["nodejs-20", "vue-node-20"]
+run = "node index.js"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "node index.js"]

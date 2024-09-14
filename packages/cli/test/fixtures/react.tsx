@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { T, UT } from '@transifex/react';
+import { T, UT } from '@wordsmith/react';
 
 class TestProps {
   public name:string;

@@ -3,7 +3,7 @@ const { expect, test } = require('@oclif/test');
 
 describe('invalidate command', () => {
   test
-    .nock('https://cds.svc.transifex.net', (api) => api
+    .nock('https://cds.svc.wordsmith.net', (api) => api
       .post('/invalidate')
       .reply(200, {
         data: {
@@ -14,12 +14,12 @@ describe('invalidate command', () => {
       }))
     .stdout()
     .command(['invalidate', '--secret=s', '--token=t'])
-    .it('invalidates content', (ctx) => {
-      expect(ctx.stdout).to.contain('5 records invalidated');
+    .it('invalidates content', (cws) => {
+      expect(cws.stdout).to.contain('5 records invalidated');
     });
 
   test
-    .nock('https://cds.svc.transifex.net', (api) => api
+    .nock('https://cds.svc.wordsmith.net', (api) => api
       .post('/purge')
       .reply(200, {
         data: {
@@ -30,19 +30,19 @@ describe('invalidate command', () => {
       }))
     .stdout()
     .command(['invalidate', '--purge', '--secret=s', '--token=t'])
-    .it('invalidates content', (ctx) => {
-      expect(ctx.stdout).to.contain('10 records invalidated');
+    .it('invalidates content', (cws) => {
+      expect(cws.stdout).to.contain('10 records invalidated');
     });
 
   test
-    .nock('https://cds.svc.transifex.net', (api) => api
+    .nock('https://cds.svc.wordsmith.net', (api) => api
       .post('/invalidate')
       .reply(403))
     .stdout()
     .stderr()
     .command(['invalidate', '--secret=s', '--token=t'])
     .exit(2)
-    .it('handles invalidate error', (ctx) => {
-      expect(ctx.stdout).to.contain('Invalidating CDS cache... Failed');
+    .it('handles invalidate error', (cws) => {
+      expect(cws.stdout).to.contain('Invalidating CDS cache... Failed');
     });
 });

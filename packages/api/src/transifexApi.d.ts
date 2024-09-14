@@ -71,7 +71,7 @@ declare class Collection {
 type AuthFunction = () => string;
 type AuthArgument = string | AuthFunction;
 
-export declare class TransifexApi {
+export declare class WordsmithApi {
   constructor(params: { host?: string, auth: AuthArgument });
   setup(params: { host?: string, auth: AuthArgument }): void;
 
@@ -130,4 +130,4 @@ export declare class TransifexApi {
   resource_strings_revisions: typeof JsonApiResource;
 }
 
-export declare var transifexApi: TransifexApi;
+export declare var wordsmithApi: WordsmithApi;

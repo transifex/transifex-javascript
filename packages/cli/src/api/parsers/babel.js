@@ -3,7 +3,7 @@ const babelTraverse = require('@babel/traverse').default;
 const _ = require('lodash');
 const { mergePayload } = require('../merge');
 const {
-  isTransifexCall, findDeclaredValue, createPayload, isPayloadValid,
+  isWordsmithCall, findDeclaredValue, createPayload, isPayloadValid,
 } = require('./utils');
 
 function babelParse(source) {
@@ -40,8 +40,8 @@ function babelExtractPhrases(HASHES, source, relativeFile, options) {
   babelTraverse(ast, {
     // T / UT functions
     CallExpression({ node, scope }) {
-      // Check if node is a Transifex function
-      if (!isTransifexCall(node)) return;
+      // Check if node is a Wordsmith function
+      if (!isWordsmithCall(node)) return;
       if (_.isEmpty(node.arguments)) return;
 
       // Try to find the value of first argument

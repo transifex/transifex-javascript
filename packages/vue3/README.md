@@ -1,51 +1,51 @@
 <p align="center">
-  <a href="https://www.transifex.com">
-    <img src="https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/transifex.png" height="60">
+  <a href="https://www.wordsmith.com">
+    <img src="https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/wordsmith.png" height="60">
   </a>
 </p>
 <p align="center">
-  <i>Transifex Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
+  <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/transifex/transifex-javascript/actions/workflows/npm-publish.yml/badge.svg">
-  <a href="https://www.npmjs.com/package/@transifex/vue3">
-    <img src="https://img.shields.io/npm/v/@transifex/vue3.svg">
+  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <a href="https://www.npmjs.com/package/@wordsmith/vue3">
+    <img src="https://img.shields.io/npm/v/@wordsmith/vue3.svg">
   </a>
-  <a href="https://developers.transifex.com/docs/native">
-    <img src="https://img.shields.io/badge/docs-transifex.com-blue">
+  <a href="https://developers.wordsmith.com/docs/native">
+    <img src="https://img.shields.io/badge/docs-wordsmith.com-blue">
   </a>
 </p>
 
-# Transifex Native SDK: Vue i18n
+# Wordsmith Native SDK: Vue i18n
 
 Vue3 component for localizing Vue application using
-[Transifex Native](https://www.transifex.com/native/).
+[Wordsmith Native](https://www.wordsmith.com/native/).
 
 Related packages:
-- [@transifex/native](https://www.npmjs.com/package/@transifex/native)
-- [@transifex/cli](https://www.npmjs.com/package/@transifex/cli)
+- [@wordsmith/native](https://www.npmjs.com/package/@wordsmith/native)
+- [@wordsmith/cli](https://www.npmjs.com/package/@wordsmith/cli)
 
-Learn more about Transifex Native in the [Transifex Developer Hub](https://developers.transifex.com/docs/native).
+Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://developers.wordsmith.com/docs/native).
 
 # How it works
 
-**Step1**: Create a Transifex Native project in [Transifex](https://www.transifex.com).
+**Step1**: Create a Wordsmith Native project in [Wordsmith](https://www.wordsmith.com).
 
 **Step2**: Grab credentials.
 
 **Step3**: Internationalize the code using the SDK.
 
-**Step4**: Push source phrases using the `@transifex/cli` tool.
+**Step4**: Push source phrases using the `@wordsmith/cli` tool.
 
 **Step5**: Translate the app using over-the-air updates.
 
 No translation files required.
 
-![native](https://raw.githubusercontent.com/transifex/transifex-javascript/master/media/native.gif)
+![native](https://raw.githubusercontent.com/wordsmith/wordsmith-javascript/master/media/native.gif)
 
 # Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/transifex/transifex-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 
 # Install
@@ -53,7 +53,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
 Install the library and its dependencies using:
 
 ```sh
-npm install @transifex/native @transifex/vue3 --save
+npm install @wordsmith/native @wordsmith/vue3 --save
 ```
 
 # Usage
@@ -63,16 +63,16 @@ npm install @transifex/native @transifex/vue3 --save
 ```javascript
 import { createApp } from 'vue';
 import App from './App.vue';
-import { tx } from '@transifex/native';
-import { TransifexVue } from '@transifex/vue3';
+import { ws } from '@wordsmith/native';
+import { WordsmithVue } from '@wordsmith/vue3';
 
-tx.init({
+ws.init({
   token: '<token>',
 });
 
 const app = createApp(App);
 
-app.use(TransifexVue);
+app.use(WordsmithVue);
 app.mount('#app');
 
 ```
@@ -186,7 +186,7 @@ application's selected language on change.
 </template>
 
 <script>
-import { LanguagePicker } from '@transifex/vue3';
+import { LanguagePicker } from '@wordsmith/vue3';
   export default {
     name: 'App',
     components: {
@@ -202,4 +202,4 @@ Accepts properties:
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.

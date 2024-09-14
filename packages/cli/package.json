@@ -1,10 +1,10 @@
 {
-  "name": "@transifex/cli",
-  "description": "i18n CLI tool for Transifex Native",
+  "name": "@wordsmith/cli",
+  "description": "i18n CLI tool for Wordsmith Native",
   "version": "7.1.3",
-  "author": "Transifex",
+  "author": "Wordsmith",
   "keywords": [
-    "transifex",
+    "wordsmith",
     "i18n",
     "l10n",
     "localization",
@@ -13,12 +13,12 @@
     "translation",
     "cli"
   ],
-  "homepage": "https://github.com/transifex/transifex-javascript/tree/master/packages/cli",
-  "repository": "git://github.com/transifex/transifex-javascript.git",
-  "bugs": "https://github.com/transifex/transifex-javascript/issues",
+  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/cli",
+  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "bugs": "https://github.com/wordsmith/wordsmith-javascript/issues",
   "license": "Apache-2.0",
   "bin": {
-    "txjs-cli": "./bin/run"
+    "wsjs-cli": "./bin/run"
   },
   "publishConfig": {
     "access": "public"
@@ -28,7 +28,7 @@
     "@babel/traverse": "^7.23.7",
     "@colors/colors": "^1.6.0",
     "@oclif/core": "^1.26.2",
-    "@transifex/native": "^7.1.3",
+    "@wordsmith/native": "^7.1.3",
     "@vue/compiler-sfc": "^3.4.7",
     "angular-html-parser": "^1.8.0",
     "axios": "^1.6.5",
@@ -63,7 +63,7 @@
     "additionalHelpFlags": [
       "-h"
     ],
-    "bin": "txjs-cli",
+    "bin": "wsjs-cli",
     "plugins": []
   },
   "scripts": {
