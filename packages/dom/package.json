@@ -12,7 +12,7 @@
     "translation"
   ],
   "author": "Wordsmith",
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/dom",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/dom",
   "license": "Apache-2.0",
   "main": "dist/node.dom.js",
   "browser": "dist/browser.dom.js",
@@ -20,7 +20,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
   "scripts": {
     "lint": "eslint src/ tests/",
     "build": "NODE_ENV=production webpack --config ./webpack.config.js && cp src/index.d.ts dist/node.dom.d.ts",
@@ -28,7 +28,7 @@
     "publish-npm": "npm publish"
   },
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "engines": {
     "node": ">=16.0.0"

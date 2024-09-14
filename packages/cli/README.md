@@ -7,7 +7,7 @@
   <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <img src="https://github.com/Wordsmith-LLL/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
   <a href="https://www.npmjs.com/package/@wordsmith/cli">
     <img src="https://img.shields.io/npm/v/@wordsmith/cli.svg">
   </a>
@@ -30,7 +30,7 @@ Learn more about Wordsmith Native in the [Wordsmith Developer Hub](https://devel
 
 # Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/Wordsmith-LLL/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 # Usage
 
@@ -253,4 +253,4 @@ DESCRIPTION
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/Wordsmith-LLL/wordsmith-javascript/blob/HEAD/LICENSE) file.

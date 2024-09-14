@@ -26,7 +26,7 @@ There are several ways to contribute to this project and they are all equally we
 
 ## Reporting Bugs
 
-Bugs in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new issue, make sure you check the [list of exiting issues](https://github.com/wordsmith/wordsmith-javascript/issues), as it might already be there.
+Bugs in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new issue, make sure you check the [list of exiting issues](https://github.com/Wordsmith-LLL/wordsmith-javascript/issues), as it might already be there.
 
 When creating an issue, make sure you include the following:
 * A clear and descriptive title.
@@ -39,7 +39,7 @@ When creating an issue, make sure you include the following:
 
 ## Suggesting Improvements
 
-Improvement suggestions in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new suggestion, make sure you check the [list of exiting issues](https://github.com/wordsmith/wordsmith-javascript/issues), as it might already be there.
+Improvement suggestions in this project are tracked as [GitHub issues](https://guides.github.com/features/issues/). Before submitting a new suggestion, make sure you check the [list of exiting issues](https://github.com/Wordsmith-LLL/wordsmith-javascript/issues), as it might already be there.
 
 When creating an improvement issue, make sure you include the following:
 * A clear and descriptive title.

@@ -1,6 +1,6 @@
 # Wordsmith API JavaScript SDK
 
-![example workflow](https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg)
+![example workflow](https://github.com/Wordsmith-LLL/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg)
 [![npm version](https://img.shields.io/npm/v/@wordsmith/api.svg)](https://www.npmjs.com/package/@wordsmith/api)
 [![documentation](https://img.shields.io/badge/docs-wordsmith.is-blue)](https://developers.wordsmith.is/reference/api-javascript-sdk)
 
@@ -10,7 +10,7 @@ A javascript SDK for the [Wordsmith API (v3)](https://developers.wordsmith.is/re
 ## Intro
 
 This SDK is based on the
-[`@wordsmith/jsonapi`](https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/jsonapi)
+[`@wordsmith/jsonapi`](https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/jsonapi)
 SDK library. Most of the functionality is implemented there. If you want to get
 a better understanding of the capabilities of this SDK, we suggest reading
 `@wordsmith/jsonapi`'s documentation.

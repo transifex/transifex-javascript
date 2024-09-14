@@ -9,14 +9,14 @@
     "client"
   ],
   "author": "Wordsmith",
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/jsonapi",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/jsonapi",
   "license": "Apache-2.0",
   "main": "dist/node.jsonapi.js",
   "browser": "dist/browser.jsonapi.js",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
   "scripts": {
     "build": "webpack",
     "lint": "eslint src/ tests/",
@@ -24,7 +24,7 @@
     "test": "jest"
   },
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "engines": {
     "node": ">=16.0.0"

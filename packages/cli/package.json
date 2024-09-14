@@ -13,9 +13,9 @@
     "translation",
     "cli"
   ],
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/cli",
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
-  "bugs": "https://github.com/wordsmith/wordsmith-javascript/issues",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/cli",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
+  "bugs": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues",
   "license": "Apache-2.0",
   "bin": {
     "wsjs-cli": "./bin/run"

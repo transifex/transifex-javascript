@@ -12,13 +12,13 @@
     "translation",
     "angular"
   ],
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/angular",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/angular",
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wordsmith/wordsmith-javascript.git"
+    "url": "git+https://github.com/Wordsmith-LLL/wordsmith-javascript.git"
   },
   "license": "Apache-2.0",
   "author": "Wordsmith",

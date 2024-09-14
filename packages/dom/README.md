@@ -7,7 +7,7 @@
   <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <img src="https://github.com/Wordsmith-LLL/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
   <a href="https://www.npmjs.com/package/@wordsmith/dom">
     <img src="https://img.shields.io/npm/v/@wordsmith/dom.svg">
   </a>
@@ -582,4 +582,4 @@ Segments:
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/Wordsmith-LLL/wordsmith-javascript/blob/HEAD/LICENSE) file.

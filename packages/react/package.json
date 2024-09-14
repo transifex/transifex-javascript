@@ -13,7 +13,7 @@
     "react"
   ],
   "author": "Wordsmith",
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/react",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/react",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
@@ -21,7 +21,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
   "scripts": {
     "build": "NODE_ENV=production microbundle-crl --no-compress --format modern,cjs && cp src/index.d.ts dist/index.d.ts && cp src/index.d.ts dist/index.modern.d.ts",
     "prepare": "run-s build",
@@ -32,7 +32,7 @@
     "publish-npm": "npm publish"
   },
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "engines": {
     "node": ">=16.0.0"

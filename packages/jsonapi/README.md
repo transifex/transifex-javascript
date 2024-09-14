@@ -3,7 +3,7 @@
 This is a library that allows you to create SDKs for APIs that conform to the
 [{json:api}](https://jsonapi.org/) specification. The design of this library,
 as well as the structure of this README file, follow the principles of
-[an equivalent library that was written for Python](https://github.com/wordsmith/wordsmith-python/tree/devel/wordsmith/api)
+[an equivalent library that was written for Python](https://github.com/Wordsmith-LLL/wordsmith-python/tree/devel/wordsmith/api)
 as much as possible.
 
 ## Setting up

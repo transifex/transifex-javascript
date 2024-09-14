@@ -14,14 +14,14 @@
     "vue.js"
   ],
   "author": "Wordsmith",
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/vue3",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/vue3",
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "engines": {
     "node": ">=16.0.0"

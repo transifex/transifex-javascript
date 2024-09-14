@@ -10,15 +10,15 @@
     "API",
     "SDK"
   ],
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/api",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/api",
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "license": "Apache-2.0",
   "author": "Wordsmith",
   "main": "dist/node.wordsmithApi.js",
   "browser": "dist/browser.wordsmithApi.js",
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
   "scripts": {
     "build": "webpack",
     "lint": "eslint src",

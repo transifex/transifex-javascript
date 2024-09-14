@@ -7,7 +7,7 @@
   <i>Wordsmith Native is a full end-to-end, cloud-based localization stack for moderns apps.</i>
 </p>
 <p align="center">
-  <img src="https://github.com/wordsmith/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
+  <img src="https://github.com/Wordsmith-LLL/wordsmith-javascript/actions/workflows/npm-publish.yml/badge.svg">
   <a href="https://www.npmjs.com/package/@wordsmith/angular">
     <img src="https://img.shields.io/npm/v/@wordsmith/angular.svg">
   </a>
@@ -45,7 +45,7 @@ No translation files required.
 
 ## Upgrade to v2
 
-If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
+If you are upgrading from the `1.x.x` version, please read this [migration guide](https://github.com/Wordsmith-LLL/wordsmith-javascript/blob/HEAD/UPGRADE_TO_V2.md), as there are breaking changes in place.
 
 
 
@@ -311,7 +311,7 @@ export interface ITranslationServiceConfig {
 `@wordsmith/native` package but you can provide if you wish custom functions
 of your own, or use another policy provided by the `@wordsmith/native` package.
 
-Please check the documentation related to this on`@wordsmith/native` package [here](https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/native).
+Please check the documentation related to this on`@wordsmith/native` package [here](https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/native).
 
 <sup>(2)</sup> Translation params
 
@@ -552,4 +552,4 @@ This way we can fetch the translations related with the part of the component's 
 
 # License
 
-Licensed under Apache License 2.0, see [LICENSE](https://github.com/wordsmith/wordsmith-javascript/blob/HEAD/LICENSE) file.
+Licensed under Apache License 2.0, see [LICENSE](https://github.com/Wordsmith-LLL/wordsmith-javascript/blob/HEAD/LICENSE) file.

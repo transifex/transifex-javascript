@@ -13,13 +13,13 @@
     "express"
   ],
   "author": "Wordsmith",
-  "homepage": "https://github.com/wordsmith/wordsmith-javascript/tree/master/packages/express",
+  "homepage": "https://github.com/Wordsmith-LLL/wordsmith-javascript/tree/master/packages/express",
   "license": "Apache-2.0",
   "main": "src/index.js",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "git://github.com/wordsmith/wordsmith-javascript.git",
+  "repository": "git://github.com/Wordsmith-LLL/wordsmith-javascript.git",
   "scripts": {
     "lint": "eslint src/ tests/",
     "build": "",
@@ -27,7 +27,7 @@
     "publish-npm": "npm publish"
   },
   "bugs": {
-    "url": "https://github.com/wordsmith/wordsmith-javascript/issues"
+    "url": "https://github.com/Wordsmith-LLL/wordsmith-javascript/issues"
   },
   "engines": {
     "node": ">=16.0.0"
