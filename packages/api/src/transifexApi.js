@@ -28,7 +28,7 @@ async function upload({ interval = 5, ...data }) {
 }
 
 export class WordsmithApi extends JsonApi {
-  static HOST = 'https://rest.api.wordsmith.com';
+  static HOST = 'https://api.wordsmith.is';
 }
 
 class Organization extends JsonApiResource {

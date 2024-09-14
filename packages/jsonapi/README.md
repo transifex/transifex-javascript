@@ -135,7 +135,7 @@ fact, this is exactly how `@wordsmith/api` has been set up:
 import { JsonApi, Resource } from '@wordsmith/jsonapi';
 
 export class WordsmithApi extends JsonApi {
-  static HOST = 'https://rest.api.wordsmith.com';
+  static HOST = 'https://api.wordsmith.is';
 }
 
 class Organization extends Resource {
