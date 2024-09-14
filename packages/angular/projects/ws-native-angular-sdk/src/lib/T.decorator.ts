@@ -1,14 +1,14 @@
 import { Injector } from '@angular/core';
 
 import { TranslationService } from './translation.service';
-import {ITXInstanceConfiguration} from "./interfaces";
+import {IWSInstanceConfiguration} from "./interfaces";
 
 /**
  * Decorator for using transparently the translation service as a property
  */
 
 export const T = (str: string, params?: Record<string, unknown>,
-                  instanceConfig?: ITXInstanceConfiguration) => (target: any, key: string) => {
+                  instanceConfig?: IWSInstanceConfiguration) => (target: any, key: string) => {
   const injector = Injector.create(
       {
         providers: [

@@ -60,7 +60,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [@T Decorator](#@t-decorator)
   * [translate Pipe](#translate-pipe)
   * [Language Picker Component](#language-picker-component)
-  * [TX Instance Component](#ws-instance-component)
+  * [WS Instance Component](#ws-instance-component)
   * [wsLoadTranslations Directive](#wsloadtranslations-directive)
 * [License](#license)
 
@@ -84,7 +84,7 @@ npm install @wordsmith/native @wordsmith/angular --save
 
 ## Initialization
 
-In order to use the TX Native object globally, it is necessary to initialize
+In order to use the WS Native object globally, it is necessary to initialize
 the library in the angular application bootstrap, in two locations:
 
 - NgModule initialization
@@ -102,7 +102,7 @@ the library in the angular application bootstrap, in two locations:
     AppRoutingModule,
     BrowserModule,
 
-    // TX Native module declaration
+    // WS Native module declaration
     WsNativeModule.forRoot(),
   ],
   providers: [,
@@ -124,9 +124,9 @@ import { TranslationService } from '@wordsmith/angular';
 })
 export class AppComponent {
   constructor(private translationService: TranslationService) {
-    // TX Native library intialization
+    // WS Native library intialization
     translationService.init({
-      token: '----- here your TX Native token ------',
+      token: '----- here your WS Native token ------',
     });
   }
 
@@ -198,7 +198,7 @@ The same block without the `sanitize` option would be like this, for Greek:
 The main thing to keep in mind is that the `str` property to the T component
 must **always** be a valid ICU message format template.
 
-If it is nested into a ```ws-instance``` tag, then the ```T component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#ws-instance-component) section for more information about additional instances.
+If it is nested into a ```ws-instance``` tag, then the ```T component``` will use the new instance to fetch the translation. Check the [WS Instance Component](#ws-instance-component) section for more information about additional instances.
 
 
 ## `UT` Component
@@ -226,11 +226,11 @@ Available optional props:
 |------------|---------|---------------------------------------------|
 | inline     | Boolean | If should wrap the translation with `span` (true) or with `div` (false) |
 
-If it is nested into a ```ws-instance``` tag, then the ```UT component``` will use the new instance to fetch the translation. Check the [TX Instance Component](#ws-instance-component) section for more information about additional instances.
+If it is nested into a ```ws-instance``` tag, then the ```UT component``` will use the new instance to fetch the translation. Check the [WS Instance Component](#ws-instance-component) section for more information about additional instances.
 
 ## `TranslationService` service
 
-This is the main service exposed from the SDK in order to intialize the TX Native object.
+This is the main service exposed from the SDK in order to intialize the WS Native object.
 
 In your bootstrap entry point in the Angular application, you should initialize the SDK, like this:
 
@@ -244,11 +244,11 @@ import { TranslationService } from '@wordsmith/angular';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'TX Native Angular Demo';
+  title = 'WS Native Angular Demo';
 
   constructor(private translationService: TranslationService) {
     translationService.init({
-      token: '----- here your TX Native token ------',
+      token: '----- here your WS Native token ------',
     });
   }
 
@@ -260,19 +260,19 @@ export class AppComponent {
 ```
 The translation service is a `singleton` instance so the initialization will be shared across the whole application.
 
-It keeps also a collection of additional TX Native instances which can be added to the default instance for specific purposes.
+It keeps also a collection of additional WS Native instances which can be added to the default instance for specific purposes.
 
 Each addional instance should have the following configuration:
 
 ```ts
-ITXInstanceConfiguration {
+IWSInstanceConfiguration {
   token: string;
   alias: string;
   controlled: boolean;
 }
 ```
 
-See the section [TX Instance Component](#ws-instance-component) for more details.
+See the section [WS Instance Component](#ws-instance-component) for more details.
 
 The additional instances can be added and retrieved using exposed methods ```addInstance``` and ```getInstance```.
 
@@ -282,15 +282,15 @@ Exposes the following methods and properties:
 
 | Method           | Parameters       | Description                                       |
 |------------------|------------------|---------------------------------------------------|
-| init             | config <sup>1</sup>          | Initializes the TX Native object                  |
-| setCurrentLocale | locale           | Set the current locale in the TX Native object    |
-| getCurrentLocale | none             | Returns the current locale of the TX Native object|
+| init             | config <sup>1</sup>          | Initializes the WS Native object                  |
+| setCurrentLocale | locale           | Set the current locale in the WS Native object    |
+| getCurrentLocale | none             | Returns the current locale of the WS Native object|
 | getLanguages     | none             | Returns an array of available languages           |
 | translate        | translate params <sup>2</sup> | Returns the translation for a string with given translation params |
 | localeChanged    | none | Returns an observable for monitoring the locale changed event |
 | translationsFetched    | none | Returns an observable for monitoring the fetch translations event |
-| addInstance      | ITXInstanceConfiguration | Returns true if the new TX Native instance was added succesfully and false otherwise |
-| getInstance      | string | Returns the TX Native instance with the given alias. If the operation is not possible the default one is returned as fallback.  |
+| addInstance      | IWSInstanceConfiguration | Returns true if the new WS Native instance was added succesfully and false otherwise |
+| getInstance      | string | Returns the WS Native instance with the given alias. If the operation is not possible the default one is returned as fallback.  |
 | fetchTranslations      | array | Returns a collection of translations that match a given list of tags.  |
 
 <sup>(1)</sup> Initialization config
@@ -385,9 +385,9 @@ and the use of the properties in the template:
     ></T>
   </p>
 ```
-An instance configuration can be passed to the decorator in order to use an alternative instance instead of the main TX Native one.
+An instance configuration can be passed to the decorator in order to use an alternative instance instead of the main WS Native one.
 
-See [TX Instance Component](#ws-instance-component) for more information.
+See [WS Instance Component](#ws-instance-component) for more information.
 
 Example of alternative instance:
 
@@ -427,7 +427,7 @@ this example will not work, as it has HTML embedded:
   {{ 'A string with <b>HTML embedded</b>' | translate }}
 ```
 
-If it is nested into a ```ws-instance``` tag, then the pipe will use the new instance to fetch the translation. Check the [TX Instance Component](#ws-instance-component) section for more information about additional instances.
+If it is nested into a ```ws-instance``` tag, then the pipe will use the new instance to fetch the translation. Check the [WS Instance Component](#ws-instance-component) section for more information about additional instances.
 
 ## Language Picker Component
 
@@ -475,9 +475,9 @@ You always can implement a language picker of your choice, injecting
 the `TranslationService` and using the different methods provided,
 such as `getLanguages`.
 
-## TX Instance Component
+## WS Instance Component
 
-Creates a new TX Native instance with the given configuration and adds it to the TX Native main instance. All the nested components will use the new instance in order to fetch the translations. This apply to components:
+Creates a new WS Native instance with the given configuration and adds it to the WS Native main instance. All the nested components will use the new instance in order to fetch the translations. This apply to components:
 
 - T/UT
 - translate pipe
@@ -513,7 +513,7 @@ Accepts properties:
 
 - `alias`: A string indetifier of the instance, should be unique. If the identifier already exists, the existing instance with the given alias is used, and no new instance is created.
 
-- `controlled`: If the new instance is controlled (locale) by the main TX Native instance.
+- `controlled`: If the new instance is controlled (locale) by the main WS Native instance.
 
 Returns:
 

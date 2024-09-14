@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TXInstanceComponent } from './instance.component';
+import { WSInstanceComponent } from './instance.component';
 import { TranslationService } from './translation.service';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
    */
   constructor(
       protected translationService: TranslationService,
-      private instance: TXInstanceComponent,
+      private instance: WSInstanceComponent,
       private ref: ChangeDetectorRef,
   ) {}
 

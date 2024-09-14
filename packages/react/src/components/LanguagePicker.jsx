@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import useLanguages from '../hooks/useLanguages';
 import useLocale from '../hooks/useLocale';
-import useTX from '../hooks/useTX';
+import useWS from '../hooks/useWS';
 
 /* Component to render a language picker. Language options will be fetched
   * asynchronously. Accepts props:
@@ -13,7 +13,7 @@ import useTX from '../hooks/useTX';
 export default function LanguagePicker({ className = '' }) {
   const languages = useLanguages();
   const locale = useLocale();
-  const ws = useTX();
+  const ws = useWS();
 
   return (
     <select

@@ -7,29 +7,29 @@ import {
 } from '@testing-library/react';
 
 import { ws, createNativeInstance } from '@wordsmith/native';
-import { useTX, WSProvider } from '../src';
+import { useWS, WSProvider } from '../src';
 
 test('uses default ws instance', async () => {
   function Display() {
-    const inst = useTX();
+    const inst = useWS();
     return (
       <>
-        TX Instance is {inst.name}
+        WS Instance is {inst.name}
       </>
     );
   }
   ws.name = 'foo';
   render(<Display />);
-  expect(screen.queryByText('TX Instance is foo')).toBeTruthy();
+  expect(screen.queryByText('WS Instance is foo')).toBeTruthy();
   delete ws.name;
 });
 
 test('uses provider ws instance', async () => {
   function Display() {
-    const inst = useTX();
+    const inst = useWS();
     return (
       <>
-        TX Instance is {inst.name}
+        WS Instance is {inst.name}
       </>
     );
   }
@@ -43,6 +43,6 @@ test('uses provider ws instance', async () => {
       <Display />
     </WSProvider>,
   );
-  expect(screen.queryByText('TX Instance is foo')).toBeTruthy();
+  expect(screen.queryByText('WS Instance is foo')).toBeTruthy();
   delete ws.name;
 });

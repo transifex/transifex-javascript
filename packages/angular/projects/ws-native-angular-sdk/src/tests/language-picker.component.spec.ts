@@ -6,14 +6,14 @@ import { LanguagePickerComponent } from '../lib/language-picker.component';
 import {
   ILanguage,
   TranslationService,
-  TXInstanceComponent,
+  WSInstanceComponent,
 } from '../public-api';
 
 describe('LanguagePickerComponent', () => {
   let component: LanguagePickerComponent;
   let fixture: ComponentFixture<LanguagePickerComponent>;
   let service: TranslationService;
-  let instance: TXInstanceComponent;
+  let instance: WSInstanceComponent;
 
   const languages: ILanguage[] = [
     { code: 'en', name: 'English', localized_name: 'English', rtl: false },
@@ -22,11 +22,11 @@ describe('LanguagePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LanguagePickerComponent, TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      declarations: [LanguagePickerComponent, WSInstanceComponent],
+      providers: [WSInstanceComponent],
     }).compileComponents();
     service = TestBed.inject(TranslationService);
-    instance = TestBed.inject(TXInstanceComponent);
+    instance = TestBed.inject(WSInstanceComponent);
   });
 
   beforeEach(() => {

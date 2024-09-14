@@ -44,7 +44,7 @@ describe('TranslationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should init the TX Native object', async () => {
+  it('should init the WS Native object', async () => {
     spyOn(service, 'getInstance').and.returnValue({
       currentLocale: 'en',
       fetchTranslations: ws.fetchTranslations,

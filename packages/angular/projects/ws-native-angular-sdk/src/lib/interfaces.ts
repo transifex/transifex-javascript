@@ -11,7 +11,7 @@ export interface ITranslateParams extends ITranslateParamsNative {
   sanitize?: boolean;
 }
 
-export interface ITXInstanceConfiguration {
+export interface IWSInstanceConfiguration {
   alias: string;
   controlled: boolean;
   token: string;

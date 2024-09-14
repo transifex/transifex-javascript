@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createNativeInstance, ws, WsNative } from '@wordsmith/native';
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { ILanguage, ITranslationServiceConfig, ITXInstanceConfiguration } from './interfaces';
+import { ILanguage, ITranslationServiceConfig, IWSInstanceConfiguration } from './interfaces';
 
 /**
  * Service which wraps the Wordsmith Native library for using inside components
@@ -19,7 +19,7 @@ export class TranslationService {
     return this.translationsFetchedSubject;
   }
 
-  // A dictionary with additional TX Native instances for translation
+  // A dictionary with additional WS Native instances for translation
   private additionalInstances: { [id: string]: WsNative } = {};
 
   // A subject for managing locale changes
@@ -76,9 +76,9 @@ export class TranslationService {
   }
 
   /**
-   * Adds a new TX Native instance for alternative resource translations
+   * Adds a new WS Native instance for alternative resource translations
    */
-  public async addInstance(config: ITXInstanceConfiguration): Promise<boolean> {
+  public async addInstance(config: IWSInstanceConfiguration): Promise<boolean> {
     if (!config.token || !config.alias) {
       return false;
     }

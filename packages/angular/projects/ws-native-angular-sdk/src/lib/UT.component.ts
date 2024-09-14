@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { TXInstanceComponent } from './instance.component';
+import { WSInstanceComponent } from './instance.component';
 import { TComponent } from './T.component';
 import { TranslationService } from './translation.service';
 
@@ -17,7 +17,7 @@ import { TranslationService } from './translation.service';
 export class UTComponent extends TComponent {
   constructor(
       translationService: TranslationService,
-      protected override instance: TXInstanceComponent,
+      protected override instance: WSInstanceComponent,
   ) {
     super(translationService, instance);
     this.escapeVars = true;

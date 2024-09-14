@@ -7,7 +7,7 @@ import { UTComponent } from './UT.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { TranslationService } from './translation.service';
 import { TranslatePipe } from './translate.pipe';
-import { TXInstanceComponent } from './instance.component';
+import { WSInstanceComponent } from './instance.component';
 import { LoadTranslationsDirective } from './load-translations.directive';
 
 
@@ -18,7 +18,7 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     LanguagePickerComponent,
     SafeHtmlPipe,
     TranslatePipe,
-    TXInstanceComponent,
+    WSInstanceComponent,
     LoadTranslationsDirective,
   ],
   imports: [CommonModule],
@@ -28,11 +28,11 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     LanguagePickerComponent,
     SafeHtmlPipe,
     TranslatePipe,
-    TXInstanceComponent,
+    WSInstanceComponent,
     LoadTranslationsDirective,
   ],
   providers: [
-    TXInstanceComponent,
+    WSInstanceComponent,
   ],
 })
 export class WsNativeModule {

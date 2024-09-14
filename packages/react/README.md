@@ -178,13 +178,13 @@ Optionally `useT` can take as param a custom Native Instance:
 import { useT } from '@wordsmith/react';
 import { createNativeInstance } from '@wordsmith/native';
 
-const customTX = createNativeInstance({
+const customWS = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
 function Component() {
-  const t = useT(customTX);
+  const t = useT(customWS);
   // ...
 }
 ```
@@ -218,13 +218,13 @@ Optionally `useLanguages` can take as param a custom Native Instance:
 import { useT } from '@wordsmith/react';
 import { createNativeInstance } from '@wordsmith/native';
 
-const customTX = createNativeInstance({
+const customWS = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
 function Component() {
-  const languages = useLanguages(customTX);
+  const languages = useLanguages(customWS);
   // ...
 }
 ```
@@ -251,27 +251,27 @@ Optionally `useLocale` can take as param a custom Native Instance:
 import { useT } from '@wordsmith/react';
 import { createNativeInstance } from '@wordsmith/native';
 
-const customTX = createNativeInstance({
+const customWS = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
 function Component() {
-  const locale = useLocale(customTX);
+  const locale = useLocale(customWS);
   // ...
 }
 ```
 
-## `useTX` hook
+## `useWS` hook
 
 Returns a state variable with the Native instance.
 
 ```jsx
 import React from 'react';
-import { useTX } from '@wordsmith/react';
+import { useWS } from '@wordsmith/react';
 
 function SetLocale () {
-  const ws = useTX();
+  const ws = useWS();
   return (
     <button onClick={() => ws.setCurrentLocale('el')}>
       Set to Greek
@@ -401,13 +401,13 @@ Optionally `useTranslations` can take as a second param a custom Native Instance
 import { useT } from '@wordsmith/react';
 import { createNativeInstance } from '@wordsmith/native';
 
-const customTX = createNativeInstance({
+const customWS = createNativeInstance({
   token: 'token',
   secret: 'secret',
 });
 
 function Component() {
-  const { ready } = useTranslations('inner', customTX);
+  const { ready } = useTranslations('inner', customWS);
   // ...
 }
 ```
@@ -419,8 +419,8 @@ If you need to use more than one Wordsmith Native instances - like for example i
 import { ws, createNativeInstance } from '@wordsmith/native';
 import { WSProvider, LanguagePicker, T } from '@wordsmith/react';
 
-const myOtherTXInstance = createNativeInstance();
-myOtherTXInstance.init({ token: 'othertoken' })
+const myOtherWSInstance = createNativeInstance();
+myOtherWSInstance.init({ token: 'othertoken' })
 
 ws.init({
   token: 'token',
@@ -428,13 +428,13 @@ ws.init({
 
 // Make ws aware of the other instances so they can be synced when changing
 // language
-ws.controllerOf(myOtherTXInstance);
+ws.controllerOf(myOtherWSInstance);
 
 export default function App() {
   return (
     <>
       <LanguagePicker />
-      <WSProvider instance={myOtherTXInstance}>
+      <WSProvider instance={myOtherWSInstance}>
         <T _str="Hello {username}" username="John" />
       </WSProvider>
       <T _str="Hello World" />

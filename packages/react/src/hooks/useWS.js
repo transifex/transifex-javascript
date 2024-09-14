@@ -2,12 +2,12 @@ import { useContext } from 'react';
 import { ws } from '@wordsmith/native';
 import { WSNativeContext } from '../context/WSNativeContext';
 
-/* Return a state variable with the currently selected TX Native instance.
+/* Return a state variable with the currently selected WS Native instance.
  *
  * Usage:
  *
  * function LanguagePicker() {
- *   const ws = useTX();
+ *   const ws = useWS();
  *   function handle() {
  *     ws.setCurrentLanguage('fr');
  *   }
@@ -17,7 +17,7 @@ import { WSNativeContext } from '../context/WSNativeContext';
  *   );
  * }
  */
-export default function useTX() {
+export default function useWS() {
   // Check for a different ws initialization
   const context = useContext(WSNativeContext);
   return context.instance || ws;

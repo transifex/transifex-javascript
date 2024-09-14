@@ -5,7 +5,7 @@ import { UTComponent } from '../lib/UT.component';
 import {
   SafeHtmlPipe,
   TranslationService,
-  TXInstanceComponent,
+  WSInstanceComponent,
 } from '../public-api';
 
 describe('UTComponent', () => {
@@ -25,8 +25,8 @@ describe('UTComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UTComponent, SafeHtmlPipe, TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      declarations: [UTComponent, SafeHtmlPipe, WSInstanceComponent],
+      providers: [WSInstanceComponent],
     }).compileComponents();
     service = TestBed.inject(TranslationService);
     spyOn(service, 'setCurrentLocale');

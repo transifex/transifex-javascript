@@ -36,7 +36,7 @@ function SessionMode({ name = 'ws-locale' } = {}) {
 
 function noop() {}
 
-class TxExpress {
+class WsExpress {
   constructor(options = {}) {
     // https://www.kbairak.net/programming/python/2020/09/16/global-singleton-vs-instance-for-libraries.html
     this.mode = CookieMode();
@@ -173,7 +173,7 @@ class TxExpress {
 }
 
 module.exports = {
-  TxExpress,
+  WsExpress,
   CookieMode,
   SignedCookieMode,
   SessionMode,

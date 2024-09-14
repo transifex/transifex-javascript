@@ -6,7 +6,7 @@ import { TComponent } from '../lib/T.component';
 import {
   SafeHtmlPipe,
   TranslationService,
-  TXInstanceComponent,
+  WSInstanceComponent,
 } from '../public-api';
 
 describe('TComponent', () => {
@@ -15,7 +15,7 @@ describe('TComponent', () => {
   let component: TComponent;
   let fixture: ComponentFixture<TComponent>;
   let service: TranslationService;
-  let instance: TXInstanceComponent;
+  let instance: WSInstanceComponent;
   let localeChangedSpy: jasmine.Spy<jasmine.Func>;
 
   const translationParams = {
@@ -31,14 +31,14 @@ describe('TComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TComponent, SafeHtmlPipe, TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      declarations: [TComponent, SafeHtmlPipe, WSInstanceComponent],
+      providers: [WSInstanceComponent],
     }).compileComponents();
 
     localeChangedSubject = new ReplaySubject<string>(0);
 
     service = TestBed.inject(TranslationService);
-    instance = TestBed.inject(TXInstanceComponent);
+    instance = TestBed.inject(WSInstanceComponent);
 
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
     localeChangedSpy = spyOnProperty(

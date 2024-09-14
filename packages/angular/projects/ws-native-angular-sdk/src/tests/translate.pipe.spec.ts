@@ -4,14 +4,14 @@ import { ws } from '@wordsmith/native';
 import { ReplaySubject } from 'rxjs';
 import { TranslatePipe } from '../lib/translate.pipe';
 import { TranslationService } from '../lib/translation.service';
-import { TXInstanceComponent } from '../public-api';
+import { WSInstanceComponent } from '../public-api';
 
 describe('TranslatePipe', () => {
   let localeChangedSubject: ReplaySubject<string>;
   let translatePipe: TranslatePipe;
   let service: TranslationService;
   let cdref: ChangeDetectorRef;
-  let instance: TXInstanceComponent;
+  let instance: WSInstanceComponent;
 
   const translationParams = {
     _key: 'translation-key',
@@ -26,10 +26,10 @@ describe('TranslatePipe', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [TXInstanceComponent],
+      declarations: [WSInstanceComponent],
       providers: [
         TranslationService,
-        TXInstanceComponent,
+        WSInstanceComponent,
         {
           provide: ChangeDetectorRef,
           useValue: jasmine.createSpyObj<ChangeDetectorRef>(
@@ -42,7 +42,7 @@ describe('TranslatePipe', () => {
 
     service = TestBed.inject(TranslationService);
     cdref = TestBed.inject(ChangeDetectorRef);
-    instance = TestBed.inject(TXInstanceComponent);
+    instance = TestBed.inject(WSInstanceComponent);
     translatePipe = new TranslatePipe(service, instance, cdref);
 
     localeChangedSubject = new ReplaySubject<string>(0);

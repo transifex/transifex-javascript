@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { TXInstanceComponent } from './instance.component';
+import { WSInstanceComponent } from './instance.component';
 import { ILanguage } from './interfaces';
 import { TranslationService } from './translation.service';
 
@@ -30,7 +30,7 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
 
   languages: ILanguage[] = [];
 
-  // The locale selected on the TX Native instance
+  // The locale selected on the WS Native instance
   get currentLocale(): string {
     return this.getCurrentLocale();
   }
@@ -50,7 +50,7 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
 
   constructor(
       public translationService: TranslationService,
-      public instance: TXInstanceComponent,
+      public instance: WSInstanceComponent,
   ) {
     this.getLanguages.bind(this);
 

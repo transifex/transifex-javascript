@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { TXInstanceComponent } from './instance.component';
+import { WSInstanceComponent } from './instance.component';
 import { ITranslateParams } from './interfaces';
 import { TranslationService } from './translation.service';
 
@@ -82,7 +82,7 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
   private actualVars: Record<string, unknown> = {};
 
   constructor(protected translationService: TranslationService,
-    protected instance: TXInstanceComponent) {
+    protected instance: WSInstanceComponent) {
     this.onLocaleChange = this.localeChanged.subscribe(
       () => {
         this.translate();

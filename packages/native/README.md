@@ -397,12 +397,12 @@ offEvent(type, function)
 sendEvent(type, payload, caller)
 ```
 
-## Using more than one TX Native instances
+## Using more than one WS Native instances
 
 ```js
 const { ws, t, createNativeInstance } = require('@wordsmith/native');
 
-// Initiatate a secondary TX Instance
+// Initiatate a secondary WS Instance
 const wsOtherInstance = createNativeInstance();
 wsOtherInstance.init({
   token: '<PUBLIC PROJECT TOKEN 2>',

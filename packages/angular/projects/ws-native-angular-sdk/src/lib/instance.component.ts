@@ -11,7 +11,7 @@ import {WsNative} from "@wordsmith/native";
   `,
 })
 
-export class TXInstanceComponent implements OnInit {
+export class WSInstanceComponent implements OnInit {
   @Input() alias = '';
 
   @Input() token = '';

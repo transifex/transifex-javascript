@@ -5,7 +5,7 @@ const typeis = require('type-is');
 const { ws } = require('@wordsmith/native');
 
 const {
-  TxExpress,
+  WsExpress,
   CookieMode,
   SignedCookieMode,
   SessionMode,
@@ -13,8 +13,8 @@ const {
 
 jest.mock('type-is');
 
-test('TxExpress default values', () => {
-  const wsExpress = new TxExpress();
+test('WsExpress default values', () => {
+  const wsExpress = new WsExpress();
 
   // Ideally this should work but the functions are not considered equal and we
   // have no data members to compare
@@ -26,7 +26,7 @@ test('TxExpress default values', () => {
   expect(wsExpress.ttl).toBe(10 * 60);
 });
 
-test('TxExpress custom values', () => {
+test('WsExpress custom values', () => {
   const customOptions = {
     mode: 'other',
     fallBackToAcceptLanguage: false,
@@ -35,10 +35,10 @@ test('TxExpress custom values', () => {
     ttl: 3,
     logging: 'other',
   };
-  let wsExpress = new TxExpress(customOptions);
+  let wsExpress = new WsExpress(customOptions);
   expect(wsExpress).toEqual(customOptions);
 
-  wsExpress = new TxExpress();
+  wsExpress = new WsExpress();
   wsExpress.setup(customOptions);
   expect(wsExpress).toEqual(customOptions);
 });
@@ -48,7 +48,7 @@ test('Middleware with cookies', () => {
   ws.languages = languages;
   ws.cache.update('fr', { foo: 'translation' });
 
-  const wsExpress = new TxExpress({ mode: CookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: CookieMode({ name: 'ws-locale' }) });
   const req = {
     cookies: { 'ws-locale': 'fr' },
     headers: {},
@@ -73,7 +73,7 @@ test('Middleware with signed cookies', () => {
   ws.languages = languages;
   ws.cache.update('fr', { foo: 'translation' });
 
-  const wsExpress = new TxExpress({ mode: SignedCookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: SignedCookieMode({ name: 'ws-locale' }) });
   const req = {
     signedCookies: { 'ws-locale': 'fr' },
     headers: {},
@@ -98,7 +98,7 @@ test('Middleware with sessions', () => {
   ws.languages = languages;
   ws.cache.update('fr', { foo: 'translation' });
 
-  const wsExpress = new TxExpress({ mode: SessionMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: SessionMode({ name: 'ws-locale' }) });
   const req = {
     session: { 'ws-locale': 'fr' },
     headers: {},
@@ -124,7 +124,7 @@ test('Middleware falls back to header', () => {
   ws.locales = ['en', 'fr'];
   ws.cache.update('fr', { foo: 'translation' });
 
-  const wsExpress = new TxExpress({ mode: CookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: CookieMode({ name: 'ws-locale' }) });
   const req = {
     cookies: {},
     headers: { 'accept-language': 'de, en;q=0.6, fr;q=0.8' },
@@ -147,7 +147,7 @@ test('Middleware falls back to header', () => {
 test('setLocale with cookie and form with next', () => {
   typeis.mockReturnValue(false);
 
-  const wsExpress = new TxExpress({ mode: CookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: CookieMode({ name: 'ws-locale' }) });
   const req = {
     body: { locale: 'fr', next: 'next' },
   };
@@ -167,7 +167,7 @@ test('setLocale with cookie and form with next', () => {
 test('setLocale with cookie and form without next', () => {
   typeis.mockReturnValue(false);
 
-  const wsExpress = new TxExpress({ mode: CookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: CookieMode({ name: 'ws-locale' }) });
   const req = {
     body: { locale: 'fr' },
     headers: { referer: 'referer' },
@@ -188,7 +188,7 @@ test('setLocale with cookie and form without next', () => {
 test('setLocale with cookie and cookie options and form with next', () => {
   typeis.mockReturnValue(false);
 
-  const wsExpress = new TxExpress({
+  const wsExpress = new WsExpress({
     mode: CookieMode({ name: 'ws-locale', cookieOptions: { some: 'option' } }),
   });
   const req = {
@@ -215,7 +215,7 @@ test('setLocale with cookie and cookie options and form with next', () => {
 test('setLocale with cookie and json', () => {
   typeis.mockReturnValue(true);
 
-  const wsExpress = new TxExpress({ mode: CookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: CookieMode({ name: 'ws-locale' }) });
   const req = {
     body: { locale: 'fr' },
   };
@@ -235,7 +235,7 @@ test('setLocale with cookie and json', () => {
 test('setLocale with signed cookie and form with next', () => {
   typeis.mockReturnValue(false);
 
-  const wsExpress = new TxExpress({ mode: SignedCookieMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: SignedCookieMode({ name: 'ws-locale' }) });
   const req = {
     body: { locale: 'fr', next: 'next' },
   };
@@ -260,7 +260,7 @@ test('setLocale with signed cookie and form with next', () => {
 test('setLocale with session and form with next', () => {
   typeis.mockReturnValue(false);
 
-  const wsExpress = new TxExpress({ mode: SessionMode({ name: 'ws-locale' }) });
+  const wsExpress = new WsExpress({ mode: SessionMode({ name: 'ws-locale' }) });
   const req = {
     session: {},
     body: { locale: 'fr', next: 'next' },
@@ -281,7 +281,7 @@ test('t vs ut', () => {
   ws.languages = languages;
   ws.cache.update('fr', { foo: 'A <rich>string</rich>' });
 
-  const wsExpress = new TxExpress();
+  const wsExpress = new WsExpress();
   const req = {
     cookies: { 'ws-locale': 'fr' },
     headers: {},

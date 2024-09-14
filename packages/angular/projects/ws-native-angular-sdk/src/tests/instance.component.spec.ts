@@ -1,24 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ws } from '@wordsmith/native';
 
-import { TranslationService, TXInstanceComponent } from '../public-api';
+import { TranslationService, WSInstanceComponent } from '../public-api';
 
-describe('TXInstanceComponent', () => {
-  let component: TXInstanceComponent;
-  let fixture: ComponentFixture<TXInstanceComponent>;
+describe('WSInstanceComponent', () => {
+  let component: WSInstanceComponent;
+  let fixture: ComponentFixture<WSInstanceComponent>;
   let service: TranslationService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      declarations: [WSInstanceComponent],
+      providers: [WSInstanceComponent],
     }).compileComponents();
 
     service = TestBed.inject(TranslationService);
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TXInstanceComponent);
+    fixture = TestBed.createComponent(WSInstanceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

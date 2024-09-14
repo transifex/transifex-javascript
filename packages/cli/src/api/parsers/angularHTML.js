@@ -72,8 +72,8 @@ function looseJsonParse(str) {
  * @returns void
  */
 function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
-  const TXComponents = [];
-  const TXTemplateStrings = [];
+  const WSComponents = [];
+  const WSTemplateStrings = [];
 
   function parseTemplateText(text) {
     const textStr = _.trim(String(text));
@@ -92,7 +92,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
             const params = looseJsonParse(paramsStr) || {};
 
             if (string && params) {
-              TXTemplateStrings.push({
+              WSTemplateStrings.push({
                 string,
                 params,
               });
@@ -120,7 +120,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
         const params = looseJsonParse(paramsStr) || {};
 
         if (string && params) {
-          TXTemplateStrings.push({
+          WSTemplateStrings.push({
             string,
             params,
           });
@@ -133,7 +133,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
     if (children) {
       _.each(children, (child) => {
         if (child.name === 'T' || child.name === 'UT') {
-          TXComponents.push(child);
+          WSComponents.push(child);
         } else if (child.type === 'text') {
           parseTemplateText(child.value);
         } else if (child.attrs && child.attrs.length > 0) {
@@ -154,7 +154,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
   if (errors.length) return;
 
   parseTemplateNode(rootNodes);
-  _.each(TXComponents, (wscmp) => {
+  _.each(WSComponents, (wscmp) => {
     let string = '';
     let key = '';
     const params = {};
@@ -182,7 +182,7 @@ function parseHTMLTemplateFile(HASHES, filename, relativeFile, options) {
     }
   });
 
-  _.each(TXTemplateStrings, (wsStr) => {
+  _.each(WSTemplateStrings, (wsStr) => {
     let key = '';
 
     if (wsStr.params.key) {

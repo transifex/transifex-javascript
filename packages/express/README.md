@@ -55,20 +55,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 Import the Wordsmith Native libraries and set up:
 
 ```javascript
-const { TxExpress } = require('@wordsmith/express');
+const { WsExpress } = require('@wordsmith/express');
 
-const wsExpress = new TxExpress({ token: '...' });
+const wsExpress = new WsExpress({ token: '...' });
 app.use(wsExpress.middleware());
 app.post('/i18n', wsExpress.setLocale());
 ```
 
-> All options passed to the `TxExpress`'s constructor that are not handled by it
+> All options passed to the `WsExpress`'s constructor that are not handled by it
 > will be passed on to `ws.init` internally. If you have already initialized the
 > `ws` object, you do not have to supply these options.
 >
 > ```javascript
-> const wsExpress = new TxExpress({
->   // TxExpress options
+> const wsExpress = new WsExpress({
+>   // WsExpress options
 >   daemon: true,
 >   ttl: 2 * 60,
 >
@@ -81,7 +81,7 @@ app.post('/i18n', wsExpress.setLocale());
 >
 > const { ws } from '@wordsmith/native';
 > ws.init({ token: '...', filterTags: 'mytags' })
-> const wsExpress = new TxExpress({ daemon: true, ttl: 2 * 60 });
+> const wsExpress = new WsExpress({ daemon: true, ttl: 2 * 60 });
 > ```
 
 Finally, fetch available languages and translations and start the server:
@@ -247,8 +247,8 @@ available modes:
 This saves the selected language on a cookie named after the value of 'options.name'.
 
 ```javascript
-const { TxExpress, CookieMode } = require('@wordsmith/express');
-const wsExpress = new TxExpress({
+const { WsExpress, CookieMode } = require('@wordsmith/express');
+const wsExpress = new WsExpress({
   mode: CookieMode({ name: 'my-ws-cookie' }),
 });
 ```
@@ -264,8 +264,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-const { TxExpress, CookieMode } = require('@wordsmith/express');
-const wsExpress = new TxExpress({
+const { WsExpress, CookieMode } = require('@wordsmith/express');
+const wsExpress = new WsExpress({
   token: '...',
   mode: CookieMode({ name: 'my-ws-cookie' }),
 });
@@ -283,8 +283,8 @@ This saves the selected language on a signed cookie named after the value of
 'options.name'.
 
 ```javascript
-const { TxExpress, SignedCookieMode } = require('@wordsmith/express');
-const wsExpress = new TxExpress({
+const { WsExpress, SignedCookieMode } = require('@wordsmith/express');
+const wsExpress = new WsExpress({
   mode: SignedCookieMode({ name: 'my-ws-cookie' }),
 });
 ```
@@ -300,8 +300,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser('mysecret'));
 
-const { TxExpress, SignedCookieMode } = require('@wordsmith/express');
-const wsExpress = new TxExpress({
+const { WsExpress, SignedCookieMode } = require('@wordsmith/express');
+const wsExpress = new WsExpress({
   token: '...',
   mode: SignedCookieMode({ name: 'my-ws-cookie' }),
 });
@@ -319,8 +319,8 @@ This saves the selected language on a session variable named after the value of
 'options.name'.
 
 ```javascript
-const { TxExpress, SessionMode } = require('@wordsmith/express');
-const wsExpress = new TxExpress({
+const { WsExpress, SessionMode } = require('@wordsmith/express');
+const wsExpress = new WsExpress({
   mode: SessionMode({ name: 'my-ws-cookie' }),
 });
 ```
@@ -341,9 +341,9 @@ app.use(session({ secret: 'mysecret', ... }));
 // or
 app.use(cookieSession({ keys: ['mysecret'], ... }));
 
-const { TxExpress, SessionMode } = require('@wordsmith/express');
+const { WsExpress, SessionMode } = require('@wordsmith/express');
 
-const wsExpress = new TxExpress({
+const wsExpress = new WsExpress({
   token: '...',
   mode: SessionMode({ name: 'my-ws-cookie' }),
 });
@@ -370,7 +370,7 @@ const myMode = {
   },
 };
 
-const wsExpress = new TxExpress({ mode: myMode });
+const wsExpress = new WsExpress({ mode: myMode });
 ```
 
 ## Extracting strings with `wsjs-cli`
@@ -431,10 +431,10 @@ please consider contributing a pull request 😉.
 
 ## API
 
-### TxExpress
+### WsExpress
 
 ```javascript
-new TxExpress({
+new WsExpress({
 
   // How to save the selected language. Must implement the `setLocale(req, res,
   // locale)` and `getLocale(req, res)` methods. Builtin modes: `CookieMode`,
