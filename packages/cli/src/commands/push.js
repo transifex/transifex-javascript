@@ -207,17 +207,109 @@ class PushCommand extends Command {
         if (status === 'completed') {
           CliUx.ux.action.stop('Success'.green);
           this.log(`${'✓'.green} Successfully pushed strings to Transifex:`);
-          if (res.created > 0) {
-            this.log(`  Created strings: ${res.created.toString().green}`);
+          
+          // Handle created strings
+          let createdData = res.created;
+          if (typeof createdData === 'string') {
+            try {
+              createdData = JSON.parse(createdData);
+            } catch (e) {
+              createdData = [];
+            }
           }
-          if (res.updated > 0) {
-            this.log(`  Updated strings: ${res.updated.toString().green}`);
+          if (flags['dry-run'] && createdData.length > 0) {
+            this.log(`  Created strings: ${createdData.length.toString().green}`);
+            createdData.forEach((item) => {
+              const string = item.string || '';
+              const key = item.key || '';
+              const occurrences = item.occurrences || '';
+              const context = item.context || [];
+              if (string) this.log(`    └─ string: ${JSON.stringify(string)}`.white);
+              if (key) this.log(`      └─ key: ${JSON.stringify(key)}`.gray);
+              if (occurrences) this.log(`      └─ occurrences: ${JSON.stringify(occurrences)}`.gray);
+              if (context) this.log(`      └─ context: ${JSON.stringify(context)}`.gray);
+              this.log('');
+            });
+          } else if (createdData.length > 0) {
+            this.log(`  Created strings: ${createdData.length.toString().green}`);
           }
-          if (res.skipped > 0) {
-            this.log(`  Skipped strings: ${res.skipped.toString().green}`);
+
+          // Handle updated strings
+          let updatedData = res.updated;
+          if (typeof updatedData === 'string') {
+            try {
+              updatedData = JSON.parse(updatedData);
+            } catch (e) {
+              updatedData = [];
+            }
           }
-          if (res.deleted > 0) {
-            this.log(`  Deleted strings: ${res.deleted.toString().green}`);
+          if (flags['dry-run'] && updatedData.length > 0) {
+            this.log(`  Updated strings: ${updatedData.length.toString().green}`);
+            updatedData.forEach((item) => {
+              const string = item.string || '';
+              const key = item.key || '';
+              const occurrences = item.occurrences || '';
+              const context = item.context || [];
+              if (string) this.log(`    └─ string: ${JSON.stringify(string)}`.white);
+              if (key) this.log(`      └─ key: ${JSON.stringify(key)}`.gray);
+              if (occurrences) this.log(`      └─ occurrences: ${JSON.stringify(occurrences)}`.gray);
+              if (context) this.log(`      └─ context: ${JSON.stringify(context)}`.gray);
+              this.log('');
+            });
+          } else if (updatedData.length > 0) {
+            this.log(`  Updated strings: ${updatedData.length.toString().green}`);
+          }
+          
+          // Handle skipped strings
+          let skippedData = res.skipped;
+          if (typeof skippedData === 'string') {
+            try {
+              skippedData = JSON.parse(skippedData);
+            } catch (e) {
+              skippedData = [];
+            }
+          }
+          if (flags['dry-run'] && skippedData.length > 0) {
+            this.log(`  Skipped strings: ${skippedData.length.toString().green}`);
+            skippedData.forEach((item) => {
+              const string = item.string || '';
+              const key = item.key || '';
+              const occurrences = item.occurrences || [];
+              const context = item.context || [];
+              if (string) this.log(`    └─ string: ${JSON.stringify(string)}`.white);
+              if (key) this.log(`      └─ key: ${JSON.stringify(key)}`.gray);
+              if (occurrences.length > 0) this.log(`      └─ occurrences: ${JSON.stringify(occurrences)}`.gray);
+              if (context) this.log(`      └─ context: ${JSON.stringify(context)}`.gray);
+              this.log('');
+            });
+          } else if (skippedData.length > 0) {
+            this.log(`  Skipped strings: ${skippedData.length.toString().green}`);
+          }
+          
+          // Handle deleted strings
+          let deletedData = res.deleted;
+          if (typeof deletedData === 'string') {
+            try {
+              deletedData = JSON.parse(deletedData);
+            } catch (e) {
+              deletedData = [];
+            }
+          }
+          if (flags['dry-run'] && deletedData.length > 0) {
+            this.log(`  Deleted strings: ${deletedData.length.toString().green}`);
+            deletedData.forEach((item) => {
+              const string = item.string || '';
+              const key = item.key || item.id || '';
+              const occurrences = item.occurrences || '';
+              const context = item.context || [];
+              if (string) this.log(`    └─ string: ${JSON.stringify(string)}`.white);
+              if (key) this.log(`      └─ key: ${JSON.stringify(key)}`.gray);
+              if (occurrences) this.log(`      └─ occurrences: ${JSON.stringify(occurrences)}`.gray);
+              if (context) this.log(`      └─ context: ${JSON.stringify(context)}`.gray);
+              this.log('');
+            });
+          } else if (deletedData.length > 0) {
+            this.log(`  Deleted strings: ${deletedData.length.toString().green}`);
           }
           if (res.failed > 0) {
             this.log(`  Failed strings: ${res.failed.toString().red}`);
