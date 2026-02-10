@@ -48,12 +48,7 @@ class PushCommand extends Command {
 
     this.log('Parsing all files to detect translatable content...');
 
-    const allFiles = await new Promise((resolve, reject) => {
-      glob(filePattern, (err, files) => {
-        if (err) return reject(err);
-        return resolve(files);
-      });
-    });
+    const allFiles = await glob(filePattern);
 
     let emptyFiles = 0;
     const errorFiles = [];
