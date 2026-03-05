@@ -25,7 +25,7 @@ describe('UTComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UTComponent, SafeHtmlPipe, TXInstanceComponent],
+      imports: [UTComponent, SafeHtmlPipe, TXInstanceComponent],
       providers: [TXInstanceComponent],
     }).compileComponents();
     service = TestBed.inject(TranslationService);

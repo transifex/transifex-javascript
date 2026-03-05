@@ -3,15 +3,15 @@ import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
 import { ReplaySubject } from 'rxjs';
 import { TranslatePipe } from '../lib/translate.pipe';
+import { TxInstanceContext } from '../lib/tx-instance-context';
 import { TranslationService } from '../lib/translation.service';
-import { TXInstanceComponent } from '../public-api';
 
 describe('TranslatePipe', () => {
   let localeChangedSubject: ReplaySubject<string>;
   let translatePipe: TranslatePipe;
   let service: TranslationService;
   let cdref: ChangeDetectorRef;
-  let instance: TXInstanceComponent;
+  let instanceContext: TxInstanceContext;
 
   const translationParams = {
     _key: 'translation-key',
@@ -26,10 +26,9 @@ describe('TranslatePipe', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [TXInstanceComponent],
       providers: [
         TranslationService,
-        TXInstanceComponent,
+        TxInstanceContext,
         {
           provide: ChangeDetectorRef,
           useValue: jasmine.createSpyObj<ChangeDetectorRef>(
@@ -42,8 +41,8 @@ describe('TranslatePipe', () => {
 
     service = TestBed.inject(TranslationService);
     cdref = TestBed.inject(ChangeDetectorRef);
-    instance = TestBed.inject(TXInstanceComponent);
-    translatePipe = new TranslatePipe(service, instance, cdref);
+    instanceContext = TestBed.inject(TxInstanceContext);
+    translatePipe = new TranslatePipe(service, instanceContext, cdref);
 
     localeChangedSubject = new ReplaySubject<string>(0);
 
@@ -112,9 +111,8 @@ describe('TranslatePipe', () => {
 
   it('should translate string with another instance', () => {
     // setup
-    instance.token = 'token';
-    instance.alias = 'alias';
-    translatePipe = new TranslatePipe(service, instance, cdref);
+    instanceContext.alias = 'alias';
+    translatePipe = new TranslatePipe(service, instanceContext, cdref);
     spyOn(service, 'translate').and.returnValue('translated');
 
     // act
@@ -131,9 +129,8 @@ describe('TranslatePipe', () => {
 
   it('destroys an instance', () => {
     // setup
-    instance.token = 'token';
-    instance.alias = 'alias';
-    translatePipe = new TranslatePipe(service, instance, cdref);
+    instanceContext.alias = 'alias';
+    translatePipe = new TranslatePipe(service, instanceContext, cdref);
     spyOn(service, 'translate').and.returnValue('translated');
 
     // act

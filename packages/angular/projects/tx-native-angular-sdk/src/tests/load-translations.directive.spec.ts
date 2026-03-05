@@ -7,6 +7,8 @@ import { LoadTranslationsDirective, TranslationService } from '../public-api';
 
 describe('LoadTranslationsDirective', () => {
   @Component({
+    standalone: true,
+    imports: [LoadTranslationsDirective],
     template: ` <div [txLoadTranslations]="'tag1'"></div> `,
   })
   class TestComponent {}
@@ -19,7 +21,7 @@ describe('LoadTranslationsDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [LoadTranslationsDirective, TestComponent],
+      imports: [TestComponent],
       providers: [],
     }).createComponent(TestComponent);
 

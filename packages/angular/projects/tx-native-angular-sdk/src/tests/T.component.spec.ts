@@ -3,10 +3,9 @@ import { tx } from '@transifex/native';
 import { ReplaySubject } from 'rxjs';
 
 import { TComponent } from '../lib/T.component';
+import { TxInstanceContext } from '../lib/tx-instance-context';
 import {
-  SafeHtmlPipe,
   TranslationService,
-  TXInstanceComponent,
 } from '../public-api';
 
 describe('TComponent', () => {
@@ -15,7 +14,7 @@ describe('TComponent', () => {
   let component: TComponent;
   let fixture: ComponentFixture<TComponent>;
   let service: TranslationService;
-  let instance: TXInstanceComponent;
+  let txContext: TxInstanceContext;
   let localeChangedSpy: jasmine.Spy<jasmine.Func>;
 
   const translationParams = {
@@ -31,14 +30,14 @@ describe('TComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TComponent, SafeHtmlPipe, TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      imports: [TComponent],
+      providers: [TxInstanceContext],
     }).compileComponents();
 
     localeChangedSubject = new ReplaySubject<string>(0);
 
     service = TestBed.inject(TranslationService);
-    instance = TestBed.inject(TXInstanceComponent);
+    txContext = TestBed.inject(TxInstanceContext);
 
     spyOn(service, 'getCurrentLocale').and.returnValue('en');
     localeChangedSpy = spyOnProperty(
@@ -241,8 +240,7 @@ describe('TComponent', () => {
 
   it('should translate string with an alternative instance', () => {
     // setup
-    instance.token = 'instance-token';
-    instance.alias = 'instance-alias';
+    txContext.alias = 'instance-alias';
     spyOn(service, 'translate').and.returnValue('translated');
 
     // act
@@ -278,8 +276,7 @@ describe('TComponent', () => {
 
   it('should detect translationsFetched using alternative instance', async () => {
     // setup
-    instance.token = 'instance-token';
-    instance.alias = 'instance-alias';
+    txContext.alias = 'instance-alias';
     spyOn(service, 'translate').and.returnValue('translated');
 
     // act

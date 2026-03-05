@@ -1,54 +1,63 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { TranslationService } from './translation.service';
-import {TxNative} from "@transifex/native";
+import { TxInstanceContext } from './tx-instance-context';
+import { TxNative } from '@transifex/native';
 
+/**
+ * Component that sets up an alternative TX Native instance.
+ *
+ * Provides its own {@link TxInstanceContext} so components nested inside a
+ * `<tx-instance>` element (T, UT, tx-language-picker) see this instance's alias
+ * rather than the root-level one.
+ */
 @Component({
+  standalone: true,
   selector: 'tx-instance',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: `<ng-content></ng-content>`,
+  providers: [TxInstanceContext],
 })
-
 export class TXInstanceComponent implements OnInit {
   @Input() alias = '';
-
   @Input() token = '';
-
   @Input() controlled = true;
 
   @Output() instanceReady: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  // Observables for detecting instance readiness
   get instanceIsReady(): Observable<boolean> {
-    return this.instanceReadySubject;
+    return this.txContext.instanceIsReady;
   }
 
-  private instanceReadySubject = new ReplaySubject<boolean>(0);
+  private nativeInstance?: TxNative;
 
-  // The instance
-  private instance?: TxNative;
+  constructor(
+    private translationService: TranslationService,
+    private txContext: TxInstanceContext,
+  ) {}
 
-  constructor(private translationService: TranslationService) {}
+  async ngOnInit(): Promise<void> {
+    this.txContext.alias = this.alias;
 
-  async ngOnInit(): Promise<void>  {
     if (!this.token || !this.alias) {
       this.instanceReady.emit(false);
-      this.instanceReadySubject.next(false);
+      this.txContext.notifyInstanceReady(false);
+      return;
     }
+
     const instanceCreated = await this.translationService.addInstance({
       token: this.token,
       alias: this.alias,
       controlled: this.controlled,
     });
-    this.instance = this.translationService.getInstance(this.alias);
-    if (instanceCreated && this.instance) {
+    this.nativeInstance = this.translationService.getInstance(this.alias);
+
+    if (instanceCreated && this.nativeInstance) {
       this.instanceReady.emit(true);
-      this.instanceReadySubject.next(true);
+      this.txContext.notifyInstanceReady(true);
     } else {
       this.instanceReady.emit(false);
-      this.instanceReadySubject.next(false);
+      this.txContext.notifyInstanceReady(false);
     }
   }
 }

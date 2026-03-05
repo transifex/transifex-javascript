@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
 
 import { LanguagePickerComponent } from '../lib/language-picker.component';
+import { TxInstanceContext } from '../lib/tx-instance-context';
 import {
   ILanguage,
   TranslationService,
-  TXInstanceComponent,
 } from '../public-api';
 
 describe('LanguagePickerComponent', () => {
   let component: LanguagePickerComponent;
   let fixture: ComponentFixture<LanguagePickerComponent>;
   let service: TranslationService;
-  let instance: TXInstanceComponent;
+  let txContext: TxInstanceContext;
 
   const languages: ILanguage[] = [
     { code: 'en', name: 'English', localized_name: 'English', rtl: false },
@@ -22,11 +21,11 @@ describe('LanguagePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LanguagePickerComponent, TXInstanceComponent],
-      providers: [TXInstanceComponent],
+      imports: [LanguagePickerComponent],
+      providers: [TxInstanceContext],
     }).compileComponents();
     service = TestBed.inject(TranslationService);
-    instance = TestBed.inject(TXInstanceComponent);
+    txContext = TestBed.inject(TxInstanceContext);
   });
 
   beforeEach(() => {
@@ -100,18 +99,14 @@ describe('LanguagePickerComponent', () => {
 
   it('should get languages of an alternative instance', async () => {
     // setup
-    instance.alias = 'test';
-    instance.token = 'test';
-    component.instance = instance;
-    spyOnProperty(instance, 'instanceIsReady').and.returnValue(of(true));
+    txContext.alias = 'test';
     spyOn(service, 'getLanguages').and.resolveTo(languages);
 
     // act
-    await instance.ngOnInit();
-    component.ngOnInit();
+    await component.getLanguages();
 
     // assert
     expect(component.languages).toEqual(languages);
-    expect(service.getLanguages).toHaveBeenCalled();
+    expect(service.getLanguages).toHaveBeenCalledWith('test');
   });
 });

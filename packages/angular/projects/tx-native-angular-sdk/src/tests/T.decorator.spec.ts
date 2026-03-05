@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
 
 import { T } from '../lib/T.decorator';
+import { provideTxNativeEagerTranslationService } from '../lib/tx-native.providers';
 
 describe('T Decorator', () => {
   @Component({
@@ -25,7 +26,10 @@ describe('T Decorator', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      teardown: { destroyAfterEach: false },
+      providers: [provideTxNativeEagerTranslationService()],
+    });
   });
 
   beforeEach(() => {
