@@ -14,7 +14,7 @@ function translationServiceRootFactory(): TranslationService {
 /**
  * Service which wraps the Transifex Native library for using inside components
  */
-@Injectable({ providedIn: 'root', useFactory: translationServiceRootFactory })
+@Injectable({ providedIn: 'root', useFactory: translationServiceRootFactory }) // Singleton Injection
 export class TranslationService {
   // Observables for detecting locale change
   get localeChanged(): Observable<string> {

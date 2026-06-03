@@ -25,10 +25,12 @@ export class TXInstanceComponent implements OnInit {
 
   @Output() instanceReady: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  // Observables for detecting instance readiness
   get instanceIsReady(): Observable<boolean> {
     return this.txContext.instanceIsReady;
   }
 
+  // The instance
   private nativeInstance?: TxNative;
 
   constructor(

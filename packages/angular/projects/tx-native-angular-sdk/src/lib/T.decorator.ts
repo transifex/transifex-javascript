@@ -2,7 +2,7 @@ import { getTranslationServiceForTDecorator } from './t-decorator-translation-br
 import { ITXInstanceConfiguration } from './interfaces';
 
 /**
- * Resolves the app’s root {@link TranslationService} on each @T property read (lazy).
+ * Resolves the app’s root {@link TranslationService} on each {@link T} property read (lazy).
  *
  * Resolving here (not when the decorator runs on the class) avoids requiring a service
  * before `TestBed.inject` / bootstrap. Cannot use `Injector.create().get(TranslationService)`

@@ -37,6 +37,9 @@ import { provideTxNativeEagerTranslationService } from './tx-native.providers';
   providers: [],
 })
 export class TxNativeModule {
+  /**
+   * Use this method in your root module to provide the TranslationService
+   */
   static forRoot(): ModuleWithProviders<TxNativeModule> {
     return {
       ngModule: TxNativeModule,

@@ -63,6 +63,7 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
     return this.sanitizer.bypassSecurityTrustHtml(this.translatedStr);
   }
 
+  // Observable for detecting locale changes
   get localeChanged(): Observable<string> {
     return this.translationService.localeChanged;
   }
@@ -85,10 +86,16 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  /**
+   * Component initialization
+   */
   ngOnInit() {
     this.translate();
   }
 
+  /**
+   * Component destruction
+   */
   ngOnDestroy() {
     this.onLocaleChange?.unsubscribe();
     this.onLocaleChange = undefined;
@@ -96,10 +103,16 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
     this.onTranslationsFetch = undefined;
   }
 
+  /**
+   * Input parameters change detector
+   */
   ngOnChanges() {
     this.translate();
   }
 
+  /**
+   * Translate a string using the translation service
+   */
   translate() {
     this.translatedStr = this.translationService.translate(
       this.str,
