@@ -5,14 +5,15 @@ import { LanguagePickerComponent } from './language-picker.component';
 import { TComponent } from './T.component';
 import { UTComponent } from './UT.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
-import { TranslationService } from './translation.service';
 import { TranslatePipe } from './translate.pipe';
 import { TXInstanceComponent } from './instance.component';
 import { LoadTranslationsDirective } from './load-translations.directive';
+import { provideTxNativeEagerTranslationService } from './tx-native.providers';
 
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
     TComponent,
     UTComponent,
     LanguagePickerComponent,
@@ -21,7 +22,6 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     TXInstanceComponent,
     LoadTranslationsDirective,
   ],
-  imports: [CommonModule],
   exports: [
     TComponent,
     UTComponent,
@@ -31,9 +31,10 @@ import { LoadTranslationsDirective } from './load-translations.directive';
     TXInstanceComponent,
     LoadTranslationsDirective,
   ],
-  providers: [
-    TXInstanceComponent,
-  ],
+  // TxInstanceContext is providedIn: 'root' — no registration needed here.
+  // TranslationService is providedIn: 'root'. forRoot() adds provideAppInitializer
+  // (see provideTxNativeEagerTranslationService) so @T works before any injection.
+  providers: [],
 })
 export class TxNativeModule {
   /**
@@ -42,9 +43,7 @@ export class TxNativeModule {
   static forRoot(): ModuleWithProviders<TxNativeModule> {
     return {
       ngModule: TxNativeModule,
-      providers: [
-        TranslationService,
-      ],
+      providers: [provideTxNativeEagerTranslationService()],
     };
   }
 }

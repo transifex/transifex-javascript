@@ -1,15 +1,18 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 
-import { TXInstanceComponent } from './instance.component';
+import { TxInstanceContext } from './tx-instance-context';
 import { ILanguage } from './interfaces';
 import { TranslationService } from './translation.service';
 
 /**
- * A language picker component with the available languages already populated
+ * A language picker component with the available languages already populated.
  */
 @Component({
+  standalone: true,
   selector: 'tx-language-picker',
+  imports: [CommonModule],
   template: `
     <select [class]="className" (change)="onChange($event)" class="tx-language-picker">
       <option
@@ -37,20 +40,20 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
 
   // Current language picker TXNative instance
   get activeInstance(): string {
-    return this.instance.alias || '';
+    return this.txContext.alias || '';
   }
 
   // Observable for detecting instance readiness
   get instanceReady(): Observable<boolean> {
-    return this.instance.instanceIsReady;
+    return this.txContext.instanceIsReady;
   }
 
   // Subscription to instance ready event to refresh languages
   instanceIsReadySubscription!: Subscription;
 
   constructor(
-      public translationService: TranslationService,
-      public instance: TXInstanceComponent,
+    public translationService: TranslationService,
+    public txContext: TxInstanceContext,
   ) {
     this.getLanguages.bind(this);
 
@@ -67,10 +70,9 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Do not retrieve languages in the initialization if alternative instance found, will fetch languages
     // when the instance is ready using a subscription
-    if (this.instance?.alias) {
+    if (this.txContext?.alias) {
       return;
     }
-
     this.getLanguages();
   }
 

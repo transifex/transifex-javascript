@@ -61,16 +61,18 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [translate Pipe](#translate-pipe)
   * [Language Picker Component](#language-picker-component)
   * [TX Instance Component](#tx-instance-component)
+  * [TxInstanceContext](#txinstancecontext)
   * [txLoadTranslations Directive](#txloadtranslations-directive)
 * [License](#license)
 
 
 # Requirements
 
-Angular 16 is required. If you are using Angular 14 or 15, please use the `6.x.x` version of
-Transifex Native related packages. If you are using Angular 12 or 13, please use the `5.x.x` version of
-Transifex Native related packages. If you are using Angular 11, please use the `1.x.x` version of
-Transifex Native related packages. Other Angular versions are not officially supported at the moment.
+Angular 19 and Node.js >= 18.19 are required. If you are using Angular 16, please use the `7.1.x` version of
+Transifex Native related packages. If you are using Angular 14 or 15, please use the `6.x.x` version.
+If you are using Angular 12 or 13, please use the `5.x.x` version.
+If you are using Angular 11, please use the `1.x.x` version.
+Other Angular versions are not officially supported at the moment.
 
 # Installation
 
@@ -85,9 +87,58 @@ npm install @transifex/native @transifex/angular --save
 ## Initialization
 
 In order to use the TX Native object globally, it is necessary to initialize
-the library in the angular application bootstrap, in two locations:
+the library in the Angular application bootstrap.
 
-- NgModule initialization
+All components, directives, and pipes in this SDK are **standalone**, so they can be imported directly where needed. A backward-compatible `TxNativeModule` is still provided for NgModule-based applications.
+
+**`TranslationService` and the `@T` decorator:** `@T` uses the same root `TranslationService` instance as Angular DI (including any extra instances registered for `<tx-instance>`). The property is translated **when it is read** (lazy), not when the class is loaded. `TxNativeModule.forRoot()` registers `provideTxNativeEagerTranslationService()` so that service exists during app startup. If you use **`bootstrapApplication`** (no `forRoot()`), add `provideTxNativeEagerTranslationService()` to your root `providers` whenever you use `@T`, so the root service is created before the first `@T` access—especially if your first screen might not inject `TranslationService` yet.
+
+### Standalone applications
+
+Import the components you need directly in your standalone components or in the `imports` array of your app configuration.
+
+If you use the **`@T` property decorator**, register the eager provider in your application root (typically `main.ts`):
+
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideTxNativeEagerTranslationService } from '@transifex/angular';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideTxNativeEagerTranslationService()],
+}).catch((err) => console.error(err));
+```
+
+Example root component:
+
+```typescript
+import { Component } from '@angular/core';
+import { TranslationService, TComponent, LanguagePickerComponent } from '@transifex/angular';
+
+@Component({
+  standalone: true,
+  selector: 'app-root',
+  imports: [TComponent, LanguagePickerComponent],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  constructor(private translationService: TranslationService) {
+    translationService.init({
+      token: '----- here your TX Native token ------',
+    });
+  }
+
+  async ngOnInit() {
+    await this.translationService.getLanguages();
+    await this.translationService.setCurrentLocale('el');
+  }
+}
+```
+
+### NgModule
+
+If your application uses NgModules, import `TxNativeModule.forRoot()` in your root module:
 
 ```typescript
 @NgModule({
@@ -105,13 +156,12 @@ the library in the angular application bootstrap, in two locations:
     // TX Native module declaration
     TxNativeModule.forRoot(),
   ],
-  providers: [,
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 ```
 
-- Application Boostrap
+Then initialize the SDK in your root component:
 
 ```typescript
 import { Component } from '@angular/core';
@@ -124,7 +174,6 @@ import { TranslationService } from '@transifex/angular';
 })
 export class AppComponent {
   constructor(private translationService: TranslationService) {
-    // TX Native library intialization
     translationService.init({
       token: '----- here your TX Native token ------',
     });
@@ -340,6 +389,10 @@ export interface ITranslateParams {
 This is a decorator for using inside classes and components in order to have
 properties with the translation and used them in code and templates.
 
+Use **`TxNativeModule.forRoot()`** or **`provideTxNativeEagerTranslationService()`** in standalone apps (see [Initialization](#initialization)) so the root `TranslationService` is available the first time an `@T` property is read. You do not need a separate `TranslationService` instance for the decorator; it shares the one from DI.
+
+> **Client-only / single-root-app constraint.** Because a property decorator has no Angular injection context, `@T` resolves the `TranslationService` through a process-wide reference rather than per-injector. It assumes a single root app per process and is **not** intended for server-side rendering (Angular Universal) or for multiple bootstrapped apps / micro-frontends on one page, where concurrent requests or apps would share (and overwrite) that reference. This also reflects that the default instance is backed by the global `tx` singleton from `@transifex/native`, so per-request locale isolation is not available for the default instance regardless. For SSR or multi-app scenarios, use the DI-based primitives instead — the [`T`](#t-component) / `UT` components, the [`translate` pipe](#translate-pipe), or injecting `TranslationService` directly — all of which resolve the correct instance per-injector.
+
 An example of use is the following:
 
 ```typescript
@@ -477,12 +530,13 @@ such as `getLanguages`.
 
 ## TX Instance Component
 
-Creates a new TX Native instance with the given configuration and adds it to the TX Native main instance. All the nested components will use the new instance in order to fetch the translations. This apply to components:
+Creates a new TX Native instance with the given configuration and adds it to the TX Native main instance. All the nested components will use the new instance in order to fetch the translations. This applies to components:
 
 - T/UT
 - translate pipe
+- Language Picker
 
-Uses `Translation Service` internally to add the instance.
+Uses `Translation Service` internally to add the instance and provides a scoped `TxInstanceContext` so that nested components automatically resolve the correct instance. See the [TxInstanceContext](#txinstancecontext) section for details on how this works.
 
 The html selector is `tx-instance`.
 
@@ -511,7 +565,7 @@ Accepts properties:
 
 - `token`: The token for the new instance.
 
-- `alias`: A string indetifier of the instance, should be unique. If the identifier already exists, the existing instance with the given alias is used, and no new instance is created.
+- `alias`: A string identifier of the instance, should be unique. If the identifier already exists, the existing instance with the given alias is used, and no new instance is created.
 
 - `controlled`: If the new instance is controlled (locale) by the main TX Native instance.
 
@@ -522,6 +576,63 @@ Returns:
 Exposes:
 
 - `instanceIsReady`: observable for listening the readiness of the new instance.
+
+## `TxInstanceContext`
+
+`TxInstanceContext` is an injectable service that acts as a lightweight handle for the active TX Native instance alias. It is the mechanism that allows standalone components (`T`, `UT`, `LanguagePickerComponent`, `TranslatePipe`) to know which instance they should use for translations, without requiring a direct reference to the `TXInstanceComponent`.
+
+### How it works
+
+A root-level `TxInstanceContext` is provided application-wide (via `providedIn: 'root'`). Its `alias` defaults to an empty string, which tells components to use the main TX Native instance.
+
+When you wrap components inside a `<tx-instance>` element, that component provides its own `TxInstanceContext` at the component level. Angular's dependency injection will resolve the closest `TxInstanceContext` in the injector hierarchy, so nested components automatically see the alias of the wrapping instance.
+
+```
+AppModule / root injector
+ └─ TxInstanceContext  (alias = '', main instance)
+      │
+      ├─ <T str="Uses main instance">
+      │
+      └─ <tx-instance alias="homepage" ...>
+           └─ TxInstanceContext  (alias = 'homepage', scoped)
+                │
+                ├─ <T str="Uses homepage instance">
+                └─ {{ 'A string' | translate }}
+```
+
+### Using TxInstanceContext directly
+
+In most cases you do not need to interact with `TxInstanceContext` yourself — wrapping components in `<tx-instance>` handles everything automatically. However, if you need to read or react to instance readiness programmatically, you can inject it:
+
+```typescript
+import { Component } from '@angular/core';
+import { TxInstanceContext, TranslationService } from '@transifex/angular';
+
+@Component({
+  standalone: true,
+  selector: 'my-custom-component',
+  template: `...`
+})
+export class MyCustomComponent {
+  constructor(
+    private translationService: TranslationService,
+    private txContext: TxInstanceContext,
+  ) {}
+
+  getTranslation(str: string): string {
+    const instance = this.translationService.getInstance(this.txContext.alias);
+    return instance.translate(str);
+  }
+}
+```
+
+### API
+
+| Property / Method       | Type                     | Description                                                                                           |
+|-------------------------|--------------------------|-------------------------------------------------------------------------------------------------------|
+| `alias`                 | `string`                 | The alias of the active TX Native instance. Empty string means the main instance.                     |
+| `instanceIsReady`       | `Observable<boolean>`    | Emits when the associated instance has finished initializing and fetching translations.                |
+| `notifyInstanceReady()` | `(ready: boolean) => void` | Called internally by `TXInstanceComponent` to signal readiness. Not typically called by application code. |
 
 ## `txLoadTranslations` Directive
 

@@ -13,3 +13,5 @@ export * from './lib/language-picker.component';
 export * from './lib/instance.component';
 export * from './lib/load-translations.directive';
 export * from './lib/TXNative.module';
+export * from './lib/tx-native.providers';
+export * from './lib/tx-instance-context';

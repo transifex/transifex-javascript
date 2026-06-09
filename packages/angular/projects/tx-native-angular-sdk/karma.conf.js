@@ -16,7 +16,7 @@ module.exports = function (config) {
       jasmine: {
         failSpecWithNoExpectations: true,
       },
-      clearContext: false
+      clearContext: true, // Suppresses "full page reload" false positive in Chrome 128+
     },
     jasmineHtmlReporter: {
       suppressAll: true
@@ -30,7 +30,7 @@ module.exports = function (config) {
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -44,10 +44,11 @@ module.exports = function (config) {
       },
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox'],
+        flags: ['--no-sandbox', '--headless=old'],
       },
     },
-    singleRun: true, // Moved this property outside the customLaunchers object
-    restartOnFileChange: true, // Moved this property outside the customLaunchers object
+    singleRun: true,
+    restartOnFileChange: false,
+    browserDisconnectTolerance: 2,
   });
 };

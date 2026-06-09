@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TXInstanceComponent } from './instance.component';
+import { TxInstanceContext } from './tx-instance-context';
 import { TranslationService } from './translation.service';
 
-@Injectable()
 @Pipe({
+  standalone: true,
   name: 'translate',
   pure: false, // required to update the translation
 })
@@ -24,9 +24,9 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
    * Constructor
    */
   constructor(
-      protected translationService: TranslationService,
-      private instance: TXInstanceComponent,
-      private ref: ChangeDetectorRef,
+    protected translationService: TranslationService,
+    private instance: TxInstanceContext,
+    private ref: ChangeDetectorRef,
   ) {}
 
   /**
@@ -75,14 +75,10 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
    * Clean any existing subscription to change events
    */
   private dispose(): void {
-    if (this.onLocaleChange !== undefined) {
-      this.onLocaleChange.unsubscribe();
-      this.onLocaleChange = undefined;
-    }
-    if (this.onTranslationsFetch !== undefined) {
-      this.onTranslationsFetch.unsubscribe();
-      this.onTranslationsFetch = undefined;
-    }
+    this.onLocaleChange?.unsubscribe();
+    this.onLocaleChange = undefined;
+    this.onTranslationsFetch?.unsubscribe();
+    this.onTranslationsFetch = undefined;
   }
 
   /**

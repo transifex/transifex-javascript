@@ -3,11 +3,18 @@ import { createNativeInstance, tx, TxNative } from '@transifex/native';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { ILanguage, ITranslationServiceConfig, ITXInstanceConfiguration } from './interfaces';
+import { registerRootTranslationServiceForTDecorator } from './t-decorator-translation-bridge';
+
+function translationServiceRootFactory(): TranslationService {
+  const service = new TranslationService();
+  registerRootTranslationServiceForTDecorator(service);
+  return service;
+}
 
 /**
  * Service which wraps the Transifex Native library for using inside components
  */
-@Injectable({ providedIn: 'root' }) // Singleton Injection
+@Injectable({ providedIn: 'root', useFactory: translationServiceRootFactory }) // Singleton Injection
 export class TranslationService {
   // Observables for detecting locale change
   get localeChanged(): Observable<string> {
@@ -32,6 +39,7 @@ export class TranslationService {
    * Initializes the translation service
    */
   public async init(config: ITranslationServiceConfig) {
+    registerRootTranslationServiceForTDecorator(this);
     const instance = this.getInstance(config.instanceAlias ?? '');
     instance.init(config);
     await this.getLanguages();

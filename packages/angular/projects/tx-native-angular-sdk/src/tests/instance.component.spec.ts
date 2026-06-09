@@ -10,7 +10,7 @@ describe('TXInstanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TXInstanceComponent],
+      imports: [TXInstanceComponent],
       providers: [TXInstanceComponent],
     }).compileComponents();
 

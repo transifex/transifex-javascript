@@ -6,8 +6,7 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [ "node" ],
-    "typeRoots": [ "../node_modules/@types" ],
+    "types": [],
     "lib": [
       "dom",
       "es2020"
