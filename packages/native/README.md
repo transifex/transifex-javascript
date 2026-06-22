@@ -320,6 +320,9 @@ params: Object({
   // Replace the existing string occurrences with the occurrences of this request
   overrideOccurrences: Boolean,
 
+  // Force the update of the source strings
+  forceSourceUpdate: Boolean
+
   // If true, when wait for processing to be complete before
   // resolving this promise
   noWait: Boolean,
