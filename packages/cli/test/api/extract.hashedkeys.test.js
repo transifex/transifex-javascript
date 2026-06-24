@@ -154,6 +154,34 @@ describe('extractPhrases with hashed keys', () => {
           string: '<b>HTML inline text</b>',
           meta: { context: [], tags: [], occurrences: ['react.jsx'] },
         },
+        '57b0d93fc0e1c3af68a41214147efd97': {
+          string: 'Text 5',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        '121b687b8625b4e58ba7f36dca77ad7f': {
+          string: 'Text <1>6</1>',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        '3ed8a3c47f6a32ece9c9ae0c2a060d45': {
+          string: 'Text <1><2>7</2></1>',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        '1ecaf4c087b894bf86987fc2972ddba7': {
+          string: 'Text 8',
+          meta: { context: ['foo'], tags: [], occurrences: ['react.jsx'] },
+        },
+        f9818c4a4b3772c365b8522ff29cb785: {
+          string: 'Text <1/> 9',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        '37678ce8d9c3a694ce19b947c64b9787': {
+          string: 'Text {msg}',
+          meta: { context: [], tags: [], occurrences: ['react.jsx'] },
+        },
+        '5c6622f57e93ed83011b45833a12b0aa': {
+          string: 'Text 10',
+          meta: { context: [], tags: ['tag1', 'tag2'], occurrences: ['react.jsx'] },
+        },
       });
   });
 
