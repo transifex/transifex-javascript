@@ -412,6 +412,81 @@ test('save new', async () => {
   });
 });
 
+test('save new with plural relationship', async () => {
+  const parent = new api.Parent({
+    name: 'Bill',
+    children: [new api.Child({ id: '1' }), new api.Child({ id: '2' })],
+  });
+  axios.request.mockResolvedValue({
+    method: 'post',
+    url: '/parents',
+    data: {
+      data: {
+        type: 'parents',
+        id: '1',
+        attributes: { name: 'Bill', created: 'now' },
+        relationships: {
+          children: { links: { related: '/parents/1/children' } },
+        },
+      },
+    },
+  });
+  await parent.save();
+  expectRequestMock({
+    url: '/parents',
+    method: 'post',
+    data: {
+      data: {
+        type: 'parents',
+        attributes: { name: 'Bill' },
+        relationships: {
+          children: {
+            data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+          },
+        },
+      },
+    },
+  });
+  expect(parent).toEqual({
+    id: '1',
+    attributes: { name: 'Bill', created: 'now' },
+    links: {},
+    redirect: null,
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _url: null,
+        _params: null,
+        data: [
+          {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
+  });
+});
+
 test('create', async () => {
   axios.request.mockResolvedValue({
     data: {
@@ -434,6 +509,80 @@ test('create', async () => {
     redirect: null,
     relationships: {},
     related: {},
+  });
+});
+
+test('create with plural relationship', async () => {
+  axios.request.mockResolvedValue({
+    method: 'post',
+    url: '/parents',
+    data: {
+      data: {
+        type: 'parents',
+        id: '1',
+        attributes: { name: 'Bill', created: 'now' },
+        relationships: {
+          children: { links: { related: '/parents/1/children' } },
+        },
+      },
+    },
+  });
+  const parent = await api.Parent.create({
+    name: 'Bill',
+    children: [new api.Child({ id: '1' }), new api.Child({ id: '2' })],
+  });
+  expectRequestMock({
+    url: '/parents',
+    method: 'post',
+    data: {
+      data: {
+        type: 'parents',
+        attributes: { name: 'Bill' },
+        relationships: {
+          children: {
+            data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+          },
+        },
+      },
+    },
+  });
+  expect(parent).toEqual({
+    id: '1',
+    attributes: { name: 'Bill', created: 'now' },
+    links: {},
+    redirect: null,
+    relationships: {
+      children: {
+        data: [{ type: 'children', id: '1' }, { type: 'children', id: '2' }],
+      },
+    },
+    related: {
+      children: {
+        _API: api,
+        _url: null,
+        _params: null,
+        data: [
+          {
+            id: '1',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+          {
+            id: '2',
+            attributes: {},
+            links: {},
+            redirect: null,
+            relationships: {},
+            related: {},
+          },
+        ],
+        next: null,
+        previous: null,
+      },
+    },
   });
 });
 

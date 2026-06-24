@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { DoesNotExist, MultipleObjectsReturned } from './errors';
-import { hasData, isNull } from './utils'; /* eslint-disable-line import/no-cycle */
+import { hasData } from './utils'; /* eslint-disable-line import/no-cycle */
 import Resource from './resources'; /* eslint-disable-line import/no-cycle */
 
 /**
@@ -45,7 +45,7 @@ export default class Collection {
   }
 
   async fetch() {
-    if (!isNull(this.data)) {
+    if (this.data) {
       return;
     }
 
@@ -69,7 +69,7 @@ export default class Collection {
       Object
         .entries(item.relationships || {})
         .forEach(([name, relationship]) => {
-          if (isNull(relationship) || !hasData(relationship)) {
+          if (!relationship || !hasData(relationship)) {
             return;
           }
           const key = `${relationship.data.type}__${relationship.data.id}`;
