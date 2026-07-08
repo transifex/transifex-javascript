@@ -10,8 +10,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const DIRECTIVE = require('./use-client-directive');
 
-const DIRECTIVE = '\'use client\';';
 const DIST_DIR = path.resolve(__dirname, '..', 'dist');
 const FILES = ['index.js', 'index.modern.js'];
 
