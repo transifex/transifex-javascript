@@ -23,7 +23,8 @@
   },
   "repository": "git://github.com/transifex/transifex-javascript.git",
   "scripts": {
-    "build": "NODE_ENV=production microbundle-crl --no-compress --format modern,cjs && cp src/index.d.ts dist/index.d.ts && cp src/index.d.ts dist/index.modern.d.ts",
+    "build": "NODE_ENV=production microbundle-crl --no-compress --format modern,cjs && node scripts/add-use-client.js && cp src/index.d.ts dist/index.d.ts && cp src/index.d.ts dist/index.modern.d.ts",
+    "postbuild": "node scripts/check-use-client.js",
     "prepare": "run-s build",
     "lint": "eslint src/ tests/",
     "test": "run-s test:unit test:build",

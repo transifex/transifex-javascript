@@ -443,6 +443,242 @@ export default function App() {
 }
 ```
 
+# Next.js
+
+## App Router
+
+All components and hooks in this package are Client Components (they rely on
+React hooks and context), and the built bundle is published with the
+`"use client"` directive. This means you can import `T`, `UT`, `LanguagePicker`,
+`TXProvider` and the hooks directly inside the Next.js App Router without getting
+the "you're importing a component that needs `useState` ..." error, as long as
+they render inside a Client Component subtree.
+
+Because the App Router renders on the server across concurrent requests, do
+**not** rely on the global `tx` singleton for server rendering. Instead create a
+per-request instance with `createNativeInstance` so locales from different
+requests cannot leak into each other.
+
+### Rendering translations in a Server Component
+
+Create a small per-request helper:
+
+```js
+// app/i18n/getServerTx.js
+import { createNativeInstance, normalizeLocale } from '@transifex/native';
+
+export async function getServerTx(locale) {
+  const txLocale = normalizeLocale(locale); // e.g. pt-br -> pt_BR
+  const instance = createNativeInstance({
+    token: process.env.NEXT_PUBLIC_TRANSIFEX_TOKEN,
+    currentLocale: txLocale,
+  });
+  await instance.fetchTranslations(txLocale);
+  return instance;
+}
+```
+
+Use it inside an async Server Component (for example a `[locale]` segment):
+
+```jsx
+// app/[locale]/page.jsx
+import { getServerTx } from '../i18n/getServerTx';
+
+export default async function Page({ params }) {
+  const { locale } = await params;
+  const tx = await getServerTx(locale);
+  return <h1>{tx.t('Hello world')}</h1>;
+}
+```
+
+> In Next.js 15+, `params` is a Promise and must be awaited (as shown above).
+> In Next.js 14 and earlier, `params` is a plain object, so you can read
+> `params.locale` directly without `await`.
+
+You can enumerate the available locales for `generateStaticParams` with
+`tx.getLocales()`.
+
+### Hydrating Client Components
+
+For interactive parts that use `T`, hooks or the `LanguagePicker`, fetch the
+translations on the server and pass them into a Client Component that seeds a
+`TXProvider`:
+
+```jsx
+// app/i18n/TxClientProvider.jsx
+'use client';
+
+import { useMemo } from 'react';
+import { createNativeInstance } from '@transifex/native';
+import { TXProvider } from '@transifex/react';
+
+export default function TxClientProvider({ locale, translations, children }) {
+  const instance = useMemo(() => {
+    const tx = createNativeInstance({ currentLocale: locale });
+    tx.cache.update(locale, translations);
+    return tx;
+  }, [locale, translations]);
+
+  return <TXProvider instance={instance}>{children}</TXProvider>;
+}
+```
+
+```jsx
+// app/[locale]/layout.jsx  (Server Component)
+import { normalizeLocale } from '@transifex/native';
+import { getServerTx } from '../i18n/getServerTx';
+import TxClientProvider from '../i18n/TxClientProvider';
+
+export default async function LocaleLayout({ children, params }) {
+  const { locale } = await params;
+  const txLocale = normalizeLocale(locale);
+  const tx = await getServerTx(locale);
+  const translations = tx.cache.getTranslations(txLocale);
+
+  return (
+    <TxClientProvider locale={txLocale} translations={translations}>
+      {children}
+    </TxClientProvider>
+  );
+}
+```
+
+Client Components rendered inside the provider can then use `T` and the hooks as
+usual.
+
+### App Router notes and limitations
+
+- The App Router does not use the `i18n` option in `next.config.js`. Set up
+  locale routing with a `[locale]` dynamic segment (or middleware) instead.
+- `publicRuntimeConfig` is not available in the App Router. Use environment
+  variables (`NEXT_PUBLIC_*`) for the public token.
+- Live language switching, over-the-air auto-refresh and `LanguagePicker`
+  require Client Components.
+- Server-side rendering of translations (`tx.t(...)` in a Server Component) uses
+  the per-request instance and does not ship JavaScript for that content.
+
+## Pages Router
+
+The Pages Router uses Next.js built-in [Internationalized Routing](https://nextjs.org/docs/pages/building-your-application/routing/internationalization)
+(`i18n` in `next.config.js`) together with `getServerSideProps` to fetch
+translations on the server and hydrate the client. In this model the global `tx`
+singleton is the recommended approach — each `getServerSideProps` call runs in
+isolation per request.
+
+### Configure locales and token
+
+```js
+// next.config.js
+module.exports = {
+  i18n: {
+    locales: ['en', 'fr', 'de', 'pt-BR'],
+    defaultLocale: 'en',
+    localeDetection: false,
+  },
+  publicRuntimeConfig: {
+    TxNativePublicToken: process.env.NEXT_PUBLIC_TRANSIFEX_TOKEN,
+  },
+};
+```
+
+### Create a Transifex utility
+
+```js
+// lib/i18n.js
+import { tx, normalizeLocale } from '@transifex/native';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
+/**
+ * Used by SSR to pass translations to the browser.
+ *
+ * @param {{ locale: string, locales: string[] }} context
+ * @returns {{ locale: string, locales: string[], translations: object }}
+ */
+export async function getServerSideTranslations({ locale, locales }) {
+  tx.init({
+    token: publicRuntimeConfig.TxNativePublicToken,
+  });
+
+  const txLocale = normalizeLocale(locale);
+  await tx.fetchTranslations(txLocale);
+
+  return {
+    locale,
+    locales,
+    translations: tx.cache.getTranslations(txLocale),
+  };
+}
+
+/**
+ * Initialize the client-side Transifex Native cache from server props.
+ *
+ * @param {{ locale: string, translations: object }} props
+ */
+export function setClientSideTranslations({ locale, translations }) {
+  if (!locale || !translations) return;
+  tx.init({ currentLocale: locale });
+  tx.cache.update(locale, translations);
+}
+```
+
+### Load translations per page
+
+```jsx
+// pages/index.js
+import { T } from '@transifex/react';
+import { getServerSideTranslations, setClientSideTranslations } from '../lib/i18n';
+
+export default function Home(props) {
+  setClientSideTranslations(props);
+
+  return (
+    <div>
+      <T _str="Hello world" />
+    </div>
+  );
+}
+
+export async function getServerSideProps(context) {
+  const data = await getServerSideTranslations(context);
+  return { props: { ...data } };
+}
+```
+
+### Set translations globally in `_app.js`
+
+To avoid calling `setClientSideTranslations` on every page, initialize the
+client cache once in your custom App:
+
+```jsx
+// pages/_app.js
+import { setClientSideTranslations } from '../lib/i18n';
+
+export default function MyApp({ Component, pageProps }) {
+  setClientSideTranslations(pageProps);
+  return <Component {...pageProps} />;
+}
+```
+
+You still need `getServerSideProps` on each page that requires translations,
+because `_app.js` does not support data fetching methods.
+
+### Pages Router notes and limitations
+
+- Locale routing is handled by Next.js `i18n` config — no `[locale]` segment or
+  middleware is required.
+- `publicRuntimeConfig` is available and is the documented way to pass the public
+  token to server-side code.
+- `T`, `UT`, hooks and `LanguagePicker` work directly in page components without
+  a `"use client"` boundary (the Pages Router does not use React Server
+  Components).
+- For over-the-air translation refresh without a server restart, add a TTL-based
+  refresh in `getServerSideTranslations` (see the
+  [Next.js guide](https://developers.transifex.com/docs/nextjs#auto-refresh-translations)).
+- For large sites, consider content splitting with tagged fetches to reduce data
+  transfer.
+
 # License
 
 Licensed under Apache License 2.0, see [LICENSE](https://github.com/transifex/transifex-javascript/blob/HEAD/LICENSE) file.
