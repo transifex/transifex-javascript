@@ -44,4 +44,28 @@ describe('T', () => {
     render(<T _str="hello {w}" w={<b>world</b>} />);
     expect(screen.getByText('world')).toBeTruthy();
   });
+
+  it('renders body', () => {
+    render(<T>hello <b>safe text</b></T>);
+    expect(screen.queryByText('hello')).toBeInTheDocument();
+    expect(screen.queryByText('safe text')).toBeInTheDocument();
+  });
+
+  it('renders body with single tags', () => {
+    render(<T>hello <br /> <b>safe text</b></T>);
+    expect(screen.queryByText('hello')).toBeInTheDocument();
+    expect(screen.queryByText('safe text')).toBeInTheDocument();
+  });
+
+  it('renders nestedbody', () => {
+    render(<T>hello <b>safe <T>text</T></b></T>);
+    expect(screen.queryByText('hello')).toBeInTheDocument();
+    expect(screen.queryByText('safe text')).toBeInTheDocument();
+  });
+
+  it('renders body with params', () => {
+    render(<T username="Bill">hello <b>mister {'{username}'}</b></T>);
+    expect(screen.queryByText('hello')).toBeInTheDocument();
+    expect(screen.queryByText('mister Bill')).toBeInTheDocument();
+  });
 });
