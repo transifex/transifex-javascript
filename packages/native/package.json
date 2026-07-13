@@ -16,6 +16,7 @@
   "license": "Apache-2.0",
   "main": "dist/node.native.js",
   "browser": "dist/browser.native.js",
+  "react-native": "dist/react-native.native.js",
   "types": "dist/node.native.d.ts",
   "publishConfig": {
     "access": "public"
