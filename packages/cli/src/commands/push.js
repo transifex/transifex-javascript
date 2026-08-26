@@ -48,12 +48,9 @@ class PushCommand extends Command {
 
     this.log('Parsing all files to detect translatable content...');
 
-    const allFiles = await new Promise((resolve, reject) => {
-      glob(filePattern, (err, files) => {
-        if (err) return reject(err);
-        return resolve(files);
-      });
-    });
+    // glob v9+ returns a promise and no longer sorts results by default;
+    // sort to keep the pushed payload deterministic across machines/runs.
+    const allFiles = (await glob(filePattern)).sort();
 
     let emptyFiles = 0;
     const errorFiles = [];
