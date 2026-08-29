@@ -1,7 +1,7 @@
 import _ from 'lodash'; /* eslint-disable-line max-classes-per-file */
 import axios from 'axios';
 
-import { isNull, isResource } from './utils';
+import { isResource } from './utils';
 import { JsonApiException } from './errors';
 import Resource from './resources';
 
@@ -25,7 +25,7 @@ export function validateStatus(status) {
   *
   *   const familyApi = new FamilyApi({ auth: 'MYTOKEN' });
   *
-  * After this, you can access the `Resouce` subclass and its methods on the
+  * After this, you can access the `Resource` subclass and its methods on the
   * connection instance directly. You can use either the name you supplied as a
   * second argument to `.register()` or its TYPE static field:
   *
@@ -190,7 +190,7 @@ export default class JsonApi {
     * Appropriate Resource subclass.
     * */
   asResource(value) {
-    if (isNull(value) || isResource(value)) {
+    if (!value || isResource(value)) {
       return value;
     }
     let actualValue = value;
