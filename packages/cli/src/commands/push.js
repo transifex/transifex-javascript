@@ -203,6 +203,7 @@ class PushCommand extends Command {
           do_not_keep_translations: flags['do-not-keep-translations'],
           override_tags: flags['override-tags'],
           override_occurrences: flags['override-occurrences'],
+          force_source_update: flags['force-source-update'],
           dry_run: flags['dry-run'],
         });
 
@@ -372,6 +373,10 @@ PushCommand.flags = {
   }),
   'override-occurrences': Flags.boolean({
     description: 'override occurrences when pushing content',
+    default: false,
+  }),
+  'force-source-update': Flags.boolean({
+    description: 'force the update of the source strings',
     default: false,
   }),
   parser: Flags.string({

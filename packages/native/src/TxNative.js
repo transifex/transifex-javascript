@@ -313,6 +313,7 @@ export default class TxNative {
    * @param {Boolean} params.purge
    * @param {Boolean} params.overrideTags
    * @param {Boolean} params.overrideOccurrences
+   * @param {Boolean} params.forceSourceUpdate
    * @param {Boolean} params.noWait - do not wait for upload results
    * @returns {Object} Data
    * @returns {String} Data.jobUrl
@@ -344,6 +345,7 @@ export default class TxNative {
           purge: !!params.purge,
           override_tags: !!params.overrideTags,
           override_occurrences: !!params.overrideOccurrences,
+          force_source_update: !!params.forceSourceUpdate,
         },
       }),
     });

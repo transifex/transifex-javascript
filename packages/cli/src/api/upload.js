@@ -22,6 +22,7 @@ async function uploadPhrases(payload, params) {
       keep_translations: !params.do_not_keep_translations,
       override_tags: !!params.override_tags,
       override_occurrences: !!params.override_occurrences,
+      force_source_update: !!params.force_source_update,
     },
   }, {
     headers: {
