@@ -17,7 +17,7 @@ declare class JsonApiResource {
   set(key: string, value: any): void;
   reload(include: string[]): Promise<void>;
   static get(arg:string | AnyDict): Promise<JsonApiResource>;
-  fetch(relationshipName: string, force: boolean): Promise<JsonApiResource | Collection>;
+  fetch(relationshipName: string, force?: boolean): Promise<JsonApiResource | Collection>;
   save(arg: AnyDict | string[]): Promise<void>;
   static create(params: {
     id: string,
@@ -31,7 +31,7 @@ declare class JsonApiResource {
   reset(field: string, values: JsonApiResource[]): Promise<void>;
   remove(field: string, values: JsonApiResource[]): Promise<void>;
   static list(): Collection;
-  static extra(AnyDict): Collection;
+  static extra(params: AnyDict): Collection;
   static filter(filters: AnyDict): Collection;
   static page(arg: AnyDict | string): Collection;
   static include(...args: string[]): Collection;
@@ -58,7 +58,7 @@ declare class Collection {
   fetch(): Promise<void>;
   getNext(): Promise<Collection>;
   getPrevious(): Promise<Collection>;
-  extra(AnyDict): Collection;
+  extra(params: AnyDict): Collection;
   filter(filters: AnyDict): Collection;
   page(arg: AnyDict | string): Collection;
   include(...args: string[]): Collection;
