@@ -99,4 +99,13 @@ describe('pull command', () => {
     .it('handles pull error', (ctx) => {
       expect(ctx.stdout).to.contain('Failed');
     });
+
+  test
+    .env({ TRANSIFEX_TOKEN: '', TRANSIFEX_SECRET: '' })
+    .stdout()
+    .command(['pull'])
+    .exit(1)
+    .it('exits with code 1 when credentials are missing', (ctx) => {
+      expect(ctx.stdout).to.contain('Cannot pull content, credentials are missing.');
+    });
 });

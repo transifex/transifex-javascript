@@ -22,7 +22,7 @@ class PullCommand extends Command {
     if (!projectToken || !projectSecret) {
       this.log(`${'✘'.red} Cannot pull content, credentials are missing.`);
       this.log('Tip: Set TRANSIFEX_TOKEN and TRANSIFEX_SECRET environment variables'.yellow);
-      process.exit();
+      this.exit(1);
     }
 
     try {

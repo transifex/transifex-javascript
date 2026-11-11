@@ -45,4 +45,13 @@ describe('invalidate command', () => {
     .it('handles invalidate error', (ctx) => {
       expect(ctx.stdout).to.contain('Invalidating CDS cache... Failed');
     });
+
+  test
+    .env({ TRANSIFEX_TOKEN: '', TRANSIFEX_SECRET: '' })
+    .stdout()
+    .command(['invalidate'])
+    .exit(1)
+    .it('exits with code 1 when credentials are missing', (ctx) => {
+      expect(ctx.stdout).to.contain('Cannot invalidate CDS, credentials are missing.');
+    });
 });

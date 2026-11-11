@@ -177,4 +177,13 @@ describe('push command', () => {
     .it('handles push error', (ctx) => {
       expect(ctx.stdout).to.contain('Uploading content to Transifex... Failed');
     });
+
+  test
+    .env({ TRANSIFEX_TOKEN: '', TRANSIFEX_SECRET: '' })
+    .stdout()
+    .command(['push', 'test/fixtures/simple.js'])
+    .exit(1)
+    .it('exits with code 1 when credentials are missing', (ctx) => {
+      expect(ctx.stdout).to.contain('Cannot push content, credentials are missing.');
+    });
 });
