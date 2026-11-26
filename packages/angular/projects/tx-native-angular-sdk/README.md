@@ -404,6 +404,19 @@ properties with the translation and used them in code and templates.
 
 Use **`TxNativeModule.forRoot()`** or **`provideTxNativeEagerTranslationService()`** in standalone apps (see [Initialization](#initialization)) so the root `TranslationService` is available the first time an `@T` property is read. You do not need a separate `TranslationService` instance for the decorator; it shares the one from DI.
 
+> **TypeScript `useDefineForClassFields`.** With `target: ES2022` or later, TypeScript defaults
+> `useDefineForClassFields` to `true` (this is what new Angular 20+ projects use). A plain decorated
+> field then becomes an own property of each instance that hides the decorator's getter, so the value
+> is always empty. Either declare the property with the `accessor` keyword, which works with any setting:
+>
+> ```typescript
+> @T('Monday', { _key: 'text.monday' })
+> accessor weekday!: string;
+> ```
+>
+> or keep plain fields and set `"useDefineForClassFields": false` in your `tsconfig.json` `compilerOptions`
+> (the setting older Angular projects were generated with). The examples below use plain fields.
+
 > **Client-only / single-root-app constraint.** Because a property decorator has no Angular injection context, `@T` resolves the `TranslationService` through a process-wide reference rather than per-injector. It assumes a single root app per process and is **not** intended for server-side rendering (Angular Universal) or for multiple bootstrapped apps / micro-frontends on one page, where concurrent requests or apps would share (and overwrite) that reference. This also reflects that the default instance is backed by the global `tx` singleton from `@transifex/native`, so per-request locale isolation is not available for the default instance regardless. For SSR or multi-app scenarios, use the DI-based primitives instead — the [`T`](#t-component) / `UT` components, the [`translate` pipe](#translate-pipe), or injecting `TranslationService` directly — all of which resolve the correct instance per-injector.
 
 An example of use is the following:

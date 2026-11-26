@@ -25,6 +25,14 @@ describe('T Decorator', () => {
     testProperty!: string;
   }
 
+  // `accessor` keeps working when useDefineForClassFields is true (TS default for ES2022+).
+  @Component({
+    template: '<div>{{ testProperty }}</div>',
+  })
+  class TestAccessorComponent {
+    @T('not-trans-dec', { _key: 'test' }) accessor testProperty!: string;
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       teardown: { destroyAfterEach: false },
@@ -67,5 +75,14 @@ describe('T Decorator', () => {
     const compiled: HTMLElement =
       fixtureWithInstance.debugElement.nativeElement;
     expect(compiled.innerHTML).toContain('ok-translated-dec');
+  });
+
+  it('should test the decorator T on an accessor field', () => {
+    const fixture = TestBed.createComponent(TestAccessorComponent);
+    const component = fixture.componentInstance;
+
+    fixture.detectChanges();
+    expect(component.testProperty).toBe('ok-translated-dec');
+    expect(fixture.debugElement.nativeElement.innerHTML).toContain('ok-translated-dec');
   });
 });
