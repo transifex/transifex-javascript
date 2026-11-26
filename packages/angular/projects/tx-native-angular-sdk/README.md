@@ -63,6 +63,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [TX Instance Component](#tx-instance-component)
   * [TxInstanceContext](#txinstancecontext)
   * [txLoadTranslations Directive](#txloadtranslations-directive)
+* [Zoneless applications](#zoneless-applications)
 * [Unit testing (Vitest / Karma)](#unit-testing-vitest--karma)
 * [License](#license)
 
@@ -671,6 +672,17 @@ This is an example of use:
 All the translations with the tag ```menu``` will be fetched using the current selected locale and instance, if the translations are already cached, they are not fetched again.
 
 This way we can fetch the translations related with the part of the component's template when the component is first used and not from the beginning when instance is initialized (in the initialization we can use the ```filterTags``` param in order to fetch an initial set of translations and then use the lazy loading and improve the performance).
+
+# Zoneless applications
+
+Angular 21+ applications are zoneless by default (`provideZonelessChangeDetection()`). No extra setup is
+needed: `T`, `UT`, the `translate` pipe and the language picker mark themselves for check whenever the
+locale changes or a translation fetch (`fetchTranslations`, `txLoadTranslations`) completes.
+
+Your own components that read translations in code (for example `translationService.translate(...)` or
+`@T` properties shown in an `OnPush` template) are refreshed by Angular only when something marks them
+dirty. If such a component needs to follow locale changes, subscribe to
+`translationService.localeChanged` and update a signal or call `markForCheck()`.
 
 # Unit testing (Vitest / Karma)
 

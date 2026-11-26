@@ -1,8 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs';
 
+import { injectIfAvailable } from './inject-if-available';
 import { TxInstanceContext } from './tx-instance-context';
 import { ITranslateParams } from './interfaces';
 import { TranslationService } from './translation.service';
@@ -73,6 +76,9 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
 
   private actualVars: Record<string, unknown> = {};
 
+  // Not a constructor parameter, so subclasses and `new TComponent(...)` keep working.
+  private readonly changeDetector = injectIfAvailable(ChangeDetectorRef);
+
   constructor(
     protected translationService: TranslationService,
     protected instance: TxInstanceContext,
@@ -111,7 +117,10 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Translate a string using the translation service
+   * Translate a string using the translation service.
+   *
+   * Marks the view for check so the new text is painted in zoneless apps (the default
+   * from Angular 21), where locale and fetch events come from outside Angular.
    */
   translate() {
     this.translatedStr = this.translationService.translate(
@@ -119,5 +128,6 @@ export class TComponent implements OnInit, OnDestroy, OnChanges {
       { ...this.translateParams, ...this.vars },
       this.instance.alias || '',
     );
+    this.changeDetector?.markForCheck();
   }
 }
