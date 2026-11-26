@@ -166,6 +166,20 @@ describe('TranslationService', () => {
     expect(result).toBe(true);
   });
 
+  it('should pass a custom cdsHost to an additional instance', async () => {
+    // act
+    const result = await service.addInstance({
+      token: 'token-cds',
+      alias: 'alias-cds',
+      controlled: false,
+      cdsHost: 'https://cds.example.com',
+    });
+
+    // assert
+    expect(result).toBe(true);
+    expect(service.getInstance('alias-cds').cdsHost).toBe('https://cds.example.com');
+  });
+
   it('should add a not controlled instance successfully', async () => {
     // setup
     spyOn(tx, 'controllerOf').and.resolveTo();

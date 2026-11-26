@@ -591,6 +591,8 @@ Accepts properties:
 
 - `token`: The token for the new instance.
 
+- `cdsHost` (optional): A custom CDS host for this instance. Defaults to the Transifex CDS.
+
 - `alias`: A string identifier of the instance, should be unique. If the identifier already exists, the existing instance with the given alias is used, and no new instance is created.
 
 - `controlled`: If the new instance is controlled (locale) by the main TX Native instance.

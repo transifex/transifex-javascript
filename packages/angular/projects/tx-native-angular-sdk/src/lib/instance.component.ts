@@ -22,6 +22,7 @@ export class TXInstanceComponent implements OnInit {
   @Input() alias = '';
   @Input() token = '';
   @Input() controlled = true;
+  @Input() cdsHost = '';
 
   @Output() instanceReady: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -51,6 +52,7 @@ export class TXInstanceComponent implements OnInit {
       token: this.token,
       alias: this.alias,
       controlled: this.controlled,
+      cdsHost: this.cdsHost,
     });
     this.nativeInstance = this.translationService.getInstance(this.alias);
 

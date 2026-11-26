@@ -117,7 +117,10 @@ export class TranslationService {
     }
 
     try {
-      const txInstance = createNativeInstance({ token: config.token });
+      const txInstance = createNativeInstance({
+        token: config.token,
+        ...(config.cdsHost ? { cdsHost: config.cdsHost } : {}),
+      });
 
       if (config.controlled) {
         await this.whilePending(() => tx.controllerOf(txInstance));
