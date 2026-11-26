@@ -15,4 +15,6 @@ export interface ITXInstanceConfiguration {
   alias: string;
   controlled: boolean;
   token: string;
+  /** Custom CDS host for this instance (defaults to the Transifex CDS). */
+  cdsHost?: string;
 }

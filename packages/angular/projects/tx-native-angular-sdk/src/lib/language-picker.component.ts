@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 
+import { injectIfAvailable } from './inject-if-available';
 import { TxInstanceContext } from './tx-instance-context';
 import { ILanguage } from './interfaces';
 import { TranslationService } from './translation.service';
@@ -51,6 +54,12 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
   // Subscription to instance ready event to refresh languages
   instanceIsReadySubscription!: Subscription;
 
+  // Subscription to locale changes so the selected option follows the active locale
+  localeChangedSubscription: Subscription;
+
+  // Not a constructor parameter, so subclasses and `new LanguagePickerComponent(...)` keep working.
+  private readonly changeDetector = injectIfAvailable(ChangeDetectorRef);
+
   constructor(
     public translationService: TranslationService,
     public txContext: TxInstanceContext,
@@ -64,6 +73,11 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
         this.languages = [];
         await this.getLanguages();
       }
+    });
+
+    // Locale can change from outside the picker (code, another picker); repaint in zoneless apps.
+    this.localeChangedSubscription = this.translationService.localeChanged.subscribe(() => {
+      this.changeDetector?.markForCheck();
     });
   }
 
@@ -81,6 +95,7 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
    */
   async getLanguages() {
     this.languages = await this.translationService.getLanguages(this.activeInstance);
+    this.changeDetector?.markForCheck();
   }
 
   /**
@@ -104,5 +119,6 @@ export class LanguagePickerComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.instanceIsReadySubscription.unsubscribe();
+    this.localeChangedSubscription.unsubscribe();
   }
 }

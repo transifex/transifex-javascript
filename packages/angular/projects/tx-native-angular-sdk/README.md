@@ -63,16 +63,29 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [TX Instance Component](#tx-instance-component)
   * [TxInstanceContext](#txinstancecontext)
   * [txLoadTranslations Directive](#txloadtranslations-directive)
+* [Zoneless applications](#zoneless-applications)
+* [Server-side rendering (SSR)](#server-side-rendering-ssr)
+* [Unit testing (Vitest / Karma)](#unit-testing-vitest--karma)
 * [License](#license)
 
 
 # Requirements
 
-Angular 19 and Node.js >= 18.19 are required. If you are using Angular 16, please use the `7.1.x` version of
-Transifex Native related packages. If you are using Angular 14 or 15, please use the `6.x.x` version.
-If you are using Angular 12 or 13, please use the `5.x.x` version.
-If you are using Angular 11, please use the `1.x.x` version.
-Other Angular versions are not officially supported at the moment.
+Use the `@transifex/angular` and `@transifex/native` version that matches your Angular version:
+
+| Angular        | `@transifex/angular` / `@transifex/native` |
+|----------------|--------------------------------------------|
+| 19, 20, 21, 22 | `8.x` (this version)                       |
+| 16             | `7.1.x`                                    |
+| 14, 15         | `6.x.x`                                    |
+| 12, 13         | `5.x.x`                                    |
+| 11             | `1.x.x`                                    |
+
+Node.js must satisfy your Angular version's own requirement (for example Node.js 22.22.3+ or 24.15+ for Angular 22).
+Other Angular versions are not officially supported.
+
+Both zone.js and zoneless applications (the default from Angular 21) are supported, as well as
+standalone and NgModule setups and server-side rendering.
 
 # Installation
 
@@ -210,6 +223,16 @@ Available optional props:
 | escapeVars | Boolean | If escaping should be applied to ICU variables                |
 | sanitize   | Boolean | Safe render of the HTML result after translation takes place   |
 | vars       | Object  | ICU variables to render in the string       |
+
+> **Parameter names.** The `T` and `UT` components take **plain** attribute names (`key`, `context`,
+> `comment`, `charlimit`, `tags`). The [`translate` pipe](#translate-pipe), the [`@T` decorator](#t-decorator)
+> and `TranslationService.translate()` take the **underscore-prefixed** names of the Native SDK
+> (`_key`, `_context`, `_comment`, `_charlimit`, `_tags`). For example these are equivalent:
+>
+> ```html
+> <T str="Save" context="button" comment="Form submit"></T>
+> {{ 'Save' | translate: { _context: 'button', _comment: 'Form submit' } }}
+> ```
 
 The T component can sanitize the translated result if HTML is involved, using the parameter `sanitize`, ie this would be possible:
 
@@ -391,6 +414,19 @@ properties with the translation and used them in code and templates.
 
 Use **`TxNativeModule.forRoot()`** or **`provideTxNativeEagerTranslationService()`** in standalone apps (see [Initialization](#initialization)) so the root `TranslationService` is available the first time an `@T` property is read. You do not need a separate `TranslationService` instance for the decorator; it shares the one from DI.
 
+> **TypeScript `useDefineForClassFields`.** With `target: ES2022` or later, TypeScript defaults
+> `useDefineForClassFields` to `true` (this is what new Angular 20+ projects use). A plain decorated
+> field then becomes an own property of each instance that hides the decorator's getter, so the value
+> is always empty. Either declare the property with the `accessor` keyword, which works with any setting:
+>
+> ```typescript
+> @T('Monday', { _key: 'text.monday' })
+> accessor weekday!: string;
+> ```
+>
+> or keep plain fields and set `"useDefineForClassFields": false` in your `tsconfig.json` `compilerOptions`
+> (the setting older Angular projects were generated with). The examples below use plain fields.
+
 > **Client-only / single-root-app constraint.** Because a property decorator has no Angular injection context, `@T` resolves the `TranslationService` through a process-wide reference rather than per-injector. It assumes a single root app per process and is **not** intended for server-side rendering (Angular Universal) or for multiple bootstrapped apps / micro-frontends on one page, where concurrent requests or apps would share (and overwrite) that reference. This also reflects that the default instance is backed by the global `tx` singleton from `@transifex/native`, so per-request locale isolation is not available for the default instance regardless. For SSR or multi-app scenarios, use the DI-based primitives instead — the [`T`](#t-component) / `UT` components, the [`translate` pipe](#translate-pipe), or injecting `TranslationService` directly — all of which resolve the correct instance per-injector.
 
 An example of use is the following:
@@ -565,6 +601,8 @@ Accepts properties:
 
 - `token`: The token for the new instance.
 
+- `cdsHost` (optional): A custom CDS host for this instance. Defaults to the Transifex CDS.
+
 - `alias`: A string identifier of the instance, should be unique. If the identifier already exists, the existing instance with the given alias is used, and no new instance is created.
 
 - `controlled`: If the new instance is controlled (locale) by the main TX Native instance.
@@ -660,6 +698,66 @@ This is an example of use:
 All the translations with the tag ```menu``` will be fetched using the current selected locale and instance, if the translations are already cached, they are not fetched again.
 
 This way we can fetch the translations related with the part of the component's template when the component is first used and not from the beginning when instance is initialized (in the initialization we can use the ```filterTags``` param in order to fetch an initial set of translations and then use the lazy loading and improve the performance).
+
+# Zoneless applications
+
+Angular 21+ applications are zoneless by default (`provideZonelessChangeDetection()`). No extra setup is
+needed: `T`, `UT`, the `translate` pipe and the language picker mark themselves for check whenever the
+locale changes or a translation fetch (`fetchTranslations`, `txLoadTranslations`) completes.
+
+Your own components that read translations in code (for example `translationService.translate(...)` or
+`@T` properties shown in an `OnPush` template) are refreshed by Angular only when something marks them
+dirty. If such a component needs to follow locale changes, subscribe to
+`translationService.localeChanged` and update a signal or call `markForCheck()`.
+
+# Server-side rendering (SSR)
+
+When rendering on the server, `TranslationService.init()`, `setCurrentLocale()`,
+`fetchTranslations()` and controlled `<tx-instance>` setup register themselves as Angular
+[`PendingTasks`](https://angular.dev/api/core/PendingTasks), so the server waits for the
+languages and translations before it renders the HTML. In the browser they do not affect
+application stability. The usual pattern works on the server without changes:
+
+```typescript
+export class AppComponent implements OnInit {
+  private translationService = inject(TranslationService);
+
+  ngOnInit() {
+    this.translationService
+      .init({ token: '----- here your TX Native token ------' })
+      .then(() => this.translationService.setCurrentLocale('el'));
+  }
+}
+```
+
+If you prefer the locale to be ready before the first render (client and server), initialize it in an
+app initializer instead:
+
+```typescript
+import { inject, provideAppInitializer } from '@angular/core';
+import { TranslationService } from '@transifex/angular';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAppInitializer(async () => {
+      const translationService = inject(TranslationService);
+      await translationService.init({ token: '----- here your TX Native token ------' });
+      await translationService.setCurrentLocale('el');
+    }),
+  ],
+};
+```
+
+Keep in mind that the default instance is the process-wide `tx` object from `@transifex/native`, so all
+requests handled by one server process share the current locale. Rendering different locales per request
+in the same process is not supported. See also the note on SSR in the [`@T` decorator](#t-decorator) section.
+
+# Unit testing (Vitest / Karma)
+
+Named imports from `@transifex/native` work when it is loaded as an ES module, so the packages
+load in Angular's default Vitest runner (`@angular/build:unit-test`) as well as Karma without extra
+configuration. Older versions needed `test.server.deps.inline` for `@transifex/*`; that workaround
+can be removed.
 
 # License
 
