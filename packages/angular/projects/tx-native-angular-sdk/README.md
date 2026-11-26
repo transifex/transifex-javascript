@@ -224,6 +224,16 @@ Available optional props:
 | sanitize   | Boolean | Safe render of the HTML result after translation takes place   |
 | vars       | Object  | ICU variables to render in the string       |
 
+> **Parameter names.** The `T` and `UT` components take **plain** attribute names (`key`, `context`,
+> `comment`, `charlimit`, `tags`). The [`translate` pipe](#translate-pipe), the [`@T` decorator](#t-decorator)
+> and `TranslationService.translate()` take the **underscore-prefixed** names of the Native SDK
+> (`_key`, `_context`, `_comment`, `_charlimit`, `_tags`). For example these are equivalent:
+>
+> ```html
+> <T str="Save" context="button" comment="Form submit"></T>
+> {{ 'Save' | translate: { _context: 'button', _comment: 'Form submit' } }}
+> ```
+
 The T component can sanitize the translated result if HTML is involved, using the parameter `sanitize`, ie this would be possible:
 
 ```html
