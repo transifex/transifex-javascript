@@ -64,6 +64,7 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
   * [TxInstanceContext](#txinstancecontext)
   * [txLoadTranslations Directive](#txloadtranslations-directive)
 * [Zoneless applications](#zoneless-applications)
+* [Server-side rendering (SSR)](#server-side-rendering-ssr)
 * [Unit testing (Vitest / Karma)](#unit-testing-vitest--karma)
 * [License](#license)
 
@@ -683,6 +684,48 @@ Your own components that read translations in code (for example `translationServ
 `@T` properties shown in an `OnPush` template) are refreshed by Angular only when something marks them
 dirty. If such a component needs to follow locale changes, subscribe to
 `translationService.localeChanged` and update a signal or call `markForCheck()`.
+
+# Server-side rendering (SSR)
+
+When rendering on the server, `TranslationService.init()`, `setCurrentLocale()`,
+`fetchTranslations()` and controlled `<tx-instance>` setup register themselves as Angular
+[`PendingTasks`](https://angular.dev/api/core/PendingTasks), so the server waits for the
+languages and translations before it renders the HTML. In the browser they do not affect
+application stability. The usual pattern works on the server without changes:
+
+```typescript
+export class AppComponent implements OnInit {
+  private translationService = inject(TranslationService);
+
+  ngOnInit() {
+    this.translationService
+      .init({ token: '----- here your TX Native token ------' })
+      .then(() => this.translationService.setCurrentLocale('el'));
+  }
+}
+```
+
+If you prefer the locale to be ready before the first render (client and server), initialize it in an
+app initializer instead:
+
+```typescript
+import { inject, provideAppInitializer } from '@angular/core';
+import { TranslationService } from '@transifex/angular';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAppInitializer(async () => {
+      const translationService = inject(TranslationService);
+      await translationService.init({ token: '----- here your TX Native token ------' });
+      await translationService.setCurrentLocale('el');
+    }),
+  ],
+};
+```
+
+Keep in mind that the default instance is the process-wide `tx` object from `@transifex/native`, so all
+requests handled by one server process share the current locale. Rendering different locales per request
+in the same process is not supported. See also the note on SSR in the [`@T` decorator](#t-decorator) section.
 
 # Unit testing (Vitest / Karma)
 

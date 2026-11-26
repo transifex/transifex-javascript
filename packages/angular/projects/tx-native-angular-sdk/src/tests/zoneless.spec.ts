@@ -1,6 +1,13 @@
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  PLATFORM_ID,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { tx } from '@transifex/native';
+import { firstValueFrom } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { LanguagePickerComponent } from '../lib/language-picker.component';
 import { TComponent } from '../lib/T.component';
@@ -104,3 +111,46 @@ describe('Zoneless change detection', () => {
   });
 });
 
+describe('TranslationService app stability', () => {
+  let release: () => void;
+
+  function setUp(platformId: string): { service: TranslationService; appRef: ApplicationRef } {
+    TestBed.configureTestingModule({
+      providers: [
+        provideExperimentalZonelessChangeDetection(),
+        { provide: PLATFORM_ID, useValue: platformId },
+      ],
+    });
+    spyOn(tx, 'setCurrentLocale').and.callFake(
+      () => new Promise<void>((resolve) => { release = resolve; }),
+    );
+    return { service: TestBed.inject(TranslationService), appRef: TestBed.inject(ApplicationRef) };
+  }
+
+  it('should keep the app unstable on the server until setCurrentLocale finishes', async () => {
+    // setup
+    const { service, appRef } = setUp('server');
+
+    // act
+    const pending = service.setCurrentLocale('fr');
+
+    // assert
+    expect(await firstValueFrom(appRef.isStable)).toBe(false);
+    release();
+    await pending;
+    expect(await firstValueFrom(appRef.isStable.pipe(filter(Boolean)))).toBe(true);
+  });
+
+  it('should not affect app stability in the browser', async () => {
+    // setup
+    const { service, appRef } = setUp('browser');
+
+    // act
+    const pending = service.setCurrentLocale('fr');
+
+    // assert
+    expect(await firstValueFrom(appRef.isStable)).toBe(true);
+    release();
+    await pending;
+  });
+});
