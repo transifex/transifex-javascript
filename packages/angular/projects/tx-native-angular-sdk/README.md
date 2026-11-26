@@ -68,11 +68,21 @@ If you are upgrading from the `1.x.x` version, please read this [migration guide
 
 # Requirements
 
-Angular 19 and Node.js >= 18.19 are required. If you are using Angular 16, please use the `7.1.x` version of
-Transifex Native related packages. If you are using Angular 14 or 15, please use the `6.x.x` version.
-If you are using Angular 12 or 13, please use the `5.x.x` version.
-If you are using Angular 11, please use the `1.x.x` version.
-Other Angular versions are not officially supported at the moment.
+Use the `@transifex/angular` and `@transifex/native` version that matches your Angular version:
+
+| Angular        | `@transifex/angular` / `@transifex/native` |
+|----------------|--------------------------------------------|
+| 19, 20, 21, 22 | `8.x` (this version)                       |
+| 16             | `7.1.x`                                    |
+| 14, 15         | `6.x.x`                                    |
+| 12, 13         | `5.x.x`                                    |
+| 11             | `1.x.x`                                    |
+
+Node.js must satisfy your Angular version's own requirement (for example Node.js 22.22.3+ or 24.15+ for Angular 22).
+Other Angular versions are not officially supported.
+
+Both zone.js and zoneless applications (the default from Angular 21) are supported, as well as
+standalone and NgModule setups and server-side rendering.
 
 # Installation
 
